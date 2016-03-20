@@ -10,7 +10,7 @@ gulp.task('lint', () => {
     'src/**/*.js',
     'tasks/**/*.js'
   ])
-    .pipe($.eslint('../.eslintrc.yml'))
+    .pipe($.eslint('.eslintrc.yml'))
     .pipe($.eslint.format())
     .pipe($.eslint.failAfterError())
 })

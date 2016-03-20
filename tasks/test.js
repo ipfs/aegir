@@ -8,8 +8,6 @@ const path = require('path')
 
 const config = require('../config/webpack')
 
-require('./daemons')
-
 // Workaround gulp not exiting if there are some
 // resources not freed
 const exitOnFail = (err) => {
@@ -30,18 +28,14 @@ gulp.task('test', (done) => {
 
 gulp.task('test:node', (done) => {
   runSequence(
-    'daemons:start',
     'mocha',
-    'daemons:stop',
     exitOnFail
   )
 })
 
 gulp.task('test:browser', (done) => {
   runSequence(
-    'daemons:start',
     'karma',
-    'daemons:stop',
     exitOnFail
   )
 })

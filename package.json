@@ -1,6 +1,6 @@
 {
   "name": "dignified.js",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "description": "Dignified JavaScript building and testing",
   "main": "index.js",
   "scripts": {

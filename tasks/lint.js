@@ -12,7 +12,7 @@ gulp.task('lint', () => {
     'src/**/*.js',
     'tasks/**/*.js'
   ])
-    .pipe($.eslint(path.resolve(__dirname, '..', '.eslintrc.yml')))
+    .pipe($.eslint(path.resolve(__dirname, '../config/eslintrc.yml')))
     .pipe($.eslint.format())
     .pipe($.eslint.failAfterError())
 })

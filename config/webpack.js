@@ -1,21 +1,26 @@
 'use strict'
 
 const webpack = require('webpack')
+const path = require('path')
+
 const babel = require('./babel')
 
 const shared = {
-  output: {
-    filename: 'ipfsapi.js',
-    library: 'ipfsAPI'
-  },
   resolve: {
     modulesDirectories: [
-      'node_modules'
+      'node_modules',
+      path.resolve(__dirname, '../node_modules')
     ],
     alias: {
       http: 'stream-http',
       https: 'https-browserify'
     }
+  },
+  resolveLoader: {
+    modulesDirectories: [
+      'node_modules',
+      path.resolve(__dirname, '../node_modules')
+    ]
   },
   module: {
     loaders: [{
@@ -40,7 +45,7 @@ const shared = {
     console: '{}',
     'require-dir': '{}'
   },
-  timeout: 60000
+  timeout: 80000
 }
 
 const dev = Object.assign({}, shared, {

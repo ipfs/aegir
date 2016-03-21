@@ -1,10 +1,15 @@
 'use strict'
 
-const myGulp = require('gulp')
-const runSequence = require('run-sequence')
+const gulpRequire = require('gulp-require-tasks')
+const path = require('path')
 
 module.exports = (gulp) => {
-  require('require-dir')('../tasks')
+  gulp = gulp || require('gulp')
+
+  gulpRequire({
+    path: path.join(__dirname, '../tasks'),
+    gulp: gulp
+  })
 
   // Workaround for gulp not exiting after calling done
   // See https://github.com/gulpjs/gulp/issues/167
@@ -16,11 +21,5 @@ module.exports = (gulp) => {
     process.nextTick(() => {
       process.exit()
     })
-  })
-
-  const tasks = myGulp.tasks
-  Object.keys(tasks).forEach((name) => {
-    const task = tasks[name]
-    gulp.task(task.name, task.dep, task.fn)
   })
 }

@@ -5,7 +5,7 @@ const timeout = webpackConfig.dev.timeout
 
 module.exports = function (config) {
   config.set({
-    basePath: '',
+    basePath: process.cwd(),
     frameworks: ['mocha'],
     client: {
       mocha: {
@@ -32,8 +32,9 @@ module.exports = function (config) {
     colors: true,
     logLevel: process.env.DEBUG ? config.LOG_DEBUG : config.LOG_INFO,
     autoWatch: false,
-    browsers: process.env.TRAVIS ? ['Firefox', 'PhantomJS'] : ['Chrome', 'PhantomJS'],
+    browsers: process.env.TRAVIS ? ['Firefox'] : ['Chrome'],
     singleRun: false,
+    concurrency: 1,
     browserNoActivityTimeout: timeout
   })
 }

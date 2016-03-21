@@ -1,6 +1,6 @@
 'use strict'
 
 module.exports = {
-  presets: ['es2015'],
-  plugins: ['transform-runtime']
+  presets: [require.resolve('babel-preset-es2015')],
+  plugins: [require.resolve('babel-plugin-transform-runtime')]
 }

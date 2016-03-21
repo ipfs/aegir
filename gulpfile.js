@@ -1,3 +1,5 @@
 'use strict'
 
-require('./tasks/lint')
+const gulp = require('gulp')
+
+require('./gulp')(gulp)

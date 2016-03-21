@@ -44,7 +44,6 @@
     "karma-mocha-own-reporter": "^1.1.2",
     "karma-webpack": "^1.7.0",
     "mocha": "^2.4.5",
-    "phantomjs-prebuilt": "^2.1.6",
     "require-dir": "^0.3.0",
     "rimraf": "^2.5.2",
     "run-sequence": "^1.1.5",

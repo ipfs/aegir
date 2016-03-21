@@ -29,7 +29,6 @@ rules:
   no-mixed-requires: 2
   no-nested-ternary: 1
   no-script-url: 2
-  no-shadow: 2
   no-use-before-define: 2
   no-void: 2
   no-warning-comments: 2

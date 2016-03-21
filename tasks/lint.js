@@ -1,10 +1,9 @@
 'use strict'
 
-const gulp = require('gulp')
 const $ = require('gulp-load-plugins')()
 const path = require('path')
 
-gulp.task('lint', () => {
+module.exports = (gulp, done) => {
   return gulp.src([
     '*.js',
     'config/**/*.js',
@@ -15,4 +14,4 @@ gulp.task('lint', () => {
     .pipe($.eslint(path.resolve(__dirname, '../config/eslintrc.yml')))
     .pipe($.eslint.format())
     .pipe($.eslint.failAfterError())
-})
+}

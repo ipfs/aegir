@@ -6,6 +6,9 @@ const path = require('path')
 const babel = require('./babel')
 
 const shared = {
+  output: {
+    filename: 'index.js'
+  },
   resolve: {
     modulesDirectories: [
       'node_modules',

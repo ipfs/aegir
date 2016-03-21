@@ -1,6 +1,7 @@
 'use strict'
 
 const runSequence = require('run-sequence')
+const $ = require('gulp-load-plugins')()
 
 // Workaround gulp not exiting if there are some
 // resources not freed
@@ -27,4 +28,9 @@ exports.hooksRun = (gulp, name, tasks, done) => {
   tasks.push(done)
 
   runSequence.use(gulp).apply(null, tasks)
+}
+
+exports.fail = (msg) => {
+  $.util.log($.util.colors.red(msg))
+  process.exit(1)
 }

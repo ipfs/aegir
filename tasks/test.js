@@ -9,7 +9,7 @@ module.exports = {
     runSequence.use(gulp)(
       'test:node',
       'test:browser',
-      utils.exitOnFail
+      utils.exitOnFail(done)
     )
   }
 }

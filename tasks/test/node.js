@@ -9,7 +9,7 @@ module.exports = {
   fn (gulp, done) {
     gulp.task('mocha', () => {
       return gulp.src([
-        'test/setup.js',
+        'test/node.js',
         'test/**/*.spec.js'
       ])
         .pipe($.mocha({

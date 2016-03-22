@@ -6,17 +6,21 @@ const path = require('path')
 const babel = require('./babel')
 
 const shared = {
+  entry: [
+    require.resolve('babel-polyfill'),
+    path.resolve('src/index.js')
+  ],
   output: {
     filename: 'index.js'
   },
   resolve: {
-    modulesDirectories: [
+    modules: [
       'node_modules',
       path.resolve(__dirname, '../node_modules')
     ],
     alias: {
-      http: 'stream-http',
-      https: 'https-browserify'
+      http: path.resolve('stream-http'),
+      https: path.resolve('https-browserify')
     }
   },
   resolveLoader: {
@@ -48,6 +52,9 @@ const shared = {
     console: '{}',
     'require-dir': '{}'
   },
+  node: {
+    Buffer: true
+  },
   timeout: 80000
 }
 
@@ -60,8 +67,7 @@ const prod = Object.assign({}, shared, {
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
       mangle: false
-    }),
-    new webpack.optimize.OccurenceOrderPlugin()
+    })
   ]
 })
 

@@ -6,6 +6,7 @@ const path = require('path')
 module.exports = (gulp, done) => {
   return gulp.src([
     '*.js',
+    'bin/**',
     'config/**/*.js',
     'test/**/*.js',
     'src/**/*.js',

@@ -1,0 +1,10 @@
+#! /usr/bin/env node
+
+'use strict'
+
+const gulp = require('gulp')
+
+require('../src/gulp-log')(gulp)
+require('../gulp')(gulp)
+
+gulp.start('release')

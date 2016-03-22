@@ -37,6 +37,7 @@ module.exports = function (config) {
     browsers: process.env.TRAVIS ? ['Firefox', 'PhantomJS'] : ['Chrome', 'PhantomJS'],
     singleRun: false,
     concurrency: 1,
-    browserNoActivityTimeout: timeout
+    browserNoActivityTimeout: timeout,
+    failOnEmptyTestSuite: false
   })
 }

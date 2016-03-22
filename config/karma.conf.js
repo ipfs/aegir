@@ -20,7 +20,7 @@ module.exports = function (config) {
     ],
     exclude: [],
     preprocessors: {
-      'test/*': ['webpack']
+      'test/**/*': ['webpack']
     },
     webpack: webpackConfig.dev,
     webpackMiddleware: {

@@ -2,8 +2,19 @@
 
 const webpack = require('webpack')
 const path = require('path')
+const _ = require('lodash')
 
+const pkg = require(path.resolve('package.json'))
 const babel = require('./babel')
+
+// e.g. peer-id -> PeerId
+const libraryName = _.upperFirst(_.camelCase(pkg.name))
+
+let specific
+
+if (pkg.dignified && pkg.dignified.webpack) {
+  specific = pkg.dignified.webpack
+}
 
 const shared = {
   entry: [
@@ -11,7 +22,8 @@ const shared = {
     path.resolve('src/index.js')
   ],
   output: {
-    filename: 'index.js'
+    filename: 'index.js',
+    library: libraryName
   },
   resolve: {
     modules: [
@@ -32,7 +44,7 @@ const shared = {
   module: {
     loaders: [{
       test: /\.js$/,
-      exclude: /node_modules/,
+      exclude: /node_modules|vendor/,
       loader: 'babel',
       query: babel
     }, {
@@ -62,18 +74,18 @@ const shared = {
   timeout: 80000
 }
 
-const dev = Object.assign({}, shared, {
+const dev = _.defaultsDeep({}, shared, {
   devtool: 'eval',
   debug: true
-})
+}, specific)
 
-const prod = Object.assign({}, shared, {
+const prod = _.defaultsDeep({}, shared, {
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
       mangle: false
     })
   ]
-})
+}, specific)
 
 module.exports = {
   dev,

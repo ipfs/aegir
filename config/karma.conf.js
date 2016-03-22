@@ -4,6 +4,18 @@ const path = require('path')
 const webpackConfig = require('./webpack')
 const timeout = webpackConfig.dev.timeout
 
+const browsers = []
+
+if (process.env.TRAVIS) {
+  browsers.push('Firefox')
+} else {
+  browsers.push('Chrome')
+}
+
+if (!process.env.DEBUG) {
+  browsers.push('PhantomJS')
+}
+
 module.exports = function (config) {
   config.set({
     basePath: process.cwd(),
@@ -34,7 +46,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: process.env.DEBUG ? config.LOG_DEBUG : config.LOG_INFO,
     autoWatch: false,
-    browsers: process.env.TRAVIS ? ['Firefox', 'PhantomJS'] : ['Chrome', 'PhantomJS'],
+    browsers: browsers,
     singleRun: false,
     concurrency: 1,
     browserNoActivityTimeout: timeout,

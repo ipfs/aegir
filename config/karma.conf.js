@@ -32,7 +32,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: process.env.DEBUG ? config.LOG_DEBUG : config.LOG_INFO,
     autoWatch: false,
-    browsers: process.env.TRAVIS ? ['Firefox'] : ['Chrome'],
+    browsers: process.env.TRAVIS ? ['Firefox', 'PhantomJS'] : ['Chrome', 'PhantomJS'],
     singleRun: false,
     concurrency: 1,
     browserNoActivityTimeout: timeout

@@ -19,12 +19,12 @@ const shared = {
       path.resolve(__dirname, '../node_modules')
     ],
     alias: {
-      http: path.resolve('stream-http'),
-      https: path.resolve('https-browserify')
+      http: require.resolve('stream-http'),
+      https: require.resolve('https-browserify')
     }
   },
   resolveLoader: {
-    modulesDirectories: [
+    modules: [
       'node_modules',
       path.resolve(__dirname, '../node_modules')
     ]

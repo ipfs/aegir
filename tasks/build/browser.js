@@ -28,6 +28,8 @@ module.exports = {
       const c = Object.assign({}, config.dev)
       c.output.filename = 'index.js'
       c.output.path = path.resolve('dist')
+      c.devtool = undefined
+      c.debug = false
 
       webpack(c, webpackDone(cb))
     })

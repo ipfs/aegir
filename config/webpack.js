@@ -37,12 +37,16 @@ const shared = {
       query: babel
     }, {
       test: /\.js$/,
-      include: /node_modules\/(hoek|qs|wreck|boom)/,
+      include: /node_modules\/(hoek|qs|wreck|boom|ipfs)/,
       loader: 'babel',
       query: babel
     }, {
       test: /\.json$/,
       loader: 'json'
+    }],
+    postLoaders: [{
+      test: /\.js$/,
+      loader: 'transform?brfs'
     }]
   },
   externals: {

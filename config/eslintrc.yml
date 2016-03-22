@@ -31,6 +31,6 @@ rules:
   no-script-url: 2
   no-use-before-define: 2
   no-void: 2
-  no-warning-comments: 2
+  no-warning-comments: 1
   quote-props: [2, 'as-needed']
   require-yield: 2

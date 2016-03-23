@@ -10,7 +10,8 @@ module.exports = (gulp, done) => {
     'config/**/*.js',
     'test/**/*.js',
     'src/**/*.js',
-    'tasks/**/*.js'
+    'tasks/**/*.js',
+    'examples/**/*.js'
   ])
     .pipe($.eslint(path.resolve(__dirname, '../config/eslintrc.yml')))
     .pipe($.eslint.format())

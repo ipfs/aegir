@@ -4,8 +4,7 @@
 [![Dependency Status](https://david-dm.org/dignifiedquire/dignified.js.svg?style=flat-square)](https://david-dm.org/dignifiedquire/dignified.js)
 [![Travis CI](https://travis-ci.org/dignifiedquire/dignified.js.svg?branch=master)](https://travis-ci.org/dignifiedquire/dignified.js)
 
-> Because sometimes you want to get on with writing code and not
-> think about your toolchain again.
+> Automated JavaScript project management.
 
 
 ## Project Structure
@@ -27,9 +26,11 @@ Your `package.json` should have the following entries.
 "scripts": {
   "lint": "dignified-lint",
   "release": "dignified-release",
+  "build": "dignifed-build",
   "test": "dignified-test",
   "test:node": "dignified-test node",
-  "test:browser": "dignified-test browser"
+  "test:browser": "dignified-test browser",
+  "coverage": "dignified-coverage"
 }
 ```
 
@@ -42,7 +43,7 @@ enforce some more strictness.
 
 You can run it using
 
-```sh
+```bash
 $ dignified-lint
 # or as gulp task
 $ gulp lint
@@ -52,8 +53,7 @@ $ gulp lint
 
 You can run it using
 
-```sh
-
+```bash
 $ dignified-test
 # or as gulp task
 $ gulp test
@@ -61,11 +61,21 @@ $ gulp test
 
 There are also browser and node specific tasks
 
-```sh
+```bash
 $ dignified-test node
 $ gulp test:node
 $ dignified-test browser
 $ gulp test:browser
+```
+
+### Coverage
+
+You can run it using
+
+```bash
+$ dignified-coverage
+# or as gulp task
+$ gulp coverage
 ```
 
 ### Building
@@ -81,7 +91,7 @@ There is also an ES5 build that will be placed in `lib` that will be required by
 
 You can run it using
 
-```sh
+```bash
 $ dignified-build
 # or as gulp task
 $ gulp build

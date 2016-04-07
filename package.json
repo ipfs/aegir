@@ -7,7 +7,8 @@
     "dignified-lint": "bin/lint",
     "dignified-build": "bin/build",
     "dignified-test": "bin/test",
-    "dignified-release": "bin/release"
+    "dignified-release": "bin/release",
+    "dignified-coverage": "bin/coverage"
   },
   "scripts": {
     "lint": "bin/lint"
@@ -40,6 +41,7 @@
     "gulp-eslint": "^2.0.0",
     "gulp-filter": "^4.0.0",
     "gulp-git": "^1.7.1",
+    "gulp-istanbul": "^0.10.4",
     "gulp-load-plugins": "^1.2.0",
     "gulp-load-tasks": "^0.8.4",
     "gulp-mocha": "^2.2.0",

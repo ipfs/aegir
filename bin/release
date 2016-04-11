@@ -12,6 +12,8 @@ if (args.browser) {
   gulp.start('release:browser')
 } else if (args.node) {
   gulp.start('release:node')
+} else if (args['no-build']) {
+  gulp.start('release-no-build')
 } else {
   gulp.start('release')
 }

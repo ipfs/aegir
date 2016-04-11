@@ -3,8 +3,15 @@
 'use strict'
 
 const gulp = require('gulp')
+const args = require('args-parser')(process.argv)
 
 require('../src/gulp-log')(gulp)
 require('../gulp')(gulp)
 
-gulp.start('build')
+if (args.browser) {
+  gulp.start('build:browser')
+} else if (args.node) {
+  gulp.start('build:node')
+} else {
+  gulp.start('build')
+}

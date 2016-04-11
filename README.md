@@ -34,6 +34,8 @@ Your `package.json` should have the following entries.
 }
 ```
 
+You should also add `babel-runtime` to your `dependencies` as it is required by the babelified version in `lib`.
+
 ## Tasks
 
 ### Linting

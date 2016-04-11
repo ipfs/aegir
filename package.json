@@ -11,7 +11,8 @@
     "dignified-coverage": "bin/coverage"
   },
   "scripts": {
-    "lint": "bin/lint"
+    "lint": "bin/lint",
+    "release": "bin/release no-build"
   },
   "keywords": [
     "webpack",

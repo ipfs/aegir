@@ -27,6 +27,6 @@ module.exports = (gulp, done) => {
     .pipe(gulp.dest('./'))
     .pipe($.git.add())
     .pipe($.git.commit(`chore: release version v${newVersion}`, {args: '-n'}))
-    // .pipe($.filter('package.json'))
-    // .pipe($.tagVersion())
+    .pipe($.filter('package.json'))
+    .pipe($.tagVersion())
 }

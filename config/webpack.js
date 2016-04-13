@@ -12,7 +12,7 @@ const libraryName = _.upperFirst(_.camelCase(pkg.name))
 
 let specific
 
-if (pkg.aegir && pkg.dignified.webpack) {
+if (pkg.aegir && pkg.aegir.webpack) {
   specific = pkg.aegir.webpack
 }
 

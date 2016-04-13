@@ -12,8 +12,8 @@ const libraryName = _.upperFirst(_.camelCase(pkg.name))
 
 let specific
 
-if (pkg.dignified && pkg.dignified.webpack) {
-  specific = pkg.dignified.webpack
+if (pkg.aegir && pkg.dignified.webpack) {
+  specific = pkg.aegir.webpack
 }
 
 const shared = {

@@ -1,14 +1,14 @@
 {
-  "name": "dignified.js",
+  "name": "aegir",
   "version": "1.0.1",
-  "description": "Dignified JavaScript building and testing",
+  "description": "JavaScript project management",
   "main": "index.js",
   "bin": {
-    "dignified-lint": "bin/lint",
-    "dignified-build": "bin/build",
-    "dignified-test": "bin/test",
-    "dignified-release": "bin/release",
-    "dignified-coverage": "bin/coverage"
+    "aegir-lint": "bin/lint",
+    "aegir-build": "bin/build",
+    "aegir-test": "bin/test",
+    "aegir-release": "bin/release",
+    "aegir-coverage": "bin/coverage"
   },
   "scripts": {
     "lint": "bin/lint",
@@ -73,7 +73,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dignifiedquire/dignified.js"
+    "url": "https://github.com/dignifiedquire/aegir"
   },
   "engines": {
     "node": ">=4.2.2"

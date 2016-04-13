@@ -1,8 +1,8 @@
-# dignified.js
+# AEgir
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
-[![Dependency Status](https://david-dm.org/dignifiedquire/dignified.js.svg?style=flat-square)](https://david-dm.org/dignifiedquire/dignified.js)
-[![Travis CI](https://travis-ci.org/dignifiedquire/dignified.js.svg?branch=master)](https://travis-ci.org/dignifiedquire/dignified.js)
+[![Dependency Status](https://david-dm.org/dignifiedquire/aegir.svg?style=flat-square)](https://david-dm.org/dignifiedquire/aegir)
+[![Travis CI](https://travis-ci.org/dignifiedquire/aegir.svg?branch=master)](https://travis-ci.org/dignifiedquire/aegir)
 
 > Automated JavaScript project management.
 
@@ -24,13 +24,13 @@ Your `package.json` should have the following entries.
 "main": "lib/index.js",
 "jsnext:main": "src/index.js",
 "scripts": {
-  "lint": "dignified-lint",
-  "release": "dignified-release",
+  "lint": "aegir-lint",
+  "release": "aegir-release",
   "build": "dignifed-build",
-  "test": "dignified-test",
-  "test:node": "dignified-test node",
-  "test:browser": "dignified-test browser",
-  "coverage": "dignified-coverage"
+  "test": "aegir-test",
+  "test:node": "aegir-test node",
+  "test:browser": "aegir-test browser",
+  "coverage": "aegir-coverage"
 }
 ```
 
@@ -46,7 +46,7 @@ enforce some more strictness.
 You can run it using
 
 ```bash
-$ dignified-lint
+$ aegir-lint
 # or as gulp task
 $ gulp lint
 ```
@@ -56,7 +56,7 @@ $ gulp lint
 You can run it using
 
 ```bash
-$ dignified-test
+$ aegir-test
 # or as gulp task
 $ gulp test
 ```
@@ -64,9 +64,9 @@ $ gulp test
 There are also browser and node specific tasks
 
 ```bash
-$ dignified-test node
+$ aegir-test node
 $ gulp test:node
-$ dignified-test browser
+$ aegir-test browser
 $ gulp test:browser
 ```
 
@@ -75,7 +75,7 @@ $ gulp test:browser
 You can run it using
 
 ```bash
-$ dignified-coverage
+$ aegir-coverage
 # or as gulp task
 $ gulp coverage
 ```
@@ -94,7 +94,7 @@ There is also an ES5 build that will be placed in `lib` that will be required by
 You can run it using
 
 ```bash
-$ dignified-build
+$ aegir-build
 # or as gulp task
 $ gulp build
 ```
@@ -112,13 +112,13 @@ $ gulp build
 ```bash
 # Major release
 $ gulp release major
-$ dignified-release major
+$ aegir-release major
 # Minor relase
 $ gulp release minor
-$ dignified-release minor
+$ aegir-release minor
 # Patch release
 $ gulp release
-$ dignified-release
+$ aegir-release
 ```
 
 ## Other Notes
@@ -126,7 +126,7 @@ $ dignified-release
 There is a badge.
 
 ```markdown
-[![dignified.js](https://img.shields.io/badge/follows-dignified.js-blue.svg?style=flat-square)](https://github.com/dignifiedquire/dignified.js)
+[![aegir](https://img.shields.io/badge/follows-aegir-blue.svg?style=flat-square)](https://github.com/dignifiedquire/aegir)
 ```
 
 ## License

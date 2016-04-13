@@ -26,7 +26,7 @@ Your `package.json` should have the following entries.
 "scripts": {
   "lint": "aegir-lint",
   "release": "aegir-release",
-  "build": "dignifed-build",
+  "build": "aegir-build",
   "test": "aegir-test",
   "test:node": "aegir-test node",
   "test:browser": "aegir-test browser",

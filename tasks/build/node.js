@@ -15,7 +15,7 @@ module.exports = {
     })
 
     gulp.task('build::node', () => {
-      return gulp.src('src/**/*.js')
+      return gulp.src('lib/**/*.js')
         .pipe($.babel(config))
         .pipe($.size())
         .pipe(gulp.dest('lib'))

@@ -30,7 +30,8 @@ Your `package.json` should have the following entries.
   "test": "aegir-test",
   "test:node": "aegir-test node",
   "test:browser": "aegir-test browser",
-  "coverage": "aegir-coverage"
+  "coverage": "aegir-coverage",
+  "coverage-publish": "aegir-coverage publish"
 }
 ```
 
@@ -80,6 +81,17 @@ $ aegir-coverage
 $ gulp coverage
 ```
 
+To auto publish coverage reports from Travis to Coveralls add this to
+your `.travis.yml` file. For more details see [node-coveralls](https://github.com/nickmerwin/node-coveralls).
+
+```yml
+script:
+  - npm run coverage
+
+after_success:
+  - npm run coverage-publish
+```
+
 ### Building
 
 This will build a browser ready version into `dist`, so after publishing the results will be available under
@@ -120,6 +132,7 @@ $ aegir-release minor
 $ gulp release
 $ aegir-release
 ```
+
 
 ## Other Notes
 

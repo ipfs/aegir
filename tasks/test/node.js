@@ -11,8 +11,9 @@ module.exports = {
       return gulp.src([
         'test/node.js',
         'test/**/*.spec.js'
-      ])
-        .pipe($.mocha({
+      ], {read: false})
+        .pipe($.spawnMocha({
+          R: 'spec',
           timeout: config.dev.timeout
         }))
     })

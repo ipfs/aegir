@@ -3,8 +3,24 @@
 'use strict'
 
 const gulp = require('gulp')
+const coveralls = require('coveralls')
+const fs = require('fs')
+const path = require('path')
+const args = require('args-parser')(process.argv)
 
 require('../src/gulp-log')(gulp)
 require('../gulp')(gulp)
 
-gulp.start('coverage')
+if (args.publish) {
+  // ./node_modules/.bin/coveralls --verbose < coverage/lcov.info
+  const input = fs.readFileSync(path.join(process.cwd(), 'coverage', 'lcov.info'))
+  coveralls.handleInput(input.toString(), (err) => {
+    if (err) {
+      throw err
+    }
+
+    console.log('Finished uploading coveralls report')
+  })
+} else {
+  gulp.start('coverage')
+}

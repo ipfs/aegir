@@ -77,5 +77,10 @@
   },
   "engines": {
     "node": ">=4.2.2"
-  }
+  },
+  "contributors": [
+    "David Dias <daviddias.p@gmail.com>",
+    "JGAntunes <j.goncalo.antunes@gmail.com>",
+    "dignifiedquire <dignifiedquire@gmail.com>"
+  ]
 }

@@ -101,7 +101,10 @@ const shared = {
   node: {
     Buffer: true
   },
-  timeout: 80000
+  timeout: 80000,
+  plugins: [
+    new webpack.DefinePlugin({'fs.writeSync': false})
+  ]
 }
 
 const dev = _.defaultsDeep({}, shared, {

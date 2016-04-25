@@ -8,6 +8,7 @@ const _ = require('lodash')
 function getType () {
   if (_.includes($.util.env._, 'major')) return 'major'
   if (_.includes($.util.env._, 'minor')) return 'minor'
+  if ($.util.env.type) return $.util.env.type
 
   return 'patch'
 }

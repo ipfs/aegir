@@ -3,17 +3,8 @@
 'use strict'
 
 const gulp = require('gulp')
-const args = require('args-parser')(process.argv)
 
 require('../src/gulp-log')(gulp)
 require('../gulp')(gulp)
 
-if (args.browser) {
-  gulp.start('release:browser')
-} else if (args.node) {
-  gulp.start('release:node')
-} else if (args['no-build']) {
-  gulp.start('release-no-build')
-} else {
-  gulp.start('release')
-}
+gulp.start('release')

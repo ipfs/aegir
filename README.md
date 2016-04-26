@@ -123,16 +123,23 @@ $ gulp build
 
 ```bash
 # Major release
-$ gulp release major
-$ aegir-release major
+$ gulp release --type major
+$ aegir-release --type major
 # Minor relase
-$ gulp release minor
-$ aegir-release minor
+$ gulp release --type minor
+$ aegir-release --type minor
 # Patch release
 $ gulp release
 $ aegir-release
 ```
 
+You can also specify a `--env` for a release, which can be either
+`'node'`, `'browser'` or `'no-build'`.
+
+```bash
+$ aegir-release --env node
+$ gulp release --env node
+```
 
 ## Other Notes
 

@@ -108,7 +108,7 @@ const shared = {
 }
 
 const dev = _.defaultsDeep({}, shared, {
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   debug: true
 }, specific)
 

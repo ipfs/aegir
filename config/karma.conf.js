@@ -1,6 +1,5 @@
 'use strict'
 
-const path = require('path')
 const webpackConfig = require('./webpack')
 const timeout = webpackConfig.dev.timeout
 
@@ -26,13 +25,12 @@ module.exports = function (config) {
       }
     },
     files: [
-      path.join(require.resolve('babel-polyfill'), '/../../dist/polyfill.js'),
       'test/browser.js',
       'test/**/*.spec.js'
     ],
     exclude: [],
     preprocessors: {
-      'test/**/*': ['webpack']
+      'test/**/*': ['webpack', 'sourcemap']
     },
     webpack: webpackConfig.dev,
     webpackMiddleware: {

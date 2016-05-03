@@ -32,7 +32,7 @@ module.exports = function (config) {
     ],
     exclude: [],
     preprocessors: {
-      'test/**/*': ['webpack']
+      'test/**/*': ['webpack', 'sourcemap']
     },
     webpack: webpackConfig.dev,
     webpackMiddleware: {

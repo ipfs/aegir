@@ -7,7 +7,7 @@ const _ = require('lodash')
 const pkg = require(path.resolve('package.json'))
 let customConfig = {}
 try {
-  require(path.resolve('.aegir.js'))
+  customConfig = require(path.resolve('.aegir.js'))
 } catch (err) {
 }
 const babel = require('./babel')

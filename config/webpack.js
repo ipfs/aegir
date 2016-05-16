@@ -5,16 +5,28 @@ const path = require('path')
 const _ = require('lodash')
 
 const pkg = require(path.resolve('package.json'))
+let customConfig = {}
+try {
+  require(path.resolve('.aegir.js'))
+} catch (err) {
+}
 const babel = require('./babel')
 
 // e.g. peer-id -> PeerId
 const libraryName = _.upperFirst(_.camelCase(pkg.name))
 
-let specific
+let custom1 = {}
+let custom2 = {}
 
 if (pkg.aegir && pkg.aegir.webpack) {
-  specific = pkg.aegir.webpack
+  custom1 = pkg.aegir.webpack
 }
+
+if (customConfig && customConfig.webpack) {
+  custom2 = customConfig.webpack
+}
+
+const specific = _.defaultsDeep({}, custom1, custom2)
 
 const shared = {
   entry: [

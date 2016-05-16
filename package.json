@@ -69,7 +69,7 @@
     "semver": "^5.1.0",
     "stream-http": "^2.3.0",
     "transform-loader": "^0.2.3",
-    "webpack": "^2.1.0-beta.4"
+    "webpack": "^2.1.0-beta.7"
   },
   "repository": {
     "type": "git",

@@ -14,7 +14,7 @@ module.exports = {
       ], {read: false})
         .pipe($.spawnMocha({
           istanbul: true,
-          timeout: config.dev.timeout
+          timeout: config.timeout
         }))
     })
 

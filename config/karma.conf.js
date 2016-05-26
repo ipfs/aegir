@@ -2,7 +2,7 @@
 
 const path = require('path')
 const webpackConfig = require('./webpack')
-const timeout = webpackConfig.dev.timeout
+const timeout = webpackConfig.timeout
 
 const browsers = []
 
@@ -34,7 +34,7 @@ module.exports = function (config) {
     preprocessors: {
       'test/**/*': ['webpack', 'sourcemap']
     },
-    webpack: webpackConfig.dev,
+    webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true
     },

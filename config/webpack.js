@@ -3,6 +3,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const _ = require('lodash')
+const merge = require('webpack-merge')
 
 const pkg = require(path.resolve('package.json'))
 let customConfig = {}
@@ -26,7 +27,7 @@ if (customConfig && customConfig.webpack) {
   custom2 = customConfig.webpack
 }
 
-const specific = _.defaultsDeep({}, custom1, custom2)
+const specific = merge(custom1, custom2)
 
 const shared = {
   entry: [
@@ -35,7 +36,8 @@ const shared = {
   ],
   output: {
     filename: 'index.js',
-    library: libraryName
+    library: libraryName,
+    libraryTarget: 'umd'
   },
   resolve: {
     modules: [
@@ -119,20 +121,9 @@ const shared = {
   ]
 }
 
-const dev = _.defaultsDeep({}, shared, {
+const dev = merge(shared, {
   devtool: 'inline-source-map',
   debug: true
 }, specific)
 
-const prod = _.defaultsDeep({}, shared, {
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: false
-    })
-  ]
-}, specific)
-
-module.exports = {
-  dev,
-  prod
-}
+module.exports = dev

@@ -14,7 +14,7 @@ module.exports = {
       ], {read: false})
         .pipe($.spawnMocha({
           R: 'spec',
-          timeout: config.dev.timeout
+          timeout: config.timeout
         }))
     })
 

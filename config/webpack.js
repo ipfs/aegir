@@ -36,8 +36,7 @@ const shared = {
   ],
   output: {
     filename: 'index.js',
-    library: libraryName,
-    libraryTarget: 'umd'
+    library: libraryName
   },
   resolve: {
     modules: [

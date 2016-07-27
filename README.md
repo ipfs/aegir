@@ -37,12 +37,22 @@ Your `package.json` should have the following entries.
 
 You should also add `babel-runtime` to your `dependencies` as it is required by the babelified version in `lib`.
 
+## Stack Requirements
+
+To bring you its many benefits, `aegir` requires
+
+- [ES6 / Babel](https://github.com/babel/babel) transpilation
+- JS written in [Standard](https://github.com/feross/standard) style
+- Tests written in [Mocha](https://github.com/mochajs/mocha)
+- [Karma](https://github.com/karma-runner/karma) for browser tests
+
+
 ## Tasks
 
 ### Linting
 
-Linting uses [eslint](http://eslint.org/) and [standard](https://github.com/feross/standard) with some custom rules to
-enforce some more strictness.
+Linting uses [eslint](http://eslint.org/) and [standard](https://github.com/feross/standard)
+with [some custom rules](config/eslintrc.yml) to enforce some more strictness.
 
 You can run it using
 

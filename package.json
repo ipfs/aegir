@@ -63,7 +63,7 @@
     "karma-webpack": "^1.7.0",
     "lodash": "^4.13.1",
     "mocha": "^2.5.3",
-    "phantomjs-prebuilt": "^2.1.7",
+    "phantomjs-prebuilt": "^2.1.9",
     "pretty-hrtime": "^1.0.2",
     "require-dir": "^0.3.0",
     "rimraf": "^2.5.3",

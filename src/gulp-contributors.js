@@ -20,20 +20,21 @@ module.exports = function (opts) {
         return cb(new Error('git log empty'))
       }
 
-      const gitContribs = _(stdout.replace(/"/mig, '').split('\n'))
-              .compact()
-              .map((line) => {
-                const pair = line.toString().split('|')
+      const gitContribs = _(stdout.replace(/"/mig, '')
+        .split('\n'))
+        .compact()
+        .map((line) => {
+          const pair = line.toString().split('|')
 
-                return {
-                  name: pair[0],
-                  email: pair[1]
-                }
-              })
-              .uniqBy('email')
-              .sortBy('name')
-              .map((val) => `${val.name} <${val.email}>`)
-              .value()
+          return {
+            name: pair[0],
+            email: pair[1]
+          }
+        })
+        .uniqBy('email')
+        .sortBy('name')
+        .map((val) => `${val.name} <${val.email}>`)
+        .value()
 
       json.contributors = gitContribs
       file.contents = new Buffer(JSON.stringify(json, null, 2))

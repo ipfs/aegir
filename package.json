@@ -84,9 +84,9 @@
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
-    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
     "JGAntunes <j.goncalo.antunes@gmail.com>",
     "Stephen Whitmore <stephen.whitmore@gmail.com>",
+    "dignifiedquire <dignifiedquire@gmail.com>",
     "greenkeeperio-bot <support@greenkeeper.io>"
   ]
 }

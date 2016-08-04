@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "JavaScript project management",
   "main": "index.js",
   "bin": {
@@ -39,6 +39,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-bump": "^2.2.0",
+    "gulp-conventional-changelog": "^1.1.0",
     "gulp-eslint": "^3.0.1",
     "gulp-filter": "^4.0.0",
     "gulp-git": "^1.10.0",

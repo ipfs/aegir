@@ -9,6 +9,7 @@ module.exports = (gulp, done) => {
     'release:changelog',
     'release:commit',
     'release:push',
+    'release:github',
     'release:publish',
     done
   )

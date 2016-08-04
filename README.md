@@ -131,6 +131,8 @@ $ gulp build
 6. Commit the version change & `CHANGELOG.md`
 7. Create a git tag
 8. Run `git push` to `upstream/master`
+9. Publish a release to Github releases (if `GH_TOKEN` is available)
+10. Publish to npm
 
 ```bash
 # Major release

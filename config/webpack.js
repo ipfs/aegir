@@ -116,7 +116,8 @@ const shared = {
   },
   timeout: 80000,
   plugins: [
-    new webpack.DefinePlugin({'fs.writeSync': false})
+    new webpack.DefinePlugin({'fs.writeSync': false}),
+    new webpack.optimize.DedupePlugin()
   ]
 }
 

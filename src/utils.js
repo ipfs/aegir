@@ -2,6 +2,7 @@
 
 const runSequence = require('run-sequence')
 const $ = require('gulp-load-plugins')()
+const fs = require('fs')
 
 // Workaround gulp not exiting if there are some
 // resources not freed
@@ -33,4 +34,8 @@ exports.hooksRun = (gulp, name, tasks, done) => {
 exports.fail = (msg) => {
   $.util.log($.util.colors.red(msg))
   process.exit(1)
+}
+
+exports.getVersion = () => {
+  return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version
 }

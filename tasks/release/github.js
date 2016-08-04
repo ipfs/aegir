@@ -4,6 +4,11 @@ const $ = require('gulp-load-plugins')()
 const conventionalGithubReleaser = require('conventional-github-releaser')
 
 module.exports = (gulp, done) => {
+  if ($.util.env.changelog === false) {
+    $.util.log('Skipping github release')
+    return done()
+  }
+
   const token = process.env.GH_TOKEN || $.util.env.token
 
   if (!token) {

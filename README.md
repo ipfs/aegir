@@ -160,6 +160,9 @@ You can generate a changelog for all versions by using `--first`
 $ aegir-relase --first
 ```
 
+You can skip all changelog generation and the github release by passing
+in `--no-changelog`.
+
 ## Other Notes
 
 There is a badge.

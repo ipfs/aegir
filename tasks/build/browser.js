@@ -28,6 +28,9 @@ module.exports = {
     c.output.path = path.resolve('dist')
     c.devtool = 'source-map'
     c.debug = false
+    c.plugins.push(
+      new webpack.optimize.DedupePlugin()
+    )
 
     webpack(c, webpackDone(() => {
       gulp.src('dist/index.js')

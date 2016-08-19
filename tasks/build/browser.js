@@ -3,12 +3,17 @@
 const $ = require('gulp-load-plugins')()
 const webpack = require('webpack')
 const path = require('path')
+const fs = require('fs')
 
 const config = require('../../config/webpack')
 
 const webpackDone = (done) => (err, stats) => {
   if (err) {
     throw new $.util.PluginError('webpack', err)
+  }
+
+  if ($.util.env.stats) {
+    fs.writeFileSync('stats.json', JSON.stringify(stats.toJson(), null, 2))
   }
 
   $.util.log('[webpack]', stats.toString({

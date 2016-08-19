@@ -31,7 +31,6 @@ const specific = merge(custom1, custom2)
 
 const shared = {
   entry: [
-    require.resolve('babel-polyfill'),
     path.resolve('src/index.js')
   ],
   output: {
@@ -99,7 +98,7 @@ const shared = {
       test: /\.json$/,
       loader: 'json'
     }],
-    postLoaders: [{
+    preLoaders: [{
       test: /\.js$/,
       loader: 'transform?brfs'
     }]

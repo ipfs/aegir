@@ -1,3 +1,23 @@
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/dignifiedquire/aegir/compare/v6.0.1...v7.0.0) (2016-08-19)
+
+
+### Features
+
+* do not depend on babel-polyfill ([db11d56](https://github.com/dignifiedquire/aegir/commit/db11d56)), closes [#36](https://github.com/dignifiedquire/aegir/issues/36)
+* **build:** add stats flag ([8046edb](https://github.com/dignifiedquire/aegir/commit/8046edb))
+* **release:** add --no-changelog option ([ced51fe](https://github.com/dignifiedquire/aegir/commit/ced51fe))
+* **release:** add changelog generation ([44896e4](https://github.com/dignifiedquire/aegir/commit/44896e4))
+* **release:** add github release ([564e1d5](https://github.com/dignifiedquire/aegir/commit/564e1d5))
+
+
+### BREAKING CHANGES
+
+* This can break browser builds and tests and needs to be tested
+carefully when upgrading.
+
+
+
 <a name="2.0.0"></a>
 ## 2.0.0 (2016-04-13)
 

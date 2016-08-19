@@ -127,9 +127,12 @@ $ gulp build
 2. Run tests
 3. Build everything
 4. Bump the version in `package.json`
-5. Commit the version change
-6. Create a git tag
-7. Run `git push` to `upstream/master`
+5. Generate a changelog based on the git log
+6. Commit the version change & `CHANGELOG.md`
+7. Create a git tag
+8. Run `git push` to `upstream/master`
+9. Publish a release to Github releases (if `GH_TOKEN` is available)
+10. Publish to npm
 
 ```bash
 # Major release
@@ -150,6 +153,15 @@ You can also specify a `--env` for a release, which can be either
 $ aegir-release --env node
 $ gulp release --env node
 ```
+
+You can generate a changelog for all versions by using `--first`
+
+```bash
+$ aegir-relase --first
+```
+
+You can skip all changelog generation and the github release by passing
+in `--no-changelog`.
 
 ## Other Notes
 

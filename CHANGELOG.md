@@ -1,3 +1,13 @@
+<a name="7.0.1"></a>
+## [7.0.1](https://github.com/dignifiedquire/aegir/compare/v7.0.0...v7.0.1) (2016-08-23)
+
+
+### Bug Fixes
+
+* improve babe-transform handling ([38fe6c2](https://github.com/dignifiedquire/aegir/commit/38fe6c2))
+
+
+
 <a name="7.0.0"></a>
 # [7.0.0](https://github.com/dignifiedquire/aegir/compare/v6.0.1...v7.0.0) (2016-08-19)
 

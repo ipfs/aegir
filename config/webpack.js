@@ -61,7 +61,7 @@ const shared = {
       query: babel
     }, {
       test: /\.js$/,
-      include: /node_modules\/(hoek|qs|wreck|boom|ipfs|promisify-es)/,
+      include: /node_modules\/(hoek|qs|wreck|boom|ipfs|promisify-es|whatwg-fetch|node-fetch|isomorphic-fetch|db\.js)/,
       loader: 'babel',
       query: babel
     }, {

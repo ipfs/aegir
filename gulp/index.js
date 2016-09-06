@@ -2,6 +2,7 @@
 
 const gulpRequire = require('gulp-require-tasks')
 const path = require('path')
+const onExit = require('signal-exit')
 
 module.exports = (gulp) => {
   gulp = gulp || require('gulp')
@@ -21,5 +22,10 @@ module.exports = (gulp) => {
     process.nextTick(() => {
       process.exit()
     })
+  })
+
+  onExit(function (code) {
+    gulp.stop()
+    process.exit(code)
   })
 }

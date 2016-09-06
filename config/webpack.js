@@ -31,6 +31,7 @@ const specific = merge(custom1, custom2)
 
 const shared = {
   entry: [
+    require.resolve('babel-polyfill'),
     path.resolve('src/index.js')
   ],
   output: {

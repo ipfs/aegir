@@ -107,8 +107,8 @@ after_success:
 This will build a browser ready version into `dist`, so after publishing the results will be available under
 
 ```
-https://npmcdn.com/<module-name>/dist/index.js
-https://npmcdn.com/<module-name>/dist/index.min.js
+https://unpkg.com/<module-name>/dist/index.js
+https://unpkg.com/<module-name>/dist/index.min.js
 ```
 
 There is also an ES5 build that will be placed in `lib` that will be required by default from consumers using `require`.

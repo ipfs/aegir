@@ -1,3 +1,13 @@
+<a name="8.0.0"></a>
+# [8.0.0](https://github.com/dignifiedquire/aegir/compare/v7.0.1...v8.0.0) (2016-09-06)
+
+
+### Bug Fixes
+
+* stop gulp tasks before exiting ([bd5773b](https://github.com/dignifiedquire/aegir/commit/bd5773b)), closes [#52](https://github.com/dignifiedquire/aegir/issues/52)
+
+
+
 <a name="7.0.1"></a>
 ## [7.0.1](https://github.com/dignifiedquire/aegir/compare/v7.0.0...v7.0.1) (2016-08-23)
 

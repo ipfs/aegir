@@ -1,3 +1,13 @@
+<a name="8.0.1"></a>
+## [8.0.1](https://github.com/dignifiedquire/aegir/compare/v8.0.0...v8.0.1) (2016-09-08)
+
+
+### Features
+
+* Add a way to disable PhantomJS testing ([#54](https://github.com/dignifiedquire/aegir/issues/54)) ([25dfaf7](https://github.com/dignifiedquire/aegir/commit/25dfaf7))
+
+
+
 <a name="8.0.0"></a>
 # [8.0.0](https://github.com/dignifiedquire/aegir/compare/v7.0.1...v8.0.0) (2016-09-06)
 

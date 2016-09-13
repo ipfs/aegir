@@ -109,7 +109,8 @@ const shared = {
     fs: '{}',
     tls: '{}',
     console: '{}',
-    'require-dir': '{}'
+    'require-dir': '{}',
+    ursa: '{}'
   },
   node: {
     Buffer: true

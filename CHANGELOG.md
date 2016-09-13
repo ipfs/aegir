@@ -1,3 +1,14 @@
+<a name="8.1.0"></a>
+# [8.1.0](https://github.com/dignifiedquire/aegir/compare/v8.0.1...v8.1.0) (2016-09-13)
+
+
+### Features
+
+* **lint:** enforce curlies ([c76868c](https://github.com/dignifiedquire/aegir/commit/c76868c)), closes [#56](https://github.com/dignifiedquire/aegir/issues/56)
+* **webpack:** shim ursa ([d4c10e6](https://github.com/dignifiedquire/aegir/commit/d4c10e6))
+
+
+
 <a name="8.0.1"></a>
 ## [8.0.1](https://github.com/dignifiedquire/aegir/compare/v8.0.0...v8.0.1) (2016-09-08)
 

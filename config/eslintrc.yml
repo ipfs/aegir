@@ -4,6 +4,7 @@ parserOptions:
   sourceType: 'script'
 rules:
   strict: [2, 'safe']
+  curly: 'error'
   block-scoped-var: 2
   complexity: 1
   default-case: 2

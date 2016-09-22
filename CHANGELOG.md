@@ -1,3 +1,13 @@
+<a name="8.1.1"></a>
+## [8.1.1](https://github.com/dignifiedquire/aegir/compare/v8.1.0...v8.1.1) (2016-09-22)
+
+
+### Bug Fixes
+
+* **webpack:** upgrade to beta.25 ([01ae928](https://github.com/dignifiedquire/aegir/commit/01ae928))
+
+
+
 <a name="8.1.0"></a>
 # [8.1.0](https://github.com/dignifiedquire/aegir/compare/v8.0.1...v8.1.0) (2016-09-13)
 

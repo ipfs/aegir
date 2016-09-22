@@ -2,7 +2,7 @@
 
 const path = require('path')
 const webpackConfig = require('./webpack')
-const timeout = webpackConfig.timeout
+const timeout = require('./custom').timeout
 
 const browsers = []
 

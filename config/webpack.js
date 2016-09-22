@@ -98,10 +98,10 @@ const shared = {
     }, {
       test: /\.json$/,
       loader: 'json'
-    }],
-    preLoaders: [{
+    }, {
       test: /\.js$/,
-      loader: 'transform?brfs'
+      loader: 'transform?brfs',
+      enforce: 'pre'
     }]
   },
   externals: {
@@ -115,15 +115,13 @@ const shared = {
   node: {
     Buffer: true
   },
-  timeout: 80000,
   plugins: [
     new webpack.DefinePlugin({'fs.writeSync': false})
   ]
 }
 
 const dev = merge(shared, {
-  devtool: 'inline-source-map',
-  debug: true
+  devtool: 'inline-source-map'
 }, specific)
 
 module.exports = dev

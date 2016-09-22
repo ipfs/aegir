@@ -32,7 +32,6 @@ module.exports = {
     c.output.filename = 'index.js'
     c.output.path = path.resolve('dist')
     c.devtool = 'source-map'
-    c.debug = false
     c.plugins.push(
       new webpack.optimize.DedupePlugin()
     )

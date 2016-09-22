@@ -3,7 +3,7 @@
 const $ = require('gulp-load-plugins')()
 
 const utils = require('../../src/utils')
-const config = require('../../config/webpack')
+const timeout = require('../../config/custom').timeout
 
 module.exports = {
   fn (gulp, done) {
@@ -14,7 +14,7 @@ module.exports = {
       ], {read: false})
         .pipe($.spawnMocha({
           R: 'spec',
-          timeout: config.timeout
+          timeout: timeout
         }))
     })
 

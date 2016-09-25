@@ -44,6 +44,7 @@
     "gulp-eslint": "^3.0.1",
     "gulp-filter": "^4.0.0",
     "gulp-git": "^1.11.3",
+    "gulp-mocha": "^3.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-size": "^2.1.0",
     "gulp-spawn-mocha": "^3.1.0",

@@ -2,7 +2,7 @@
 
 module.exports = (gulp) => {
   gulp.task('mocha', () => {
-    const spawnMocha = require('gulp-spawn-mocha')
+    const mocha = require('gulp-mocha')
 
     const timeout = require('../../config/custom').timeout
 
@@ -10,7 +10,7 @@ module.exports = (gulp) => {
       'test/node.js',
       'test/**/*.spec.js'
     ], {read: false})
-      .pipe(spawnMocha({
+      .pipe(mocha({
         R: 'spec',
         timeout: timeout
       }))

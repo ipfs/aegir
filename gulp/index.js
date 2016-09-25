@@ -2,16 +2,23 @@
 
 const onExit = require('signal-exit')
 
-module.exports = (gulp) => {
+module.exports = (gulp, tasks) => {
   gulp = gulp || require('gulp')
 
-  require('../tasks/build')(gulp)
-  require('../tasks/clean')(gulp)
-  require('../tasks/test')(gulp)
-  require('../tasks/release')(gulp)
-  require('../tasks/coverage')(gulp)
-  require('../tasks/lint')(gulp)
-  require('../tasks/default')(gulp)
+  if (!tasks) {
+    tasks = [
+      'build',
+      'test',
+      'release',
+      'coverage',
+      'lint',
+      'default'
+    ]
+  }
+
+  tasks.forEach((task) => {
+    require(`../tasks/${task}`)(gulp)
+  })
 
   // Workaround for gulp not exiting after calling done
   // See https://github.com/gulpjs/gulp/issues/167

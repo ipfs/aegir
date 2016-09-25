@@ -5,6 +5,6 @@
 const gulp = require('gulp')
 
 require('../src/gulp-log')(gulp)
-require('../gulp')(gulp)
+require('../gulp')(gulp, ['lint'])
 
 gulp.start('lint')

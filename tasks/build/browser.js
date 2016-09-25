@@ -1,36 +1,17 @@
 'use strict'
 
-const $ = require('gulp-load-plugins')()
-const webpack = require('webpack')
-const path = require('path')
-const fs = require('fs')
+module.exports = (gulp) => {
+  gulp.task('build:browser', ['clean:browser'], (done) => {
+    const webpack = require('webpack')
+    const uglify = require('gulp-uglify')
+    const util = require('gulp-util')
+    const size = require('gulp-size')
+    const rename = require('gulp-rename')
 
-const config = require('../../config/webpack')
+    const config = require('../../config/webpack')
 
-const webpackDone = (done) => (err, stats) => {
-  if (err) {
-    throw new $.util.PluginError('webpack', err)
-  }
-
-  if ($.util.env.stats) {
-    fs.writeFileSync('stats.json', JSON.stringify(stats.toJson(), null, 2))
-  }
-
-  $.util.log('[webpack]', stats.toString({
-    modules: false,
-    colors: true,
-    chunks: false
-  }))
-
-  done()
-}
-
-module.exports = {
-  dep: ['clean:browser'],
-  fn (gulp, done) {
     const c = config
     c.output.filename = 'index.js'
-    c.output.path = path.resolve('dist')
     c.devtool = 'source-map'
     c.plugins.push(
       new webpack.optimize.DedupePlugin()
@@ -38,15 +19,38 @@ module.exports = {
 
     webpack(c, webpackDone(() => {
       gulp.src('dist/index.js')
-        .pipe($.uglify({
+        .pipe(uglify({
           mangle: false
         }))
-        .pipe($.rename({
+        .pipe(rename({
           suffix: '.min'
         }))
-        .pipe($.size())
+        .pipe(size())
         .pipe(gulp.dest('dist'))
         .once('end', done)
     }))
-  }
+
+    function webpackDone (done) {
+      return (err, stats) => {
+        if (err) {
+          throw new util.PluginError('webpack', err)
+        }
+
+        if (util.env.stats) {
+          require('fs').writeFileSync(
+            'stats.json',
+            JSON.stringify(stats.toJson(), null, 2)
+          )
+        }
+
+        util.log('[webpack]', stats.toString({
+          modules: false,
+          colors: true,
+          chunks: false
+        }))
+
+        done()
+      }
+    }
+  })
 }

@@ -1,15 +1,19 @@
 'use strict'
 
-const $ = require('gulp-load-plugins')()
+module.exports = (gulp) => {
+  gulp.task('release:commit', () => {
+    const git = require('gulp-git')
+    const filter = require('gulp-filter')
+    const tagVersion = require('gulp-tag-version')
 
-const getVersion = require('../../src/utils').getVersion
+    const getVersion = require('../../src/utils').getVersion
 
-module.exports = (gulp, done) => {
-  const newVersion = getVersion()
+    const newVersion = getVersion()
 
-  return gulp.src(['package.json', 'CHANGELOG.md'])
-    .pipe($.git.add())
-    .pipe($.git.commit(`chore: release version v${newVersion}`, {args: '-n'}))
-    .pipe($.filter('package.json'))
-    .pipe($.tagVersion())
+    return gulp.src(['package.json', 'CHANGELOG.md'])
+      .pipe(git.add())
+      .pipe(git.commit(`chore: release version v${newVersion}`, {args: '-n'}))
+      .pipe(filter('package.json'))
+      .pipe(tagVersion())
+  })
 }

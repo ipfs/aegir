@@ -1,19 +1,22 @@
 'use strict'
 
-const $ = require('gulp-load-plugins')()
+module.exports = (gulp) => {
+  gulp.task('release:changelog', (done) => {
+    const util = require('gulp-util')
+    const conventionalChangelog = require('gulp-conventional-changelog')
 
-module.exports = (gulp, done) => {
-  if ($.util.env.changelog === false) {
-    $.util.log('Skipping changelog generation')
-    return done()
-  }
+    if (util.env.changelog === false) {
+      util.log('Skipping changelog generation')
+      return done()
+    }
 
-  const releaseCount = $.util.env.first ? 0 : 1
+    const releaseCount = util.env.first ? 0 : 1
 
-  return gulp.src('CHANGELOG.md')
-    .pipe($.conventionalChangelog({
-      preset: 'angular',
-      releaseCount
-    }))
-    .pipe(gulp.dest('./'))
+    return gulp.src('CHANGELOG.md')
+      .pipe(conventionalChangelog({
+        preset: 'angular',
+        releaseCount
+      }))
+      .pipe(gulp.dest('./'))
+  })
 }

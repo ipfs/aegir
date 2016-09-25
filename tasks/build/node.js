@@ -1,30 +1,31 @@
 'use strict'
 
-const $ = require('gulp-load-plugins')()
-const runSequence = require('run-sequence')
+const size = require('gulp-size')
 
-const config = require('../../config/babel')
+module.exports = (gulp) => {
+  gulp.task('copy::node', () => {
+    return gulp.src('src/**/*')
+      .pipe(size())
+      .pipe(gulp.dest('lib'))
+  })
 
-module.exports = {
-  dep: ['clean:node'],
-  fn (gulp, done) {
-    gulp.task('copy::node', () => {
-      return gulp.src('src/**/*')
-        .pipe($.size())
-        .pipe(gulp.dest('lib'))
-    })
+  gulp.task('build::node', () => {
+    const babel = require('gulp-babel')
+    const config = require('../../config/babel')
 
-    gulp.task('build::node', () => {
-      return gulp.src('lib/**/*.js')
-        .pipe($.babel(config))
-        .pipe($.size())
-        .pipe(gulp.dest('lib'))
-    })
+    return gulp.src('lib/**/*.js')
+      .pipe(babel(config))
+      .pipe(size())
+      .pipe(gulp.dest('lib'))
+  })
+
+  gulp.task('build:node', ['clean:node'], (done) => {
+    const runSequence = require('run-sequence')
 
     runSequence.use(gulp)(
       'copy::node',
       'build::node',
       done
     )
-  }
+  })
 }

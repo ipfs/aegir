@@ -1,7 +1,9 @@
 'use strict'
 
-const rimraf = require('rimraf')
+module.exports = (gulp) => {
+  gulp.task('clean:browser', (done) => {
+    const rimraf = require('rimraf')
 
-module.exports = (gulp, done) => {
-  rimraf('./dist', done)
+    rimraf('./dist', done)
+  })
 }

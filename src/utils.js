@@ -1,8 +1,7 @@
 'use strict'
 
 const runSequence = require('run-sequence')
-const $ = require('gulp-load-plugins')()
-const fs = require('fs')
+const util = require('gulp-util')
 
 // Workaround gulp not exiting if there are some
 // resources not freed
@@ -32,10 +31,12 @@ exports.hooksRun = (gulp, name, tasks, done) => {
 }
 
 exports.fail = (msg) => {
-  $.util.log($.util.colors.red(msg))
+  util.log(util.colors.red(msg))
   process.exit(1)
 }
 
 exports.getVersion = () => {
-  return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version
+  return JSON.parse(
+    require('fs').readFileSync('./package.json', 'utf8')
+  ).version
 }

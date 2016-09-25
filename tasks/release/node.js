@@ -2,19 +2,21 @@
 
 const runSequence = require('run-sequence')
 
-module.exports = (gulp, done) => {
-  gulp.task('release:pre-build:node', (done1) => {
+module.exports = (gulp) => {
+  gulp.task('release:pre-build:node', (done) => {
     runSequence.use(gulp)(
       'lint',
       'test:node',
-      done1
+      done
     )
   })
 
-  runSequence.use(gulp)(
-    'release:pre-build:node',
-    'build:node',
-    'release:post-build',
-    done
-  )
+  gulp.task('release:node', (done) => {
+    runSequence.use(gulp)(
+      'release:pre-build:node',
+      'build:node',
+      'release:post-build',
+      done
+    )
+  })
 }

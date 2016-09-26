@@ -2,7 +2,8 @@
 
 const webpack = require('webpack')
 const path = require('path')
-const _ = require('lodash')
+const upperFirst = require('lodash.upperfirst')
+const camelCase = require('lodash.camelcase')
 const merge = require('webpack-merge')
 
 const pkg = require(path.resolve('package.json'))
@@ -14,7 +15,7 @@ try {
 const babel = require('./babel')
 
 // e.g. peer-id -> PeerId
-const libraryName = _.upperFirst(_.camelCase(pkg.name))
+const libraryName = upperFirst(camelCase(pkg.name))
 
 let custom1 = {}
 let custom2 = {}
@@ -36,7 +37,8 @@ const shared = {
   ],
   output: {
     filename: 'index.js',
-    library: libraryName
+    library: libraryName,
+    path: 'dist'
   },
   resolve: {
     modules: [

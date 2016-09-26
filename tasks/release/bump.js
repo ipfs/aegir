@@ -1,26 +1,30 @@
 'use strict'
 
-const $ = require('gulp-load-plugins')()
-const semver = require('semver')
-const _ = require('lodash')
+const includes = require('lodash.includes')
 
-const getVersion = require('../../src/utils').getVersion
+module.exports = (gulp) => {
+  gulp.task('release:bump', () => {
+    const util = require('gulp-util')
+    const bump = require('gulp-bump')
+    const semver = require('semver')
 
-function getType () {
-  if (_.includes($.util.env._, 'major')) return 'major'
-  if (_.includes($.util.env._, 'minor')) return 'minor'
-  if ($.util.env.type) return $.util.env.type
+    const getVersion = require('../../src/utils').getVersion
 
-  return 'patch'
+    const type = getType(util.env)
+    const newVersion = semver.inc(getVersion(), type)
+
+    util.log('Releasing %s', newVersion)
+
+    return gulp.src('./package.json')
+      .pipe(bump({version: newVersion}))
+      .pipe(gulp.dest('./'))
+  })
 }
 
-module.exports = (gulp, done) => {
-  const type = getType()
-  const newVersion = semver.inc(getVersion(), type)
+function getType (env) {
+  if (includes(env._, 'major')) return 'major'
+  if (includes(env._, 'minor')) return 'minor'
+  if (env.type) return env.type
 
-  $.util.log('Releasing %s', newVersion)
-
-  return gulp.src('./package.json')
-    .pipe($.bump({version: newVersion}))
-    .pipe(gulp.dest('./'))
+  return 'patch'
 }

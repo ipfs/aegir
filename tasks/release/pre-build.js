@@ -1,11 +1,13 @@
 'use strict'
 
-const runSequence = require('run-sequence')
+module.exports = (gulp) => {
+  gulp.task('release:pre-build', (done) => {
+    const runSequence = require('run-sequence')
 
-module.exports = (gulp, done) => {
-  runSequence.use(gulp)(
-    'lint',
-    'test',
-    done
-  )
+    runSequence.use(gulp)(
+      'lint',
+      'test',
+      done
+    )
+  })
 }

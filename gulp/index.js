@@ -1,15 +1,23 @@
 'use strict'
 
-const gulpRequire = require('gulp-require-tasks')
-const path = require('path')
 const onExit = require('signal-exit')
 
-module.exports = (gulp) => {
+module.exports = (gulp, tasks) => {
   gulp = gulp || require('gulp')
 
-  gulpRequire({
-    path: path.join(__dirname, '../tasks'),
-    gulp: gulp
+  if (!tasks) {
+    tasks = [
+      'build',
+      'test',
+      'release',
+      'coverage',
+      'lint',
+      'default'
+    ]
+  }
+
+  tasks.forEach((task) => {
+    require(`../tasks/${task}`)(gulp)
   })
 
   // Workaround for gulp not exiting after calling done

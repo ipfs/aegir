@@ -2,7 +2,7 @@
 
 const runSequence = require('run-sequence')
 
-module.exports = (gulp, done) => {
+module.exports = (gulp) => {
   gulp.task('release:pre-build:no-build', (done1) => {
     runSequence.use(gulp)(
       'lint',
@@ -10,9 +10,11 @@ module.exports = (gulp, done) => {
     )
   })
 
-  runSequence.use(gulp)(
-    'release:pre-build:no-build',
-    'release:post-build',
-    done
-  )
+  gulp.task('release:no-build', (done) => {
+    runSequence.use(gulp)(
+      'release:pre-build:no-build',
+      'release:post-build',
+      done
+    )
+  })
 }

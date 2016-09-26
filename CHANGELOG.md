@@ -1,3 +1,15 @@
+<a name="8.1.2"></a>
+## [8.1.2](https://github.com/dignifiedquire/aegir/compare/v8.1.1...v8.1.2) (2016-09-26)
+
+
+### Performance Improvements
+
+* only load needed gulp scripts in bins ([c4b8c7f](https://github.com/dignifiedquire/aegir/commit/c4b8c7f))
+* use gulp-mocha ([a2d428e](https://github.com/dignifiedquire/aegir/commit/a2d428e))
+* use manual inlined requires ([e9472c4](https://github.com/dignifiedquire/aegir/commit/e9472c4))
+
+
+
 <a name="8.1.1"></a>
 ## [8.1.1](https://github.com/dignifiedquire/aegir/compare/v8.1.0...v8.1.1) (2016-09-22)
 

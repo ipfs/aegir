@@ -1,11 +1,11 @@
 'use strict'
 
-const contains = require('lodash.contains')
+const includes = require('lodash.includes')
 
 function getEnv (env) {
-  if (contains(env._, 'browser')) return 'browser'
-  if (contains(env._, 'node')) return 'node'
-  if (contains(env._, 'no-build')) return 'no-build'
+  if (includes(env._, 'browser')) return 'browser'
+  if (includes(env._, 'node')) return 'node'
+  if (includes(env._, 'no-build')) return 'no-build'
   if (env.env) return env.env
 
   return 'default'

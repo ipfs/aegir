@@ -1,6 +1,6 @@
 'use strict'
 
-const contains = require('lodash.contains')
+const includes = require('lodash.includes')
 
 module.exports = (gulp) => {
   gulp.task('release:bump', () => {
@@ -22,8 +22,8 @@ module.exports = (gulp) => {
 }
 
 function getType (env) {
-  if (contains(env._, 'major')) return 'major'
-  if (contains(env._, 'minor')) return 'minor'
+  if (includes(env._, 'major')) return 'major'
+  if (includes(env._, 'minor')) return 'minor'
   if (env.type) return env.type
 
   return 'patch'

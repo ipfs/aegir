@@ -12,10 +12,6 @@ if (process.env.TRAVIS) {
   browsers.push('Chrome')
 }
 
-if (!process.env.DEBUG && process.env.PHANTOM !== 'off') {
-  browsers.push('PhantomJS')
-}
-
 module.exports = function (config) {
   config.set({
     basePath: process.cwd(),

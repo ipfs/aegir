@@ -5,5 +5,5 @@ module.exports = (gulp) => {
   require('./build/browser')(gulp)
   require('./clean')(gulp)
 
-  gulp.task('build', ['build:browser', 'build:node'])
+  gulp.task('build', ['build:browser'])
 }

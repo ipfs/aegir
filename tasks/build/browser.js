@@ -3,10 +3,12 @@
 module.exports = (gulp) => {
   gulp.task('build:browser', ['clean:browser'], (done) => {
     const webpack = require('webpack')
-    const uglify = require('gulp-uglify')
+    const minifier = require('gulp-uglify/minifier')
     const util = require('gulp-util')
     const size = require('gulp-size')
     const rename = require('gulp-rename')
+    const uglify = require('uglify-js')
+    const pump = require('pump')
 
     const config = require('../../config/webpack')
 
@@ -18,16 +20,17 @@ module.exports = (gulp) => {
     )
 
     webpack(c, webpackDone(() => {
-      gulp.src('dist/index.js')
-        .pipe(uglify({
+      pump([
+        gulp.src('dist/index.js'),
+        minifier({
           mangle: false
-        }))
-        .pipe(rename({
+        }, uglify),
+        rename({
           suffix: '.min'
-        }))
-        .pipe(size())
-        .pipe(gulp.dest('dist'))
-        .once('end', done)
+        }),
+        size(),
+        gulp.dest('dist')
+      ], done)
     }))
 
     function webpackDone (done) {

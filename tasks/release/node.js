@@ -14,7 +14,6 @@ module.exports = (gulp) => {
   gulp.task('release:node', (done) => {
     runSequence.use(gulp)(
       'release:pre-build:node',
-      'build:node',
       'release:post-build',
       done
     )

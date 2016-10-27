@@ -21,8 +21,7 @@ Your `package.json` should have the following entries.
 
 
 ```json
-"main": "lib/index.js",
-"jsnext:main": "src/index.js",
+"main": "src/index.js",
 "scripts": {
   "lint": "aegir-lint",
   "release": "aegir-release",
@@ -35,13 +34,10 @@ Your `package.json` should have the following entries.
 }
 ```
 
-You should also add `babel-runtime` to your `dependencies` as it is required by the babelified version in `lib`.
-
 ## Stack Requirements
 
 To bring you its many benefits, `aegir` requires
 
-- [ES6 / Babel](https://github.com/babel/babel) transpilation
 - JS written in [Standard](https://github.com/feross/standard) style
 - Tests written in [Mocha](https://github.com/mochajs/mocha)
 - [Karma](https://github.com/karma-runner/karma) for browser tests
@@ -110,8 +106,6 @@ This will build a browser ready version into `dist`, so after publishing the res
 https://unpkg.com/<module-name>/dist/index.js
 https://unpkg.com/<module-name>/dist/index.min.js
 ```
-
-There is also an ES5 build that will be placed in `lib` that will be required by default from consumers using `require`.
 
 You can run it using
 

@@ -4,7 +4,6 @@ const path = require('path')
 const upperFirst = require('lodash.upperfirst')
 const camelCase = require('lodash.camelcase')
 const merge = require('webpack-merge')
-const webpack = require('webpack')
 
 const pkg = require(path.resolve('package.json'))
 let customConfig = {}

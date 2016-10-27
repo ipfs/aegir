@@ -1,6 +1,5 @@
 'use strict'
 
-const path = require('path')
 const webpackConfig = require('./webpack')
 const timeout = require('./custom').timeout
 
@@ -63,7 +62,7 @@ let browsers = []
 if (process.env.TRAVIS) {
   if (process.env.SAUCE_USERNAME) {
     browsers = Object.keys(launchers)
-    concurrency = 2
+    concurrency = 3
     reporters = ['progress', 'saucelabs']
   } else {
     browsers.push('Firefox')
@@ -82,7 +81,6 @@ module.exports = function (config) {
       }
     },
     files: [
-      path.join(require.resolve('babel-polyfill'), '/../../dist/polyfill.js'),
       'test/browser.js',
       'test/**/*.spec.js'
     ],

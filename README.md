@@ -38,7 +38,6 @@ Your `package.json` should have the following entries.
 
 To bring you its many benefits, `aegir` requires
 
-- [ES6 / Babel](https://github.com/babel/babel) transpilation
 - JS written in [Standard](https://github.com/feross/standard) style
 - Tests written in [Mocha](https://github.com/mochajs/mocha)
 - [Karma](https://github.com/karma-runner/karma) for browser tests

@@ -1,3 +1,17 @@
+<a name="9.0.0"></a>
+# [9.0.0](https://github.com/dignifiedquire/aegir/compare/v8.1.2...v9.0.0) (2016-10-27)
+
+
+### Features
+
+* **build:** stop transpiling for nodejs ([0f7d392](https://github.com/dignifiedquire/aegir/commit/0f7d392))
+* drop special webpack configs ([6a726b2](https://github.com/dignifiedquire/aegir/commit/6a726b2))
+* **test:** add sauce labs support ([7af165f](https://github.com/dignifiedquire/aegir/commit/7af165f))
+* **test:** drop phantomjs from testing ([3299ce1](https://github.com/dignifiedquire/aegir/commit/3299ce1))
+* stop transpiling and use uglify-harmony ([a83f8dd](https://github.com/dignifiedquire/aegir/commit/a83f8dd))
+
+
+
 <a name="8.1.2"></a>
 ## [8.1.2](https://github.com/dignifiedquire/aegir/compare/v8.1.1...v8.1.2) (2016-09-26)
 

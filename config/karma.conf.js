@@ -59,14 +59,12 @@ const launchers = {
 
 let browsers = []
 
-if (process.env.TRAVIS) {
-  if (process.env.SAUCE_USERNAME) {
-    browsers = Object.keys(launchers)
-    concurrency = 3
-    reporters = ['progress', 'saucelabs']
-  } else {
-    browsers.push('Firefox')
-  }
+if (process.env.SAUCE_USERNAME && process.env.SAUCE) {
+  browsers = Object.keys(launchers)
+  concurrency = 3
+  reporters = ['progress', 'saucelabs']
+} else if (process.env.TRAVIS) {
+  browsers.push('Firefox')
 } else {
   browsers.push('Chrome')
 }

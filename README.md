@@ -77,6 +77,13 @@ $ aegir-test browser
 $ gulp test:browser
 ```
 
+If the needed environment variables are set, tests are also run on [Sauce Labs].
+You will need
+
+- `$SAUCE=true`
+- `SAUCE_USERNAME=<username>`
+- `SAUCE_ACCESS_KEY=<access key>`
+
 ### Coverage
 
 You can run it using

@@ -1,3 +1,13 @@
+<a name="9.0.1"></a>
+## [9.0.1](https://github.com/dignifiedquire/aegir/compare/v9.0.0...v9.0.1) (2016-10-31)
+
+
+### Features
+
+* only run sauce labs tests when SAUCE=true ([bb2e575](https://github.com/dignifiedquire/aegir/commit/bb2e575))
+
+
+
 <a name="9.0.0"></a>
 # [9.0.0](https://github.com/dignifiedquire/aegir/compare/v8.1.2...v9.0.0) (2016-10-27)
 

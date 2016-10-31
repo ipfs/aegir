@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "description": "JavaScript project management",
   "main": "index.js",
   "bin": {

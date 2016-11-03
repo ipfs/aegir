@@ -84,6 +84,18 @@ You will need
 - `SAUCE_USERNAME=<username>`
 - `SAUCE_ACCESS_KEY=<access key>`
 
+#### Fixtures
+
+Loading fixture files in node and the browser can be painful, that's why aegir provides
+a method to do this. For it to work you have to put your fixtures in the folder `test/fixtures`, and then
+
+```js
+// test/awesome.spec.js
+const loadFixture = require('aegir/fixtures')
+
+const myFixture = loadFixture(__dirname, 'fixtures/largefixture')
+```
+
 ### Coverage
 
 You can run it using

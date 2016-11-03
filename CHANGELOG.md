@@ -1,3 +1,13 @@
+<a name="9.1.0"></a>
+# [9.1.0](https://github.com/dignifiedquire/aegir/compare/v9.0.1...v9.1.0) (2016-11-03)
+
+
+### Features
+
+* **test:** new fixture loading mechanism ([b007e00](https://github.com/dignifiedquire/aegir/commit/b007e00))
+
+
+
 <a name="9.0.1"></a>
 ## [9.0.1](https://github.com/dignifiedquire/aegir/compare/v9.0.0...v9.0.1) (2016-10-31)
 

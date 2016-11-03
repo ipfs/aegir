@@ -41,7 +41,10 @@ const shared = {
     modules: [
       'node_modules',
       path.resolve(__dirname, '../node_modules')
-    ]
+    ],
+    alias: {
+      'zlib': 'browserify-zlib'
+    }
   },
   resolveLoader: {
     modules: [

@@ -80,15 +80,16 @@ module.exports = function (config) {
     },
     files: [
       'test/browser.js',
-      'test/**/*.spec.js'
+      'test/**/*.spec.js',
+      {pattern: 'test/fixtures/**/*', watched: false, served: true, included: false}//,
+      //{pattern: 'node_modules/**/test/fixtures/**/*', watched: false, served: true, included: false}
     ],
-    exclude: [],
     preprocessors: {
-      'test/**/*': ['webpack', 'sourcemap']
+      'test/**/*.js': ['webpack', 'sourcemap']
     },
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: true
+      noInfo: false
     },
     reporters: reporters,
     mochaOwnReporter: {

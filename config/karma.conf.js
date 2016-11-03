@@ -2,6 +2,18 @@
 
 const webpackConfig = require('./webpack')
 const timeout = require('./custom').timeout
+const user = require('./user').customConfig
+
+let userFiles = []
+if (user.karma && user.karma.files) {
+  userFiles = user.karma.files
+}
+
+const files = [
+  'test/browser.js',
+  'test/**/*.spec.js',
+  {pattern: 'test/fixtures/**/*', watched: false, served: true, included: false}
+].concat(userFiles)
 
 let concurrency = 1
 let reporters = ['mocha-own']
@@ -78,17 +90,13 @@ module.exports = function (config) {
         timeout: timeout
       }
     },
-    files: [
-      'test/browser.js',
-      'test/**/*.spec.js'
-    ],
-    exclude: [],
+    files: files,
     preprocessors: {
-      'test/**/*': ['webpack', 'sourcemap']
+      'test/**/*.js': ['webpack', 'sourcemap']
     },
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: true
+      noInfo: false
     },
     reporters: reporters,
     mochaOwnReporter: {

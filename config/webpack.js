@@ -5,28 +5,11 @@ const upperFirst = require('lodash.upperfirst')
 const camelCase = require('lodash.camelcase')
 const merge = require('webpack-merge')
 
-const pkg = require(path.resolve('package.json'))
-let customConfig = {}
-try {
-  customConfig = require(path.resolve('.aegir.js'))
-} catch (err) {
-}
+let user = require('./user')
 
 // e.g. peer-id -> PeerId
-const libraryName = upperFirst(camelCase(pkg.name))
-
-let custom1 = {}
-let custom2 = {}
-
-if (pkg.aegir && pkg.aegir.webpack) {
-  custom1 = pkg.aegir.webpack
-}
-
-if (customConfig && customConfig.webpack) {
-  custom2 = customConfig.webpack
-}
-
-const specific = merge(custom1, custom2)
+const libraryName = upperFirst(camelCase(user.pkg.name))
+const specific = merge(user.customPkg || {}, user.customPkg || {})
 
 const shared = {
   entry: [
@@ -41,7 +24,10 @@ const shared = {
     modules: [
       'node_modules',
       path.resolve(__dirname, '../node_modules')
-    ]
+    ],
+    alias: {
+      zlib: 'browserify-zlib'
+    }
   },
   resolveLoader: {
     modules: [

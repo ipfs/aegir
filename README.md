@@ -84,6 +84,53 @@ You will need
 - `SAUCE_USERNAME=<username>`
 - `SAUCE_ACCESS_KEY=<access key>`
 
+#### Fixtures
+
+Loading fixture files in node and the browser can be painful, that's why aegir provides
+a method to do this. For it to work you have to put your fixtures in the folder `test/fixtures`, and then
+
+```js
+// test/awesome.spec.js
+const loadFixture = require('aegir/fixtures')
+
+const myFixture = loadFixture(__dirname, 'fixtures/largefixture')
+```
+
+If you write a module like [interface-ipfs-core](https://github.com/ipfs/interface-ipfs-core)
+which is to be consumed by other modules tests you need to pass in a third parameter such that
+the server is able to serve the correct files.
+
+For example
+
+```js
+// awesome-tests module
+const loadFixture = require('aegir/fixtures'
+
+const myFixture = loadFixture(__dirname, 'fixtures/coolfixture', 'awesome-tests')
+```
+
+```js
+// tests for module using the awesome-tests
+require('awesome-tests')
+```
+
+```js
+// .aegir.js file in the module using the awesome-tests module
+'use strict'
+
+module.exports = {
+  karma: {
+    files: [{
+      pattern: 'node_modules/awesome-tests/test/fixtures/**/*',
+      watched: false,
+      served: true,
+      included: false
+    }]
+  }
+}
+```
+
+
 ### Coverage
 
 You can run it using

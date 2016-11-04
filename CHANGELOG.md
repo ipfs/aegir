@@ -1,3 +1,14 @@
+<a name="9.1.1"></a>
+## [9.1.1](https://github.com/dignifiedquire/aegir/compare/v9.1.0...v9.1.1) (2016-11-04)
+
+
+### Bug Fixes
+
+* **test:** remove webpack verbose logging ([368c5ba](https://github.com/dignifiedquire/aegir/commit/368c5ba))
+* **webpack:** workaround for outdated http-browserify ([10d6c15](https://github.com/dignifiedquire/aegir/commit/10d6c15))
+
+
+
 <a name="9.1.0"></a>
 # [9.1.0](https://github.com/dignifiedquire/aegir/compare/v9.0.1...v9.1.0) (2016-11-03)
 

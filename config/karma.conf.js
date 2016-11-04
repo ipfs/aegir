@@ -96,7 +96,7 @@ module.exports = function (config) {
     },
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: false
+      noInfo: true
     },
     reporters: reporters,
     mochaOwnReporter: {

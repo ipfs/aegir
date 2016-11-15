@@ -71,7 +71,7 @@
     "stream-http": "^2.4.1",
     "transform-loader": "^0.2.3",
     "uglify-js": "github:mishoo/UglifyJS2#harmony",
-    "webpack": "^2.1.0-beta.25",
+    "webpack": "^2.1.0-beta.26",
     "webpack-merge": "^0.15.0"
   },
   "repository": {

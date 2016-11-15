@@ -41,12 +41,13 @@ const shared = {
     modules: [
       'node_modules',
       path.resolve(__dirname, '../node_modules')
-    ]
+    ],
+    moduleExtensions: ['-loader']
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.json$/,
-      loader: 'json'
+      loader: 'json-loader'
     }]
   },
   node: {

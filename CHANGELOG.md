@@ -1,3 +1,13 @@
+<a name="9.1.2"></a>
+## [9.1.2](https://github.com/dignifiedquire/aegir/compare/v9.1.1...v9.1.2) (2016-11-15)
+
+
+### Bug Fixes
+
+* adjust loader config for webpack[@2](https://github.com/2).1.0-beta.26 ([bb04801](https://github.com/dignifiedquire/aegir/commit/bb04801))
+
+
+
 <a name="9.1.1"></a>
 ## [9.1.1](https://github.com/dignifiedquire/aegir/compare/v9.1.0...v9.1.1) (2016-11-04)
 

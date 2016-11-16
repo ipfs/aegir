@@ -11,7 +11,8 @@
     "aegir-build": "bin/build",
     "aegir-test": "bin/test",
     "aegir-release": "bin/release",
-    "aegir-coverage": "bin/coverage"
+    "aegir-coverage": "bin/coverage",
+    "aegir-docs": "bin/docs"
   },
   "scripts": {
     "lint": "bin/lint",
@@ -41,6 +42,7 @@
     "gulp-eslint": "^3.0.1",
     "gulp-filter": "^4.0.0",
     "gulp-git": "^1.12.0",
+    "gulp-jsdoc3": "^1.0.1",
     "gulp-mocha": "^3.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-size": "^2.1.0",

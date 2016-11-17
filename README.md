@@ -104,7 +104,7 @@ For example
 
 ```js
 // awesome-tests module
-const loadFixture = require('aegir/fixtures'
+const loadFixture = require('aegir/fixtures')
 
 const myFixture = loadFixture(__dirname, 'fixtures/coolfixture', 'awesome-tests')
 ```
@@ -168,6 +168,20 @@ $ aegir-build
 # or as gulp task
 $ gulp build
 ```
+
+**Specifying a custom entry file for Webpack**
+
+By default, `aegir` uses `src/index.js` as the entry file for Webpack. You can customize which file to use as the entry point by specifying `entry` field in your user configuration file. To do this, create `.aegir.js` file in your project's root diretory and add point the `entry` field to the file Webpack should use as the entry:
+
+```javascript
+module.exports = {
+  entry: "src/browser-index.js",
+}
+```
+
+Webpack will use the specified file as the entry point and output it to `dist/<filename>`, eg. `dist/browser-index.js`.
+
+If `.aegir.js` file is not present in the project, webpack will use `src/index.js` as the default entry file.
 
 ### Releasing
 

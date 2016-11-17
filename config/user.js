@@ -12,5 +12,6 @@ try {
 module.exports = {
   pkg: pkg,
   customPkg: pkg.aegir || {},
-  customConfig: customConfig || {}
+  customConfig: customConfig || {},
+  entry: customConfig.entry || 'src/index.js'
 }

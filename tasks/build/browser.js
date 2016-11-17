@@ -13,7 +13,6 @@ module.exports = (gulp) => {
     const config = require('../../config/webpack')
 
     const c = config
-    c.output.filename = 'index.js'
     c.devtool = 'source-map'
     c.plugins.push(
       new webpack.optimize.DedupePlugin()
@@ -21,7 +20,7 @@ module.exports = (gulp) => {
 
     webpack(c, webpackDone(() => {
       pump([
-        gulp.src('dist/index.js'),
+        gulp.src('dist/' + c.output.filename),
         minifier({
           mangle: false
         }, uglify),

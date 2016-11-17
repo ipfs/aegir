@@ -10,13 +10,14 @@ let user = require('./user')
 // e.g. peer-id -> PeerId
 const libraryName = upperFirst(camelCase(user.pkg.name))
 const specific = merge(user.customPkg || {}, user.customPkg || {})
+const entry = user.entry || 'src/index.js'
 
 const shared = {
   entry: [
-    path.resolve('src/index.js')
+    path.resolve(entry)
   ],
   output: {
-    filename: 'index.js',
+    filename: entry.split('/').pop(),
     library: libraryName,
     path: 'dist'
   },

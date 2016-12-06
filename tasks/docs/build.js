@@ -3,7 +3,7 @@
 const pump = require('pump')
 const join = require('path').join
 const docs = require('gulp-documentation')
-const exists = require('path-exists')
+const exists = require('path-exists').sync
 
 const pkg = require('../../config/user').pkg
 

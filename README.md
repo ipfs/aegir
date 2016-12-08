@@ -225,6 +225,19 @@ $ aegir-relase --first
 You can skip all changelog generation and the github release by passing
 in `--no-changelog`.
 
+If you want documentation generation you can pass `--docs` to the release task to build documentation and publish it to the `gh-pages` branch.
+
+### Documentation
+
+You can use `aegir-docs` to generate documentation. This uses [documentation.js](http://documentation.js.org/) with the theme [https://github.com/dignifiedquire/clean-documentation-theme].
+
+To publish the documentation automatically to the `gh-pages` branch you can run
+
+```bash
+$ aegir-docs --publish
+```
+
+
 ## Other Notes
 
 There is a badge.

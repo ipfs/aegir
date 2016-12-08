@@ -12,7 +12,8 @@ module.exports = (gulp, tasks) => {
       'release',
       'coverage',
       'lint',
-      'default'
+      'default',
+      'docs'
     ]
   }
 

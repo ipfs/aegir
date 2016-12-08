@@ -30,3 +30,4 @@ rules:
   require-yield: 2
   max-nested-callbacks: [2, 4]
   max-depth: [2, 4]
+  valid-jsdoc: [2, {'requireParamDescription': false, 'requireReturnDescription': false}]

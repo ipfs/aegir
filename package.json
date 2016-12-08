@@ -16,7 +16,9 @@
   },
   "scripts": {
     "lint": "bin/lint",
-    "release": "bin/release no-build"
+    "release": "bin/release no-build",
+    "release-minor": "bin/release no-build --type minor",
+    "release-major": "bin/release no-build --type major"
   },
   "keywords": [
     "webpack",

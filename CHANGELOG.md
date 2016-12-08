@@ -1,3 +1,19 @@
+<a name="9.2.0"></a>
+# [9.2.0](https://github.com/dignifiedquire/aegir/compare/v9.1.2...v9.2.0) (2016-12-08)
+
+
+### Bug Fixes
+
+* **test:** only run sauce labs if access key is available ([267830a](https://github.com/dignifiedquire/aegir/commit/267830a)), closes [#76](https://github.com/dignifiedquire/aegir/issues/76)
+
+
+### Features
+
+* add aegir-docs  ([1d82ce7](https://github.com/dignifiedquire/aegir/commit/1d82ce7)), closes [#77](https://github.com/dignifiedquire/aegir/issues/77)
+* add possibility to specify a custom entry file ([258f82f](https://github.com/dignifiedquire/aegir/commit/258f82f))
+
+
+
 <a name="9.1.2"></a>
 ## [9.1.2](https://github.com/dignifiedquire/aegir/compare/v9.1.1...v9.1.2) (2016-11-15)
 

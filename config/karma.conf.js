@@ -71,7 +71,9 @@ const launchers = {
 
 let browsers = []
 
-if (process.env.SAUCE_USERNAME && process.env.SAUCE) {
+if (process.env.SAUCE_USERNAME &&
+    process.env.SAUCE_ACCESS_KEY &&
+    process.env.SAUCE) {
   browsers = Object.keys(launchers)
   concurrency = 3
   reporters = ['progress', 'saucelabs']

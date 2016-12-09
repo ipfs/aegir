@@ -1,16 +1,15 @@
 'use strict'
 
 const join = require('path').join
-const ghPages = require('gh-pages')
-const util = require('gulp-util')
+const os = require('os')
+const pkg = require('../../config/user').pkg
 
 module.exports = (gulp) => {
-  gulp.task('docs:publish', ['docs:build'], (cb) => {
-    ghPages.publish(join(process.cwd(), 'docs'), {
-      message: 'docs: auto build',
-      logger (msg) {
-        util.log(`'${util.colors.cyan('docs:publish')}' ${msg}`)
-      }
-    }, cb)
+  gulp.task('docs:publish', ['docs:build'], () => {
+    const ghPages = require('gulp-gh-pages')
+    return gulp.src('./docs/**/*', {cwd: process.cwd()})
+      .pipe(ghPages({
+        cacheDir: join(os.tmpdir(), 'aegir-gh-pages-cache', pkg.name)
+      }))
   })
 }

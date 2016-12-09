@@ -1,3 +1,13 @@
+<a name="9.2.1"></a>
+## [9.2.1](https://github.com/dignifiedquire/aegir/compare/v9.2.0...v9.2.1) (2016-12-09)
+
+
+### Bug Fixes
+
+* **docs:** use different module for publishing to gh-pages ([601525f](https://github.com/dignifiedquire/aegir/commit/601525f)), closes [#79](https://github.com/dignifiedquire/aegir/issues/79)
+
+
+
 <a name="9.2.0"></a>
 # [9.2.0](https://github.com/dignifiedquire/aegir/compare/v9.1.2...v9.2.0) (2016-12-08)
 

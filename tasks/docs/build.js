@@ -4,8 +4,17 @@ const pump = require('pump')
 const join = require('path').join
 const docs = require('gulp-documentation')
 const exists = require('path-exists').sync
+const fs = require('fs')
 
 const pkg = require('../../config/user').pkg
+const introTmpl = require('../../config/intro-template.md')
+
+function generateDescription (name) {
+  const example = fs.readFileSync(join(
+    process.cwd(), 'example.js'
+  )).toString()
+  return introTmpl(name, pkg.repository.url, example)
+}
 
 module.exports = (gulp) => {
   gulp.task('docs:build', ['clean:docs'], (cb) => {
@@ -16,6 +25,11 @@ module.exports = (gulp) => {
     const configFile = join(process.cwd(), 'documentation.yml')
     if (exists(configFile)) {
       options.config = configFile
+    } else {
+      options.toc = [{
+        name: 'Intro',
+        description: generateDescription(pkg.name)
+      }]
     }
 
     pump(

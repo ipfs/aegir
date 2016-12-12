@@ -1,3 +1,13 @@
+<a name="9.2.2"></a>
+## [9.2.2](https://github.com/dignifiedquire/aegir/compare/v9.2.1...v9.2.2) (2016-12-12)
+
+
+### Bug Fixes
+
+* **release:** actual run release:docs task ([5e1b076](https://github.com/dignifiedquire/aegir/commit/5e1b076))
+
+
+
 <a name="9.2.1"></a>
 ## [9.2.1](https://github.com/dignifiedquire/aegir/compare/v9.2.0...v9.2.1) (2016-12-09)
 

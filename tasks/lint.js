@@ -10,7 +10,8 @@ let sourceDirectories = [
   'src/**/*.js',
   'tasks/**/*.js',
   'examples/**/*.js',
-  'benchmarks/**/*.js'
+  'benchmarks/**/*.js',
+  '!**/node_modules/**'
 ]
 
 // Get custom entry file's directory and add it to the source directories

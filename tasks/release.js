@@ -22,6 +22,7 @@ module.exports = (gulp) => {
   require('./release/contributors')(gulp)
   require('./release/default')(gulp)
   require('./release/github')(gulp)
+  require('./release/docs')(gulp)
   require('./release/post-build')(gulp)
   require('./release/pre-build')(gulp)
   require('./release/publish')(gulp)

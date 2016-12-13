@@ -55,7 +55,10 @@ const shared = {
     Buffer: true
   },
   plugins: [],
-  target: 'web'
+  target: 'web',
+  performance: {
+    hints: false
+  }
 }
 
 const dev = merge(shared, {

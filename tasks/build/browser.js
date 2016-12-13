@@ -14,9 +14,6 @@ module.exports = (gulp) => {
 
     const c = config
     c.devtool = 'source-map'
-    c.plugins.push(
-      new webpack.optimize.DedupePlugin()
-    )
 
     webpack(c, webpackDone(() => {
       pump([

@@ -1,3 +1,20 @@
+<a name="9.3.0"></a>
+# [9.3.0](https://github.com/dignifiedquire/aegir/compare/v9.2.2...v9.3.0) (2016-12-13)
+
+
+### Bug Fixes
+
+* **build:** remove deprecated dedupe plugin ([b4834ba](https://github.com/dignifiedquire/aegir/commit/b4834ba))
+* **lint:** ignore nested `node_modules` dirs ([f3ae7e6](https://github.com/dignifiedquire/aegir/commit/f3ae7e6))
+
+
+### Features
+
+* **deps:** upgrade to the latest webpack beta.28 ([bdd4079](https://github.com/dignifiedquire/aegir/commit/bdd4079))
+* **docs:** add generic intro template ([2d0fba0](https://github.com/dignifiedquire/aegir/commit/2d0fba0))
+
+
+
 <a name="9.2.2"></a>
 ## [9.2.2](https://github.com/dignifiedquire/aegir/compare/v9.2.1...v9.2.2) (2016-12-12)
 

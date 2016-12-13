@@ -5,14 +5,20 @@ const join = require('path').join
 const docs = require('gulp-documentation')
 const exists = require('path-exists').sync
 const fs = require('fs')
+const gutil = require('gulp-util')
 
 const pkg = require('../../config/user').pkg
 const introTmpl = require('../../config/intro-template.md')
 
 function generateDescription (name) {
-  const example = fs.readFileSync(join(
-    process.cwd(), 'example.js'
-  )).toString()
+  let example
+  try {
+    example = fs.readFileSync(join(
+      process.cwd(), 'example.js'
+    )).toString()
+  } catch (err) {
+    gutil.log('Warning: No `example.js` found in the root directory.')
+  }
   return introTmpl(name, pkg.repository.url, example)
 }
 

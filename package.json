@@ -64,7 +64,7 @@
     "karma-mocha-own-reporter": "^1.1.2",
     "karma-sauce-launcher": "^1.1.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^1.8.0",
+    "karma-webpack": "^2.0.1",
     "lodash.camelcase": "^4.3.0",
     "lodash.includes": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",

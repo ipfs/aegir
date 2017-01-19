@@ -1,3 +1,13 @@
+<a name="9.3.2"></a>
+## [9.3.2](https://github.com/dignifiedquire/aegir/compare/v9.3.1...v9.3.2) (2017-01-19)
+
+
+### Features
+
+* **deps:** use new browserify-zlib-next package ([68810c1](https://github.com/dignifiedquire/aegir/commit/68810c1))
+
+
+
 <a name="9.3.1"></a>
 ## [9.3.1](https://github.com/dignifiedquire/aegir/compare/v9.3.0...v9.3.1) (2017-01-19)
 

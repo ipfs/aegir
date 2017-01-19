@@ -32,7 +32,7 @@ const shared = {
       //
       // Can be dropped once https://github.com/devongovett/browserify-zlib/pull/18
       // is shipped
-      zlib: 'browserify-zlib',
+      zlib: 'browserify-zlib-node',
       // Can be dropped once https://github.com/webpack/node-libs-browser/pull/41
       // is shipped
       http: 'stream-http'

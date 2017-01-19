@@ -1,3 +1,13 @@
+<a name="9.3.1"></a>
+## [9.3.1](https://github.com/dignifiedquire/aegir/compare/v9.3.0...v9.3.1) (2017-01-19)
+
+
+### Bug Fixes
+
+* **deps:** add correct browserify-zlib dependency ([78b8cbd](https://github.com/dignifiedquire/aegir/commit/78b8cbd))
+
+
+
 <a name="9.3.0"></a>
 # [9.3.0](https://github.com/dignifiedquire/aegir/compare/v9.2.2...v9.3.0) (2016-12-13)
 

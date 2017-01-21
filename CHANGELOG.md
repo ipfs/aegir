@@ -1,3 +1,13 @@
+<a name="9.3.3"></a>
+## [9.3.3](https://github.com/dignifiedquire/aegir/compare/v9.3.2...v9.3.3) (2017-01-21)
+
+
+### Bug Fixes
+
+* **webpack:** fix typo in browserify-zlib-next alias ([44ee5a6](https://github.com/dignifiedquire/aegir/commit/44ee5a6))
+
+
+
 <a name="9.3.2"></a>
 ## [9.3.2](https://github.com/dignifiedquire/aegir/compare/v9.3.1...v9.3.2) (2017-01-19)
 

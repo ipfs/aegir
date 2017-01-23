@@ -11,8 +11,9 @@ module.exports = (gulp) => {
     const sauce = process.env.SAUCE_USERNAME && process.env.TRAVIS
 
     new Server({
-      configFile: path.join(__dirname, webWorker ?
-        '../../config/karma.webworker.conf.js' : '../../config/karma.conf.js'),
+      configFile: path.join(__dirname, webWorker
+        ? '../../config/karma.webworker.conf.js'
+        : '../../config/karma.conf.js'),
       singleRun: !debug
     }, (code) => {
       if (sauce) {

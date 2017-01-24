@@ -1,8 +1,3 @@
-<a name="9.3.4"></a>
-## [9.3.4](https://github.com/dignifiedquire/aegir/compare/v9.3.3...v9.3.4) (2017-01-23)
-
-
-
 <a name="9.3.3"></a>
 ## [9.3.3](https://github.com/dignifiedquire/aegir/compare/v9.3.2...v9.3.3) (2017-01-21)
 

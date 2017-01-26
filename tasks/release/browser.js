@@ -7,6 +7,7 @@ module.exports = (gulp) => {
     runSequence.use(gulp)(
       'lint',
       'test:browser',
+      'test:webworker',
       done
     )
   })

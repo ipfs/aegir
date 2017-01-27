@@ -77,6 +77,8 @@ $ aegir-test browser
 $ gulp test:browser
 ```
 
+If you want to run tests in a webworker you can also pass `--webworker` as a flag to enable that.
+
 If the needed environment variables are set, tests are also run on [Sauce Labs].
 You will need
 

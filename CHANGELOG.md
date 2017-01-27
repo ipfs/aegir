@@ -1,3 +1,15 @@
+<a name="9.4.0"></a>
+# [9.4.0](https://github.com/dignifiedquire/aegir/compare/v9.3.3...v9.4.0) (2017-01-27)
+
+
+### Features
+
+* **coverage:** add codecov to coverage providers  ([8f06c99](https://github.com/dignifiedquire/aegir/commit/8f06c99))
+* **test:** add support to run tests in web workers ([0b7a851](https://github.com/dignifiedquire/aegir/commit/0b7a851))
+* **test:** finish webworker test implementation ([ea0a8b1](https://github.com/dignifiedquire/aegir/commit/ea0a8b1))
+
+
+
 <a name="9.3.3"></a>
 ## [9.3.3](https://github.com/dignifiedquire/aegir/compare/v9.3.2...v9.3.3) (2017-01-21)
 

@@ -37,6 +37,10 @@ module.exports = (gulp) => {
       utils.exitOnFail(done)
     )
   })
+
+  gulp.task('test:webworker', (done) => {
+    utils.hooksRun(gulp, 'test:browser', ['karma'], utils.exitOnFail(done))
+  })
 }
 
 function karmaTest (webWorker, done) {

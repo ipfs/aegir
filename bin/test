@@ -10,7 +10,7 @@ require('../gulp')(gulp, ['test'])
 
 if (args.browser) {
   gulp.start('test:browser')
-} else if (arg.nowebworker) {
+} else if (args.nowebworker) {
   gulp.start('test:karma')
 } else if (args.node) {
   gulp.start('test:node')

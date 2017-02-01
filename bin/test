@@ -9,9 +9,14 @@ require('../src/gulp-log')(gulp)
 require('../gulp')(gulp, ['test'])
 
 if (args.browser) {
-  gulp.start('test:browser')
-} else if (args.nowebworker) {
-  gulp.start('test:karma')
+  if (args.dom) {
+    gulp.start('test:karma')
+  } else if (args.webworker) {
+    gulp.start('test:karma:webworker')
+  } else {
+    // run both dom and webworker tests by default
+    gulp.start('test:browser')
+  }
 } else if (args.node) {
   gulp.start('test:node')
 } else {

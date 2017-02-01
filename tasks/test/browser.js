@@ -21,7 +21,7 @@ module.exports = (gulp) => {
   })
 
   gulp.task('test:karma:webworker', (done) => {
-    if (util.env.nowebworker) {
+    if (util.env.dom) {
       return done()
     }
 

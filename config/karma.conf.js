@@ -13,7 +13,7 @@ const files = [
   'test/browser.js',
   'test/**/*.spec.js',
   {pattern: 'test/fixtures/**/*', watched: false, served: true, included: false}
-].concat(userFiles)
+]
 
 let concurrency = 1
 let reporters = ['mocha-own']
@@ -92,7 +92,7 @@ module.exports = function (config) {
         timeout: timeout
       }
     },
-    files: files,
+    files: files.concat(userFiles),
     preprocessors: {
       'test/**/*.js': ['webpack', 'sourcemap']
     },

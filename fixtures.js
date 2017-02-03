@@ -15,11 +15,11 @@ module.exports = function loadFixtures (dirname, file, module) {
 function syncXhr (url, module) {
   let target
   if (module) {
-    target = path.join('base', 'node_modules', module, 'test', url)
+    target = path.join('/base', 'node_modules', module, 'test', url)
   } else {
-    target = path.join('base', 'test', url)
+    target = path.join('/base', 'test', url)
   }
-  const request = new window.XMLHttpRequest()
+  const request = new self.XMLHttpRequest()
   request.open('GET', target, false)
   request.overrideMimeType('text/plain; charset=x-user-defined')
   request.send(null)

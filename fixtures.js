@@ -19,7 +19,7 @@ function syncXhr (url, module) {
   } else {
     target = path.join('base', 'test', url)
   }
-  const request = new window.XMLHttpRequest()
+  const request = new self.XMLHttpRequest()
   request.open('GET', target, false)
   request.overrideMimeType('text/plain; charset=x-user-defined')
   request.send(null)

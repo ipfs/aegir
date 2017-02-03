@@ -2,6 +2,7 @@
 
 const Server = require('karma').Server
 const path = require('path')
+const timeout = require('../../config/custom').timeout
 
 module.exports = (gulp) => {
   const util = require('gulp-util')
@@ -20,7 +21,7 @@ module.exports = (gulp) => {
   })
 
   gulp.task('test:karma:webworker', (done) => {
-    if (!util.env.webworker) {
+    if (util.env.dom) {
       return done()
     }
 
@@ -61,7 +62,10 @@ function karmaTest (webWorker, done) {
         pattern: [
           'test/browser.js',
           'test/**/*.spec.js'
-        ]
+        ],
+        mocha: {
+          timeout: timeout
+        }
       }
     }
   }

@@ -2,18 +2,6 @@
 
 const webpackConfig = require('./webpack')
 const timeout = require('./custom').timeout
-const user = require('./user').customConfig
-
-let userFiles = []
-if (user.karma && user.karma.files) {
-  userFiles = user.karma.files
-}
-
-const files = [
-  'test/browser.js',
-  'test/**/*.spec.js',
-  {pattern: 'test/fixtures/**/*', watched: false, served: true, included: false}
-]
 
 let concurrency = 1
 let reporters = ['mocha-own']
@@ -72,8 +60,8 @@ const launchers = {
 let browsers = []
 
 if (process.env.SAUCE_USERNAME &&
-    process.env.SAUCE_ACCESS_KEY &&
-    process.env.SAUCE) {
+  process.env.SAUCE_ACCESS_KEY &&
+  process.env.SAUCE) {
   browsers = Object.keys(launchers)
   concurrency = 3
   reporters = ['progress', 'saucelabs']
@@ -86,13 +74,6 @@ if (process.env.SAUCE_USERNAME &&
 module.exports = function (config) {
   config.set({
     basePath: process.cwd(),
-    frameworks: ['mocha'],
-    client: {
-      mocha: {
-        timeout: timeout
-      }
-    },
-    files: files.concat(userFiles),
     preprocessors: {
       'test/**/*.js': ['webpack', 'sourcemap']
     },

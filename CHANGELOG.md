@@ -1,3 +1,13 @@
+<a name="10.0.0"></a>
+# [10.0.0](https://github.com/dignifiedquire/aegir/compare/v9.4.0...v10.0.0) (2017-02-07)
+
+
+### Features
+
+* **test:** enable tests in webworkers by default ([233708c](https://github.com/dignifiedquire/aegir/commit/233708c))
+
+
+
 <a name="9.4.0"></a>
 # [9.4.0](https://github.com/dignifiedquire/aegir/compare/v9.3.3...v9.4.0) (2017-01-27)
 

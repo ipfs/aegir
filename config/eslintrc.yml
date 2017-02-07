@@ -2,6 +2,8 @@
 extends: standard
 parserOptions:
   sourceType: 'script'
+globals:
+  self: true
 rules:
   strict: [2, 'safe']
   curly: 'error'

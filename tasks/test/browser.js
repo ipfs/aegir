@@ -2,6 +2,13 @@
 
 const Server = require('karma').Server
 const path = require('path')
+const timeout = require('../../config/custom').timeout
+const user = require('../../config/user').customConfig
+
+let userFiles = []
+if (user.karma && user.karma.files) {
+  userFiles = user.karma.files
+}
 
 module.exports = (gulp) => {
   const util = require('gulp-util')
@@ -20,7 +27,7 @@ module.exports = (gulp) => {
   })
 
   gulp.task('test:karma:webworker', (done) => {
-    if (!util.env.webworker) {
+    if (util.env.dom) {
       return done()
     }
 
@@ -49,21 +56,41 @@ function karmaTest (webWorker, done) {
 
   if (webWorker) {
     config.frameworks = ['mocha-webworker']
+    config.client = {
+      mochaWebWorker: {
+        pattern: [
+          'test/browser.js',
+          'test/**/*.spec.js'
+        ],
+        mocha: {
+          timeout: timeout
+        }
+      }
+    }
     config.files = [{
       pattern: 'test/browser.js', included: false
     }, {
       pattern: 'test/**/*.spec.js', included: false
     }, {
       pattern: 'test/fixtures/**/*', watched: false, served: true, included: false
-    }]
+    }].concat(userFiles)
+  } else {
+    config.frameworks = ['mocha']
+    config.files = [
+      'test/browser.js',
+      'test/**/*.spec.js',
+      { pattern: 'test/fixtures/**/*', watched: false, served: true, included: false }
+    ]
     config.client = {
-      mochaWebWorker: {
-        pattern: [
-          'test/browser.js',
-          'test/**/*.spec.js'
-        ]
+      mocha: {
+        timeout: timeout
       }
     }
+    config.files = [
+      'test/browser.js',
+      'test/**/*.spec.js',
+      { pattern: 'test/fixtures/**/*', watched: false, served: true, included: false }
+    ].concat(userFiles)
   }
 
   new Server(config, (code) => {

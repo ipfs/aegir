@@ -27,7 +27,8 @@ module.exports = (gulp) => {
   })
 
   gulp.task('test:karma:webworker', (done) => {
-    if (util.env.dom) {
+    // Skip running tests in a webworker
+    if (util.env.webworker === 'false') {
       return done()
     }
 
@@ -37,11 +38,18 @@ module.exports = (gulp) => {
   gulp.task('test:browser', (done) => {
     const runSequence = require('run-sequence')
 
-    runSequence.use(gulp)(
-      'test:karma',
-      'test:karma:webworker',
-      utils.exitOnFail(done)
-    )
+    if (util.env.webworker === 'only') {
+      runSequence.use(gulp)(
+        'test:karma:webworker',
+        utils.exitOnFail(done)
+      )
+    } else {
+      runSequence.use(gulp)(
+        'test:karma',
+        'test:karma:webworker',
+        utils.exitOnFail(done)
+      )
+    }
   })
 }
 

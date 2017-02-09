@@ -77,10 +77,12 @@ $ aegir-test browser
 $ gulp test:browser
 ```
 
-If you want to run tests in a webworker you can also pass `--webworker` as a flag to enable that.
+Browser tests by default run inside the main thread and a webworker thread. If you want to disable or only run your tests in a webworker, you can do it by passing the flag:
 
-If the needed environment variables are set, tests are also run on [Sauce Labs].
-You will need
+- `--webworker=false`
+- `--webworker=only`
+
+If the needed environment variables are set, tests are also run on [Sauce Labs]. You will need:
 
 - `$SAUCE=true`
 - `SAUCE_USERNAME=<username>`

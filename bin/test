@@ -9,9 +9,9 @@ require('../src/gulp-log')(gulp)
 require('../gulp')(gulp, ['test'])
 
 if (args.browser) {
-  if (args.dom) {
+  if (args.webworker === false) {
     gulp.start('test:karma')
-  } else if (args.webworker) {
+  } else if (args.webworker === 'only') {
     gulp.start('test:karma:webworker')
   } else {
     // run both dom and webworker tests by default

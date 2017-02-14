@@ -38,18 +38,11 @@ module.exports = (gulp) => {
   gulp.task('test:browser', (done) => {
     const runSequence = require('run-sequence')
 
-    if (util.env.webworker === 'only') {
-      runSequence.use(gulp)(
-        'test:karma:webworker',
-        utils.exitOnFail(done)
-      )
-    } else {
-      runSequence.use(gulp)(
-        'test:karma',
-        'test:karma:webworker',
-        utils.exitOnFail(done)
-      )
-    }
+    runSequence.use(gulp)(
+      'test:karma',
+      'test:karma:webworker',
+      utils.exitOnFail(done)
+    )
   })
 }
 

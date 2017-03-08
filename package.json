@@ -48,7 +48,7 @@
     "gulp-eslint": "^3.0.1",
     "gulp-filter": "^5.0.0",
     "gulp-gh-pages": "^0.5.4",
-    "gulp-git": "^1.12.0",
+    "gulp-git": "^2.0.0",
     "gulp-mocha": "^4.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-size": "^2.1.0",
@@ -82,7 +82,7 @@
     "transform-loader": "^0.2.3",
     "uglify-js": "github:mishoo/UglifyJS2#harmony",
     "webpack": "^2.1.0-beta.28",
-    "webpack-merge": "^2.5.0"
+    "webpack-merge": "^4.0.0"
   },
   "repository": {
     "type": "git",

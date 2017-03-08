@@ -94,6 +94,6 @@ module.exports = function (config) {
     singleRun: false,
     concurrency: concurrency,
     browserNoActivityTimeout: timeout,
-    failOnEmptyTestSuite: false
+    failOnEmptyTestSuite: true
   })
 }

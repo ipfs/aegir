@@ -3,4 +3,4 @@ node_js:
   - stable
 
 script:
-  - npm run lint
+  - yarn lint

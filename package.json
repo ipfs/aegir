@@ -38,7 +38,7 @@
     "coveralls": "^2.11.15",
     "detect-node": "^2.0.3",
     "eslint": "^3.14.1",
-    "eslint-config-standard": "^6.2.1",
+    "eslint-config-standard": "^8.0.0-beta.0",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "gulp": "^3.9.1",

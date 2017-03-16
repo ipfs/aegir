@@ -1,3 +1,21 @@
+<a name="11.0.0"></a>
+# [11.0.0](https://github.com/dignifiedquire/aegir/compare/v10.0.0...v11.0.0) (2017-03-16)
+
+
+### Bug Fixes
+
+* **karma:** fail on empty test suite ([d2a2e6c](https://github.com/dignifiedquire/aegir/commit/d2a2e6c)), closes [#100](https://github.com/dignifiedquire/aegir/issues/100)
+* **package:** update codecov to version 2.0.1 ([#114](https://github.com/dignifiedquire/aegir/issues/114)) ([2014143](https://github.com/dignifiedquire/aegir/commit/2014143))
+* **package:** update gulp-git to version 2.0.0 ([a74a3dc](https://github.com/dignifiedquire/aegir/commit/a74a3dc))
+* **package:** update webpack-merge to version 4.0.0 ([34ae02c](https://github.com/dignifiedquire/aegir/commit/34ae02c)), closes [#105](https://github.com/dignifiedquire/aegir/issues/105)
+
+
+### Features
+
+* update all dependencies and add yarn.lock ([9508272](https://github.com/dignifiedquire/aegir/commit/9508272))
+
+
+
 <a name="10.0.0"></a>
 # [10.0.0](https://github.com/dignifiedquire/aegir/compare/v9.4.0...v10.0.0) (2017-02-07)
 

@@ -28,6 +28,7 @@ rules:
   no-nested-ternary: 1
   no-script-url: 2
   no-warning-comments: 1
+  no-restricted-globals: ['window']
   quote-props: [2, 'as-needed']
   require-yield: 2
   max-nested-callbacks: [2, 4]

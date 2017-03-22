@@ -1,3 +1,13 @@
+<a name="11.0.1"></a>
+## [11.0.1](https://github.com/dignifiedquire/aegir/compare/v11.0.0...v11.0.1) (2017-03-22)
+
+
+### Bug Fixes
+
+* **config:** update webpack.js to be compatible with webpack[@2](https://github.com/2).3.0 ([e82ae5f](https://github.com/dignifiedquire/aegir/commit/e82ae5f))
+
+
+
 <a name="11.0.0"></a>
 # [11.0.0](https://github.com/dignifiedquire/aegir/compare/v10.0.0...v11.0.0) (2017-03-16)
 

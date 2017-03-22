@@ -19,7 +19,7 @@ const shared = {
   output: {
     filename: entry.split('/').pop(),
     library: libraryName,
-    path: 'dist'
+    path: path.join(process.cwd(), '/dist')
   },
   resolve: {
     modules: [

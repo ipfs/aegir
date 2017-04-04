@@ -221,7 +221,7 @@ $ gulp release --env node
 You can generate a changelog for all versions by using `--first`
 
 ```bash
-$ aegir-relase --first
+$ aegir-release --first
 ```
 
 You can skip all changelog generation and the github release by passing

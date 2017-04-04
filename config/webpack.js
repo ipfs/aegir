@@ -9,7 +9,7 @@ let user = require('./user')
 
 // e.g. peer-id -> PeerId
 const libraryName = upperFirst(camelCase(user.pkg.name))
-const specific = merge(user.customPkg || {}, user.customPkg || {})
+const specific = user.customPkg || {}
 const entry = user.entry || 'src/index.js'
 
 const shared = {

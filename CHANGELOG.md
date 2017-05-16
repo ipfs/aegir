@@ -1,3 +1,13 @@
+<a name="11.0.2"></a>
+## [11.0.2](https://github.com/dignifiedquire/aegir/compare/v11.0.1...v11.0.2) (2017-05-16)
+
+
+### Features
+
+* pick the right uglify-js by commit ([75ad531](https://github.com/dignifiedquire/aegir/commit/75ad531))
+
+
+
 <a name="11.0.1"></a>
 ## [11.0.1](https://github.com/dignifiedquire/aegir/compare/v11.0.0...v11.0.1) (2017-03-22)
 

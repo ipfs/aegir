@@ -7,7 +7,8 @@
     "fs": false
   },
   "bin": {
-    "aegir-lint": "bin/lint",
+    "aegir": "./cli.js",
+    "aegir-lint": "./cli.js lint",
     "aegir-build": "bin/build",
     "aegir-test": "bin/test",
     "aegir-release": "bin/release",
@@ -15,7 +16,7 @@
     "aegir-docs": "bin/docs"
   },
   "scripts": {
-    "lint": "bin/lint",
+    "lint": "./cli.js lint",
     "release": "bin/release no-build",
     "release-minor": "bin/release no-build --type minor",
     "release-major": "bin/release no-build --type major"
@@ -81,7 +82,8 @@
     "transform-loader": "^0.2.4",
     "uglify-es": "^3.0.23",
     "webpack": "^3.0.0",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "yargs": "^8.0.2"
   },
   "repository": {
     "type": "git",

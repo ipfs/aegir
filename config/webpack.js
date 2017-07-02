@@ -62,7 +62,7 @@ const shared = {
 }
 
 const dev = merge(shared, {
-  devtool: 'inline-source-map'
+  devtool: 'source-map'
 }, specific)
 
 module.exports = dev

@@ -21,7 +21,7 @@ const handlers = {
       }
 
       console.log('Finished uploading coveralls report')
-  // ./node_modules/.bin/coveralls --verbose < coverage/lcov.info
+      // ./node_modules/.bin/coveralls --verbose < coverage/lcov.info
     })
   },
   codecov: (coverFile) => {

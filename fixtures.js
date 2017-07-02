@@ -2,6 +2,7 @@
 
 const isNode = require('detect-node')
 const path = require('path')
+const Buffer = require('safe-buffer').Buffer
 
 module.exports = function loadFixtures (dirname, file, module) {
   if (isNode) {
@@ -32,6 +33,6 @@ function syncXhr (url, module) {
       res[i] = filestream.charCodeAt(i) & 0xff
     }
 
-    return new Buffer(res)
+    return Buffer.from(res)
   }
 }

@@ -3,6 +3,7 @@
 const map = require('map-stream')
 const git = require('gulp-git')
 const _ = require('lodash')
+const Buffer = require('safe-buffer')
 
 module.exports = function (opts) {
   if (!opts) opts = {}
@@ -37,7 +38,7 @@ module.exports = function (opts) {
         .value()
 
       json.contributors = gitContribs
-      file.contents = new Buffer(JSON.stringify(json, null, 2))
+      file.contents = Buffer.from(JSON.stringify(json, null, 2))
       cb(null, file)
     })
   }

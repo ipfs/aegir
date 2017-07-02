@@ -3,13 +3,14 @@
 module.exports = (gulp) => {
   gulp.task('build:browser', ['clean:browser'], (done) => {
     const webpack = require('webpack')
-    const minifier = require('gulp-uglify/minifier')
+    const composer = require('gulp-uglify/composer')
     const util = require('gulp-util')
     const size = require('gulp-size')
     const rename = require('gulp-rename')
-    const uglify = require('uglify-js')
+    const uglify = require('uglify-es')
     const pump = require('pump')
 
+    const minify = composer(uglify, console)
     const config = require('../../config/webpack')
 
     const c = config
@@ -18,9 +19,9 @@ module.exports = (gulp) => {
     webpack(c, webpackDone(() => {
       pump([
         gulp.src('dist/' + c.output.filename),
-        minifier({
+        minify({
           mangle: false
-        }, uglify),
+        }),
         rename({
           suffix: '.min'
         }),

@@ -52,7 +52,7 @@
     "gulp-size": "^2.1.0",
     "gulp-spawn-mocha": "^3.3.0",
     "gulp-tag-version": "^1.3.0",
-    "gulp-uglify": "^2.1.2",
+    "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "istanbul": "^0.4.5",
     "json-loader": "^0.5.4",
@@ -79,7 +79,7 @@
     "signal-exit": "^3.0.2",
     "stream-http": "^2.7.1",
     "transform-loader": "^0.2.4",
-    "uglify-js": "github:mishoo/UglifyJS2#7906033e82d66f2735f8626e98f0f7352d9b3d25",
+    "uglify-es": "^3.0.23",
     "webpack": "^2.5.1",
     "webpack-merge": "^4.1.0"
   },

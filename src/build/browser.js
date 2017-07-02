@@ -5,19 +5,25 @@ const Uglify = require('uglify-es')
 const path = require('path')
 const Listr = require('listr')
 const fs = require('fs-extra')
+const filesize = require('filesize')
 
 const clean = require('../clean')
 
 const WEBPACK_CONFIG = require('../../config/webpack')
 
-function webpackBuild (ctx) {
+function webpackBuild (ctx, task) {
   return new Promise((resolve, reject) => {
     webpack(WEBPACK_CONFIG, (err, stats) => {
       if (err) {
         return reject(err)
       }
       ctx.webpackResult = stats
-      resolve(stats)
+
+      const assets = stats.toJson().assets
+        .filter((asset) => /\.(js)$/.test(asset.name))
+
+      task.title += ` (${filesize(assets[0].size)})`
+      resolve('finished')
     })
   })
 }
@@ -30,7 +36,9 @@ function writeStats (ctx) {
   )
 }
 
-function minify () {
+function minify (ctx, task) {
+  const minifiedPath = path.join(process.cwd(), 'dist', 'index.min.js')
+
   return fs.readFile(path.join(process.cwd(), 'dist', 'index.js'))
     .then((code) => {
       const result = Uglify.minify(code.toString(), {
@@ -43,9 +51,13 @@ function minify () {
     })
     .then((minified) => {
       return fs.writeFile(
-        path.join(process.cwd(), 'dist', 'index.min.js'),
+        minifiedPath,
         minified
       )
+    })
+    .then(() => fs.stat(minifiedPath))
+    .then((stats) => {
+      task.title += ` (${filesize(stats.size)})`
     })
 }
 

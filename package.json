@@ -41,6 +41,7 @@
     "detect-node": "^2.0.3",
     "eslint": "^4.1.1",
     "eslint-config-aegir": "^1.0.1",
+    "filesize": "^3.5.10",
     "fs-extra": "^3.0.1",
     "glob": "^7.1.2",
     "gulp": "^3.9.1",

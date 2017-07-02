@@ -1,6 +1,7 @@
 'use strict'
 
 const build = require('../src/build')
+const onError = require('../src/error-handler')
 
 module.exports = {
   command: 'build',
@@ -18,6 +19,6 @@ module.exports = {
     }
   },
   handler (argv) {
-    build(argv)
+    build(argv).catch(onError)
   }
 }

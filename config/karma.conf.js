@@ -73,6 +73,7 @@ if (process.env.SAUCE_USERNAME &&
 
 module.exports = function (config) {
   config.set({
+    frameworks: ['mocha'],
     basePath: process.cwd(),
     preprocessors: {
       'test/**/*.js': ['webpack', 'sourcemap']
@@ -87,7 +88,7 @@ module.exports = function (config) {
     },
     port: 9876,
     colors: true,
-    logLevel: process.env.DEBUG ? config.LOG_DEBUG : config.LOG_INFO,
+    logLevel: config.LOG_WARN,
     autoWatch: false,
     browsers: browsers,
     customLaunchers: launchers,

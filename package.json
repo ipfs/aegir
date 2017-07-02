@@ -31,7 +31,7 @@
   "dependencies": {
     "args-parser": "^1.1.0",
     "browserify-zlib-next": "^1.0.1",
-    "chalk": "^1.1.3",
+    "chalk": "^2.0.1",
     "clean-documentation-theme": "^0.4.2",
     "codecov": "^2.2.0",
     "conventional-github-releaser": "^1.1.3",
@@ -80,7 +80,7 @@
     "stream-http": "^2.7.1",
     "transform-loader": "^0.2.4",
     "uglify-es": "^3.0.23",
-    "webpack": "^2.5.1",
+    "webpack": "^3.0.0",
     "webpack-merge": "^4.1.0"
   },
   "repository": {

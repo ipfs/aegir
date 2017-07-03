@@ -7,8 +7,8 @@ function onError (err) {
     return
   }
 
-  chalk.red(err.message)
-  chalk.gray(err.stack)
+  console.log(chalk.red(err.message))
+  console.log(chalk.gray(err.stack))
   process.exit(1)
 }
 

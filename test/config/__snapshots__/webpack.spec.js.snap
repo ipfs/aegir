@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`config - webpack default 1`] = `
+exports[`config - webpack custom configs 1`] = `
 Object {
   "devtool": "eval",
   "entry": Array [
-    "/Users/dignifiedquire/opensource/ipfs/aegir/src/index.js",
+    "/Users/dignifiedquire/opensource/ipfs/aegir/src/main.js",
   ],
   "module": Object {
     "rules": Array [
@@ -18,7 +18,7 @@ Object {
     "Buffer": true,
   },
   "output": Object {
-    "filename": "index.js",
+    "filename": "main.js",
     "library": "Example",
     "path": "/Users/dignifiedquire/opensource/ipfs/aegir/test/config/fixtures/dist",
   },

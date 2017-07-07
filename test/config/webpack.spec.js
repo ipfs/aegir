@@ -15,14 +15,11 @@ describe('config - webpack', () => {
     process.cwd.restore()
   })
 
-  it('default', () => {
-    expect(config).toHaveProperty('output.filename', 'index.js')
+  it('custom configs', () => {
+    expect(config).toHaveProperty('output.filename', 'main.js')
     expect(config).toHaveProperty('output.library', 'Example')
+    expect(config).toHaveProperty('devtool', 'eval')
 
     expect(config).toMatchSnapshot()
-  })
-
-  it('merge with user config', () => {
-    expect(config).toHaveProperty('devtool', 'eval')
   })
 })

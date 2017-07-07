@@ -1,14 +1,13 @@
 'use strict'
 
 const path = require('path')
-const upperFirst = require('lodash.upperfirst')
-const camelCase = require('lodash.camelcase')
+const _ = require('lodash')
 const merge = require('webpack-merge')
 
 let user = require('./user')
 
 // e.g. peer-id -> PeerId
-const libraryName = upperFirst(camelCase(user.pkg.name))
+const libraryName = _.upperFirst(_.camelCase(user.pkg.name))
 const specific = merge(user.customPkg || {}, user.customPkg || {})
 const entry = user.entry || 'src/index.js'
 
@@ -32,7 +31,7 @@ const shared = {
       //
       // Can be dropped once https://github.com/devongovett/browserify-zlib/pull/18
       // is shipped
-      zlib: 'browserify-zlib-next',
+      zlib: 'browserify-zlib',
       // Can be dropped once https://github.com/webpack/node-libs-browser/pull/41
       // is shipped
       http: 'stream-http'

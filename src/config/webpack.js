@@ -8,13 +8,14 @@ let user = require('./user')
 
 // e.g. peer-id -> PeerId
 const libraryName = _.upperFirst(_.camelCase(user.pkg.name))
-const specific = merge(user.customPkg || {}, user.customPkg || {})
+const specific = merge(user.customPkg.webpack || {}, user.customConfig.webpack || {})
 const entry = user.entry || 'src/index.js'
 
-const shared = {
+const base = {
   entry: [
     path.resolve(entry)
   ],
+  devtool: 'source-map',
   output: {
     filename: entry.split('/').pop(),
     library: libraryName,
@@ -60,8 +61,4 @@ const shared = {
   }
 }
 
-const dev = merge(shared, {
-  devtool: 'source-map'
-}, specific)
-
-module.exports = dev
+module.exports = merge(base, specific)

@@ -1,12 +1,12 @@
 'use strict'
 
-const Listr = require('listr')
+const pmap = require('p-map')
 const _ = require('lodash')
 
 const node = require('./node')
 const browser = require('./browser')
 
-const TASKS = new Listr([{
+const TASKS = [{
   title: 'Test Node.js',
   task: node,
   enabled: (ctx) => _.includes(ctx.target, 'node')
@@ -18,6 +18,17 @@ const TASKS = new Listr([{
   title: 'Test Webworker',
   task: browser.webworker,
   enabled: (ctx) => _.includes(ctx.target, 'webworker')
-}])
+}]
 
-module.exports = TASKS
+module.exports = {
+  run (opts) {
+    return pmap(TASKS, (task) => {
+      if (!task.enabled(opts)) {
+        return Promise.resolve()
+      }
+
+      console.log(task.title)
+      return task.task(opts)
+    }, {concurrency: 1})
+  }
+}

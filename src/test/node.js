@@ -1,34 +1,38 @@
 'use strict'
 
-const Mocha = require('mocha')
-const glob = require('glob')
-const _ = require('lodash')
-
-const CONFIG = require('../../config/custom').timeout
-
-const FILES = [
-  'test/node.js',
-  'test/**/*.spec.js'
-]
+const execa = require('execa')
 
 function testNode (ctx) {
-  const mocha = new Mocha({
-    ui: 'bdd',
-    reporter: ctx.verbose ? 'spec' : 'progress',
-    useColors: true,
-    timeout: CONFIG.timeout
+  const args = [
+    '--colors',
+    '--config', require.resolve('../config/jest')
+  ]
+
+  if (ctx.verbose) {
+    args.push('--verbose')
+  }
+
+  if (ctx.watch) {
+    args.push('--watchAll')
+  }
+
+  if (ctx.coverage) {
+    args.push('--coverage')
+  }
+
+  if (ctx.updateSnapshot) {
+    args.push('--updateSnapshot')
+  }
+
+  const res = execa('jest', args, {
+    cwd: process.cwd()
   })
+  res.stdout.pipe(process.stdout)
+  res.stderr.pipe(process.stderr)
 
-  const files = _.flatten(FILES.map((pattern) => glob.sync(pattern)))
-  files.forEach((file) => mocha.addFile(file))
-
-  return new Promise((resolve, reject) => {
-    mocha.run((failure) => {
-      if (failure) {
-        reject(new Error(`Failed ${failure} tests`))
-      }
-      resolve()
-    })
+  // catch and rethrow custom to avoid double printing failed tests
+  return res.catch(() => {
+    throw new Error('Tests failed')
   })
 }
 

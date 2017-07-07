@@ -9,7 +9,7 @@ const filesize = require('filesize')
 
 const clean = require('../clean')
 
-const WEBPACK_CONFIG = require('../../config/webpack')
+const WEBPACK_CONFIG = require('../config/webpack')
 
 function webpackBuild (ctx, task) {
   return new Promise((resolve, reject) => {

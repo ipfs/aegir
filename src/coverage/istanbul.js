@@ -2,18 +2,12 @@
 
 const execa = require('execa')
 const which = require('npm-which')(__dirname)
+const pify = require('pify')
 
 const timeout = require('../../config/custom').timeout
 
 function getBin (name) {
-  return new Promise((resolve, reject) => {
-    which(name, (err, res) => {
-      if (err) {
-        return reject(err)
-      }
-      resolve(res)
-    })
-  })
+  return pify(which)(name)
 }
 
 function istanbul () {

@@ -17,9 +17,12 @@
   },
   "scripts": {
     "lint": "./cli.js lint",
-    "release": "bin/release no-build",
-    "release-minor": "bin/release no-build --type minor",
-    "release-major": "bin/release no-build --type major"
+    "test": "./cli.js test --target node",
+    "coverage": "./cli.js coverage --target node",
+    "watch": "./cli.js test --target node --watch",
+    "release": "./cli.js release --no-build",
+    "release-minor": "./cli.js release --no-build --type minor",
+    "release-major": "./cli.js release --no-build --type major"
   },
   "keywords": [
     "webpack",
@@ -46,6 +49,7 @@
     "fs-extra": "^3.0.1",
     "glob": "^7.1.2",
     "istanbul": "^0.4.5",
+    "jest": "^20.0.4",
     "json-loader": "^0.5.4",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.1.1",
@@ -60,6 +64,7 @@
     "lodash": "^4.17.4",
     "mocha": "^3.4.2",
     "npm-which": "^3.0.1",
+    "p-map": "^1.1.1",
     "path-exists": "^3.0.0",
     "pify": "^3.0.0",
     "pretty-hrtime": "^1.0.3",
@@ -97,5 +102,8 @@
     "greenkeeperio-bot <support@greenkeeper.io>",
     "kumavis <kumavis@users.noreply.github.com>",
     "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>"
-  ]
+  ],
+  "devDependencies": {
+    "sinon": "^2.3.6"
+  }
 }

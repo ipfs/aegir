@@ -4,7 +4,7 @@ const path = require('path')
 const Listr = require('listr')
 
 const providers = require('./providers')
-const istanbul = require('./istanbul')
+const testNode = require('../test/node')
 
 function publish (opts) {
   const coverFile = path.join(process.cwd(), 'coverage', 'lcov.info')
@@ -14,7 +14,11 @@ function publish (opts) {
 function coverage (opts) {
   const tasks = new Listr([{
     title: 'Generating Coverage Report',
-    task: istanbul
+    task (opts) {
+      return testNode(Object.assign({}, opts, {
+        coverage: true
+      }))
+    }
   }, {
     title: `Publish report to ${opts.provider}`,
     task: publish,

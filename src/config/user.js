@@ -1,11 +1,11 @@
 'use strict'
 
 const path = require('path')
-const pkg = require(path.resolve('package.json'))
+const pkg = require(path.join(process.cwd(), 'package.json'))
 
 let customConfig = {}
 try {
-  customConfig = require(path.resolve('.aegir.js'))
+  customConfig = require(path.join(process.cwd(), '.aegir.js'))
 } catch (err) {
 }
 

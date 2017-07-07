@@ -1,10 +1,10 @@
 'use strict'
 
 const path = require('path')
-const timeout = require('../../config/custom').timeout
-const user = require('../../config/user').customConfig
+const timeout = require('../config/custom').timeout
+const user = require('../config/user').customConfig
 
-const CONFIG_FILE = path.join(__dirname, '..', '..', 'config', 'karma.conf.js')
+const CONFIG_FILE = path.join(__dirname, '..', 'config', 'karma.conf.js')
 
 let userFiles = []
 if (user.karma && user.karma.files) {

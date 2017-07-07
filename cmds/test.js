@@ -20,8 +20,12 @@ module.exports = {
       default: false
     },
     watch: {
-      describe: 'Watch files for changes and rerun tests (only available for browser based tests)',
+      describe: 'Watch files for changes and rerun tests',
       default: false
+    },
+    updateSnapshot: {
+      alias: 'u',
+      describe: 'Use this flag to re-record every snapshot that fails during this test run. (node only)'
     }
   },
   handler (argv) {

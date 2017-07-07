@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`config - webpack default 1`] = `
+Object {
+  "devtool": "eval",
+  "entry": Array [
+    "/Users/dignifiedquire/opensource/ipfs/aegir/src/index.js",
+  ],
+  "module": Object {
+    "rules": Array [
+      Object {
+        "loader": "json-loader",
+        "test": /\\\\\\.json\\$/,
+      },
+    ],
+  },
+  "node": Object {
+    "Buffer": true,
+  },
+  "output": Object {
+    "filename": "index.js",
+    "library": "Example",
+    "path": "/Users/dignifiedquire/opensource/ipfs/aegir/test/config/fixtures/dist",
+  },
+  "performance": Object {
+    "hints": false,
+  },
+  "plugins": Array [],
+  "resolve": Object {
+    "alias": Object {
+      "http": "stream-http",
+      "zlib": "browserify-zlib",
+    },
+    "modules": Array [
+      "node_modules",
+      "/Users/dignifiedquire/opensource/ipfs/aegir/src/node_modules",
+    ],
+  },
+  "resolveLoader": Object {
+    "moduleExtensions": Array [
+      "-loader",
+    ],
+    "modules": Array [
+      "node_modules",
+      "/Users/dignifiedquire/opensource/ipfs/aegir/src/node_modules",
+    ],
+  },
+  "target": "web",
+}
+`;

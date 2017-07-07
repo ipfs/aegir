@@ -20,8 +20,4 @@ const TASKS = new Listr([{
   enabled: (ctx) => _.includes(ctx.target, 'webworker')
 }])
 
-function test (opts) {
-  return TASKS.run(opts)
-}
-
-module.exports = test
+module.exports = TASKS

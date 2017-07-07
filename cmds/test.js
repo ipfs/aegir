@@ -25,6 +25,6 @@ module.exports = {
     }
   },
   handler (argv) {
-    test(argv).catch(onError)
+    test.run(argv).catch(onError)
   }
 }

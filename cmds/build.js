@@ -19,6 +19,6 @@ module.exports = {
     }
   },
   handler (argv) {
-    build(argv).catch(onError)
+    build.run(argv).catch(onError)
   }
 }

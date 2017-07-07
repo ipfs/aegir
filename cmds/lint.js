@@ -1,8 +1,7 @@
 'use strict'
 
-const formatter = require('eslint').CLIEngine.getFormatter()
-
 const lint = require('../src/lint.js')
+const onError = require('../src/error-handler')
 
 module.exports = {
   command: 'lint',
@@ -15,7 +14,6 @@ module.exports = {
     }
   },
   handler (argv) {
-    const report = lint(argv)
-    console.log(formatter(report.results))
+    lint(argv).catch(onError)
   }
 }

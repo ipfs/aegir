@@ -2,6 +2,7 @@
 
 const CLIEngine = require('eslint').CLIEngine
 const path = require('path')
+const formatter = CLIEngine.getFormatter()
 
 const CONFIG_FILE = path.resolve(__dirname, '..', 'config', 'eslintrc.yml')
 
@@ -18,13 +19,22 @@ const FILES = [
 ]
 
 function lint (opts) {
-  const cli = new CLIEngine({
-    useEslintrc: false,
-    configFile: CONFIG_FILE,
-    fix: opts.fix
-  })
+  return new Promise((resolve, reject) => {
+    const cli = new CLIEngine({
+      useEslintrc: false,
+      configFile: CONFIG_FILE,
+      fix: opts.fix
+    })
 
-  return cli.executeOnFiles(FILES)
+    const report = cli.executeOnFiles(FILES)
+
+    console.log(formatter(report.results))
+
+    if (report.errorCount > 0) {
+      return reject(new Error('Lint errors'))
+    }
+    resolve()
+  })
 }
 
 module.exports = lint

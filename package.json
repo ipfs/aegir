@@ -95,6 +95,7 @@
     "through": "^2.3.8",
     "transform-loader": "^0.2.4",
     "uglify-es": "^3.0.23",
+    "update-notifier": "^2.2.0",
     "webpack": "^3.0.0",
     "webpack-merge": "^4.1.0",
     "yargs": "^8.0.2",

@@ -9,7 +9,7 @@ const filesize = require('filesize')
 const pify = require('pify')
 
 const clean = require('../clean')
-
+const utils = require('../utils')
 const config = require('../config/webpack')
 
 function webpackBuild (ctx, task) {
@@ -71,6 +71,6 @@ const TASKS = new Listr([{
 }, {
   title: 'Minify',
   task: minify
-}])
+}], utils.getListrConfig())
 
 module.exports = TASKS

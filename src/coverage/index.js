@@ -6,6 +6,7 @@ const Listr = require('listr')
 
 const providers = require('./providers')
 const testNode = require('../test/node')
+const utils = require('../utils')
 
 function coverage (opts) {
   const tasks = new Listr([{
@@ -22,7 +23,7 @@ function coverage (opts) {
       return providers[name](coverFile)
     },
     enabled: (ctx) => _.includes(ctx.providers, name)
-  }))))
+  }))), utils.getListrConfig())
 
   return tasks.run(opts)
 }

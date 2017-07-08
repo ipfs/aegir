@@ -5,6 +5,7 @@ const Listr = require('listr')
 const lint = require('../lint')
 const test = require('../test')
 const build = require('../build')
+const utils = require('../utils')
 
 const releaseChecks = require('./prerelease')
 const bump = require('./bump')
@@ -55,7 +56,7 @@ function release (opts) {
     title: 'Publish to npm',
     task: publish,
     enabled: (ctx) => ctx.publish
-  }])
+  }], utils.getListrConfig())
 
   return releaseChecks(opts).then(() => tasks.run(opts))
 }

@@ -61,6 +61,8 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.3",
     "listr": "^0.12.0",
+    "listr-update-renderer": "^0.4.0",
+    "listr-verbose-renderer": "^0.4.0",
     "lodash": "^4.17.4",
     "mocha": "^3.4.2",
     "npm-which": "^3.0.1",

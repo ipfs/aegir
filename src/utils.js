@@ -4,6 +4,8 @@ const path = require('path')
 const findUp = require('find-up')
 const fs = require('fs-extra')
 const _ = require('lodash')
+const VerboseRenderer = require('listr-verbose-renderer')
+const UpdateRenderer = require('listr-update-renderer')
 
 const PKG_FILE = 'package.json'
 const DIST_FOLDER = 'dist'
@@ -75,4 +77,16 @@ exports.getLibraryName = (name) => {
  */
 exports.getPathToNodeModules = () => {
   return path.resolve(__dirname, '../node_modules')
+}
+
+/**
+ * Get the config for Listr depending on the current environment.
+ *
+ * @returns {Object}
+ */
+exports.getListrConfig = () => {
+  const isCI = String(process.env.CI) !== 'undefined'
+  return {
+    renderer: isCI ? VerboseRenderer : UpdateRenderer
+  }
 }

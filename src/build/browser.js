@@ -6,25 +6,22 @@ const path = require('path')
 const Listr = require('listr')
 const fs = require('fs-extra')
 const filesize = require('filesize')
+const pify = require('pify')
 
 const clean = require('../clean')
 
-const WEBPACK_CONFIG = require('../config/webpack')
+const config = require('../config/webpack')
 
 function webpackBuild (ctx, task) {
-  return new Promise((resolve, reject) => {
-    webpack(WEBPACK_CONFIG, (err, stats) => {
-      if (err) {
-        return reject(err)
-      }
-      ctx.webpackResult = stats
+  return config().then((config) => {
+    return pify(webpack)(config)
+  }).then((stats) => {
+    ctx.webpackResult = stats
 
-      const assets = stats.toJson().assets
-        .filter((asset) => /\.(js)$/.test(asset.name))
+    const assets = stats.toJson().assets
+      .filter((asset) => /\.(js)$/.test(asset.name))
 
-      task.title += ` (${filesize(assets[0].size)})`
-      resolve('finished')
-    })
+    task.title += ` (${filesize(assets[0].size)})`
   })
 }
 

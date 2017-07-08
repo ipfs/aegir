@@ -4,7 +4,7 @@ exports[`config - webpack custom configs 1`] = `
 Object {
   "devtool": "eval",
   "entry": Array [
-    "/Users/dignifiedquire/opensource/ipfs/aegir/src/main.js",
+    "src/main.js",
   ],
   "module": Object {
     "rules": Array [
@@ -20,7 +20,7 @@ Object {
   "output": Object {
     "filename": "main.js",
     "library": "Example",
-    "path": "/Users/dignifiedquire/opensource/ipfs/aegir/test/config/fixtures/dist",
+    "path": "dist",
   },
   "performance": Object {
     "hints": false,
@@ -33,7 +33,7 @@ Object {
     },
     "modules": Array [
       "node_modules",
-      "/Users/dignifiedquire/opensource/ipfs/aegir/src/node_modules",
+      "aegir/node_modules",
     ],
   },
   "resolveLoader": Object {
@@ -42,7 +42,7 @@ Object {
     ],
     "modules": Array [
       "node_modules",
-      "/Users/dignifiedquire/opensource/ipfs/aegir/src/node_modules",
+      "aegir/node_modules",
     ],
   },
   "target": "web",

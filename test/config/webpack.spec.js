@@ -1,25 +1,45 @@
 /* eslint-env jest */
 'use strict'
 
-const sinon = require('sinon')
-const path = require('path')
-
 describe('config - webpack', () => {
-  let config
-  beforeEach(() => {
-    sinon.stub(process, 'cwd').returns(path.join(__dirname, 'fixtures'))
-    config = require('../../src/config/webpack')
-  })
-
   afterEach(() => {
-    process.cwd.restore()
+    jest.resetAllMocks()
   })
 
   it('custom configs', () => {
-    expect(config).toHaveProperty('output.filename', 'main.js')
-    expect(config).toHaveProperty('output.library', 'Example')
-    expect(config).toHaveProperty('devtool', 'eval')
+    jest.mock('../../src/utils', () => ({
+      getPkg () {
+        return Promise.resolve({
+          name: 'example'
+        })
+      },
+      getUserConfig () {
+        return {
+          webpack: {
+            devtool: 'eval'
+          },
+          entry: 'src/main.js'
+        }
+      },
+      getLibraryName () {
+        return 'Example'
+      },
+      getPathToDist () {
+        return 'dist'
+      },
+      getPathToNodeModules () {
+        return 'aegir/node_modules'
+      }
+    }))
 
-    expect(config).toMatchSnapshot()
+    const config = require('../../src/config/webpack')
+
+    return config().then((conf) => {
+      expect(conf).toHaveProperty('entry', ['src/main.js'])
+      expect(conf).toHaveProperty('output.library', 'Example')
+      expect(conf).toHaveProperty('devtool', 'eval')
+
+      expect(conf).toMatchSnapshot()
+    })
   })
 })

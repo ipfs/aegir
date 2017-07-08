@@ -1,33 +1,14 @@
 'use strict'
 
-const path = require('path')
-const _ = require('lodash')
-const merge = require('webpack-merge')
+const utils = require('../../utils')
 
-let user = require('./user')
-
-// e.g. peer-id -> PeerId
-const libraryName = _.upperFirst(_.camelCase(user.pkg.name))
-const specific = merge(
-  user.customPkg.webpack || {},
-  user.customConfig.webpack || {}
-)
-const entry = user.entry
-
-const base = {
-  entry: [
-    path.resolve(entry)
-  ],
+module.exports = {
   devtool: 'source-map',
-  output: {
-    filename: entry.split('/').pop(),
-    library: libraryName,
-    path: path.join(process.cwd(), '/dist')
-  },
+  output: {},
   resolve: {
     modules: [
       'node_modules',
-      path.resolve(__dirname, '../node_modules')
+      utils.getPathToNodeModules()
     ],
     alias: {
       // These are needed because node-libs-browser depends on outdated
@@ -44,7 +25,7 @@ const base = {
   resolveLoader: {
     modules: [
       'node_modules',
-      path.resolve(__dirname, '../node_modules')
+      utils.getPathToNodeModules()
     ],
     moduleExtensions: ['-loader']
   },
@@ -63,5 +44,3 @@ const base = {
     hints: false
   }
 }
-
-module.exports = merge(base, specific)

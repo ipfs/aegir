@@ -1,22 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`config - user loads from package.json 1`] = `
+exports[`config - user custom config 1`] = `
 Object {
-  "customConfig": Object {
-    "entry": "src/main.js",
-    "webpack": Object {
-      "devtool": "eval",
-    },
-  },
-  "customPkg": Object {
-    "custom": true,
-  },
   "entry": "src/main.js",
-  "pkg": Object {
-    "aegir": Object {
-      "custom": true,
-    },
-    "name": "example",
+  "karma": Object {},
+  "webpack": Object {
+    "devtool": "eval",
   },
 }
 `;

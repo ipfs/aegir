@@ -2,14 +2,11 @@
 
 const path = require('path')
 const timeout = require('../config/custom').timeout
-const user = require('../config/user').customConfig
+const user = require('../config/user')().karma
 
 const CONFIG_FILE = path.join(__dirname, '..', 'config', 'karma.conf.js')
 
-let userFiles = []
-if (user.karma && user.karma.files) {
-  userFiles = user.karma.files
-}
+const userFiles = user.files != null ? user.files : []
 
 const webworkerClient = {
   mochaWebWorker: {

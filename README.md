@@ -7,6 +7,32 @@
 > Automated JavaScript project management.
 
 
+## Migration from `v11`
+
+There was a large refactor from `v11` to `v12`, so there is some migration needed. All features you need should still be there, but you might need to changes some things.
+
+### Custom Config
+
+The `aegir` section in `package.json` was not really useful anymore so it is not supported anymore. Any custom configuration you need can be done in `.aegir.js`.
+
+### Pre and Post Hooks
+
+As we are no longer using `gulp` the previous setup using a custom `gulpfile` will not work anymore. To setup hooks around your tests you can use npm script hooks instead. For example
+
+```json
+"scripts": {
+  "pretest": "node ./test/setup.js",
+  "posttest": "node ./test/teardown.js",
+  "test": "aegir test",
+  "release": "npm run test && aegir release --no-test"
+}
+```
+
+### Renamed binaries
+
+`aegir` is now a single binary with subcommands. While something like `aegir-test` still works, we recommend to switch to the new `aegir test` syntax.
+
+
 ## Project Structure
 
 The project structure when using this is quite strict, to ease
@@ -23,14 +49,14 @@ Your `package.json` should have the following entries.
 ```json
 "main": "src/index.js",
 "scripts": {
-  "lint": "aegir-lint",
-  "release": "aegir-release",
-  "build": "aegir-build",
-  "test": "aegir-test",
-  "test:node": "aegir-test node",
-  "test:browser": "aegir-test browser",
-  "coverage": "aegir-coverage",
-  "coverage-publish": "aegir-coverage publish"
+  "lint": "aegir lint",
+  "release": "aegir release",
+  "build": "aegir build",
+  "test": "aegir test",
+  "test:node": "aegir test --target node",
+  "test:browser": "aegir test --target browser",
+  "coverage": "aegir coverage",
+  "coverage-publish": "aegir coverage --upload"
 }
 ```
 
@@ -39,23 +65,20 @@ Your `package.json` should have the following entries.
 To bring you its many benefits, `aegir` requires
 
 - JS written in [Standard](https://github.com/feross/standard) style
-- Tests written in [Mocha](https://github.com/mochajs/mocha)
+- Tests written in [Mocha](https://github.com/mochajs/mocha) syntax, executed through [Jest](https://facebook.github.io/jest/) in node and karma in the browser.
 - [Karma](https://github.com/karma-runner/karma) for browser tests
-
 
 ## Tasks
 
 ### Linting
 
 Linting uses [eslint](http://eslint.org/) and [standard](https://github.com/feross/standard)
-with [some custom rules](config/eslintrc.yml) to enforce some more strictness.
+with [some custom rules](https://github.com/ipfs/eslint-config-aegir) to enforce some more strictness.
 
 You can run it using
 
 ```bash
-$ aegir-lint
-# or as gulp task
-$ gulp lint
+$ aegir lint
 ```
 
 ### Testing
@@ -63,21 +86,16 @@ $ gulp lint
 You can run it using
 
 ```bash
-$ aegir-test
-# or as gulp task
-$ gulp test
+$ aegir test
 ```
 
 There are also browser and node specific tasks
 
 ```bash
-$ aegir-test node
-$ gulp test:node
-$ aegir-test browser
-$ gulp test:browser
+$ aegir test --target node
+$ aegir test --target browser
+$ aegir test --target webworker
 ```
-
-If you want to run tests in a webworker you can also pass `--webworker` as a flag to enable that.
 
 If the needed environment variables are set, tests are also run on [Sauce Labs].
 You will need
@@ -138,9 +156,7 @@ module.exports = {
 You can run it using
 
 ```bash
-$ aegir-coverage
-# or as gulp task
-$ gulp coverage
+$ aegir coverage
 ```
 
 To auto publish coverage reports from Travis to Coveralls add this to
@@ -148,10 +164,7 @@ your `.travis.yml` file. For more details see [node-coveralls](https://github.co
 
 ```yml
 script:
-  - npm run coverage
-
-after_success:
-  - npm run coverage-publish
+  - npm run coverage -- -upload
 ```
 
 ### Building
@@ -166,9 +179,7 @@ https://unpkg.com/<module-name>/dist/index.min.js
 You can run it using
 
 ```bash
-$ aegir-build
-# or as gulp task
-$ gulp build
+$ aegir build
 ```
 
 **Specifying a custom entry file for Webpack**
@@ -200,29 +211,21 @@ If `.aegir.js` file is not present in the project, webpack will use `src/index.j
 
 ```bash
 # Major release
-$ gulp release --type major
-$ aegir-release --type major
+$ aegir release --type major
 # Minor relase
-$ gulp release --type minor
-$ aegir-release --type minor
+$ aegir release --type minor
 # Patch release
-$ gulp release
-$ aegir-release
+$ aegir release
 ```
 
 You can also specify a `--env` for a release, which can be either
 `'node'`, `'browser'` or `'no-build'`.
 
 ```bash
-$ aegir-release --env node
-$ gulp release --env node
+$ aegir release --node
 ```
 
-You can generate a changelog for all versions by using `--first`
-
-```bash
-$ aegir-release --first
-```
+If no `CHANGELOG.md` is present, one is generated the first time a release is done.
 
 You can skip all changelog generation and the github release by passing
 in `--no-changelog`.
@@ -236,16 +239,7 @@ You can use `aegir-docs` to generate documentation. This uses [documentation.js]
 To publish the documentation automatically to the `gh-pages` branch you can run
 
 ```bash
-$ aegir-docs --publish
-```
-
-
-## Other Notes
-
-There is a badge.
-
-```markdown
-[![aegir](https://img.shields.io/badge/follows-aegir-blue.svg?style=flat-square)](https://github.com/ipfs/aegir)
+$ aegir docs --publish
 ```
 
 ## License

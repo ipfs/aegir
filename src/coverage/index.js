@@ -22,7 +22,7 @@ function coverage (opts) {
       const coverFile = path.join(process.cwd(), 'coverage', 'lcov.info')
       return providers[name](coverFile)
     },
-    enabled: (ctx) => _.includes(ctx.providers, name)
+    enabled: (ctx) => ctx.upload && _.includes(ctx.providers, name)
   }))), utils.getListrConfig())
 
   return tasks.run(opts)

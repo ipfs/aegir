@@ -24,7 +24,7 @@ function testNode (ctx) {
     args.push('--updateSnapshot')
   }
 
-  const res = execa('jest', args, {
+  const res = execa('jest', args.concat(ctx.files), {
     cwd: process.cwd()
   })
   res.stdout.pipe(process.stdout)

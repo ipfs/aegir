@@ -1,9 +1,10 @@
+/* eslint-env mocha */
 /* eslint-env jest */
 'use strict'
 
 describe('config - user', () => {
   let config
-  beforeAll(() => {
+  before(() => {
     jest.mock('../../src/utils', () => ({
       getPkg () {
         return Promise.resolve({
@@ -31,7 +32,7 @@ describe('config - user', () => {
     config = require('../../src/config/user')()
   })
 
-  afterAll(() => {
+  after(() => {
     jest.resetAllMocks()
   })
 

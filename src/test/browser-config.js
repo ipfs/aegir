@@ -1,21 +1,31 @@
 'use strict'
 
 const path = require('path')
+const _ = require('lodash')
+
 const timeout = require('../config/custom').timeout
-const user = require('../config/user')().karma
+const user = require('../config/user')
 
 const CONFIG_FILE = path.join(__dirname, '..', 'config', 'karma.conf.js')
 
-const userFiles = user.files != null ? user.files : []
+function getPatterns (ctx) {
+  if (ctx.files && ctx.files.length > 0) {
+    return ctx.files
+  }
 
-const webworkerClient = {
-  mochaWebWorker: {
-    pattern: [
-      'test/browser.js',
-      'test/**/*.spec.js'
-    ],
-    mocha: {
-      timeout: timeout
+  return [
+    'test/browser.js',
+    'test/**/*.spec.js'
+  ]
+}
+
+function webworkerClient (ctx) {
+  return {
+    mochaWebWorker: {
+      pattern: getPatterns(ctx),
+      mocha: {
+        timeout: timeout
+      }
     }
   }
 }
@@ -27,7 +37,7 @@ const defaultClient = {
 }
 
 function getConfig (isWebworker, ctx) {
-  return {
+  return _.defaultsDeep({}, user().karma, {
     configFile: CONFIG_FILE,
     singleRun: !ctx.watch,
     watch: ctx.watch,
@@ -37,19 +47,18 @@ function getConfig (isWebworker, ctx) {
     mochaOwnReporter: {
       reporter: ctx.verbose ? 'spec' : 'progress'
     },
-    files: [{
-      pattern: 'test/browser.js',
-      included: !isWebworker
-    }, {
-      pattern: 'test/**/*.spec.js',
-      included: !isWebworker
-    }, {
-      pattern: 'test/fixtures/**/*',
-      watched: false,
-      served: true,
-      included: false
-    }].concat(userFiles)
-  }
+    files: [
+      getPatterns(ctx).map((pattern) => ({
+        pattern: pattern,
+        included: !isWebworker
+      })), {
+        pattern: 'test/fixtures/**/*',
+        watched: false,
+        served: true,
+        included: false
+      }
+    ]
+  })
 }
 
 module.exports = getConfig

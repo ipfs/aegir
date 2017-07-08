@@ -26,6 +26,12 @@ module.exports = {
     updateSnapshot: {
       alias: 'u',
       describe: 'Use this flag to re-record every snapshot that fails during this test run. (node only)'
+    },
+    files: {
+      alias: 'f',
+      describe: 'Custom globs for files to test',
+      type: 'array',
+      default: []
     }
   },
   handler (argv) {

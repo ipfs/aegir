@@ -1,6 +1,6 @@
 'use strict'
 
-const lint = require('../src/lint.js')
+const lint = require('../src/lint')
 const onError = require('../src/error-handler')
 
 module.exports = {

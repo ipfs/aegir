@@ -2,7 +2,7 @@
   "name": "aegir",
   "version": "11.0.2",
   "description": "JavaScript project management",
-  "main": "index.js",
+  "main": "cli.js",
   "browser": {
     "fs": false
   },
@@ -13,7 +13,7 @@
     "aegir-test": "./cli.js test",
     "aegir-release": "./cli.js release",
     "aegir-coverage": "./cli.js coverage",
-    "aegir-docs": "bin/docs"
+    "aegir-docs": "./cli.js docs"
   },
   "scripts": {
     "lint": "./cli.js lint",

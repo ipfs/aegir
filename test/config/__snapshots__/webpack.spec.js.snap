@@ -25,7 +25,15 @@ Object {
   "performance": Object {
     "hints": false,
   },
-  "plugins": Array [],
+  "plugins": Array [
+    DefinePlugin {
+      "definitions": Object {
+        "process.env": Object {
+          "NODE_ENV": "production",
+        },
+      },
+    },
+  ],
   "resolve": Object {
     "alias": Object {
       "http": "stream-http",

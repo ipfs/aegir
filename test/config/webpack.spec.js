@@ -29,6 +29,15 @@ describe('config - webpack', () => {
       },
       getPathToNodeModules () {
         return 'aegir/node_modules'
+      },
+      getEnv () {
+        return {
+          stringified: {
+            'process.env': {
+              NODE_ENV: 'production'
+            }
+          }
+        }
       }
     }))
 

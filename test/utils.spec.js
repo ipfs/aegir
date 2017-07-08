@@ -50,4 +50,24 @@ describe('utils', () => {
   it('getPathToNodeModules', () => {
     expect(utils.getPathToNodeModules()).toEqual(expect.stringMatching(/node_modules$/))
   })
+
+  it('getEnv', () => {
+    process.env.AEGIR_TEST = 'hello'
+
+    const env = utils.getEnv()
+    expect(env.raw).toEqual({
+      NODE_ENV: 'test',
+      AEGIR_TEST: 'hello'
+    })
+    expect(env.stringified).toEqual({
+      'process.env': {
+        NODE_ENV: '"test"',
+        AEGIR_TEST: '"hello"'
+      }
+    })
+
+    process.env.NODE_ENV = ''
+    expect(utils.getEnv('production').raw).toHaveProperty('NODE_ENV', 'production')
+    process.env.NODE_ENV = 'test'
+  })
 })

@@ -1,6 +1,7 @@
 'use strict'
 
 const merge = require('webpack-merge')
+const webpack = require('webpack')
 
 const utils = require('../../utils')
 const base = require('./base')
@@ -21,7 +22,10 @@ function webpackConfig () {
         filename: entry.split('/').pop(),
         library: libraryName,
         path: utils.getPathToDist()
-      }
+      },
+      plugins: [
+        new webpack.DefinePlugin(utils.getEnv('production').stringified)
+      ]
     }, userConfig)
   })
 }

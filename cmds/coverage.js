@@ -12,11 +12,11 @@ module.exports = {
       describe: 'Upload the results to one of the providers',
       default: false
     },
-    provider: {
+    providers: {
       alias: 'p',
-      type: 'string',
+      type: 'array',
       choices: Object.keys(coverage.providers),
-      default: 'coveralls'
+      default: ['codecov']
     }
   },
   handler (argv) {

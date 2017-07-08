@@ -17,6 +17,12 @@ module.exports = {
       type: 'array',
       choices: Object.keys(coverage.providers),
       default: ['codecov']
+    },
+    files: {
+      alias: 'f',
+      describe: 'Custom globs for files to test',
+      type: 'array',
+      default: []
     }
   },
   handler (argv) {

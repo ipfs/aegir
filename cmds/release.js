@@ -56,6 +56,12 @@ module.exports = {
       type: 'string',
       choices: ['major', 'minor', 'patch', 'prerelease'],
       default: 'patch'
+    },
+    files: {
+      alias: 'f',
+      describe: 'Custom globs for files to test',
+      type: 'array',
+      default: []
     }
   },
   handler (argv) {

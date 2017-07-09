@@ -5,7 +5,7 @@ const sinon = require('sinon')
 
 const utils = require('../src/utils')
 
-describe('utils', () => {
+describe('utils', function () {
   it('getBasePath', () => {
     expect(utils.getBasePath()).toEqual(process.cwd())
   })

@@ -1,5 +1,5 @@
 'use strict'
 
 module.exports = {
-  timeout: 40 * 1000
+  timeout: 5 * 1000
 }

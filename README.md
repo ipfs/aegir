@@ -32,6 +32,9 @@ As we are no longer using `gulp` the previous setup using a custom `gulpfile` wi
 
 `aegir` is now a single binary with subcommands. While something like `aegir-test` still works, we recommend to switch to the new `aegir test` syntax.
 
+### Switch from Mocha to Jest
+
+Because the mocha binary was the source of many pains tests in node are now run using [Jest](https://facebook.github.io/jest/). All important features should work as before, but if you were relying on a mocha specific feature it might break now.
 
 ## Project Structure
 

@@ -6,7 +6,8 @@ const path = require('path')
 function testNode (ctx) {
   const args = [
     '--colors',
-    '--config', require.resolve('../config/jest')
+    '--config', require.resolve('../config/jest'),
+    '--env', 'node'
   ]
 
   let files = [

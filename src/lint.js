@@ -21,7 +21,7 @@ const FILES = [
 function lint (opts) {
   return new Promise((resolve, reject) => {
     const cli = new CLIEngine({
-      useEslintrc: false,
+      useEslintrc: true,
       configFile: CONFIG_FILE,
       fix: opts.fix
     })

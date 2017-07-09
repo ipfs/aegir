@@ -46,6 +46,10 @@ module.exports = {
       describe: 'Genereate GitHub release',
       default: true
     },
+    docs: {
+      describe: 'Generate and publish documentation',
+      default: true
+    },
     ghtoken: {
       describe: 'Access token for generating GitHub releases',
       type: 'string',

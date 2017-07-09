@@ -6,6 +6,7 @@ const lint = require('../lint')
 const test = require('../test')
 const build = require('../build')
 const utils = require('../utils')
+const docs = require('../docs')
 
 const releaseChecks = require('./prerelease')
 const bump = require('./bump')
@@ -18,6 +19,9 @@ const publish = require('./publish')
 const push = require('./push')
 
 function release (opts) {
+  // enable publishing for docs
+  opts.publish = true
+
   const tasks = new Listr([{
     title: 'Lint',
     task: lint,
@@ -52,6 +56,10 @@ function release (opts) {
     title: 'Generate GitHub Release',
     task: github,
     enabled: (ctx) => ctx.ghrelease
+  }, {
+    title: 'Publish documentation',
+    task: docs,
+    enabled: (ctx) => ctx.docs
   }, {
     title: 'Publish to npm',
     task: publish,

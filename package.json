@@ -17,9 +17,11 @@
   },
   "scripts": {
     "lint": "./cli.js lint",
-    "test": "./cli.js test --target node",
+    "test:node": "./cli.js test --target node",
+    "test:browser": "./cli.js test --target browser webworker --files test/browser.spec.js",
+    "test": "npm run test:node && npm run test:browser",
     "coverage": "./cli.js coverage --target node",
-    "watch": "./cli.js test --target node --watch",
+    "watch": "./cli.js tets --target node --watch",
     "release": "./cli.js release --no-build",
     "release-minor": "./cli.js release --no-build --type minor",
     "release-major": "./cli.js release --no-build --type major"
@@ -104,6 +106,7 @@
     "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>"
   ],
   "devDependencies": {
+    "chai": "^4.0.2",
     "sinon": "^2.3.6"
   }
 }

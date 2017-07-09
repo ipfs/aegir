@@ -36,6 +36,14 @@ const defaultClient = {
   }
 }
 
+function getClient (isWebworker, ctx) {
+  if (isWebworker) {
+    return webworkerClient(ctx)
+  }
+
+  return defaultClient
+}
+
 function getConfig (isWebworker, ctx) {
   return _.defaultsDeep({}, user().karma, {
     configFile: CONFIG_FILE,
@@ -43,21 +51,19 @@ function getConfig (isWebworker, ctx) {
     watch: ctx.watch,
     frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
     logLevel: ctx.verbose ? 'debug' : 'error',
-    client: isWebworker ? webworkerClient : defaultClient,
+    client: getClient(isWebworker, ctx),
     mochaOwnReporter: {
       reporter: ctx.verbose ? 'spec' : 'progress'
     },
-    files: [
-      getPatterns(ctx).map((pattern) => ({
-        pattern: pattern,
-        included: !isWebworker
-      })), {
-        pattern: 'test/fixtures/**/*',
-        watched: false,
-        served: true,
-        included: false
-      }
-    ]
+    files: getPatterns(ctx).map((pattern) => ({
+      pattern: pattern,
+      included: !isWebworker
+    })).concat([{
+      pattern: 'test/fixtures/**/*',
+      watched: false,
+      served: true,
+      included: false
+    }])
   })
 }
 

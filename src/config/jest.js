@@ -4,8 +4,7 @@ const path = require('path')
 
 module.exports = {
   testMatch: [
-    '**/test/**/?(*.)spec.js?(x)',
-    '**/test/(browser|node).js?(x)'
+    '**/test/**/*.js'
   ],
   testPathIgnorePatterns: [
     '/node_modules/',

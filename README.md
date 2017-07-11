@@ -17,16 +17,25 @@ The `aegir` section in `package.json` was not really useful anymore so it is not
 
 ### Pre and Post Hooks
 
-As we are no longer using `gulp` the previous setup using a custom `gulpfile` will not work anymore. To setup hooks around your tests you can use npm script hooks instead. For example
+As we are no longer using `gulp` the previous setup using a custom `gulpfile` will not work anymore. To setup hooks around your tests you can use a new configuration option `hooks` in `.aegir.js`.
 
-```json
-"scripts": {
-  "pretest": "node ./test/setup.js",
-  "posttest": "node ./test/teardown.js",
-  "test": "aegir test",
-  "release": "npm run test && aegir release --no-test"
+```js
+// .aegir.js
+module.exports = {
+  hooks: {
+    pre (callback) {
+      console.log('I am called before node and browser tests')
+      callback()
+    },
+    post (callback) {
+      console.log('I am called after node and browser tests')
+      callback()
+    }
+  }
 }
 ```
+
+You can also specify `hooks.browser` and `hooks.node` if you have a different setup for browser and/or node based tests.
 
 ### Renamed binaries
 

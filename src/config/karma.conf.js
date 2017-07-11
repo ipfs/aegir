@@ -92,7 +92,7 @@ module.exports = function (config) {
     autoWatch: false,
     browsers: browsers,
     customLaunchers: launchers,
-    singleRun: false,
+    singleRun: true,
     concurrency: concurrency,
     browserNoActivityTimeout: timeout,
     failOnEmptyTestSuite: true

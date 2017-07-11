@@ -6,6 +6,8 @@ const _ = require('lodash')
 const node = require('./node')
 const browser = require('./browser')
 
+const userConfig = require('../config/user')
+
 const TASKS = [{
   title: 'Test Node.js',
   task: node,
@@ -22,6 +24,7 @@ const TASKS = [{
 
 module.exports = {
   run (opts) {
+    opts.hooks = userConfig().hooks
     return pmap(TASKS, (task) => {
       if (!task.enabled(opts)) {
         return Promise.resolve()

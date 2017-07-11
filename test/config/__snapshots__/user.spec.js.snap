@@ -3,6 +3,16 @@
 exports[`config - user custom config 1`] = `
 Object {
   "entry": "src/main.js",
+  "hooks": Object {
+    "browser": Object {
+      "post": [Function],
+      "pre": [Function],
+    },
+    "node": Object {
+      "post": [Function],
+      "pre": [Function],
+    },
+  },
   "karma": Object {},
   "webpack": Object {
     "devtool": "eval",

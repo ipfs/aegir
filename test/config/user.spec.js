@@ -16,7 +16,15 @@ describe('config - user', () => {
           webpack: {
             devtool: 'eval'
           },
-          entry: 'src/main.js'
+          entry: 'src/main.js',
+          hooks: {
+            pre (cb) {
+              cb(null, 'pre')
+            },
+            post (cb) {
+              cb(null, 'post')
+            }
+          }
         }
       },
       getLibraryName () {
@@ -43,5 +51,14 @@ describe('config - user', () => {
       devtool: 'eval'
     })
     expect(config).toHaveProperty('entry', 'src/main.js')
+
+    expect(config.hooks).toHaveProperty('browser.pre')
+    expect(config.hooks).toHaveProperty('browser.post')
+    expect(config.hooks).toHaveProperty('node.pre')
+    expect(config.hooks).toHaveProperty('node.post')
+
+    return config.hooks.browser.pre().then((res) => {
+      expect(res).toEqual('pre')
+    })
   })
 })

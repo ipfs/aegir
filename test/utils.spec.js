@@ -2,6 +2,7 @@
 'use strict'
 
 const sinon = require('sinon')
+const path = require('path')
 
 const utils = require('../src/utils')
 
@@ -32,7 +33,8 @@ describe('utils', function () {
   })
 
   it('getUserConfig', () => {
-    expect(utils.getUserConfig()).toEqual({})
+    sinon.stub(utils, 'getUserConfigPath').returns(path.join(__dirname, 'fixtures/.aegir.js'))
+    expect(utils.getUserConfig()).toEqual({ config: 'mine' })
   })
 
   it('getLibraryName', () => {
@@ -69,5 +71,29 @@ describe('utils', function () {
     process.env.NODE_ENV = ''
     expect(utils.getEnv('production').raw).toHaveProperty('NODE_ENV', 'production')
     process.env.NODE_ENV = 'test'
+  })
+
+  it('hook', () => {
+    const res = utils.hook('node', 'pre')({
+      hooks: {
+        node: {
+          pre () {
+            return Promise.resolve(10)
+          }
+        }
+      }
+    })
+
+    return Promise.all([
+      res,
+      utils.hook('node', 'pre')({ hooks: {} }),
+      utils.hook('node', 'pre')({ hooks: { browser: { pre: {} } } })
+    ]).then((results) => {
+      expect(results).toEqual([
+        10,
+        undefined,
+        undefined
+      ])
+    })
   })
 })

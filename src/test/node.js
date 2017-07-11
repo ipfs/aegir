@@ -3,6 +3,8 @@
 const execa = require('execa')
 const path = require('path')
 
+const utils = require('../utils')
+
 function testNode (ctx) {
   const args = [
     '--colors',
@@ -35,21 +37,28 @@ function testNode (ctx) {
     files = ctx.files
   }
 
-  const res = execa('jest', args.concat(files), {
-    cwd: process.cwd(),
-    preferLocal: true,
-    localDir: path.join(__dirname, '../..')
-  })
-  res.stdout.pipe(process.stdout)
-  res.stderr.pipe(process.stderr)
+  const postHook = utils.hook('node', 'post')
+  const preHook = utils.hook('node', 'pre')
 
-  return res.catch((err) => {
-    // catch and rethrow custom to avoid double printing failed tests
-    if (err.code === 1 && err.stderr) {
-      throw new Error('Tests failed')
-    } else {
-      throw err
-    }
+  return preHook(ctx).then(() => {
+    return execa('jest', args.concat(files), {
+      cwd: process.cwd(),
+      preferLocal: true,
+      localDir: path.join(__dirname, '../..'),
+      stdin: process.stdin,
+      stdout: process.stdout,
+      stderr: process.stderr
+    }).catch((err) => {
+      // catch and rethrow custom to avoid double printing failed tests
+      if (err.code === 1) {
+        throw new Error('Your tests failed')
+      } else {
+        throw err
+      }
+    })
+  }).then(() => {
+    console.log('post')
+    postHook(ctx)
   })
 }
 

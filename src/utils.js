@@ -53,7 +53,7 @@ exports.getUserConfigPath = () => {
 exports.getUserConfig = () => {
   let conf = {}
   try {
-    conf = require(exports.getUserConfig())
+    conf = require(exports.getUserConfigPath())
   } catch (err) {
   }
   return conf
@@ -156,4 +156,12 @@ exports.getPathToDocs = () => {
  */
 exports.getPathToDocsFile = () => {
   return path.join(exports.getPathToDocs(), 'index.html')
+}
+
+exports.hook = (env, key) => (ctx) => {
+  if (ctx && ctx.hooks && ctx.hooks[env] && ctx.hooks[env][key]) {
+    return ctx.hooks[env][key]()
+  }
+
+  return Promise.resolve()
 }

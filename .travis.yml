@@ -4,3 +4,4 @@ node_js:
 
 script:
   - yarn lint
+  - yarn coverage -- -u -p codecov coveralls

@@ -3,7 +3,6 @@
 const path = require('path')
 const _ = require('lodash')
 
-const timeout = require('../config/custom').timeout
 const user = require('../config/user')
 
 const CONFIG_FILE = path.join(__dirname, '..', 'config', 'karma.conf.js')
@@ -24,15 +23,9 @@ function webworkerClient (ctx) {
     mochaWebWorker: {
       pattern: getPatterns(ctx),
       mocha: {
-        timeout: timeout
+        timeout: ctx.timeout
       }
     }
-  }
-}
-
-const defaultClient = {
-  mocha: {
-    timeout: timeout
   }
 }
 
@@ -41,7 +34,11 @@ function getClient (isWebworker, ctx) {
     return webworkerClient(ctx)
   }
 
-  return defaultClient
+  return {
+    mocha: {
+      timeout: ctx.timeout
+    }
+  }
 }
 
 function getConfig (isWebworker, ctx) {
@@ -70,7 +67,8 @@ function getConfig (isWebworker, ctx) {
     client: getClient(isWebworker, ctx),
     mochaOwnReporter: {
       reporter: ctx.verbose ? 'spec' : 'progress'
-    }
+    },
+    browserNoActivityTimeout: ctx.timeout
   })
 }
 

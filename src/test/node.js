@@ -9,13 +9,18 @@ function testNode (ctx) {
   const args = [
     '--colors',
     '--config', require.resolve('../config/jest'),
-    '--env', 'node'
+    '--env', 'node',
+    '--globals', JSON.stringify({ DEFAULT_TIMEOUT: ctx.timeout })
   ]
 
   let files = [
     'test/node.js$',
     'test/.*\\.spec\\.js$'
   ]
+
+  if (!ctx.parallel) {
+    args.push('--runInBand')
+  }
 
   if (ctx.verbose) {
     args.push('--verbose')

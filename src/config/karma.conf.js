@@ -1,7 +1,6 @@
 'use strict'
 
 const webpackConfig = require('./webpack')
-const timeout = require('./custom').timeout
 
 let concurrency = 1
 let reporters = ['mocha-own']
@@ -36,7 +35,6 @@ module.exports = function (config) {
     browsers: browsers,
     singleRun: true,
     concurrency: concurrency,
-    browserNoActivityTimeout: timeout,
     failOnEmptyTestSuite: true
   })
 }

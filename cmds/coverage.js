@@ -23,6 +23,16 @@ module.exports = {
       describe: 'Custom globs for files to test',
       type: 'array',
       default: []
+    },
+    parallel: {
+      alias: 'p',
+      describe: 'Run tests in parallel (only available in node)',
+      default: true
+    },
+    timeout: {
+      describe: 'The default time a single test has to run',
+      type: 'number',
+      default: 5000
     }
   },
   handler (argv) {

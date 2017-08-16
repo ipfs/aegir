@@ -39,7 +39,7 @@ You can also specify `hooks.browser` and `hooks.node` if you have a different se
 
 ### Renamed binaries
 
-`aegir` is now a single binary with subcommands. While something like `aegir-test` still works, we recommend to switch to the new `aegir test` syntax.
+`aegir` is now a single binary with subcommands. You should rename `aegir-test` to `aegir test` in your scripts.
 
 ### Switch from Mocha to Jest
 

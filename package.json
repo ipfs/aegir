@@ -7,13 +7,7 @@
     "fs": false
   },
   "bin": {
-    "aegir": "./cli.js",
-    "aegir-lint": "./cli.js lint",
-    "aegir-build": "./cli.js build",
-    "aegir-test": "./cli.js test",
-    "aegir-release": "./cli.js release",
-    "aegir-coverage": "./cli.js coverage",
-    "aegir-docs": "./cli.js docs"
+    "aegir": "./cli.js"
   },
   "scripts": {
     "lint": "./cli.js lint",

@@ -11,15 +11,27 @@ global.after = afterAll
 jasmine.DEFAULT_TIMEOUT_INTERVAL = custom.timeout
 
 function timeout (duration) {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = duration
+  let done = false
+  let original = jasmine.DEFAULT_TIMEOUT_INTERVAL
+
+  Object.defineProperty(jasmine, 'DEFAULT_TIMEOUT_INTERVAL', {
+    get () {
+      if (done) {
+        return original
+      }
+      done = true
+      return duration
+    }
+  })
 }
 
 (function patchJasmine (jasmine) {
   jasmine.Suite.prototype.timeout = timeout
 
-  const original = jasmine.Spec
+  // patch spec
+  const originalSpec = jasmine.Spec
   jasmine.Spec = function Spec (attr) {
-    original.call(this, attr)
+    originalSpec.call(this, attr)
 
     const originalUserContext = this.userContext
     this.userContext = () => {
@@ -28,10 +40,26 @@ function timeout (duration) {
       return ctx
     }
   }
-  jasmine.Spec.prototype = original.prototype
-  for (const statics in original) {
-    if (Object.prototype.hasOwnProperty.call(original, statics)) {
-      jasmine.Spec[statics] = original[statics]
+  jasmine.Spec.prototype = originalSpec.prototype
+  for (const statics in originalSpec) {
+    if (Object.prototype.hasOwnProperty.call(originalSpec, statics)) {
+      jasmine.Spec[statics] = originalSpec[statics]
+    }
+  }
+
+  // patch suite
+  const originalSuite = jasmine.Suite
+  jasmine.Suite = function Suite (attr) {
+    originalSuite.call(this, attr)
+
+    this.sharedContext = Object.assign(this.sharedContext || {}, {
+      timeout
+    })
+  }
+  jasmine.Suite.prototype = originalSuite.prototype
+  for (const statics in originalSuite) {
+    if (Object.prototype.hasOwnProperty.call(originalSuite, statics)) {
+      jasmine.Suite[statics] = originalSuite[statics]
     }
   }
 })(global.jasmine)

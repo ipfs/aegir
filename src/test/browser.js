@@ -5,12 +5,10 @@ const Server = require('karma').Server
 const getConfig = require('./browser-config')
 const utils = require('../utils')
 
-const IS_SAUCE = process.env.SAUCE_USERNAME && process.env.TRAVIS
-
 function karma (config) {
   return new Promise((resolve, reject) => {
     const server = new Server(config, (exitCode) => {
-      if (exitCode > 0 && !IS_SAUCE) {
+      if (exitCode > 0) {
         reject(new Error('Some tests are failing'))
       }
 

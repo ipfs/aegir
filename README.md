@@ -109,13 +109,6 @@ $ aegir test --target browser
 $ aegir test --target webworker
 ```
 
-If the needed environment variables are set, tests are also run on [Sauce Labs].
-You will need
-
-- `$SAUCE=true`
-- `SAUCE_USERNAME=<username>`
-- `SAUCE_ACCESS_KEY=<access key>`
-
 #### Fixtures
 
 Loading fixture files in node and the browser can be painful, that's why aegir provides

@@ -29,12 +29,6 @@ module.exports = {
     ],
     moduleExtensions: ['-loader']
   },
-  module: {
-    rules: [{
-      test: /\.json$/,
-      loader: 'json-loader'
-    }]
-  },
   node: {
     Buffer: true
   },

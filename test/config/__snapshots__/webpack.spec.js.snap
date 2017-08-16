@@ -6,14 +6,6 @@ Object {
   "entry": Array [
     "src/main.js",
   ],
-  "module": Object {
-    "rules": Array [
-      Object {
-        "loader": "json-loader",
-        "test": /\\\\\\.json\\$/,
-      },
-    ],
-  },
   "node": Object {
     "Buffer": true,
   },

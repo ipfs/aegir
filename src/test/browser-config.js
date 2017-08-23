@@ -66,7 +66,7 @@ function getConfig (isWebworker, ctx) {
     logLevel: ctx.verbose ? 'debug' : 'error',
     client: getClient(isWebworker, ctx),
     mochaOwnReporter: {
-      reporter: ctx.verbose ? 'spec' : 'progress'
+      reporter: 'spec'
     },
     browserNoActivityTimeout: ctx.timeout
   })

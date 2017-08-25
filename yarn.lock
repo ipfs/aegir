@@ -1471,8 +1471,8 @@ class-utils@^0.3.4:
     static-extend "^0.1.1"
 
 clean-documentation-theme@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/clean-documentation-theme/-/clean-documentation-theme-0.5.0.tgz#8ba9833bf1d70b4cecaa1b986c32da59310476ea"
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/clean-documentation-theme/-/clean-documentation-theme-0.5.1.tgz#a1b2a7444881aaeebdc36162ff4d444f26e194fa"
   dependencies:
     babel-plugin-transform-inline-imports-commonjs "^1.2.0"
     concat-stream "^1.6.0"

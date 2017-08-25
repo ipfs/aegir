@@ -205,8 +205,6 @@ Webpack will use the specified file as the entry point and output it to `dist/<f
 
 If `.aegir.js` file is not present in the project, webpack will use `src/index.js` as the default entry file.
 
-This requires `AEGIR_GHTOKEN` to be set.
-
 ### Releasing
 
 1. Run linting
@@ -218,7 +216,8 @@ This requires `AEGIR_GHTOKEN` to be set.
 7. Create a git tag
 8. Run `git push` to `origin/master`
 9. Publish a release to Github releases
-10. Publish to npm
+10. Generate documentation and push to github
+11. Publish to npm
 
 ```bash
 # Major release
@@ -229,23 +228,20 @@ $ aegir release --type minor
 $ aegir release
 ```
 
-You can also specify a `--env` for a release, which can be either
-`'node'`, `'browser'` or `'no-build'`.
+> This requires `AEGIR_GHTOKEN` to be set.
 
-```bash
-$ aegir release --node
-```
+You can also specify the same targets as for `test`.
 
 If no `CHANGELOG.md` is present, one is generated the first time a release is done.
 
 You can skip all changelog generation and the github release by passing
 in `--no-changelog`.
 
-If you want documentation generation you can pass `--docs` to the release task to build documentation and publish it to the `gh-pages` branch.
+If you want no documentation generation you can pass `--no-docs` to the release task to disable documentation builds.
 
 ### Documentation
 
-You can use `aegir-docs` to generate documentation. This uses [documentation.js](http://documentation.js.org/) with the theme [https://github.com/dignifiedquire/clean-documentation-theme].
+You can use `aegir-docs` to generate documentation. This uses [documentation.js](http://documentation.js.org/) with the theme [clean-documentation-theme](https://github.com/dignifiedquire/clean-documentation-theme).
 
 To publish the documentation automatically to the `gh-pages` branch you can run
 

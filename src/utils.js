@@ -1,3 +1,8 @@
+/**
+ * Various utility methods used in AEgir.
+ *
+ * @module aegir/utils
+ */
 'use strict'
 
 const path = require('path')

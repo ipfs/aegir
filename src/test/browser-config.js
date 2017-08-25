@@ -68,7 +68,7 @@ function getConfig (isWebworker, ctx) {
     mochaOwnReporter: {
       reporter: 'spec'
     },
-    browserNoActivityTimeout: ctx.timeout
+    browserNoActivityTimeout: 50 * 1000
   })
 }
 

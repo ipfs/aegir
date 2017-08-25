@@ -20,8 +20,8 @@ function karma (config) {
 }
 
 function testBrowser (isWebworker) {
-  const postHook = utils.hook('node', 'post')
-  const preHook = utils.hook('node', 'pre')
+  const postHook = utils.hook('browser', 'post')
+  const preHook = utils.hook('browser', 'pre')
 
   return (ctx) => {
     return preHook(ctx)

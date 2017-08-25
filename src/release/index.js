@@ -13,7 +13,6 @@ const bump = require('./bump')
 const changelog = require('./changelog')
 const commit = require('./commit')
 const contributors = require('./contributors')
-// const docs = require('./docs')
 const github = require('./github')
 const publish = require('./publish')
 const push = require('./push')
@@ -58,7 +57,7 @@ function release (opts) {
     enabled: (ctx) => ctx.ghrelease
   }, {
     title: 'Publish documentation',
-    task: docs,
+    task: () => docs,
     enabled: (ctx) => ctx.docs
   }, {
     title: 'Publish to npm',

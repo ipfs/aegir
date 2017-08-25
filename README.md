@@ -45,6 +45,10 @@ You can also specify `hooks.browser` and `hooks.node` if you have a different se
 
 Because the mocha binary was the source of many pains tests in node are now run using [Jest](https://facebook.github.io/jest/). All important features should work as before, but if you were relying on a mocha specific feature it might break now.
 
+### Scoped Github Token
+
+The token needed for releases is now looked for after under `AEGIR_GHTOKEN`.
+
 ## Project Structure
 
 The project structure when using this is quite strict, to ease
@@ -201,6 +205,8 @@ Webpack will use the specified file as the entry point and output it to `dist/<f
 
 If `.aegir.js` file is not present in the project, webpack will use `src/index.js` as the default entry file.
 
+This requires `AEGIR_GHTOKEN` to be set.
+
 ### Releasing
 
 1. Run linting
@@ -210,8 +216,8 @@ If `.aegir.js` file is not present in the project, webpack will use `src/index.j
 5. Generate a changelog based on the git log
 6. Commit the version change & `CHANGELOG.md`
 7. Create a git tag
-8. Run `git push` to `upstream/master`
-9. Publish a release to Github releases (if `GH_TOKEN` is available)
+8. Run `git push` to `origin/master`
+9. Publish a release to Github releases
 10. Publish to npm
 
 ```bash

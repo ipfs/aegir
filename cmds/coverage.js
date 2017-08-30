@@ -13,7 +13,6 @@ module.exports = {
       default: false
     },
     providers: {
-      alias: 'p',
       type: 'array',
       choices: Object.keys(coverage.providers),
       default: ['codecov']

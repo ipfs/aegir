@@ -32,6 +32,11 @@ module.exports = {
       describe: 'The default time a single test has to run',
       type: 'number',
       default: 5000
+    },
+    verbose: {
+      alias: 'v',
+      describe: 'Print verbose test output',
+      default: false
     }
   },
   handler (argv) {

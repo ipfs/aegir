@@ -61,10 +61,7 @@ function testNode (ctx) {
         throw err
       }
     })
-  }).then(() => {
-    console.log('post')
-    postHook(ctx)
-  })
+  }).then(() => postHook(ctx))
 }
 
 module.exports = testNode

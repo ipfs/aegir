@@ -164,8 +164,13 @@ exports.getPathToDocsFile = () => {
 }
 
 exports.hook = (env, key) => (ctx) => {
-  if (ctx && ctx.hooks && ctx.hooks[env] && ctx.hooks[env][key]) {
-    return ctx.hooks[env][key]()
+  if (ctx && ctx.hooks) {
+    if (ctx.hooks[env] && ctx.hooks[env][key]) {
+      return ctx.hooks[env][key]()
+    }
+    if (ctx.hooks[key]) {
+      return ctx.hooks[key]()
+    }
   }
 
   return Promise.resolve()

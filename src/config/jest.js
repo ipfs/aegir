@@ -16,7 +16,13 @@ module.exports = {
     '**/src/**/*.js',
     '!**/node_modules/**',
     '!**/test/**',
-    '!**/dist/**'
+    '!**/dist/**',
+    '!**/examples/**'
+  ],
+  coveragePathIgnorePatterns: [
+    'node_modules',
+    'test',
+    'dist'
   ],
   coverageReporters: ['lcov'],
   coverageDirectory: 'coverage'

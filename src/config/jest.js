@@ -7,7 +7,7 @@ module.exports = {
     '**/test/**/*.js'
   ],
   testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
+    '/node_modules/',
     '<rootDir>/src/'
   ],
   setupTestFrameworkScriptFile: path.join(__dirname, 'jest-setup.js'),

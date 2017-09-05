@@ -5,6 +5,14 @@ const path = require('path')
 
 const utils = require('../utils')
 
+const coverageFiles = [
+  '**/src/**/*.js',
+  '!**/node_modules/**',
+  '!**/test/**',
+  '!**/dist/**',
+  '!**/examples/**'
+]
+
 function testNode (ctx) {
   const args = [
     '--colors',
@@ -17,6 +25,9 @@ function testNode (ctx) {
     'test/node.js$',
     'test/.*\\.spec\\.js$'
   ]
+  if (ctx.files && ctx.files.length > 0) {
+    files = ctx.files
+  }
 
   if (!ctx.parallel) {
     args.push('--runInBand')
@@ -32,14 +43,21 @@ function testNode (ctx) {
 
   if (ctx.coverage) {
     args.push('--coverage')
+    coverageFiles.forEach((file) => {
+      args.push('--collectCoverageFrom')
+      args.push(file)
+    })
+  }
+
+  if (ctx.ignore) {
+    ctx.ignore.forEach((pat) => {
+      args.push('--collectCoverageFrom')
+      args.push('!' + pat)
+    })
   }
 
   if (ctx.updateSnapshot) {
     args.push('--updateSnapshot')
-  }
-
-  if (ctx.files && ctx.files.length > 0) {
-    files = ctx.files
   }
 
   const postHook = utils.hook('node', 'post')

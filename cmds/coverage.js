@@ -37,6 +37,11 @@ module.exports = {
       alias: 'v',
       describe: 'Print verbose test output',
       default: false
+    },
+    ignore: {
+      describe: 'Do not include passed in files in the coverage report',
+      type: 'array',
+      default: []
     }
   },
   handler (argv) {

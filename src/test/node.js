@@ -17,7 +17,7 @@ function testNode (ctx) {
   const args = [
     '--colors',
     '--config', require.resolve('../config/jest'),
-    '--env', 'node',
+    '--env', 'aegir',
     '--globals', JSON.stringify({ DEFAULT_TIMEOUT: ctx.timeout })
   ]
 

@@ -48,6 +48,8 @@
     "gh-pages": "^1.0.0",
     "glob": "^7.1.2",
     "jest": "^21.0.1",
+    "jest-environment-aegir": "^1.0.0",
+    "jest-environment-node": "^21.0.0",
     "joi": "^10.6.0",
     "json-loader": "^0.5.7",
     "karma": "^1.7.0",

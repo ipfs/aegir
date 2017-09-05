@@ -23,4 +23,10 @@ describe('test', () => {
       expect(global.after).toEqual(afterAll)
     })
   })
+
+  describe('environemnt', () => {
+    expect(
+      Buffer.from('hello') instanceof Uint8Array
+    ).toEqual(true)
+  })
 })

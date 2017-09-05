@@ -1,7 +1,7 @@
 'use strict'
 
 const conventionalChangelog = require('conventional-changelog')
-const fs = require('fs')
+const fs = require('fs-extra')
 const path = require('path')
 
 function changelog (ctx, task) {
@@ -9,8 +9,12 @@ function changelog (ctx, task) {
 
   const releaseCount = fs.existsSync(changelogPath) ? 1 : 0
 
+  let current
+
   if (releaseCount === 0) {
     task.title += ' (including all releases)'
+  } else {
+    current = fs.readFileSync(changelogPath)
   }
 
   return new Promise((resolve, reject) => {
@@ -20,6 +24,10 @@ function changelog (ctx, task) {
     }).pipe(fs.createWriteStream(changelogPath))
       .once('error', reject)
       .once('finish', resolve)
+  }).then(() => {
+    if (current) {
+      return fs.appendFile(changelogPath, current)
+    }
   })
 }
 

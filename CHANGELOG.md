@@ -1,3 +1,13 @@
+<a name="12.0.6"></a>
+## [12.0.6](https://github.com/ipfs/aegir/compare/v12.0.5...v12.0.6) (2017-09-05)
+
+
+### Bug Fixes
+
+* **release:** do not overwrite changelog ([58677a4](https://github.com/ipfs/aegir/commit/58677a4))
+
+
+
 <a name="12.0.5"></a>
 ## [12.0.5](https://github.com/ipfs/aegir/compare/v12.0.4...v12.0.5) (2017-09-05)
 

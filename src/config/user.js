@@ -51,6 +51,7 @@ function normalizeHooks (hooks) {
     HOOK_ENVS.forEach((env) => {
       res[env] = v
     })
+
     return res
   }
 

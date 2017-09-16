@@ -108,8 +108,12 @@ exports.getEnv = (env) => {
   const raw = Object.keys(process.env)
     .filter((key) => PREFIX.test(key))
     .reduce((env, key) => {
-      env[key] = process.env[key]
-      return env
+      if (key === 'AEGIR_GHTOKEN') {
+        return env
+      } else {
+        env[key] = process.env[key]
+        return env
+      }
     }, {
       NODE_ENV: process.env.NODE_ENV || env || 'development'
     })

@@ -1,3 +1,13 @@
+<a name="12.0.7"></a>
+## [12.0.7](https://github.com/ipfs/aegir/compare/v12.0.6...v12.0.7) (2017-09-16)
+
+
+### Bug Fixes
+
+* filter env vars ([78b36b2](https://github.com/ipfs/aegir/commit/78b36b2))
+
+
+
 <a name="12.0.6"></a>
 ## [12.0.6](https://github.com/ipfs/aegir/compare/v12.0.5...v12.0.6) (2017-09-05)
 

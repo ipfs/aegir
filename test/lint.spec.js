@@ -1,14 +1,14 @@
-/* eslint-env jest */
+/* eslint-env mocha */
 'use strict'
 
 const sinon = require('sinon')
 const lint = require('../src/lint')
 
 describe('lint', () => {
-  beforeAll(() => {
+  before(() => {
     sinon.stub(console, 'log')
   })
-  afterAll(() => {
+  after(() => {
     console.log.restore()
   })
 

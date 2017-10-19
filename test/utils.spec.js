@@ -1,40 +1,41 @@
-/* eslint-env jest */
+/* eslint-env mocha */
 'use strict'
 
 const sinon = require('sinon')
 const path = require('path')
+const expect = require('chai').expect
 
 const utils = require('../src/utils')
 
-describe('utils', function () {
+describe('utils', () => {
   it('getBasePath', () => {
-    expect(utils.getBasePath()).toEqual(process.cwd())
+    expect(utils.getBasePath()).to.eql(process.cwd())
   })
 
   it('getPathToPkg', () => {
     sinon.stub(process, 'cwd').returns('hello')
 
-    expect(utils.getPathToPkg()).toEqual('hello/package.json')
+    expect(utils.getPathToPkg()).to.eql('hello/package.json')
     process.cwd.restore()
   })
 
   it('getPkg', () => {
     return utils.getPkg().then((pkg) => {
-      expect(pkg.name).toEqual('aegir')
+      expect(pkg.name).to.eql('aegir')
     })
   })
 
   it('getPathToDist', () => {
-    expect(utils.getPathToDist()).toEqual(expect.stringMatching(/dist$/))
+    expect(utils.getPathToDist()).to.match(/dist$/)
   })
 
   it('getUserConfigPath', () => {
-    expect(utils.getUserConfigPath()).toEqual(expect.stringMatching(/.aegir.js$/))
+    expect(utils.getUserConfigPath()).to.match(/.aegir.js$/)
   })
 
   it('getUserConfig', () => {
     sinon.stub(utils, 'getUserConfigPath').returns(path.join(__dirname, 'fixtures/.aegir.js'))
-    expect(utils.getUserConfig()).toEqual({ config: 'mine' })
+    expect(utils.getUserConfig()).to.eql({ config: 'mine' })
   })
 
   it('getLibraryName', () => {
@@ -45,23 +46,23 @@ describe('utils', function () {
       ['aegir', 'Aegir']
     ]
     cases.forEach((c) => {
-      expect(utils.getLibraryName(c[0])).toEqual(c[1])
+      expect(utils.getLibraryName(c[0])).to.eql(c[1])
     })
   })
 
   it('getPathToNodeModules', () => {
-    expect(utils.getPathToNodeModules()).toEqual(expect.stringMatching(/node_modules$/))
+    expect(utils.getPathToNodeModules()).to.match(/node_modules$/)
   })
 
   it('getEnv', () => {
     process.env.AEGIR_TEST = 'hello'
 
     const env = utils.getEnv()
-    expect(env.raw).toEqual({
+    expect(env.raw).to.eql({
       NODE_ENV: 'test',
       AEGIR_TEST: 'hello'
     })
-    expect(env.stringified).toEqual({
+    expect(env.stringified).to.eql({
       'process.env': {
         NODE_ENV: '"test"',
         AEGIR_TEST: '"hello"'
@@ -69,7 +70,7 @@ describe('utils', function () {
     })
 
     process.env.NODE_ENV = ''
-    expect(utils.getEnv('production').raw).toHaveProperty('NODE_ENV', 'production')
+    expect(utils.getEnv('production').raw).to.have.property('NODE_ENV', 'production')
     process.env.NODE_ENV = 'test'
   })
 
@@ -89,7 +90,7 @@ describe('utils', function () {
       utils.hook('node', 'pre')({ hooks: {} }),
       utils.hook('node', 'pre')({ hooks: { browser: { pre: {} } } })
     ]).then((results) => {
-      expect(results).toEqual([
+      expect(results).to.eql([
         10,
         undefined,
         undefined

@@ -1,11 +1,14 @@
 /* eslint-env mocha */
-/* eslint-env jest */
 'use strict'
+
+const expect = require('chai').expect
+const mock = require('mock-require')
 
 describe('config - user', () => {
   let config
+
   before(() => {
-    jest.mock('../../src/utils', () => ({
+    mock('../../src/utils', {
       getPkg () {
         return Promise.resolve({
           name: 'example'
@@ -36,29 +39,28 @@ describe('config - user', () => {
       getPathToNodeModules () {
         return 'aegir/node_modules'
       }
-    }))
-    config = require('../../src/config/user')()
+    })
+
+    config = mock.reRequire('../../src/config/user')()
   })
 
   after(() => {
-    jest.resetAllMocks()
+    mock.stop('../../src/utils.js')
   })
 
   it('custom config', () => {
-    expect(config).toMatchSnapshot()
-
-    expect(config).toHaveProperty('webpack', {
+    expect(config).to.have.property('webpack').eql({
       devtool: 'eval'
     })
-    expect(config).toHaveProperty('entry', 'src/main.js')
+    expect(config).to.have.property('entry', 'src/main.js')
 
-    expect(config.hooks).toHaveProperty('browser.pre')
-    expect(config.hooks).toHaveProperty('browser.post')
-    expect(config.hooks).toHaveProperty('node.pre')
-    expect(config.hooks).toHaveProperty('node.post')
+    expect(config.hooks).to.have.nested.property('browser.pre')
+    expect(config.hooks).to.have.nested.property('browser.post')
+    expect(config.hooks).to.have.nested.property('node.pre')
+    expect(config.hooks).to.have.nested.property('node.post')
 
     return config.hooks.browser.pre().then((res) => {
-      expect(res).toEqual('pre')
+      expect(res).to.eql('pre')
     })
   })
 })

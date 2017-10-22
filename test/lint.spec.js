@@ -12,7 +12,11 @@ describe('lint', () => {
     console.log.restore()
   })
 
-  it('passes', () => {
-    return lint({fix: false})
+  it('passes', function () {
+    // slow ci is slow
+    this.timeout(4000)
+    return lint({
+      fix: false
+    })
   })
 })

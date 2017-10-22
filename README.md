@@ -41,10 +41,6 @@ You can also specify `hooks.browser` and `hooks.node` if you have a different se
 
 `aegir` is now a single binary with subcommands. You should rename `aegir-test` to `aegir test` in your scripts.
 
-### Switch from Mocha to Jest
-
-Because the mocha binary was the source of many pains tests in node are now run using [Jest](https://facebook.github.io/jest/). All important features should work as before, but if you were relying on a mocha specific feature it might break now.
-
 ### Scoped Github Token
 
 The token needed for releases is now looked for after under `AEGIR_GHTOKEN`.
@@ -81,7 +77,7 @@ Your `package.json` should have the following entries.
 To bring you its many benefits, `aegir` requires
 
 - JS written in [Standard](https://github.com/feross/standard) style
-- Tests written in [Mocha](https://github.com/mochajs/mocha) syntax, executed through [Jest](https://facebook.github.io/jest/) in node and karma in the browser.
+- Tests written in [Mocha](https://github.com/mochajs/mocha)
 - [Karma](https://github.com/karma-runner/karma) for browser tests
 
 ## Tasks

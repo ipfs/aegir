@@ -1,3 +1,14 @@
+<a name="12.1.0"></a>
+# [12.1.0](https://github.com/ipfs/aegir/compare/v12.0.8...v12.1.0) (2017-10-22)
+
+
+### Bug Fixes
+
+* use os independent test execution ([2e1639c](https://github.com/ipfs/aegir/commit/2e1639c))
+* use windows compatible findup module ([a91119c](https://github.com/ipfs/aegir/commit/a91119c))
+
+
+
 <a name="12.0.8"></a>
 ## [12.0.8](https://github.com/ipfs/aegir/compare/v12.0.7...v12.0.8) (2017-09-16)
 

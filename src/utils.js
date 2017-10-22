@@ -6,7 +6,7 @@
 'use strict'
 
 const path = require('path')
-const findUp = require('find-up')
+const findUp = require('findup-sync')
 const fs = require('fs-extra')
 const _ = require('lodash')
 const VerboseRenderer = require('listr-verbose-renderer')
@@ -49,7 +49,7 @@ exports.getPathToDist = () => {
  * @returns {string}
  */
 exports.getUserConfigPath = () => {
-  return findUp.sync('.aegir.js')
+  return findUp('.aegir.js')
 }
 
 /**

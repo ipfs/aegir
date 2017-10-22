@@ -15,7 +15,7 @@ describe('utils', () => {
   it('getPathToPkg', () => {
     sinon.stub(process, 'cwd').returns('hello')
 
-    expect(utils.getPathToPkg()).to.eql('hello/package.json')
+    expect(utils.getPathToPkg()).to.eql(path.normalize('hello/package.json'))
     process.cwd.restore()
   })
 

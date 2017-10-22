@@ -7,18 +7,18 @@
     "fs": false
   },
   "bin": {
-    "aegir": "./cli.js"
+    "aegir": "cli.js"
   },
   "scripts": {
-    "lint": "./cli.js lint",
-    "test:node": "./cli.js test --target node",
-    "test:browser": "./cli.js test --target browser webworker --files test/browser.spec.js",
+    "lint": "node cli.js lint",
+    "test:node": "node cli.js test --target node",
+    "test:browser": "node cli.js test --target browser webworker --files test/browser.spec.js",
     "test": "npm run test:node && npm run test:browser",
-    "coverage": "./cli.js coverage --target node",
-    "watch": "./cli.js test --target node --watch",
-    "release": "./cli.js release --no-build",
-    "release-minor": "./cli.js release --no-build --type minor",
-    "release-major": "./cli.js release --no-build --type major"
+    "coverage": "node cli.js coverage --target node",
+    "watch": "node cli.js test --target node --watch",
+    "release": "node cli.js release --no-build",
+    "release-minor": "node cli.js release --no-build --type minor",
+    "release-major": "node cli.js release --no-build --type major"
   },
   "keywords": [
     "webpack",

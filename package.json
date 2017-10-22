@@ -7,18 +7,18 @@
     "fs": false
   },
   "bin": {
-    "aegir": "./cli.js"
+    "aegir": "cli.js"
   },
   "scripts": {
-    "lint": "./cli.js lint",
-    "test:node": "./cli.js test --target node",
-    "test:browser": "./cli.js test --target browser webworker --files test/browser.spec.js",
+    "lint": "node cli.js lint",
+    "test:node": "node cli.js test --target node",
+    "test:browser": "node cli.js test --target browser webworker --files test/browser.spec.js",
     "test": "npm run test:node && npm run test:browser",
-    "coverage": "./cli.js coverage --target node",
-    "watch": "./cli.js test --target node --watch",
-    "release": "./cli.js release --no-build",
-    "release-minor": "./cli.js release --no-build --type minor",
-    "release-major": "./cli.js release --no-build --type major"
+    "coverage": "node cli.js coverage --target node",
+    "watch": "node cli.js test --target node --watch",
+    "release": "node cli.js release --no-build",
+    "release-minor": "node cli.js release --no-build --type minor",
+    "release-major": "node cli.js release --no-build --type major"
   },
   "keywords": [
     "webpack",
@@ -36,7 +36,7 @@
     "codecov": "^2.3.0",
     "conventional-changelog": "^1.1.4",
     "conventional-github-releaser": "^1.1.12",
-    "coveralls": "^2.13.1",
+    "coveralls": "^3.0.0",
     "detect-node": "^2.0.3",
     "documentation": "^5.2.2",
     "es6-promisify": "^5.0.0",
@@ -44,13 +44,11 @@
     "eslint-config-aegir": "^1.0.1",
     "execa": "^0.8.0",
     "filesize": "^3.5.10",
+    "findup-sync": "^2.0.0",
     "fs-extra": "^4.0.1",
     "gh-pages": "^1.0.0",
     "glob": "^7.1.2",
-    "jest": "^21.0.1",
-    "jest-environment-aegir": "^1.0.0",
-    "jest-environment-node": "^21.0.0",
-    "joi": "^10.6.0",
+    "joi": "^13.0.1",
     "json-loader": "^0.5.7",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -64,8 +62,9 @@
     "listr-update-renderer": "^0.4.0",
     "listr-verbose-renderer": "^0.4.0",
     "lodash": "^4.17.4",
-    "mocha": "^3.5.0",
+    "mocha": "^4.0.1",
     "npm-which": "^3.0.1",
+    "nyc": "^11.2.1",
     "p-map": "^1.1.1",
     "pify": "^3.0.0",
     "pretty-hrtime": "^1.0.3",
@@ -80,7 +79,7 @@
     "update-notifier": "^2.2.0",
     "webpack": "^3.5.5",
     "webpack-merge": "^4.1.0",
-    "yargs": "^8.0.2"
+    "yargs": "^9.0.1"
   },
   "repository": {
     "type": "git",
@@ -104,7 +103,8 @@
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>"
   ],
   "devDependencies": {
-    "chai": "^4.1.1",
-    "sinon": "^3.2.1"
+    "chai": "^4.1.2",
+    "mock-require": "^2.0.2",
+    "sinon": "^4.0.1"
   }
 }

@@ -6,31 +6,31 @@ const path = require('path')
 const utils = require('../utils')
 
 const coverageFiles = [
-  '**/src/**/*.js',
-  '!**/node_modules/**',
-  '!**/test/**',
-  '!**/dist/**',
-  '!**/examples/**'
+  'src/**/*.js'
+]
+
+const coverageFilesExclude = [
+  'node_modules/**',
+  'test/**',
+  'dist/**',
+  'examples/**'
 ]
 
 function testNode (ctx) {
-  const args = [
-    '--colors',
-    '--config', require.resolve('../config/jest'),
-    '--env', 'aegir',
-    '--globals', JSON.stringify({ DEFAULT_TIMEOUT: ctx.timeout })
+  let exec = 'mocha'
+
+  let args = [
+    '--ui', 'bdd',
+    '--colors'
   ]
 
   let files = [
-    'test/node.js$',
-    'test/.*\\.spec\\.js$'
+    'test/node.js',
+    'test/**/*.spec.js'
   ]
+
   if (ctx.files && ctx.files.length > 0) {
     files = ctx.files
-  }
-
-  if (!ctx.parallel) {
-    args.push('--runInBand')
   }
 
   if (ctx.verbose) {
@@ -38,48 +38,46 @@ function testNode (ctx) {
   }
 
   if (ctx.watch) {
-    args.push('--watchAll')
+    args.push('--watch')
   }
 
   if (ctx.coverage) {
-    args.push('--coverage')
-    coverageFiles.forEach((file) => {
-      args.push('--collectCoverageFrom')
-      args.push(file)
-    })
-  }
-
-  if (ctx.ignore) {
-    ctx.ignore.forEach((pat) => {
-      args.push('--collectCoverageFrom')
-      args.push('!' + pat)
-    })
-  }
-
-  if (ctx.updateSnapshot) {
-    args.push('--updateSnapshot')
+    exec = 'nyc'
+    args = [
+      '--include',
+      coverageFiles,
+      '--exclude',
+      coverageFilesExclude.join(' '),
+      '--reporter=lcov', '--reporter=text',
+      'mocha'
+    ].concat(args)
   }
 
   const postHook = utils.hook('node', 'post')
   const preHook = utils.hook('node', 'pre')
 
+  let err
+
   return preHook(ctx).then(() => {
-    return execa('jest', args.concat(files), {
+    return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
+      env: {
+        NODE_ENV: 'test'
+      },
       cwd: process.cwd(),
       preferLocal: true,
       localDir: path.join(__dirname, '../..'),
       stdin: process.stdin,
       stdout: process.stdout,
       stderr: process.stderr
-    }).catch((err) => {
-      // catch and rethrow custom to avoid double printing failed tests
-      if (err.code === 1) {
-        throw new Error('Your tests failed')
-      } else {
+    }).catch((_err) => {
+      err = _err
+    })
+  }).then(() => postHook(ctx))
+    .then(() => {
+      if (err) {
         throw err
       }
     })
-  }).then(() => postHook(ctx))
 }
 
 module.exports = testNode

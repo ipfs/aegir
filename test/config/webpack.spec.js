@@ -1,13 +1,16 @@
 /* eslint-env jest */
 'use strict'
 
+const expect = require('chai').expect
+const mock = require('mock-require')
+
 describe('config - webpack', () => {
   afterEach(() => {
-    jest.resetAllMocks()
+    mock.stop('../../src/utils')
   })
 
   it('custom configs', () => {
-    jest.mock('../../src/utils', () => ({
+    mock('../../src/utils', {
       getPkg () {
         return Promise.resolve({
           name: 'example'
@@ -39,16 +42,14 @@ describe('config - webpack', () => {
           }
         }
       }
-    }))
+    })
 
     const config = require('../../src/config/webpack')
 
     return config().then((conf) => {
-      expect(conf).toHaveProperty('entry', ['src/main.js'])
-      expect(conf).toHaveProperty('output.library', 'Example')
-      expect(conf).toHaveProperty('devtool', 'eval')
-
-      expect(conf).toMatchSnapshot()
+      expect(conf).to.have.deep.property('entry', ['src/main.js'])
+      expect(conf).to.have.nested.property('output.library', 'Example')
+      expect(conf).to.have.property('devtool', 'eval')
     })
   })
 })

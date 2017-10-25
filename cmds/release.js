@@ -66,6 +66,10 @@ module.exports = {
       describe: 'Custom globs for files to test',
       type: 'array',
       default: []
+    },
+    exit: {
+      describe: 'force shutdown of the event loop after test run: mocha will call process.exit',
+      default: true
     }
   },
   handler (argv) {

@@ -1,3 +1,13 @@
+<a name="12.1.1"></a>
+## [12.1.1](https://github.com/ipfs/aegir/compare/v12.1.0...v12.1.1) (2017-10-25)
+
+
+### Bug Fixes
+
+* add exit option back to fix buggy tests ([819dacb](https://github.com/ipfs/aegir/commit/819dacb))
+
+
+
 <a name="12.1.0"></a>
 # [12.1.0](https://github.com/ipfs/aegir/compare/v12.0.8...v12.1.0) (2017-10-22)
 

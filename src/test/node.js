@@ -41,6 +41,10 @@ function testNode (ctx) {
     args.push('--watch')
   }
 
+  if (ctx.exit) {
+    args.push('--exit')
+  }
+
   if (ctx.coverage) {
     exec = 'nyc'
     args = [

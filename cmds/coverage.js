@@ -42,6 +42,10 @@ module.exports = {
       describe: 'Do not include passed in files in the coverage report',
       type: 'array',
       default: []
+    },
+    exit: {
+      describe: 'force shutdown of the event loop after test run: mocha will call process.exit',
+      default: true
     }
   },
   handler (argv) {

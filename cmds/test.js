@@ -42,6 +42,10 @@ module.exports = {
       describe: 'The default time a single test has to run',
       type: 'number',
       default: 5000
+    },
+    exit: {
+      describe: 'force shutdown of the event loop after test run: mocha will call process.exit',
+      default: true
     }
   },
   handler (argv) {

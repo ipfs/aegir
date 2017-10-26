@@ -8,9 +8,9 @@ let reporters = ['mocha-own']
 let browsers = []
 
 if (process.env.TRAVIS) {
-  browsers.push('FirefoxDisableCORS')
+  browsers.push('FirefoxCustom')
 } else {
-  browsers.push('ChromeWithoutSecurity')
+  browsers.push('ChromeCustom')
 }
 
 module.exports = function (config) {
@@ -35,18 +35,6 @@ module.exports = function (config) {
     browsers: browsers,
     singleRun: true,
     concurrency: concurrency,
-    failOnEmptyTestSuite: true,
-    customLaunchers: {
-      ChromeWithoutSecurity: {
-        base: 'Chrome',
-        flags: ['--disable-web-security']
-      },
-      FirefoxDisableCORS: {
-        base: 'Firefox',
-        prefs: {
-          'security.fileuri.strict_origin_policy': false
-        }
-      }
-    }
+    failOnEmptyTestSuite: true
   })
 }

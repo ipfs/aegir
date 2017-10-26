@@ -5,7 +5,7 @@ const path = require('path')
 
 const utils = require('../utils')
 
-global.DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
+const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
 const coverageFiles = [
   'src/**/*.js'
@@ -59,7 +59,7 @@ function testNode (ctx) {
     ].concat(args)
   }
 
-  ctx.timeout = ctx.timeout || global.DEFAULT_TIMEOUT
+  ctx.timeout = ctx.timeout || DEFAULT_TIMEOUT
   args = [
     '--timeout',
     ctx.timeout

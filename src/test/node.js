@@ -5,6 +5,8 @@ const path = require('path')
 
 const utils = require('../utils')
 
+const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
+
 const coverageFiles = [
   'src/**/*.js'
 ]
@@ -56,6 +58,12 @@ function testNode (ctx) {
       'mocha'
     ].concat(args)
   }
+
+  ctx.timeout = ctx.timeout || DEFAULT_TIMEOUT
+  args = [
+    '--timeout',
+    ctx.timeout
+  ].concat(args)
 
   const postHook = utils.hook('node', 'post')
   const preHook = utils.hook('node', 'pre')

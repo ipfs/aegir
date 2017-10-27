@@ -48,7 +48,7 @@ module.exports = {
       default: true
     },
     cors: {
-      describe: 'Enable or disbale CORS (only available in browser runs)',
+      describe: 'Enable or disable CORS (only available in browser runs)',
       default: true
     }
   },

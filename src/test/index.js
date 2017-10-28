@@ -4,7 +4,10 @@ const pmap = require('p-map')
 const _ = require('lodash')
 
 const node = require('./node')
-const browser = require('./browser')
+const electronMain = require('./electron-main')
+const browserTemplate = require('./browser')
+const browser = browserTemplate(require('./browser-config'))
+const electron = browserTemplate(require('./electron-config'))
 
 const userConfig = require('../config/user')
 
@@ -13,6 +16,10 @@ const TASKS = [{
   task: node,
   enabled: (ctx) => _.includes(ctx.target, 'node')
 }, {
+  title: 'Test Electron Main',
+  task: electronMain,
+  enabled: (ctx) => _.includes(ctx.target, 'electron-main')
+}, {
   title: 'Test Browser',
   task: browser.default,
   enabled: (ctx) => _.includes(ctx.target, 'browser')
@@ -20,6 +27,14 @@ const TASKS = [{
   title: 'Test Webworker',
   task: browser.webworker,
   enabled: (ctx) => _.includes(ctx.target, 'webworker')
+}, {
+  title: 'Test Electron Renderer',
+  task: electron.default,
+  enabled: (ctx) => _.includes(ctx.target, 'electron-renderer')
+}, {
+  title: 'Test Electron Renderer Webworker',
+  task: electron.webworker,
+  enabled: (ctx) => _.includes(ctx.target, 'electron-renderer-webworker')
 }]
 
 module.exports = {

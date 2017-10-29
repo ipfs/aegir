@@ -9,7 +9,7 @@
 
 ## Migration from `v11`
 
-There was a large refactor from `v11` to `v12`, so there is some migration needed. All features you need should still be there, but you might need to changes some things.
+There was a large refactor from `v11` to `v12`, so there is some migration needed. All features you need should still be there, but you might need to change some things.
 
 ### Custom Config
 

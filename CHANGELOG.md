@@ -1,3 +1,20 @@
+<a name="12.1.2"></a>
+## [12.1.2](https://github.com/ipfs/aegir/compare/v12.1.1...v12.1.2) (2017-10-30)
+
+
+### Bug Fixes
+
+* typo ([#168](https://github.com/ipfs/aegir/issues/168)) ([654bbbd](https://github.com/ipfs/aegir/commit/654bbbd))
+* use mocha@4 compatible karma-mocha reporter ([9ddadf9](https://github.com/ipfs/aegir/commit/9ddadf9))
+
+
+### Features
+
+* add timeout flag for mocha runs and increase default to 5000 ([f6b10d4](https://github.com/ipfs/aegir/commit/f6b10d4))
+* **test-browser:** add flag to allow enabling and disabling of CORS ([c159534](https://github.com/ipfs/aegir/commit/c159534))
+
+
+
 <a name="12.1.1"></a>
 ## [12.1.1](https://github.com/ipfs/aegir/compare/v12.1.0...v12.1.1) (2017-10-25)
 

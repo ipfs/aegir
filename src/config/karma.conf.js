@@ -8,9 +8,9 @@ let reporters = ['mocha-own']
 let browsers = []
 
 if (process.env.TRAVIS) {
-  browsers.push('Firefox')
+  browsers.push('FirefoxCustom')
 } else {
-  browsers.push('Chrome')
+  browsers.push('ChromeCustom')
 }
 
 module.exports = function (config) {

@@ -46,6 +46,10 @@ module.exports = {
     exit: {
       describe: 'force shutdown of the event loop after test run: mocha will call process.exit',
       default: true
+    },
+    cors: {
+      describe: 'Enable or disable CORS (only available in browser runs)',
+      default: true
     }
   },
   handler (argv) {

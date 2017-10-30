@@ -68,7 +68,19 @@ function getConfig (isWebworker, ctx) {
     mochaOwnReporter: {
       reporter: 'spec'
     },
-    browserNoActivityTimeout: 50 * 1000
+    browserNoActivityTimeout: 50 * 1000,
+    customLaunchers: {
+      ChromeCustom: {
+        base: 'Chrome',
+        flags: [!ctx.cors ? '--disable-web-security' : '']
+      },
+      FirefoxCustom: {
+        base: 'Firefox',
+        prefs: {
+          'security.fileuri.strict_origin_policy': ctx.cors
+        }
+      }
+    }
   })
 }
 

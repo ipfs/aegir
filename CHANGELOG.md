@@ -1,3 +1,13 @@
+<a name="12.1.3"></a>
+## [12.1.3](https://github.com/ipfs/aegir/compare/v12.1.2...v12.1.3) (2017-10-31)
+
+
+### Features
+
+* add timeout to coverage ([#171](https://github.com/ipfs/aegir/issues/171)) ([f498ff3](https://github.com/ipfs/aegir/commit/f498ff3))
+
+
+
 <a name="12.1.2"></a>
 ## [12.1.2](https://github.com/ipfs/aegir/compare/v12.1.1...v12.1.2) (2017-10-30)
 

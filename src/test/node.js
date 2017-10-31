@@ -47,6 +47,7 @@ function testNode (ctx) {
     args.push('--exit')
   }
 
+  const timeout = ctx.timeout || DEFAULT_TIMEOUT
   if (ctx.coverage) {
     exec = 'nyc'
     args = [
@@ -55,15 +56,17 @@ function testNode (ctx) {
       '--exclude',
       coverageFilesExclude.join(' '),
       '--reporter=lcov', '--reporter=text',
-      'mocha'
+      'mocha',
+      `--timeout=${timeout}`
     ].concat(args)
   }
 
-  ctx.timeout = ctx.timeout || DEFAULT_TIMEOUT
-  args = [
-    '--timeout',
-    ctx.timeout
-  ].concat(args)
+  if (!ctx.coverage) {
+    args = [
+      '--timeout',
+      timeout
+    ].concat(args)
+  }
 
   const postHook = utils.hook('node', 'post')
   const preHook = utils.hook('node', 'pre')

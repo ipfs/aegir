@@ -167,6 +167,15 @@ exports.getPathToDocsFile = () => {
   return path.join(exports.getPathToDocs(), 'index.html')
 }
 
+/**
+ * Path to documentation index.md.
+ *
+ * @returns {string}
+ */
+exports.getPathToDocsMdFile = () => {
+  return path.join(exports.getPathToDocs(), 'index.md')
+}
+
 exports.hook = (env, key) => (ctx) => {
   if (ctx && ctx.hooks) {
     if (ctx.hooks[env] && ctx.hooks[env][key]) {

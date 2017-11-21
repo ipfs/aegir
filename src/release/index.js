@@ -27,7 +27,7 @@ function release (opts) {
     enabled: (ctx) => ctx.lint
   }, {
     title: 'Test',
-    task: () => test.run,
+    task: (ctx) => test.run(ctx),
     enabled: (ctx) => ctx.test
   }, {
     title: 'Build',

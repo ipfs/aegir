@@ -1,3 +1,13 @@
+<a name="12.2.0"></a>
+# [12.2.0](https://github.com/ipfs/aegir/compare/v12.1.3...v12.2.0) (2017-11-21)
+
+
+### Features
+
+* **docs:** add format flag to which selects docs output formats  ([456858f](https://github.com/ipfs/aegir/commit/456858f))
+
+
+
 <a name="12.1.3"></a>
 ## [12.1.3](https://github.com/ipfs/aegir/compare/v12.1.2...v12.1.3) (2017-10-31)
 

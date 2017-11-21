@@ -14,6 +14,13 @@ module.exports = {
       choices: ['node', 'browser', 'webworker'],
       default: ['node', 'browser', 'webworker']
     },
+    docsFormats: {
+      alias: 'd',
+      describe: 'Which documentation formats to build',
+      type: 'array',
+      choices: ['html', 'md'],
+      default: ['html']
+    },
     build: {
       describe: 'Run build tasks before release',
       default: true

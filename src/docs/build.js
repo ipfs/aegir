@@ -50,6 +50,12 @@ function writeDocs (output) {
     }))
 }
 
+function writeMdDocs (output) {
+  const docsPath = utils.getPathToDocs()
+  return fs.ensureDir(docsPath)
+    .then(() => fs.writeFileSync(utils.getPathToDocsMdFile(), output))
+}
+
 function build (ctx) {
   return Promise.all([
     utils.getPkg(),
@@ -60,13 +66,22 @@ function build (ctx) {
     const pkg = res[0]
     const files = res[1]
 
-    return documentation.build(files, getOpts(pkg))
-      .then((docs) => documentation.formats.html(docs, {
-        theme: require.resolve('clean-documentation-theme'),
-        version: pkg.version,
-        name: pkg.name
-      }))
-      .then(writeDocs)
+    return Promise.all(ctx.docsFormats.map((fmt) => {
+      if (fmt === 'md') {
+        return documentation.build(files, getOpts(pkg))
+          .then((docs) => documentation.formats.md(docs))
+          .then(writeMdDocs)
+      }
+      if (fmt === 'html') {
+        return documentation.build(files, getOpts(pkg))
+          .then((docs) => documentation.formats.html(docs, {
+            theme: require.resolve('clean-documentation-theme'),
+            version: pkg.version,
+            name: pkg.name
+          }))
+          .then(writeDocs)
+      }
+    }))
   })
 }
 

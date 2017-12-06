@@ -56,6 +56,7 @@
     "karma-mocha": "^1.3.0",
     "karma-mocha-own-reporter": "git+https://github.com/dryajov/karma-mocha-own-reporter#d562a92a12d5c76469a05d67cee19bcb8db22b23",
     "karma-mocha-webworker": "^1.3.0",
+    "karma-processenv-preprocessor": "0.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.5",
     "listr": "^0.13.0",

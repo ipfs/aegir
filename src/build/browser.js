@@ -39,7 +39,8 @@ function minify (ctx, task) {
   return fs.readFile(path.join(process.cwd(), 'dist', 'index.js'))
     .then((code) => {
       const result = Uglify.minify(code.toString(), {
-        mangle: false
+        mangle: false,
+        compress: false
       })
       if (result.error) {
         throw result.error

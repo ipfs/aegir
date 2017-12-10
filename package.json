@@ -11,11 +11,11 @@
   },
   "scripts": {
     "lint": "node cli.js lint",
-    "test:node": "node cli.js test --target node",
-    "test:browser": "node cli.js test --target browser webworker --files test/browser.spec.js",
+    "test:node": "node cli.js test -t node",
+    "test:browser": "node cli.js test -t browser webworker --files test/browser.spec.js",
     "test": "npm run test:node && npm run test:browser",
-    "coverage": "node cli.js coverage --target node",
-    "watch": "node cli.js test --target node --watch",
+    "coverage": "node cli.js coverage -t node",
+    "watch": "node cli.js test -t node --watch",
     "release": "node cli.js release --no-build",
     "release-minor": "node cli.js release --no-build --type minor",
     "release-major": "node cli.js release --no-build --type major"

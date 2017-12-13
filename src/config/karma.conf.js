@@ -5,6 +5,10 @@ const webpackConfig = require('./webpack')
 let concurrency = 1
 let reporters = ['mocha-own']
 
+if (process.env.CI) {
+  reporters.push('junit')
+}
+
 let browsers = []
 
 if (process.env.TRAVIS) {
@@ -27,6 +31,11 @@ module.exports = function (config) {
     reporters: reporters,
     mochaOwnReporter: {
       reporter: 'spec'
+    },
+    junitReporter: {
+      outputDir: process.cwd(),
+      outputFile: 'junit-report-browser.xml',
+      useBrowserName: false
     },
     port: 9876,
     colors: true,

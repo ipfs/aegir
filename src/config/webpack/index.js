@@ -2,6 +2,7 @@
 
 const merge = require('webpack-merge')
 const webpack = require('webpack')
+const path = require('path')
 
 const utils = require('../../utils')
 const base = require('./base')
@@ -19,7 +20,7 @@ function webpackConfig () {
       ],
       devtool: 'source-map',
       output: {
-        filename: entry.split('/').pop(),
+        filename: path.basename(entry),
         library: libraryName,
         path: utils.getPathToDist()
       },

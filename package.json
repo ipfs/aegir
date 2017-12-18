@@ -11,8 +11,8 @@
   },
   "scripts": {
     "lint": "node cli.js lint",
-    "test:node": "AEGIR_TEST=hello node cli.js test -t node",
-    "test:browser": "AEGIR_TEST=hello node cli.js test -t browser webworker --files test/browser.spec.js",
+    "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node",
+    "test:browser": "cross-env AEGIR_TEST=hello node cli.js test -t browser webworker --files test/browser.spec.js",
     "test": "npm run test:node && npm run test:browser",
     "coverage": "node cli.js coverage -t node",
     "watch": "node cli.js test -t node --watch",
@@ -108,6 +108,7 @@
   ],
   "devDependencies": {
     "chai": "^4.1.2",
+    "cross-env": "^5.1.1",
     "mock-require": "^2.0.2",
     "sinon": "^4.1.3"
   }

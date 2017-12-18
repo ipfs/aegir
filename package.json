@@ -11,11 +11,11 @@
   },
   "scripts": {
     "lint": "node cli.js lint",
-    "test:node": "node cli.js test -t node",
-    "test:browser": "node cli.js test -t browser webworker --files test/browser.spec.js",
+    "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node",
+    "test:browser": "cross-env AEGIR_TEST=hello node cli.js test -t browser webworker --files test/browser.spec.js",
     "test": "npm run test:node && npm run test:browser",
-    "coverage": "node cli.js coverage -t node",
-    "watch": "node cli.js test -t node --watch",
+    "coverage": "cross-env AEGIR_TEST=hello node cli.js coverage -t node",
+    "watch": "cross-env AEGIR_TEST=hello node cli.js test -t node --watch",
     "release": "npm run test && node cli.js release --no-build --no-test",
     "release-minor": "npm run test && node cli.js release --no-build --no-test --type minor",
     "release-major": "npm run test && node cli.js release --no-build --no-test --type major"
@@ -57,7 +57,6 @@
     "karma-mocha": "^1.3.0",
     "karma-mocha-own-reporter": "git+https://github.com/dryajov/karma-mocha-own-reporter#d562a92a12d5c76469a05d67cee19bcb8db22b23",
     "karma-mocha-webworker": "^1.3.0",
-    "karma-processenv-preprocessor": "0.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.6",
     "listr": "^0.13.0",
@@ -109,6 +108,7 @@
   ],
   "devDependencies": {
     "chai": "^4.1.2",
+    "cross-env": "^5.1.1",
     "mock-require": "^2.0.2",
     "sinon": "^4.1.3"
   }

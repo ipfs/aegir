@@ -1,3 +1,22 @@
+<a name="12.3.0"></a>
+# [12.3.0](https://github.com/ipfs/aegir/compare/v12.2.0...v12.3.0) (2017-12-18)
+
+
+### Bug Fixes
+
+* **release:** correctly run tests on release ([e7b544a](https://github.com/ipfs/aegir/commit/e7b544a)), closes [#172](https://github.com/ipfs/aegir/issues/172)
+* process.env inacessible in browser tests ([2ca2863](https://github.com/ipfs/aegir/commit/2ca2863))
+* update uglify config to not compress (and mess with js-ipfs) ([17a28a6](https://github.com/ipfs/aegir/commit/17a28a6))
+* use rel paths on windows ([#183](https://github.com/ipfs/aegir/issues/183)) ([d57dd3f](https://github.com/ipfs/aegir/commit/d57dd3f))
+* **test:** inject missing webpack config into tests ([bb4c0e4](https://github.com/ipfs/aegir/commit/bb4c0e4))
+
+
+### Features
+
+* **test:** output junit reports on CI ([61ab915](https://github.com/ipfs/aegir/commit/61ab915))
+
+
+
 <a name="12.2.0"></a>
 # [12.2.0](https://github.com/ipfs/aegir/compare/v12.1.3...v12.2.0) (2017-11-21)
 

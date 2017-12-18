@@ -21,6 +21,10 @@ const coverageFilesExclude = [
 function testNode (ctx) {
   let exec = 'mocha'
 
+  const env = {
+    NODE_ENV: 'test'
+  }
+
   let args = [
     '--ui', 'bdd',
     '--colors'
@@ -37,6 +41,11 @@ function testNode (ctx) {
 
   if (ctx.verbose) {
     args.push('--verbose')
+  }
+
+  if (process.env.CI) {
+    args.push('--reporter=mocha-jenkins-reporter')
+    env.JUNIT_REPORT_PATH = path.join(process.cwd(), 'junit-report-node.xml')
   }
 
   if (ctx.watch) {
@@ -75,9 +84,7 @@ function testNode (ctx) {
 
   return preHook(ctx).then(() => {
     return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
-      env: {
-        NODE_ENV: 'test'
-      },
+      env: env,
       cwd: process.cwd(),
       preferLocal: true,
       localDir: path.join(__dirname, '../..'),

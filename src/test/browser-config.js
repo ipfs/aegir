@@ -68,6 +68,9 @@ function getConfig (isWebworker, ctx) {
     mochaOwnReporter: {
       reporter: 'spec'
     },
+    junitReporter: {
+      outputFile: isWebworker ? 'junit-report-webworker.xml' : 'junit-report-browser.xml'
+    },
     browserNoActivityTimeout: 50 * 1000,
     customLaunchers: {
       ChromeCustom: {

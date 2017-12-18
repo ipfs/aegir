@@ -14,8 +14,8 @@
     "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node",
     "test:browser": "cross-env AEGIR_TEST=hello node cli.js test -t browser webworker --files test/browser.spec.js",
     "test": "npm run test:node && npm run test:browser",
-    "coverage": "node cli.js coverage -t node",
-    "watch": "node cli.js test -t node --watch",
+    "coverage": "cross-env AEGIR_TEST=hello node cli.js coverage -t node",
+    "watch": "cross-env AEGIR_TEST=hello node cli.js test -t node --watch",
     "release": "npm run test && node cli.js release --no-build --no-test",
     "release-minor": "npm run test && node cli.js release --no-build --no-test --type minor",
     "release-major": "npm run test && node cli.js release --no-build --no-test --type major"

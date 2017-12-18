@@ -25,7 +25,8 @@ function testBrowser (isWebworker) {
 
   return (ctx) => {
     return preHook(ctx)
-      .then(() => karma(getConfig(isWebworker, ctx)))
+      .then(() => getConfig(isWebworker, ctx))
+      .then(karma)
       .then(() => postHook(ctx))
   }
 }

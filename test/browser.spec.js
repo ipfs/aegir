@@ -9,4 +9,9 @@ describe('browser', () => {
     const myFixture = loadFixture(__dirname, 'fixtures/test.txt')
     expect(myFixture.toString()).to.be.eql('Hello Fixture\n')
   })
+
+  it('process.env', () => {
+    expect(process.env.NODE_ENV).to.eql('test')
+    expect(process.env.AEGIR_TEST).to.eql('hello')
+  })
 })

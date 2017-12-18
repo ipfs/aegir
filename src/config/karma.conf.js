@@ -1,7 +1,5 @@
 'use strict'
 
-const webpackConfig = require('./webpack')
-
 let concurrency = 1
 let reporters = ['mocha-own']
 
@@ -24,7 +22,6 @@ module.exports = function (config) {
     preprocessors: {
       'test/**/*.js': ['webpack', 'sourcemap']
     },
-    webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true
     },

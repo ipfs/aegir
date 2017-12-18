@@ -4,6 +4,7 @@ const path = require('path')
 const _ = require('lodash')
 
 const user = require('../config/user')
+const webpackConfig = require('../config/webpack')
 
 const CONFIG_FILE = path.join(__dirname, '..', 'config', 'karma.conf.js')
 
@@ -56,34 +57,40 @@ function getConfig (isWebworker, ctx) {
   const userKarma = user().karma
   const userFiles = userKarma.files || []
 
-  return _.defaultsDeep({
-    files: ctxFiles.concat(fixtureFiles).concat(userFiles)
-  }, userKarma, {
-    configFile: CONFIG_FILE,
-    singleRun: !ctx.watch,
-    watch: ctx.watch,
-    frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
-    logLevel: ctx.verbose ? 'debug' : 'error',
-    client: getClient(isWebworker, ctx),
-    mochaOwnReporter: {
-      reporter: 'spec'
-    },
-    junitReporter: {
-      outputFile: isWebworker ? 'junit-report-webworker.xml' : 'junit-report-browser.xml'
-    },
-    browserNoActivityTimeout: 50 * 1000,
-    customLaunchers: {
-      ChromeCustom: {
-        base: 'Chrome',
-        flags: [!ctx.cors ? '--disable-web-security' : '']
+  return webpackConfig('test').then((webpack) => {
+    // no need for entry
+    webpack.entry = ''
+
+    return _.defaultsDeep({
+      files: ctxFiles.concat(fixtureFiles).concat(userFiles)
+    }, userKarma, {
+      configFile: CONFIG_FILE,
+      singleRun: !ctx.watch,
+      watch: ctx.watch,
+      frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
+      logLevel: ctx.verbose ? 'debug' : 'error',
+      client: getClient(isWebworker, ctx),
+      mochaOwnReporter: {
+        reporter: 'spec'
       },
-      FirefoxCustom: {
-        base: 'Firefox',
-        prefs: {
-          'security.fileuri.strict_origin_policy': ctx.cors
+      junitReporter: {
+        outputFile: isWebworker ? 'junit-report-webworker.xml' : 'junit-report-browser.xml'
+      },
+      browserNoActivityTimeout: 50 * 1000,
+      customLaunchers: {
+        ChromeCustom: {
+          base: 'Chrome',
+          flags: [!ctx.cors ? '--disable-web-security' : '']
+        },
+        FirefoxCustom: {
+          base: 'Firefox',
+          prefs: {
+            'security.fileuri.strict_origin_policy': ctx.cors
+          }
         }
-      }
-    }
+      },
+      webpack: webpack
+    })
   })
 }
 

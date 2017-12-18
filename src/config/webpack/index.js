@@ -8,7 +8,9 @@ const utils = require('../../utils')
 const base = require('./base')
 const user = require('../user')()
 
-function webpackConfig () {
+function webpackConfig (env) {
+  env = env || 'production'
+
   return utils.getPkg().then((pkg) => {
     const libraryName = utils.getLibraryName(pkg.name)
     const userConfig = user.webpack
@@ -25,7 +27,7 @@ function webpackConfig () {
         path: utils.getPathToDist()
       },
       plugins: [
-        new webpack.DefinePlugin(utils.getEnv('production').stringified)
+        new webpack.DefinePlugin(utils.getEnv(env).stringified)
       ]
     }, userConfig)
   })

@@ -105,6 +105,11 @@ exports.getListrConfig = () => {
  */
 exports.getEnv = (env) => {
   const PREFIX = /^AEGIR_/i
+  let NODE_ENV = env || 'development'
+  if (JSON.stringify(process.env.NODE_ENV) !== JSON.stringify(undefined) && process.env.NODE_ENV) {
+    NODE_ENV = process.env.NODE_ENV
+  }
+
   const raw = Object.keys(process.env)
     .filter((key) => PREFIX.test(key))
     .reduce((env, key) => {
@@ -115,7 +120,7 @@ exports.getEnv = (env) => {
         return env
       }
     }, {
-      NODE_ENV: process.env.NODE_ENV || env || 'development'
+      NODE_ENV: NODE_ENV
     })
 
   const stringifed = {

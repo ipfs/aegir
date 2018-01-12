@@ -19,7 +19,8 @@
     "watch": "cross-env AEGIR_TEST=hello node cli.js test -t node --watch",
     "release": "npm run test && node cli.js release --no-build --no-test",
     "release-minor": "npm run test && node cli.js release --no-build --no-test --type minor",
-    "release-major": "npm run test && node cli.js release --no-build --no-test --type major"
+    "release-major": "npm run test && node cli.js release --no-build --no-test --type major",
+    "commitlint": "node cli.js commitlint"
   },
   "keywords": [
     "webpack",
@@ -29,6 +30,10 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@commitlint/config-conventional": "^6.1.2",
+    "@commitlint/lint": "^6.1.2",
+    "@commitlint/load": "^6.1.2",
+    "@commitlint/read": "^6.1.2",
     "async": "^2.6.0",
     "browserify-zlib": "^0.2.0",
     "chalk": "^2.3.0",

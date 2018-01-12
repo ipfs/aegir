@@ -13,6 +13,7 @@ before_script:
 script:
   - yarn lint
   - yarn test
+  - yarn commitlint
   - yarn coverage -- -u -p codecov coveralls
 
 addons:

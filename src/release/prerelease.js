@@ -10,7 +10,8 @@ function validGh (opts) {
   }
 
   if (!opts.ghtoken) {
-    return Promise.reject(new Error('Missing GitHub access token'))
+    return Promise.reject(new Error('Missing GitHub access token. ' +
+                                    'Have you set `AEGIR_GHTOKEN`?'))
   }
   return Promise.resolve()
 }

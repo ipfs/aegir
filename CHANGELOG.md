@@ -1,3 +1,13 @@
+<a name="12.4.0"></a>
+# [12.4.0](https://github.com/ipfs/aegir/compare/v12.3.0...v12.4.0) (2018-01-24)
+
+
+### Features
+
+* run pre-push targets if there are any ([858c1fd](https://github.com/ipfs/aegir/commit/858c1fd)), closes [#188](https://github.com/ipfs/aegir/issues/188)
+
+
+
 <a name="12.3.0"></a>
 # [12.3.0](https://github.com/ipfs/aegir/compare/v12.2.0...v12.3.0) (2017-12-18)
 

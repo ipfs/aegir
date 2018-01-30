@@ -17,10 +17,7 @@ function commit () {
     version = res[1].version
     return pify(git.commit.bind(git))(
       `chore: release version v${version}`,
-      files,
-      {
-        '--no-verify': true
-      }
+      files
     )
   }).then(() => pify(git.addTag.bind(git))(`v${version}`))
 }

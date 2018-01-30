@@ -9,6 +9,8 @@ function push () {
     remote,
     'master',
     {
+      // Linter and tests were already run by previous steps
+      '--no-verify': true,
       '--tags': true
     }
   )

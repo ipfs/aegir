@@ -1,25 +1,29 @@
+/* global self */
 'use strict'
 
 const isNode = require('detect-node')
 const path = require('path')
-const Buffer = require('safe-buffer').Buffer
 
-module.exports = function loadFixtures (dirname, file, module) {
+module.exports = function loadFixtures (dirname, filePath, module) {
   if (isNode) {
-    return require('fs').readFileSync(path.join(dirname, file))
+    return require('fs').readFileSync(path.join(dirname, filePath))
   } else {
-    return syncXhr(file, module)
+    return syncXhr(filePath, module)
   }
 }
 
-// I know this is considered bad practice, but it makes testing life so much nicer!
-function syncXhr (url, module) {
+// @dignifiedquire: I know this is considered bad practice, but it makes testing life so much nicer!
+function syncXhr (filePath, module) {
   let target
   if (module) {
-    target = path.join('/base', 'node_modules', module, 'test', url)
+    target = path.join('/base', 'node_modules', module, filePath)
+    console.log('module is', module)
+    console.log('filePath is', filePath)
+    console.log('target is', target)
   } else {
-    target = path.join('/base', 'test', url)
+    target = path.join('/base', filePath)
   }
+
   const request = new self.XMLHttpRequest()
   request.open('GET', target, false)
   request.overrideMimeType('text/plain; charset=x-user-defined')

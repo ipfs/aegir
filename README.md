@@ -118,8 +118,10 @@ a method to do this. For it to work you have to put your fixtures in the folder 
 // test/awesome.spec.js
 const loadFixture = require('aegir/fixtures')
 
-const myFixture = loadFixture(__dirname, 'fixtures/largefixture')
+const myFixture = loadFixture('test/fixtures/largefixture')
 ```
+
+The path to the fixture is relative to the module root.
 
 If you write a module like [interface-ipfs-core](https://github.com/ipfs/interface-ipfs-core)
 which is to be consumed by other modules tests you need to pass in a third parameter such that
@@ -131,8 +133,9 @@ For example
 // awesome-tests module
 const loadFixture = require('aegir/fixtures')
 
-const myFixture = loadFixture(__dirname, 'fixtures/coolfixture', 'awesome-tests')
+const myFixture = loadFixture('test/fixtures/coolfixture', 'awesome-tests')
 ```
+
 
 ```js
 // tests for module using the awesome-tests

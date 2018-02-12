@@ -1,3 +1,13 @@
+<a name="13.0.0"></a>
+# [13.0.0](https://github.com/ipfs/aegir/compare/v12.4.0...v13.0.0) (2018-02-12)
+
+
+### Features
+
+* (BREAKING CHANGE) allow to load fixtures from paths other than ./test ([#196](https://github.com/ipfs/aegir/issues/196)) ([66d9950](https://github.com/ipfs/aegir/commit/66d9950))
+
+
+
 <a name="12.4.0"></a>
 # [12.4.0](https://github.com/ipfs/aegir/compare/v12.3.0...v12.4.0) (2018-01-24)
 

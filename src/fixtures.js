@@ -5,6 +5,7 @@ const isNode = require('detect-node')
 const path = require('path')
 
 module.exports = function loadFixtures (filePath, module) {
+  // note: filePath needs to be relative to the module root
   if (module) {
     filePath = path.join('node_modules', module, filePath)
   }

@@ -4,25 +4,21 @@
 const isNode = require('detect-node')
 const path = require('path')
 
-module.exports = function loadFixtures (dirname, filePath, module) {
+module.exports = function loadFixtures (filePath, module) {
+  if (module) {
+    filePath = path.join('node_modules', module, filePath)
+  }
+
   if (isNode) {
-    return require('fs').readFileSync(path.join(dirname, filePath))
+    return require('fs').readFileSync(path.join(process.cwd(), filePath))
   } else {
-    return syncXhr(filePath, module)
+    return syncXhr(filePath)
   }
 }
 
 // @dignifiedquire: I know this is considered bad practice, but it makes testing life so much nicer!
-function syncXhr (filePath, module) {
-  let target
-  if (module) {
-    target = path.join('/base', 'node_modules', module, filePath)
-    console.log('module is', module)
-    console.log('filePath is', filePath)
-    console.log('target is', target)
-  } else {
-    target = path.join('/base', filePath)
-  }
+function syncXhr (filePath) {
+  const target = path.join('/base', filePath)
 
   const request = new self.XMLHttpRequest()
   request.open('GET', target, false)

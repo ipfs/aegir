@@ -17,7 +17,8 @@ module.exports = function loadFixtures (filePath, module) {
   }
 }
 
-// @dignifiedquire: I know this is considered bad practice, but it makes testing life so much nicer!
+// @dignifiedquire: I know this is considered bad practice (syncXhr), but it
+// makes testing life so much nicer!
 function syncXhr (filePath) {
   const target = path.join('/base', filePath)
 
@@ -35,5 +36,7 @@ function syncXhr (filePath) {
     }
 
     return Buffer.from(res)
+  } else {
+    throw new Error('Could not get the Fixture')
   }
 }

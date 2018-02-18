@@ -25,6 +25,16 @@ module.exports = function (config) {
     webpackMiddleware: {
       noInfo: true
     },
+    plugins: config.plugins.concat([
+      'karma-webpack',
+      'karma-sourcemap-loader',
+      'karma-mocha',
+      'karma-mocha-webworker',
+      'karma-mocha-own-reporter',
+      'karma-junit-reporter',
+      'karma-chrome-launcher',
+      'karma-firefox-launcher'
+    ].map(m => require(m))),
     reporters: reporters,
     mochaOwnReporter: {
       reporter: 'spec'

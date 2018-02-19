@@ -1,3 +1,14 @@
+<a name="13.0.1"></a>
+## [13.0.1](https://github.com/ipfs/aegir/compare/v13.0.0...v13.0.1) (2018-02-19)
+
+
+### Bug Fixes
+
+* add a more descriptive error ([1174cd8](https://github.com/ipfs/aegir/commit/1174cd8))
+* throw an error if fixture is not found ([a8907b9](https://github.com/ipfs/aegir/commit/a8907b9))
+
+
+
 <a name="13.0.0"></a>
 # [13.0.0](https://github.com/ipfs/aegir/compare/v12.4.0...v13.0.0) (2018-02-12)
 

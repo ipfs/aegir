@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "13.0.2",
+  "version": "13.0.3",
   "description": "JavaScript project management",
   "main": "cli.js",
   "browser": {

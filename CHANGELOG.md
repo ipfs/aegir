@@ -1,3 +1,8 @@
+<a name="13.0.4"></a>
+## [13.0.4](https://github.com/ipfs/aegir/compare/v13.0.3...v13.0.4) (2018-02-19)
+
+
+
 <a name="13.0.3"></a>
 ## [13.0.3](https://github.com/ipfs/aegir/compare/v13.0.2...v13.0.3) (2018-02-19)
 

@@ -37,6 +37,6 @@ function syncXhr (filePath) {
 
     return Buffer.from(res)
   } else {
-    throw new Error('Could not get the Fixture')
+    throw new Error(`Could not get the Fixture: ${filePath}`)
   }
 }

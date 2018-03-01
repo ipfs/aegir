@@ -14,8 +14,7 @@ function getPatterns (ctx) {
   }
 
   return [
-    'test/browser.js',
-    'test/**/*.spec.js'
+    'test/browser.js'
   ]
 }
 

@@ -14,8 +14,9 @@ function getPatterns (ctx) {
   }
 
   return [
-    'test/browser.js',
-    'test/**/*.spec.js'
+    // Karma needs a single entry point. That files will create a single bundle
+    // out of `test/browser.js` and `test/**/*.spec.js`
+    'node_modules/aegir/src/config/karma-webpack-bundle.js'
   ]
 }
 
@@ -47,6 +48,13 @@ function getConfig (isWebworker, ctx) {
     pattern: pattern,
     included: !isWebworker
   }))
+  // Preprocess every file that is used as a test file for Karma. By default
+  // that's a single entry point, but it could also be a single test that
+  // is given as command line parameter
+  const preprocessors = getPatterns(ctx).reduce((acc, pattern) => {
+    acc[pattern] = ['webpack', 'sourcemap']
+    return acc
+  }, {})
 
   const fixtureFiles = [{
     pattern: 'test/fixtures/**/*',
@@ -70,6 +78,7 @@ function getConfig (isWebworker, ctx) {
       frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
       logLevel: ctx.verbose ? 'debug' : 'error',
       client: getClient(isWebworker, ctx),
+      preprocessors: preprocessors,
       mochaOwnReporter: {
         reporter: 'spec'
       },

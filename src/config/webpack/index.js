@@ -15,6 +15,8 @@ function webpackConfig (env) {
     const libraryName = utils.getLibraryName(pkg.name)
     const userConfig = user.webpack
     const entry = user.entry
+    const environment = utils.getEnv(env).stringified
+    environment.TEST_DIR = JSON.stringify(path.join(process.cwd(), 'test'))
 
     return merge(base, {
       entry: [
@@ -27,7 +29,7 @@ function webpackConfig (env) {
         path: utils.getPathToDist()
       },
       plugins: [
-        new webpack.DefinePlugin(utils.getEnv(env).stringified)
+        new webpack.DefinePlugin(environment)
       ]
     }, userConfig)
   })

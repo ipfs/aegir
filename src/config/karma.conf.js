@@ -19,9 +19,6 @@ module.exports = function (config) {
   config.set({
     frameworks: ['mocha'],
     basePath: process.cwd(),
-    preprocessors: {
-      'test/**/*.js': ['webpack', 'sourcemap']
-    },
     webpackMiddleware: {
       noInfo: true
     },

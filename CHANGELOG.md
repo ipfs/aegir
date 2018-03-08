@@ -1,3 +1,13 @@
+<a name="13.0.6"></a>
+## [13.0.6](https://github.com/ipfs/aegir/compare/v13.0.5...v13.0.6) (2018-03-08)
+
+
+### Bug Fixes
+
+* make a single webpack bundle ([f1e2850](https://github.com/ipfs/aegir/commit/f1e2850))
+
+
+
 <a name="13.0.5"></a>
 ## [13.0.5](https://github.com/ipfs/aegir/compare/v13.0.4...v13.0.5) (2018-02-19)
 

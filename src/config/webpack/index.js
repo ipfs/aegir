@@ -3,6 +3,7 @@
 const merge = require('webpack-merge')
 const webpack = require('webpack')
 const path = require('path')
+const fs = require('fs')
 
 const utils = require('../../utils')
 const base = require('./base')
@@ -16,7 +17,14 @@ function webpackConfig (env) {
     const userConfig = user.webpack
     const entry = user.entry
     const environment = utils.getEnv(env).stringified
-    environment.TEST_DIR = JSON.stringify(path.join(process.cwd(), 'test'))
+    const testDir = path.join(process.cwd(), 'test')
+    environment.TEST_DIR = JSON.stringify(testDir)
+    const browserJs = path.join(testDir, 'browser.js')
+    if (fs.existsSync(browserJs)) {
+      environment.TEST_BROWSER_JS = JSON.stringify(browserJs)
+    } else {
+      environment.TEST_BROWSER_JS = JSON.stringify('')
+    }
 
     return merge(base, {
       entry: [

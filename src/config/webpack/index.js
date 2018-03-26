@@ -35,6 +35,7 @@ function webpackConfig (env) {
       output: {
         filename: path.basename(entry),
         library: libraryName,
+        libraryTarget: 'umd',
         path: utils.getPathToDist()
       },
       plugins: [

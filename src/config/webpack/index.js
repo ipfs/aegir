@@ -32,6 +32,14 @@ function webpackConfig (env) {
         entry
       ],
       devtool: sourcemap,
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            loader: 'babel-loader'
+          }
+        ]
+      },
       output: {
         filename: path.basename(entry),
         library: libraryName,

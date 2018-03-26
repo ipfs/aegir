@@ -30,6 +30,8 @@
   "license": "MIT",
   "dependencies": {
     "async": "^2.6.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-es2015": "^6.24.1",
     "browserify-zlib": "^0.2.0",
     "chalk": "^2.3.0",
     "clean-documentation-theme": "^0.5.2",

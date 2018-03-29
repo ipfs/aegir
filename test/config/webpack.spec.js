@@ -7,6 +7,7 @@ const mock = require('mock-require')
 describe('config - webpack', () => {
   afterEach(() => {
     mock.stop('../../src/utils')
+    mock.stop('../../src/config/user')
   })
 
   it('custom configs', () => {
@@ -50,6 +51,45 @@ describe('config - webpack', () => {
       expect(conf).to.have.deep.property('entry', ['src/main.js'])
       expect(conf).to.have.nested.property('output.library', 'Example')
       expect(conf).to.have.property('devtool', 'eval')
+    })
+  })
+
+  it('uses inline-source-map for test', () => {
+    mock('../../src/config/user', function () {
+      return {
+        webpack: {},
+        entry: ''
+      }
+    })
+    const config = mock.reRequire('../../src/config/webpack')
+    return config('test').then((webpack) => {
+      expect(webpack.devtool).to.equal('inline-source-map')
+    })
+  })
+
+  it('uses sourcemap for production', () => {
+    mock('../../src/config/user', function () {
+      return {
+        webpack: {},
+        entry: ''
+      }
+    })
+    const config = mock.reRequire('../../src/config/webpack')
+    return config('production').then((webpack) => {
+      expect(webpack.devtool).to.equal('source-map')
+    })
+  })
+
+  it('uses sourcemap as the default', () => {
+    mock('../../src/config/user', function () {
+      return {
+        webpack: {},
+        entry: ''
+      }
+    })
+    const config = mock.reRequire('../../src/config/webpack')
+    return config().then((webpack) => {
+      expect(webpack.devtool).to.equal('source-map')
     })
   })
 })

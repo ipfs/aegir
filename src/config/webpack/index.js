@@ -25,12 +25,13 @@ function webpackConfig (env) {
     } else {
       environment.TEST_BROWSER_JS = JSON.stringify('')
     }
+    const sourcemap = env === 'test' ? 'inline-source-map' : 'source-map'
 
     return merge(base, {
       entry: [
         entry
       ],
-      devtool: 'source-map',
+      devtool: sourcemap,
       output: {
         filename: path.basename(entry),
         library: libraryName,

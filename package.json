@@ -41,7 +41,7 @@
     "documentation": "^5.3.3",
     "es6-promisify": "^5.0.0",
     "eslint": "^4.13.0",
-    "eslint-config-aegir": "^1.0.1",
+    "eslint-config-aegir": "git+https://github.com/ipfs/eslint-config-aegir#flow",
     "execa": "^0.8.0",
     "filesize": "^3.5.11",
     "findup-sync": "^2.0.0",

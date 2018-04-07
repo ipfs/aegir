@@ -27,7 +27,8 @@ function testNode (ctx) {
 
   let args = [
     '--ui', 'bdd',
-    '--colors'
+    '--colors',
+    '--require', 'source-map-support/register'
   ]
 
   let files = [

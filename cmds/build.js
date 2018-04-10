@@ -7,9 +7,9 @@ module.exports = {
   command: 'build',
   desc: 'Build ready to release',
   builder: {
-    browser: {
-      alias: 'b',
-      describe: 'Build for browser usage',
+    dist: {
+      alias: 'd',
+      describe: 'Build dist package',
       default: true
     },
     node: {

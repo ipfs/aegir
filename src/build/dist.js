@@ -3,13 +3,10 @@
 const webpack = require('webpack')
 const Uglify = require('uglify-es')
 const path = require('path')
-const Listr = require('listr')
 const fs = require('fs-extra')
 const filesize = require('filesize')
 const pify = require('pify')
 
-const clean = require('../clean')
-const utils = require('../utils')
 const config = require('../config/webpack')
 
 function webpackBuild (ctx, task) {
@@ -59,19 +56,8 @@ function minify (ctx, task) {
     })
 }
 
-const TASKS = new Listr([{
-  title: 'Clean ./dist',
-  task: () => clean('dist')
-}, {
-  title: 'Webpack Build',
-  task: webpackBuild
-}, {
-  title: 'Write stats to disk',
-  task: writeStats,
-  enabled: (ctx) => ctx.webpackResult != null && ctx.stats
-}, {
-  title: 'Minify',
-  task: minify
-}], utils.getListrConfig())
-
-module.exports = TASKS
+module.exports = {
+  webpackBuild: webpackBuild,
+  writeStats: writeStats,
+  minify: minify
+}

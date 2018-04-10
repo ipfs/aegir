@@ -12,10 +12,10 @@ module.exports = {
       describe: 'Build dist package',
       default: true
     },
-    node: {
-      alias: 'n',
-      describe: 'Build for node usage',
-      default: false
+    lib: {
+      alias: 'l',
+      describe: 'Transpile src to lib',
+      default: true
     }
   },
   handler (argv) {

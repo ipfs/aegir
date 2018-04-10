@@ -4,6 +4,7 @@ const Listr = require('listr')
 
 const clean = require('../clean')
 const dist = require('./dist')
+const lib = require('./lib')
 const utils = require('../utils')
 
 const TASKS = new Listr([{
@@ -22,6 +23,10 @@ const TASKS = new Listr([{
   title: 'Minify',
   task: dist.minify,
   enabled: (ctx) => ctx.dist
+}, {
+  title: 'Transpile src to lib',
+  task: lib,
+  enabled: (ctx) => ctx.lib
 }], utils.getListrConfig())
 
 module.exports = TASKS

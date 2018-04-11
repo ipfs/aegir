@@ -4,9 +4,10 @@
 const path = require('path')
 
 const babelCore = require('babel-core')
+const chokidar = require('chokidar')
 const fs = require('fs-extra')
-const glob = require('glob')
-const pify = require('pify')
+
+const utils = require('../utils')
 
 const babelConfig = {
   env: {
@@ -28,7 +29,17 @@ const babelConfig = {
   }
 }
 
-const transform = (src, dest) => {
+/**
+ * Babel transpiles a file from `src` to `lib`
+ *
+ * @param {string} filename The filename relative to the `src` directory
+ *
+ * @returns {Promise}
+ */
+const transform = (filename) => {
+  const src = path.join('src', filename)
+  const dest = path.join('lib', filename)
+
   // To have the right filename in the source map
   babelConfig.sourceFileName = path.join('..', src)
 
@@ -45,16 +56,38 @@ const transform = (src, dest) => {
   })
 }
 
-const babel = () => {
-  const src = 'src'
-  const dest = 'lib'
+const babel = (ctx) => {
+  const srcDir = path.join(utils.getBasePath(), 'src')
 
-  return pify(glob)('./**/*.js', {
-    cwd: path.join(process.cwd(), src)
-  }).then((filenames) => {
-    return Promise.all(filenames.map((filename) => {
-      return transform(path.join(src, filename), path.join(dest, filename))
-    }))
+  return new Promise((resolve, reject) => {
+    // The watcher code is based on the babel-cli code (MIT licensed):
+    // https://github.com/babel/babel/blob/6597a472b30419493f123bff1e9194e4c09e488e/packages/babel-cli/src/babel/dir.js#L164-L188`
+    const watcher = chokidar.watch(srcDir, {
+      persistent: ctx.watch,
+      ignoreInitial: false,
+      awaitWriteFinish: {
+        stabilityThreshold: 50,
+        pollInterval: 10
+      }
+    })
+
+    ;['add', 'change'].forEach((type) => {
+      watcher.on(type, (filename) => {
+        const relative = path.relative(srcDir, filename)
+        console.log('Transpile file: ' + relative)
+        transform(relative)
+      })
+    })
+
+    watcher
+      .on('ready', () => {
+        // Finish the task after the initial scan. If files are watched, the
+        // task will keep running though.
+        resolve()
+      })
+      .on('error', (err) => {
+        reject(err)
+      })
   })
 }
 

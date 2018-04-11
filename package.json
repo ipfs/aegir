@@ -34,6 +34,7 @@
     "babel-preset-flow-node": "^2.0.1",
     "browserify-zlib": "^0.2.0",
     "chalk": "^2.3.0",
+    "chokidar": "^2.0.3",
     "clean-documentation-theme": "^0.5.2",
     "codecov": "^3.0.0",
     "conventional-changelog": "^1.1.7",

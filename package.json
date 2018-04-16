@@ -94,6 +94,7 @@
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
+    "Garren Smith <garren.smith@gmail.com>",
     "Haad <haadcode@users.noreply.github.com>",
     "Henrique Dias <hacdias@gmail.com>",
     "JGAntunes <j.goncalo.antunes@gmail.com>",
@@ -107,7 +108,7 @@
     "kumavis <kumavis@users.noreply.github.com>",
     "mkg20001 <mkg20001@gmail.com>",
     "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>",
-    "victorbjelkholm <victorbjelkholm@gmail.com>"
+    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>"
   ],
   "devDependencies": {
     "chai": "^4.1.2",

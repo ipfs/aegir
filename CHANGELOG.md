@@ -1,3 +1,18 @@
+<a name="13.0.7"></a>
+## [13.0.7](https://github.com/ipfs/aegir/compare/v13.0.6...v13.0.7) (2018-04-16)
+
+
+### Bug Fixes
+
+* don't show warning if test/browser.js doesn't exist ([4785bce](https://github.com/ipfs/aegir/commit/4785bce)), closes [#204](https://github.com/ipfs/aegir/issues/204)
+
+
+### Features
+
+* add inline-source-map for webpack ([1ff41e5](https://github.com/ipfs/aegir/commit/1ff41e5))
+
+
+
 <a name="13.0.6"></a>
 ## [13.0.6](https://github.com/ipfs/aegir/compare/v13.0.5...v13.0.6) (2018-03-08)
 

@@ -1,0 +1,18 @@
+--- node_modules/any-observable/register.js	2018-04-20 17:27:43.713360054 +0200
++++ register_patched.js	2018-04-20 17:35:39.387408269 +0200
+@@ -1,5 +1,5 @@
+ 'use strict';
+-module.exports = require('./loader')(global, loadImplementation);
++module.exports = require('any-observable/loader')(global, loadImplementation);
+ 
+ function loadImplementation(implementation) {
+ 	var impl;
+@@ -12,7 +12,7 @@
+ 		};
+ 	} else if (implementation) {
+ 		// if implementation specified, require it
+-		var lib = require(implementation);
++		var lib = require('rxjs/Observable');
+ 
+ 		impl = {
+ 			Observable: lib.Observable || lib.default || lib,

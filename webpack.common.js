@@ -1,7 +1,9 @@
 const path = require('path')
 
 let alias = {
-  'path-platform': require.resolve('./tmp/path_patched')
+  'path-platform': require.resolve('./tmp/path_patched'),
+  'uglify-es': require.resolve('./tmp/uglifyEsTools'),
+  './register': require.resolve('./tmp/register_patched')
 }
 
 'electron hipchat-notifier loggly mailgun-js nodemailer should sinon-restore slack-node yamlparser'.split(' ').map(thing => {

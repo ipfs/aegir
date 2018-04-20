@@ -6,8 +6,11 @@ let alias = {
   './register': require.resolve('./tmp/register_patched')
 }
 
-'electron hipchat-notifier loggly mailgun-js nodemailer should sinon-restore slack-node yamlparser'.split(' ').map(thing => {
-  alias[thing] = require.resolve('./tmp/lazyload.' + thing)
+let externals = {}
+let optional = 'electron hipchat-notifier loggly mailgun-js nodemailer should sinon-restore slack-node yamlparser' // these modules seem to be missing, yet they are not required. Let's assume they are optional and don't bundle them
+
+optional.split(' ').map(thing => {
+  externals[thing] = 'commonjs ' + thing
 })
 
 module.exports = {
@@ -19,5 +22,6 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'aegir'
-  }
+  },
+  externals
 }

@@ -10,7 +10,6 @@ let getId = () => pref + id++
 const template = (p, id) => `.command(${id}.command, ${id}.describe || ${id}.description, ${id}.builder || _builderNOOP, ${id}.handler, ${id}.middlewares)\n`
 const templateH = (p, id) => `const ${id} = require('${p}')`
 
-
 const fs = require('fs')
 const path = require('path')
 
@@ -19,7 +18,7 @@ const main = path.dirname(__dirname)
 const read = p => fs.readFileSync(p).toString()
 const RE = /\.commandDir\('([a-z]+)'\)/gmi
 
-function replace(P, D) {
+function replace (P, D) {
   const out = P.replace('.js', '_patched.js')
   let c = read(P)
   let define = []
@@ -46,4 +45,4 @@ function replace(P, D) {
   fs.writeFileSync(out, c)
 }
 
-replace(require.resolve('./cli.js'), path.dirname(require.resolve('./cli.js')))
+replace(require.resolve('../cli.js'), path.dirname(require.resolve('../cli.js')))

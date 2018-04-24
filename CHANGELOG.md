@@ -1,3 +1,13 @@
+<a name="13.1.0"></a>
+# [13.1.0](https://github.com/ipfs/aegir/compare/v13.0.7...v13.1.0) (2018-04-24)
+
+
+### Features
+
+* enable uglify mangle and compress ([8d323b7](https://github.com/ipfs/aegir/commit/8d323b7))
+
+
+
 <a name="13.0.7"></a>
 ## [13.0.7](https://github.com/ipfs/aegir/compare/v13.0.6...v13.0.7) (2018-04-16)
 

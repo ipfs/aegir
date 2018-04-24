@@ -8,8 +8,9 @@ let alias = {
 
 let externals = {}
 let optional = 'electron hipchat-notifier loggly mailgun-js nodemailer should sinon-restore slack-node yamlparser' // these modules seem to be missing, yet they are not required. Let's assume they are optional and don't bundle them
+let ignoreBundle = 'eslint karma conventional-changelog-preset-loader' // don't bundle these modules as it causes too much weird behaviour // TODO: somehow do that anyway in the future
 
-optional.split(' ').map(thing => {
+String(optional + ' ' + ignoreBundle).split(' ').map(thing => {
   externals[thing] = 'commonjs ' + thing
 })
 

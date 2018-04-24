@@ -4,10 +4,7 @@ rm -rf dist tmp
 mkdir tmp
 
 node misc/cmdPatch.js
-c=$(cat cli_patched.js)
-echo "'use strict'
-$c
-" > cli_patched.js
+patch ./cli_patched.js ./misc/cli.patch
 node misc/uglifyToolsPreprocess.js
 cp ./node_modules/path-platform/path.js ./tmp/path_patched.js
 patch ./tmp/path_patched.js ./misc/pathPatch.patch

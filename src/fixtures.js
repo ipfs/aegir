@@ -7,11 +7,24 @@ const path = require('path')
 module.exports = function loadFixtures (filePath, module) {
   // note: filePath needs to be relative to the module root
   if (module) {
-    filePath = path.join('node_modules', module, filePath)
+    filePath = path.join(module, filePath)
   }
 
   if (isNode) {
-    return require('fs').readFileSync(path.join(process.cwd(), filePath))
+    const fs = require('fs')
+    const paths = [
+      path.join(process.cwd(), filePath),
+      path.join(process.cwd(), 'node_modules', filePath),
+      resolve(filePath)
+    ]
+
+    const resourcePath = paths.find(path => fs.existsSync(path))
+
+    if (!resourcePath) {
+      throw new Error(`Could not load ${filePath}`)
+    }
+
+    return fs.readFileSync(resourcePath)
   } else {
     return syncXhr(filePath)
   }
@@ -38,5 +51,13 @@ function syncXhr (filePath) {
     return Buffer.from(res)
   } else {
     throw new Error(`Could not get the Fixture: ${filePath}`)
+  }
+}
+
+function resolve (filePath) {
+  try {
+    return require.resolve(filePath)
+  } catch (error) {
+    // ignore error
   }
 }

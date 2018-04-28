@@ -64,7 +64,7 @@ function testNode (ctx) {
       coverageFiles,
       '--exclude',
       coverageFilesExclude.join(' '),
-      '--reporter=lcov', '--reporter=text',
+      '--reporter=lcov', '--reporter=text', '--reporter=cobertura',
       'mocha',
       `--timeout=${timeout}`
     ].concat(args)

@@ -6,6 +6,13 @@
 
 > Automated JavaScript project management.
 
+## Lead Maintainer
+
+[Victor Bjelkholm](https://github.com/VictorBjelkholm)
+
+## Table of Contents
+
+Soon™
 
 ## Migration from `v11`
 

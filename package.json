@@ -2,6 +2,7 @@
   "name": "aegir",
   "version": "13.1.0",
   "description": "JavaScript project management",
+  "lead-maintainer": "Victor Bjelkholm <victorbjelkholm@gmail.com>",
   "main": "cli.js",
   "browser": {
     "fs": false

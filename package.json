@@ -27,7 +27,6 @@
     "lint",
     "build"
   ],
-  "author": "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "async": "^2.6.0",

@@ -36,7 +36,7 @@ const babelConfig = {
  *
  * @returns {Promise}
  */
-const transform = (filename) => {
+const babel = (filename) => {
   const src = path.join('src', filename)
   const dest = path.join('lib', filename)
 
@@ -56,7 +56,21 @@ const transform = (filename) => {
   })
 }
 
-const babel = (ctx) => {
+/**
+ * Copies a file from `src` to `lib` with flow extension
+ *
+ * @param {string} filename The filename relative to the `src` directory
+ *
+ * @returns {Promise}
+ */
+const flowCopy = (filename) => {
+  const src = path.join('src', filename)
+  const dest = path.join('lib', filename + '.flow')
+
+  return fs.copy(src, dest)
+}
+
+const transform = (ctx) => {
   const srcDir = path.join(utils.getBasePath(), 'src')
 
   return new Promise((resolve, reject) => {
@@ -74,8 +88,9 @@ const babel = (ctx) => {
     ;['add', 'change'].forEach((type) => {
       watcher.on(type, (filename) => {
         const relative = path.relative(srcDir, filename)
-        console.log('Transpile file: ' + relative)
-        transform(relative)
+        console.log('Transform file: ' + relative)
+        babel(relative)
+        flowCopy(relative)
       })
     })
 
@@ -91,4 +106,4 @@ const babel = (ctx) => {
   })
 }
 
-module.exports = babel
+module.exports = transform

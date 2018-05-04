@@ -10,9 +10,15 @@ function karma (config) {
     const server = new Server(config, (exitCode) => {
       if (exitCode > 0) {
         reject(new Error('Some tests are failing'))
-      }
+      } else {
+        resolve()
 
-      resolve()
+        // Force aegir/karma to exit after 1 second after test completion
+        // Issue: https://github.com/ampproject/amphtml/pull/14814
+        setTimeout(() => {
+          process.exit(0)
+        }, 1000)
+      }
     })
 
     server.start()

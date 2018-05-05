@@ -1,8 +1,5 @@
 'use strict'
 
-const release = require('../src/release')
-const onError = require('../src/error-handler')
-
 module.exports = {
   command: 'release',
   desc: 'Release your code onto the world',
@@ -80,6 +77,8 @@ module.exports = {
     }
   },
   handler (argv) {
+    const release = require('../src/release')
+    const onError = require('../src/error-handler')
     release(argv).catch(onError)
   }
 }

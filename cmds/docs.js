@@ -1,8 +1,5 @@
 'use strict'
 
-const docs = require('../src/docs')
-const onError = require('../src/error-handler')
-
 module.exports = {
   command: 'docs',
   desc: 'Generate documentation using jsdoc',
@@ -21,6 +18,8 @@ module.exports = {
     }
   },
   handler (argv) {
+    const docs = require('../src/docs')
+    const onError = require('../src/error-handler')
     docs.run(argv).catch(onError)
   }
 }

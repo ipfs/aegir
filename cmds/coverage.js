@@ -1,7 +1,5 @@
 'use strict'
-
 const coverage = require('../src/coverage')
-const onError = require('../src/error-handler')
 
 module.exports = {
   command: 'coverage',
@@ -49,6 +47,7 @@ module.exports = {
     }
   },
   handler (argv) {
+    const onError = require('../src/error-handler')
     coverage.run(argv).catch(onError)
   }
 }

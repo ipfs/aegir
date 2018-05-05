@@ -57,7 +57,7 @@ function testNode (ctx) {
   }
 
   if (ctx.bail) {
-    args.push('--bail');
+    args.push('--bail')
   }
 
   const timeout = ctx.timeout || DEFAULT_TIMEOUT

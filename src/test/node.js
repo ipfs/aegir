@@ -56,6 +56,10 @@ function testNode (ctx) {
     args.push('--exit')
   }
 
+  if (ctx.bail) {
+    args.push('--bail');
+  }
+
   const timeout = ctx.timeout || DEFAULT_TIMEOUT
   if (ctx.coverage) {
     exec = 'nyc'

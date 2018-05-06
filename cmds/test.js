@@ -50,6 +50,11 @@ module.exports = {
     cors: {
       describe: 'Enable or disable CORS (only available in browser runs)',
       default: true
+    },
+    bail: {
+      alias: 'b',
+      describe: 'Mocha should bail once a test fails',
+      default: false
     }
   },
   handler (argv) {

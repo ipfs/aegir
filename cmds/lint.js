@@ -1,8 +1,5 @@
 'use strict'
 
-const lint = require('../src/lint')
-const onError = require('../src/error-handler')
-
 module.exports = {
   command: 'lint',
   desc: 'Lint all project files',
@@ -14,6 +11,8 @@ module.exports = {
     }
   },
   handler (argv) {
+    const lint = require('../src/lint')
+    const onError = require('../src/error-handler')
     lint(argv).catch(onError)
   }
 }

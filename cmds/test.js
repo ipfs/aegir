@@ -1,8 +1,5 @@
 'use strict'
 
-const test = require('../src/test')
-const onError = require('../src/error-handler')
-
 module.exports = {
   command: 'test',
   desc: 'Test your code in different environments',
@@ -58,6 +55,8 @@ module.exports = {
     }
   },
   handler (argv) {
+    const test = require('../src/test')
+    const onError = require('../src/error-handler')
     test.run(argv).catch(onError)
   }
 }

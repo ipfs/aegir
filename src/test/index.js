@@ -1,29 +1,33 @@
 'use strict'
 
-const pmap = require('p-map')
-const _ = require('lodash')
-
-const node = require('./node')
-const browser = require('./browser')
-
-const userConfig = require('../config/user')
-
 const TASKS = [{
   title: 'Test Node.js',
-  task: node,
-  enabled: (ctx) => _.includes(ctx.target, 'node')
+  task: (opts) => {
+    const node = require('./node')
+    return node(opts)
+  },
+  enabled: (ctx) => ctx.target.includes('node')
 }, {
   title: 'Test Browser',
-  task: browser.default,
-  enabled: (ctx) => _.includes(ctx.target, 'browser')
+  task: (opts) => {
+    const browser = require('./browser')
+    return browser.default(opts)
+  },
+  enabled: (ctx) => ctx.target.includes('browser')
 }, {
   title: 'Test Webworker',
-  task: browser.webworker,
-  enabled: (ctx) => _.includes(ctx.target, 'webworker')
+  task: (opts) => {
+    const browser = require('./browser')
+    return browser.webworker(opts)
+  },
+  enabled: (ctx) => ctx.target.includes('webworker')
 }]
 
 module.exports = {
   run (opts) {
+    const userConfig = require('../config/user')
+    const pmap = require('p-map')
+
     opts.hooks = userConfig().hooks
     return pmap(TASKS, (task) => {
       if (!task.enabled(opts)) {

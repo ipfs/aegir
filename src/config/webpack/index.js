@@ -27,7 +27,9 @@ function webpackConfig (env) {
     }
     const sourcemap = env === 'test' ? 'inline-source-map' : 'source-map'
 
+    const webpackMode = process.env.AEGIR_WEBPACK_MODE || 'development'
     return merge(base, {
+      mode: webpackMode,
       entry: [
         entry
       ],

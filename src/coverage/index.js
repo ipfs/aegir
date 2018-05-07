@@ -1,15 +1,18 @@
 'use strict'
 
-const path = require('path')
-const _ = require('lodash')
-const Listr = require('listr')
-
 const providers = require('./providers')
-const testNode = require('../test/node')
-const utils = require('../utils')
-const userConfig = require('../config/user')
 
 function coverage (opts) {
+  require('any-observable/register')('rxjs')
+
+  const path = require('path')
+  const _ = require('lodash')
+  const Listr = require('listr')
+
+  const testNode = require('../test/node')
+  const utils = require('../utils')
+  const userConfig = require('../config/user')
+
   opts.hooks = userConfig().hooks
 
   const getCoverage = (ctx) => testNode(Object.assign({}, ctx, {

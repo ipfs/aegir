@@ -1,5 +1,6 @@
 'use strict'
 
+require('any-observable/register')('rxjs')
 const Listr = require('listr')
 
 const utils = require('../utils')

@@ -18,7 +18,7 @@ function exec (command) {
 }
 
 exec('git fetch origin master')
-  .then(() => read({to: 'HEAD', from: `master`}))
+  .then(() => read({from: `master`}))
   .then((commits) => Promise.all([commits, load({ extends: ['@commitlint/config-conventional'] })]))
   .then(([commits, opts]) => Promise.all(commits.map((commit) => lint(
     commit,

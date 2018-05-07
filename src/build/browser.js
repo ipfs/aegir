@@ -1,5 +1,6 @@
 'use strict'
 
+require('any-observable/register')('rxjs')
 const webpack = require('webpack')
 const Uglify = require('uglify-es')
 const path = require('path')

@@ -3,6 +3,8 @@
 const providers = require('./providers')
 
 function coverage (opts) {
+  require('any-observable/register')('rxjs')
+
   const path = require('path')
   const _ = require('lodash')
   const Listr = require('listr')

@@ -33,7 +33,7 @@
     "browserify-zlib": "^0.2.0",
     "chalk": "^2.3.0",
     "clean-documentation-theme": "^0.5.2",
-    "codecov": "^3.0.0",
+    "codecov": "^3.0.2",
     "conventional-changelog": "^1.1.7",
     "conventional-github-releaser": "^2.0.0",
     "coveralls": "^3.0.0",

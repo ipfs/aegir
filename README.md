@@ -69,6 +69,7 @@ Your `package.json` should have the following entries.
 "main": "src/index.js",
 "scripts": {
   "lint": "aegir lint",
+  "commitlint": "aegir commitlint",
   "release": "aegir release",
   "build": "aegir build",
   "test": "aegir test",

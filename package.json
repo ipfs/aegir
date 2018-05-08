@@ -20,7 +20,7 @@
     "release": "npm run test && node cli.js release --no-build --no-test",
     "release-minor": "npm run test && node cli.js release --no-build --no-test --type minor",
     "release-major": "npm run test && node cli.js release --no-build --no-test --type major",
-    "commitlint": "node cli.js commitlint"
+    "commitlint": "commitlint --extends=@commitlint/config-conventional --from=master --to=HEAD"
   },
   "keywords": [
     "webpack",
@@ -30,10 +30,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@commitlint/config-conventional": "^6.1.2",
-    "@commitlint/lint": "^6.1.2",
-    "@commitlint/load": "^6.1.2",
-    "@commitlint/read": "^6.1.2",
+    "@commitlint/config-conventional": "^6.1.3",
+    "@commitlint/cli": "^6.2.0",
     "async": "^2.6.0",
     "browserify-zlib": "^0.2.0",
     "chalk": "^2.3.0",

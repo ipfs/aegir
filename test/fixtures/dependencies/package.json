@@ -1,0 +1,10 @@
+{
+  "name": "My Project",
+  "dependencies": {
+    "dep-1": "1.0.0",
+    "dep-2": "~0.0.1",
+    "dep-3": "0.0.1",
+    "dep-4": "5.0.1",
+    "dep-5": ">=19.0.1-release"
+  }
+}

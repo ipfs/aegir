@@ -1,6 +1,7 @@
 'use strict'
 
 const path = require('path')
+const webpack = require('webpack')
 const merge = require('webpack-merge')
 const {fromRoot, pkg, paths, getLibraryName} = require('../utils')
 const userConfig = require('./user')()
@@ -53,6 +54,12 @@ const base = (env = {production: true}, argv) => {
         )
       }
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(env.production ? 'production' : 'development'),
+        'process.env.IS_WEBPACK_BUILD': JSON.stringify(true)
+      })
+    ],
     target: 'web',
     node: {
       console: false,

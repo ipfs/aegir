@@ -61,6 +61,11 @@ function testNode (ctx) {
     args.push('--bail')
   }
 
+  if (ctx.flow) {
+    args.push('-r')
+    args.push('flow-remove-types/register')
+  }
+
   const timeout = ctx.timeout || DEFAULT_TIMEOUT
   if (ctx.coverage) {
     exec = 'nyc'

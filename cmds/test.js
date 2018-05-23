@@ -50,6 +50,10 @@ module.exports = {
       describe: 'Mocha should bail once a test fails',
       default: false
     },
+    flow: {
+      describe: 'Flow Type awesome',
+      default: false
+    },
     env: {
       describe: 'Sets NODE_ENV in the childprocess (NODE_ENV=dev aegir karma also works)',
       default: 'development'

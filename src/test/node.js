@@ -4,6 +4,7 @@ const execa = require('execa')
 const path = require('path')
 
 const utils = require('../utils')
+const here = p => path.join(__dirname, p)
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
@@ -63,7 +64,7 @@ function testNode (ctx) {
 
   if (ctx.flow) {
     args.push('-r')
-    args.push('flow-remove-types/register')
+    args.push(here('./register.js'))
   }
 
   const timeout = ctx.timeout || DEFAULT_TIMEOUT

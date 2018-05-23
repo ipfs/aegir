@@ -38,6 +38,9 @@ describe('config - user', () => {
       },
       getPathToNodeModules () {
         return 'aegir/node_modules'
+      },
+      fromRoot () {
+        return './src/index.js'
       }
     })
 

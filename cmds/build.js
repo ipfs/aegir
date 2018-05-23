@@ -13,11 +13,22 @@ module.exports = {
       alias: 'n',
       describe: 'Build for node usage',
       default: false
+    },
+    'enable-experimental-browser-builds': {
+      alias: 'eebb',
+      describe: 'Use experimental webpack config',
+      default: false
+    },
+    env: {
+      describe: 'Sets NODE_ENV in the childprocess (NODE_ENV=production aegir build also works)',
+      default: 'production'
     }
   },
   handler (argv) {
     const build = require('../src/build')
-    const onError = require('../src/error-handler')
-    build.run(argv).catch(onError)
+    if (argv.eebb) {
+      return require('./../src/build/experimental-browser')(argv)
+    }
+    return build.run(argv)
   }
 }

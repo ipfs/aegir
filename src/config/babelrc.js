@@ -58,10 +58,10 @@ module.exports = function (api, opts = {}) {
           modules: 'commonjs',
           targets
         }
-      ],
-      isFlowEnabled && [require('@babel/preset-flow').default]
+      ]
     ].filter(Boolean),
     plugins: [
+      isFlowEnabled && [require('babel-plugin-transform-flow-comments')],
       [
         require('@babel/plugin-transform-runtime').default,
         {

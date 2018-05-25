@@ -26,9 +26,6 @@ module.exports = {
   },
   handler (argv) {
     const build = require('../src/build')
-    if (argv.eebb) {
-      return require('./../src/build/experimental-browser')(argv)
-    }
-    return build.run(argv)
+    return build(argv)
   }
 }

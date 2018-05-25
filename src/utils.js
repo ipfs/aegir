@@ -26,19 +26,13 @@ exports.paths = {
 exports.pkg = pkg
 exports.hasPkgProp = props => arrify(props).some(prop => _.has(pkg, prop))
 // TODO: get this from aegir package.json
-exports.browserslist = {
-  development: [
-    'last 2 chrome versions',
-    'last 2 firefox versions',
-    'last 2 edge versions'
-  ],
-  production: [
-    '>1%',
-    'last 2 versions',
-    'Firefox ESR',
-    'not ie < 11'
-  ]
-}
+exports.browserslist = [
+  '>1%',
+  'last 2 versions',
+  'Firefox ESR',
+  'not ie < 11'
+]
+
 exports.repoDirectory = path.dirname(pkgPath)
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))

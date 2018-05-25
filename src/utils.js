@@ -42,7 +42,7 @@ exports.browserslist = {
 exports.repoDirectory = path.dirname(pkgPath)
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
-
+exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
 /**
  * Gets the top level path of the project aegir is executed in.
  *

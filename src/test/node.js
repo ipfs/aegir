@@ -2,9 +2,7 @@
 
 const execa = require('execa')
 const path = require('path')
-
-const utils = require('../utils')
-const here = p => path.join(__dirname, p)
+const {fromAegir, hook} = require('../utils')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
@@ -63,8 +61,7 @@ function testNode (ctx) {
   }
 
   if (ctx.flow) {
-    args.push('-r')
-    args.push(here('./register.js'))
+    args.push(...['--resolve', fromAegir('src/test/register.js')])
   }
 
   const timeout = ctx.timeout || DEFAULT_TIMEOUT
@@ -88,8 +85,8 @@ function testNode (ctx) {
     ].concat(args)
   }
 
-  const postHook = utils.hook('node', 'post')
-  const preHook = utils.hook('node', 'pre')
+  const postHook = hook('node', 'post')
+  const preHook = hook('node', 'pre')
 
   let err
 

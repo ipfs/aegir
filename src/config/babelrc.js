@@ -40,7 +40,7 @@ module.exports = function (api, opts = {}) {
         require('@babel/preset-env').default,
         {
           targets: {
-            node: '6.12'
+            node: '8.11'
           }
         }
       ],
@@ -54,7 +54,6 @@ module.exports = function (api, opts = {}) {
           // This is probably a fine default to help trim down bundles when
           // end-users inevitably import '@babel/polyfill'.
           useBuiltIns: 'entry',
-          // Do not transform modules to CJS
           modules: 'commonjs',
           targets
         }

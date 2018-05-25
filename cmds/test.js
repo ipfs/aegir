@@ -51,7 +51,7 @@ module.exports = {
       default: false
     },
     flow: {
-      describe: 'Flow Type awesome',
+      describe: 'Run test with Flow support',
       default: false
     },
     env: {

@@ -69,6 +69,10 @@ function getConfig (isWebworker, ctx) {
     // no need for entry
     webpack.entry = ''
 
+    const randomNumber = Math.floor(Math.random() * 10000)
+    const testType = isWebworker ? 'webworker' : 'browser'
+    const junitFile = `junit-report-${testType}-${randomNumber}.xml`
+
     return _.defaultsDeep({
       files: ctxFiles.concat(fixtureFiles).concat(userFiles)
     }, userKarma, {
@@ -83,7 +87,7 @@ function getConfig (isWebworker, ctx) {
         reporter: 'spec'
       },
       junitReporter: {
-        outputFile: isWebworker ? 'junit-report-webworker.xml' : 'junit-report-browser.xml'
+        outputFile: junitFile
       },
       browserNoActivityTimeout: 50 * 1000,
       customLaunchers: {

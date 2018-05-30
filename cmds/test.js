@@ -54,10 +54,6 @@ module.exports = {
       describe: 'Run test with Flow support',
       default: false
     },
-    env: {
-      describe: 'Sets NODE_ENV in the childprocess (NODE_ENV=dev aegir karma also works)',
-      default: 'development'
-    },
     'enable-experimental-karma': {
       alias: 'eek',
       describe: 'Use the experimental karma config',

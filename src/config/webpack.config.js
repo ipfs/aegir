@@ -5,23 +5,24 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const {fromRoot, pkg, paths, getLibraryName} = require('../utils')
 const userConfig = require('./user')()
+const isProduction = process.env.NODE_ENV === 'production'
 
-const base = (env = {production: true}, argv) => {
+const base = (env, argv) => {
   const filename = [
     pkg.name,
-    env.production ? '.min' : null,
+    isProduction ? '.min' : null,
     '.js'
   ]
     .filter(Boolean)
     .join('')
 
   return {
-    bail: Boolean(env.production),
-    mode: env.production ? 'production' : 'development',
-    devtool: env.production ? 'source-map' : 'cheap-module-source-map',
+    bail: Boolean(isProduction),
+    mode: isProduction ? 'production' : 'development',
+    devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
     entry: [userConfig.entry],
     output: {
-      pathinfo: !env.production,
+      pathinfo: !isProduction,
       path: fromRoot(paths.dist),
       filename: filename,
       sourceMapFilename: filename + '.map',
@@ -56,7 +57,7 @@ const base = (env = {production: true}, argv) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(env.production ? 'production' : 'development'),
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.IS_WEBPACK_BUILD': JSON.stringify(true)
       })
     ],
@@ -78,5 +79,10 @@ const base = (env = {production: true}, argv) => {
 }
 
 module.exports = (env, argv) => {
-  return merge(base(env, argv), userConfig.webpack)
+  return merge(
+    base(env, argv),
+    typeof userConfig.webpack === 'function'
+      ? userConfig.webpack(env, argv)
+      : userConfig.webpack
+  )
 }

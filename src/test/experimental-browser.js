@@ -16,7 +16,6 @@ module.exports = (argv) => {
         ...input
       ], {
         env: {
-          NODE_ENV: argv.env,
           AEGIR_WEBWORKER: argv.webworker
         },
         stdio: 'inherit'

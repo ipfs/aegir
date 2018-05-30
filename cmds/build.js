@@ -18,10 +18,6 @@ module.exports = {
       alias: 'eebb',
       describe: 'Use experimental webpack config',
       default: false
-    },
-    env: {
-      describe: 'Sets NODE_ENV in the childprocess (NODE_ENV=production aegir build also works)',
-      default: 'production'
     }
   },
   handler (argv) {

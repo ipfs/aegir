@@ -12,10 +12,10 @@ module.exports = (argv) => {
     : []
   return execa(bin, [
     ...config,
-    '--env.' + argv.env,
+    '--progress',
     ...input
   ], {
-    env: {NODE_ENV: argv.env},
+    env: {NODE_ENV: process.env.NODE_ENV || 'production'},
     stdio: 'inherit'
   })
 }

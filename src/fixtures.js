@@ -4,13 +4,13 @@
 const isNode = require('detect-node')
 const path = require('path')
 
+// note: filePath needs to be relative to the module root
 module.exports = function loadFixtures (filePath, module) {
-  // note: filePath needs to be relative to the module root
-  if (module) {
-    filePath = path.join(module, filePath)
-  }
-
   if (isNode) {
+    if (module) {
+      filePath = path.join(module, filePath)
+    }
+
     const fs = require('fs')
     const paths = [
       path.join(process.cwd(), filePath),
@@ -26,6 +26,10 @@ module.exports = function loadFixtures (filePath, module) {
 
     return fs.readFileSync(resourcePath)
   } else {
+    if (module) {
+      filePath = path.join('node_modules', module, filePath)
+    }
+
     return syncXhr(filePath)
   }
 }

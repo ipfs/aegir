@@ -1,3 +1,25 @@
+<a name="14.0.0"></a>
+# [14.0.0](https://github.com/ipfs/aegir/compare/v13.1.0...v14.0.0) (2018-05-31)
+
+
+### Bug Fixes
+
+* append random number to coverage reports ([139ad19](https://github.com/ipfs/aegir/commit/139ad19))
+* restores previous behaviour for loading browser fixtures ([34cea98](https://github.com/ipfs/aegir/commit/34cea98)), closes [#235](https://github.com/ipfs/aegir/issues/235)
+
+
+### Features
+
+* allow loading resources from hoisted dependencies ([0d47028](https://github.com/ipfs/aegir/commit/0d47028))
+* enforce package.json dependency version guidelines ([47a0080](https://github.com/ipfs/aegir/commit/47a0080))
+
+
+### Performance Improvements
+
+* **cli:** Inline requires in CLI inclusions ([0a2ec35](https://github.com/ipfs/aegir/commit/0a2ec35))
+
+
+
 <a name="13.1.0"></a>
 # [13.1.0](https://github.com/ipfs/aegir/compare/v13.0.7...v13.1.0) (2018-04-24)
 

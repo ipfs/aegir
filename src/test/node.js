@@ -45,7 +45,8 @@ function testNode (ctx) {
 
   if (process.env.CI) {
     args.push('--reporter=mocha-jenkins-reporter')
-    env.JUNIT_REPORT_PATH = path.join(process.cwd(), 'junit-report-node.xml')
+    const randomNumber = Math.floor(Math.random() * 10000)
+    env.JUNIT_REPORT_PATH = path.join(process.cwd(), `junit-report-node-${randomNumber}.xml`)
   }
 
   if (ctx.watch) {

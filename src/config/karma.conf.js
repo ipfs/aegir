@@ -16,6 +16,9 @@ if (process.env.TRAVIS) {
 }
 
 module.exports = function (config) {
+  const randomNumber = Math.floor(Math.random() * 10000)
+  const junitFile = `junit-report-browser-${randomNumber}.xml`
+
   config.set({
     frameworks: ['mocha'],
     basePath: process.cwd(),
@@ -38,7 +41,7 @@ module.exports = function (config) {
     },
     junitReporter: {
       outputDir: process.cwd(),
-      outputFile: 'junit-report-browser.xml',
+      outputFile: junitFile,
       useBrowserName: false
     },
     port: 9876,

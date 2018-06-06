@@ -35,7 +35,6 @@ const base = (env, argv) => {
       rules: [
         {
           test: /\.js$/,
-          // exclude: /node_modules/,
           use: {
             loader: require.resolve('babel-loader'),
             options: {
@@ -79,10 +78,34 @@ const base = (env, argv) => {
 }
 
 module.exports = (env, argv) => {
+  const external = typeof userConfig.webpack === 'function'
+    ? userConfig.webpack(env, argv)
+    : userConfig.webpack
+
+  if (isProduction) {
+    return [
+      merge(
+        base(env, argv),
+        {
+          output: {
+            filename: `${pkg.name}.js`,
+            sourceMapFilename: `${pkg.name}.js.map`
+          },
+          optimization: {
+            minimizer: []
+          }
+        },
+        external
+      ),
+      merge(
+        base(env, argv),
+        external
+      )
+    ]
+  }
+
   return merge(
     base(env, argv),
-    typeof userConfig.webpack === 'function'
-      ? userConfig.webpack(env, argv)
-      : userConfig.webpack
+    external
   )
 }

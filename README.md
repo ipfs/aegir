@@ -50,7 +50,11 @@ You can also specify `hooks.browser` and `hooks.node` if you have a different se
 
 ### Scoped Github Token
 
-The token needed for releases is now looked for after under `AEGIR_GHTOKEN`.
+Performing a release involves creating new commits and tags and then pushing them back to the repository you are releasing from. In order to do this you should create a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and store it in the environmental variable `AEGIR_GHTOKEN`.
+
+The only access scope it needs is `public_repo`.
+
+Be aware that by storing it in `~/.profile` or similar you will make it available to any program that runs on your computer.
 
 ## Project Structure
 

@@ -115,4 +115,38 @@ describe('lint', () => {
       'some-dep': '<1.0.0'
     })
   })
+
+  it('should pass in user defined path globs', () => {
+    return setupProjectWithDeps([])
+      .then(() => {
+        // Directory not included in the default globs
+        const dir = `test-${Date.now()}`
+
+        fs.mkdirSync(dir)
+        fs.writeFileSync(`${dir}/test.js`, `'use strict'\n\nmodule.exports = {}\n`)
+        fs.writeFileSync(
+          '.aegir.js',
+          `module.exports = { lint: { files: ['${dir}/*.js'] } }`
+        )
+      })
+      .then(() => lint())
+  })
+
+  it('should fail in user defined path globs', () => {
+    return setupProjectWithDeps([])
+      .then(() => {
+        // Directory not included in the default globs
+        const dir = `test-${Date.now()}`
+
+        fs.mkdirSync(dir)
+        fs.writeFileSync(`${dir}/test.js`, `() .> {`)
+        fs.writeFileSync(
+          '.aegir.js',
+          `module.exports = { lint: { files: ['${dir}/*.js'] } }`
+        )
+      })
+      .then(() => lint())
+      .then(() => { throw new Error('Should have failed!') })
+      .catch(error => expect(error.message).to.contain('Lint errors'))
+  })
 })

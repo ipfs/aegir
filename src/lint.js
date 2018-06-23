@@ -4,6 +4,8 @@ const CLIEngine = require('eslint').CLIEngine
 const path = require('path')
 const formatter = CLIEngine.getFormatter()
 const userConfig = require('./config/user')
+const reallyRequire = require('really-require')
+const chalk = require('chalk')
 
 const CONFIG_FILE = path.resolve(__dirname, 'config', 'eslintrc.js')
 
@@ -18,6 +20,43 @@ const FILES = [
   'benchmarks/**/*.js',
   '!**/node_modules/**'
 ]
+
+async function checkDependencies () {
+  let ERROR = false
+  // let WARN = false
+
+  function warn (data) {
+    let loc = ''
+    if (data.location) {
+      loc = data.location
+      loc = ' @ ' + loc.file + ' ' + loc.from.line + ':' + loc.from.column + ' -> ' + loc.to.line + ':' + loc.to.column
+    }
+    if (data.error) {
+      ERROR = true
+      console.error(chalk`{red {bold ERROR}%s: %s}`, loc, data.message)
+    } else {
+      // WARN = true
+      console.error(chalk`{yellow {bold WARN}%s: %s}`, loc, data.message)
+    }
+  }
+
+  const result = await reallyRequire(process.cwd(), { sourceGlob: ['*.js', '!(node_modules|test|examples)/**/*.js'] })
+
+  result.missing.forEach(warn)
+  result.unused.forEach(warn)
+  result.errors.forEach(err => {
+    console.error(chalk`{red {bold PARSER ERROR}: %s @ %s}`, err.error.toString(), err.file)
+    ERROR = true
+  })
+
+  if (ERROR) {
+    throw new Error('Dependency errors')
+  }
+
+  /* if (WARN) { // TODO: should this be enabled?
+    throw new Error('Dependency errors')
+  } */
+}
 
 function checkDependencyVersions () {
   const checkVersions = (type, pkg, key) => {
@@ -96,7 +135,8 @@ function runLinter (opts = {}) {
 function lint (opts) {
   return Promise.all([
     runLinter(opts),
-    checkDependencyVersions(opts)
+    checkDependencyVersions(opts),
+    checkDependencies(opts)
   ])
 }
 

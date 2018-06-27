@@ -69,7 +69,6 @@
     "nyc": "^11.3.0",
     "p-map": "^1.2.0",
     "pify": "^3.0.0",
-    "pre-push": "~0.1.1",
     "pretty-hrtime": "^1.0.3",
     "rimraf": "^2.6.2",
     "safe-buffer": "^5.1.1",

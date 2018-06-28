@@ -29,6 +29,10 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@commitlint/config-conventional": "^7.0.1",
+    "@commitlint/lint": "^7.0.0",
+    "@commitlint/load": "^7.0.0",
+    "@commitlint/read": "^7.0.0",
     "async": "^2.6.0",
     "browserify-zlib": "~0.2.0",
     "chalk": "^2.3.0",

@@ -82,6 +82,7 @@
     "update-notifier": "^2.3.0",
     "webpack": "^3.10.0",
     "webpack-merge": "^4.1.1",
+    "why-is-node-running": "^2.0.2",
     "yargs": "^10.0.3"
   },
   "repository": {

@@ -1,5 +1,7 @@
 'use strict'
 
+const why = require('why-is-node-running')
+
 module.exports = {
   command: 'test',
   desc: 'Test your code in different environments',
@@ -57,6 +59,9 @@ module.exports = {
   handler (argv) {
     const test = require('../src/test')
     const onError = require('../src/error-handler')
-    test.run(argv).catch(onError)
+    test.run(argv).catch(onError).then(() => {
+      const timeout = setTimeout(() => why(), 2500)
+      timeout.unref() // unref so it only triggers when necesarry
+    })
   }
 }

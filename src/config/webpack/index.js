@@ -28,6 +28,7 @@ function webpackConfig (env) {
     const sourcemap = env === 'test' ? 'inline-source-map' : 'source-map'
 
     return merge(base, {
+      mode: env === 'production' ? 'production' : 'development',
       entry: [
         entry
       ],

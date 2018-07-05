@@ -16,7 +16,7 @@ function getPatterns (ctx) {
   return [
     // Karma needs a single entry point. That files will create a single bundle
     // out of `test/browser.js` and `test/**/*.spec.js`
-    'node_modules/aegir/src/config/karma-webpack-bundle.js'
+    'node_modules/aegir/src/config/karma-entry.js'
   ]
 }
 

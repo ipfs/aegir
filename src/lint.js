@@ -3,8 +3,9 @@
 const CLIEngine = require('eslint').CLIEngine
 const path = require('path')
 const formatter = CLIEngine.getFormatter()
+const userConfig = require('./config/user')
 
-const CONFIG_FILE = path.resolve(__dirname, 'config', 'eslintrc.yml')
+const CONFIG_FILE = path.resolve(__dirname, 'config', 'eslintrc.js')
 
 const FILES = [
   '*.js',
@@ -78,7 +79,9 @@ function runLinter (opts = {}) {
       fix: opts.fix
     })
 
-    const report = cli.executeOnFiles(FILES)
+    const config = userConfig()
+    const files = (config.lint && config.lint.files) || FILES
+    const report = cli.executeOnFiles(files)
 
     console.log(formatter(report.results))
 

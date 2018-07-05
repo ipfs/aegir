@@ -3,8 +3,6 @@
 const _ = require('lodash')
 const Joi = require('joi')
 const promisify = require('es6-promisify')
-const path = require('path')
-
 const utils = require('../utils')
 
 const hookSchema = Joi.object().keys({
@@ -74,7 +72,7 @@ function userConfig () {
     webpack: {},
     karma: {},
     hooks: {},
-    entry: path.join(process.cwd(), 'src/index.js')
+    entry: utils.fromRoot('src', 'index.js')
   })
 
   user.hooks = normalizeHooks(user.hooks)

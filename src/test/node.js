@@ -2,8 +2,7 @@
 
 const execa = require('execa')
 const path = require('path')
-
-const utils = require('../utils')
+const {fromAegir, hook} = require('../utils')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
@@ -61,6 +60,10 @@ function testNode (ctx) {
     args.push('--bail')
   }
 
+  if (ctx.flow) {
+    args.push(...['--resolve', fromAegir('src/test/register.js')])
+  }
+
   const timeout = ctx.timeout || DEFAULT_TIMEOUT
   if (ctx.coverage) {
     exec = 'nyc'
@@ -82,8 +85,8 @@ function testNode (ctx) {
     ].concat(args)
   }
 
-  const postHook = utils.hook('node', 'post')
-  const preHook = utils.hook('node', 'pre')
+  const postHook = hook('node', 'post')
+  const preHook = hook('node', 'pre')
 
   let err
 

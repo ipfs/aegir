@@ -7,14 +7,36 @@
 
 const path = require('path')
 const findUp = require('findup-sync')
+const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
+const arrify = require('arrify')
 const _ = require('lodash')
 const VerboseRenderer = require('listr-verbose-renderer')
 const UpdateRenderer = require('listr-update-renderer')
 
+const {pkg, path: pkgPath} = readPkgUp.sync({
+  cwd: fs.realpathSync(process.cwd())
+})
 const PKG_FILE = 'package.json'
 const DIST_FOLDER = 'dist'
 
+exports.paths = {
+  dist: DIST_FOLDER
+}
+exports.pkg = pkg
+exports.hasPkgProp = props => arrify(props).some(prop => _.has(pkg, prop))
+// TODO: get this from aegir package.json
+exports.browserslist = [
+  '>1%',
+  'last 2 versions',
+  'Firefox ESR',
+  'not ie < 11'
+]
+
+exports.repoDirectory = path.dirname(pkgPath)
+exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
+exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
+exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
 /**
  * Gets the top level path of the project aegir is executed in.
  *

@@ -17,12 +17,9 @@ module.exports = {
       default: false
     },
     watch: {
+      alias: 'w',
       describe: 'Watch files for changes and rerun tests',
       default: false
-    },
-    updateSnapshot: {
-      alias: 'u',
-      describe: 'Use this flag to re-record every snapshot that fails during this test run. (node only)'
     },
     files: {
       alias: 'f',
@@ -52,11 +49,19 @@ module.exports = {
       alias: 'b',
       describe: 'Mocha should bail once a test fails',
       default: false
+    },
+    flow: {
+      describe: 'Run test with Flow support',
+      default: false
+    },
+    'enable-experimental-karma': {
+      alias: 'eek',
+      describe: 'Use the experimental karma config',
+      default: false
     }
   },
   handler (argv) {
     const test = require('../src/test')
-    const onError = require('../src/error-handler')
-    test.run(argv).catch(onError)
+    return test.run(argv)
   }
 }

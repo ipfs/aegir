@@ -13,11 +13,15 @@ module.exports = {
       alias: 'n',
       describe: 'Build for node usage',
       default: false
+    },
+    'enable-experimental-browser-builds': {
+      alias: 'eebb',
+      describe: 'Use experimental webpack config',
+      default: false
     }
   },
   handler (argv) {
     const build = require('../src/build')
-    const onError = require('../src/error-handler')
-    build.run(argv).catch(onError)
+    return build(argv)
   }
 }

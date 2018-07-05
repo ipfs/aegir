@@ -3,6 +3,7 @@
 'use strict'
 
 const updateNotifier = require('update-notifier')
+const chalk = require('chalk')
 const pkg = require('./package.json')
 
 updateNotifier({
@@ -15,4 +16,20 @@ require('yargs') // eslint-disable-line
   .commandDir('cmds')
   .demandCommand()
   .help()
+  .fail((msg, err, yargs) => {
+    // errors from execa output the child_process stderr
+    if (err && err.stderr) {
+      console.error('Error running command: ', err.cmd, '\n')
+      console.error(err.stderr)
+    } else {
+      if (msg) {
+        console.error(chalk.red(msg))
+      }
+      if (err) {
+        console.error(chalk.red(err.message))
+        console.error(chalk.gray(err.stack))
+      }
+    }
+    process.exit(1)
+  })
   .argv

@@ -1,3 +1,34 @@
+<a name="15.0.0"></a>
+# [15.0.0](https://github.com/ipfs/aegir/compare/v14.0.0...v15.0.0) (2018-07-05)
+
+
+### Bug Fixes
+
+* add unminified build ([659271c](https://github.com/ipfs/aegir/commit/659271c))
+* fix node version, add fromAegir to utils ([241f0ca](https://github.com/ipfs/aegir/commit/241f0ca))
+* fix original build and test with webpack 4 ([9a98a98](https://github.com/ipfs/aegir/commit/9a98a98))
+* fix the test --flow options description ([e7eb815](https://github.com/ipfs/aegir/commit/e7eb815))
+* make pre-push opt-in ([870bd2d](https://github.com/ipfs/aegir/commit/870bd2d))
+* reduce browserlist to production only ([428c125](https://github.com/ipfs/aegir/commit/428c125))
+* rework NODE_ENV, indentation, support fn in user webpack ([4f31cea](https://github.com/ipfs/aegir/commit/4f31cea))
+* use babel instead of flow-remove-types ([c969a97](https://github.com/ipfs/aegir/commit/c969a97))
+* use transform-flow-comments Babel plugin ([32a0373](https://github.com/ipfs/aegir/commit/32a0373))
+
+
+### Features
+
+* add ability for user to configure linted files ([4accd80](https://github.com/ipfs/aegir/commit/4accd80))
+* add experimental browser build and karma setup ([a8b393c](https://github.com/ipfs/aegir/commit/a8b393c))
+* add flow support ([25043f6](https://github.com/ipfs/aegir/commit/25043f6))
+* lint commit messages ([0597098](https://github.com/ipfs/aegir/commit/0597098))
+
+
+### BREAKING CHANGES
+
+* webpack bumped to version 4+
+
+
+
 <a name="14.0.0"></a>
 # [14.0.0](https://github.com/ipfs/aegir/compare/v13.1.0...v14.0.0) (2018-05-31)
 

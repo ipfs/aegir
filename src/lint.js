@@ -75,7 +75,7 @@ function runLinter (opts = {}) {
   return new Promise((resolve, reject) => {
     const cli = new CLIEngine({
       useEslintrc: true,
-      configFile: CONFIG_FILE,
+      baseConfig: require('./config/eslintrc'),
       fix: opts.fix
     })
 

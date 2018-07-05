@@ -4,7 +4,7 @@ const CLIEngine = require('eslint').CLIEngine
 const path = require('path')
 const formatter = CLIEngine.getFormatter()
 
-const CONFIG_FILE = path.resolve(__dirname, 'config', 'eslintrc.yml')
+const CONFIG_FILE = path.resolve(__dirname, 'config', 'eslintrc.js')
 
 const FILES = [
   '*.js',

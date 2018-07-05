@@ -117,6 +117,7 @@
     "node": ">=4.0.0"
   },
   "contributors": [
+    "Alan Shaw <alan@tableflip.io>",
     "David Dias <daviddias.p@gmail.com>",
     "Diogo Silva <fsdiogo@gmail.com>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
@@ -124,6 +125,7 @@
     "Garren Smith <garren.smith@gmail.com>",
     "Haad <haadcode@users.noreply.github.com>",
     "Henrique Dias <hacdias@gmail.com>",
+    "Hugo Dias <hugomrdias@gmail.com>",
     "JGAntunes <j.goncalo.antunes@gmail.com>",
     "Jakub Sztandera <kubuxu@protonmail.ch>",
     "Lars Gierth <lgierth@users.noreply.github.com>",

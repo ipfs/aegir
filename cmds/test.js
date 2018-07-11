@@ -38,8 +38,17 @@ module.exports = {
       default: 5000
     },
     exit: {
-      describe: 'force shutdown of the event loop after test run: mocha will call process.exit',
+      describe: 'Force shutdown of the event loop after test run: mocha will call process.exit',
       default: true
+    },
+    colors: {
+      describe: 'Enable colors on output (only available in node runs)',
+      default: true
+    },
+    grep: {
+      alias: 'g',
+      type: 'string',
+      describe: 'Limit tests to those whose names match given pattern',
     },
     cors: {
       describe: 'Enable or disable CORS (only available in browser runs)',

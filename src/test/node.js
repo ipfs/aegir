@@ -25,14 +25,23 @@ function testNode (ctx) {
   }
 
   let args = [
-    '--ui', 'bdd',
-    '--colors'
+    '--ui', 'bdd'
   ]
 
   let files = [
     'test/node.js',
     'test/**/*.spec.js'
   ]
+
+  if (ctx.colors) {
+    args.push('--colors')
+  } else {
+    args.push('--no-colors')
+  }
+
+  if (ctx.grep) {
+    args.push(`--grep=${ctx.grep}`)
+  }
 
   if (ctx.files && ctx.files.length > 0) {
     files = ctx.files

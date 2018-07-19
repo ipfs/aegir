@@ -66,7 +66,7 @@
     "findup-sync": "^2.0.0",
     "fs-extra": "^4.0.3",
     "gh-pages": "^1.1.0",
-    "git-validate": "^2.2.2",
+    "git-validate": "^2.2.3",
     "glob": "^7.1.2",
     "joi": "^13.0.2",
     "json-loader": "~0.5.7",

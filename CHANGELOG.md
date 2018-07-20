@@ -1,3 +1,13 @@
+<a name="15.0.1"></a>
+## [15.0.1](https://github.com/ipfs/aegir/compare/v15.0.0...v15.0.1) (2018-07-20)
+
+
+### Bug Fixes
+
+* make AEgir upgrade smoother ([36c83d3](https://github.com/ipfs/aegir/commit/36c83d3))
+
+
+
 <a name="15.0.0"></a>
 # [15.0.0](https://github.com/ipfs/aegir/compare/v14.0.0...v15.0.0) (2018-07-05)
 

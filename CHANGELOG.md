@@ -1,3 +1,13 @@
+<a name="15.1.0"></a>
+# [15.1.0](https://github.com/ipfs/aegir/compare/v15.0.1...v15.1.0) (2018-07-26)
+
+
+### Features
+
+* add grep and colors option to test ([95789e9](https://github.com/ipfs/aegir/commit/95789e9))
+
+
+
 <a name="15.0.1"></a>
 ## [15.0.1](https://github.com/ipfs/aegir/compare/v15.0.0...v15.0.1) (2018-07-20)
 

@@ -12,7 +12,6 @@ const fs = require('fs-extra')
 const arrify = require('arrify')
 const _ = require('lodash')
 const VerboseRenderer = require('listr-verbose-renderer')
-const UpdateRenderer = require('listr-update-renderer')
 
 const {pkg, path: pkgPath} = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
@@ -108,14 +107,13 @@ exports.getPathToNodeModules = () => {
 }
 
 /**
- * Get the config for Listr depending on the current environment.
+ * Get the config for Listr.
  *
  * @returns {Object}
  */
 exports.getListrConfig = () => {
-  const isCI = String(process.env.CI) !== 'undefined'
   return {
-    renderer: isCI ? VerboseRenderer : UpdateRenderer
+    renderer: VerboseRenderer
   }
 }
 

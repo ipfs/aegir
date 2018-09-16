@@ -10,6 +10,9 @@
   "bin": {
     "aegir": "cli.js"
   },
+  "pkg": {
+    "scripts": ["cmds/*.js", "node_modules/coveralls/lib/**/*.js", "src/config/**/*.js", "node_modules/.bin/**"]
+  },
   "scripts": {
     "lint": "node cli.js lint",
     "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node --files 'test/**/*.spec.js'",

@@ -131,7 +131,6 @@
     "Lars Gierth <lgierth@users.noreply.github.com>",
     "Michael Garvin <gar+gh@danger.computer>",
     "Stephen Whitmore <stephen.whitmore@gmail.com>",
-    "Victor Bjelkholm <victorbjelkholm@gmail.com>",
     "Volker Mische <volker.mische@gmail.com>",
     "achingbrain <alex@achingbrain.net>",
     "dignifiedquire <dignifiedquire@gmail.com>",
@@ -139,7 +138,8 @@
     "greenkeeperio-bot <support@greenkeeper.io>",
     "kumavis <kumavis@users.noreply.github.com>",
     "mkg20001 <mkg20001@gmail.com>",
-    "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>"
+    "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>",
+    "victorbjelkholm <victorbjelkholm@gmail.com>"
   ],
   "devDependencies": {
     "chai": "^4.1.2",

@@ -1,3 +1,13 @@
+<a name="15.2.0"></a>
+# [15.2.0](https://github.com/ipfs/aegir/compare/v15.1.0...v15.2.0) (2018-09-17)
+
+
+### Features
+
+* support one time passwords ([7a021c4](https://github.com/ipfs/aegir/commit/7a021c4))
+
+
+
 <a name="15.1.0"></a>
 # [15.1.0](https://github.com/ipfs/aegir/compare/v15.0.1...v15.1.0) (2018-07-26)
 

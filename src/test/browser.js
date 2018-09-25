@@ -7,13 +7,9 @@ const utils = require('../utils')
 
 function karma (config) {
   return new Promise((resolve, reject) => {
-    const server = new Server(config, (exitCode) => {
-      if (exitCode > 0) {
-        reject(new Error('Some tests are failing'))
-      }
+    const server = new Server(config)
 
-      resolve()
-    })
+    server.once('exit', force => force(resolve))
 
     server.start()
   })

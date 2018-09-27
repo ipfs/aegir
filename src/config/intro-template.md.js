@@ -46,7 +46,7 @@ Usage:
 <script type="text/javascript" src="index.js"></script>
 \`\`\`
 
-The portable versions of ${name}, including \`index.js\` and \`index.min.js\`, are included in the \`/dist\` folder. ${_.upperFirst(name)} can also be found on [unkpkg.com](https://unpkg.com) under
+The portable versions of ${name}, including \`index.js\` and \`index.min.js\`, are included in the \`/dist\` folder. ${_.upperFirst(name)} can also be found on [unpkg.com](https://unpkg.com) under
 
 - https://unpkg.com/${name}/dist/index.min.js
 - https://unpkg.com/${name}/dist/index.js

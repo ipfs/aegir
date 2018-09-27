@@ -2,7 +2,6 @@
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 [![Dependency Status](https://david-dm.org/ipfs/aegir.svg?style=flat-square)](https://david-dm.org/ipfs/aegir)
-[![Travis CI](https://travis-ci.org/ipfs/aegir.svg?branch=master)](https://travis-ci.org/ipfs/aegir) [![Build status](https://ci.appveyor.com/api/projects/status/f0bv0fl4tmb1hs1w?svg=true)](https://ci.appveyor.com/project/dignifiedquire/aegir)
 
 > Automated JavaScript project management.
 
@@ -178,13 +177,6 @@ You can run it using
 $ aegir coverage
 ```
 
-To auto publish coverage reports from Travis to Coveralls add this to
-your `.travis.yml` file. For more details see [node-coveralls](https://github.com/nickmerwin/node-coveralls).
-
-```yml
-script:
-  - npm run coverage -- -upload
-```
 
 ### Building
 

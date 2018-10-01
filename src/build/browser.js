@@ -11,6 +11,7 @@ const pify = require('pify')
 const clean = require('../clean')
 const utils = require('../utils')
 const config = require('../config/webpack')
+const user = require('../config/user')()
 
 function webpackBuild (ctx, task) {
   return config().then((config) => {
@@ -34,9 +35,9 @@ function writeStats (ctx) {
 }
 
 function minify (ctx, task) {
-  const minifiedPath = path.join(process.cwd(), 'dist', 'index.min.js')
+  const minifiedPath = path.join(process.cwd(), 'dist', user.output.concat('.min.js'))
 
-  return fs.readFile(path.join(process.cwd(), 'dist', 'index.js'))
+  return fs.readFile(path.join(process.cwd(), 'dist', user.output.concat('.js')))
     .then((code) => {
       const result = Uglify.minify(code.toString(), {
         mangle: true,

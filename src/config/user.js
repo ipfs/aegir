@@ -72,7 +72,17 @@ function userConfig () {
     webpack: {},
     karma: {},
     hooks: {},
-    entry: utils.fromRoot('src', 'index.js')
+    entry: utils.fromRoot('src', 'index.js'),
+    output: utils.pkg.name,
+    library: utils.getLibraryName(utils.pkg.name),
+    docs: {
+      example: 'example.js',
+      name: _.upperFirst(utils.pkg.name),
+      pkg: utils.pkg.name,
+      library: _.camelCase(utils.pkg.name.replace(/-/g, ' ')),
+      distDir: 'dist',
+      distFile: utils.pkg.name
+    },
   })
 
   user.hooks = normalizeHooks(user.hooks)

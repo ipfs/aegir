@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const base = (env, argv) => {
   const filename = [
-    pkg.name,
+    userConfig.output,
     isProduction ? '.min' : null,
     '.js'
   ]
@@ -26,7 +26,7 @@ const base = (env, argv) => {
       path: fromRoot(paths.dist),
       filename: filename,
       sourceMapFilename: filename + '.map',
-      library: getLibraryName(pkg.name),
+      library: userConfig.library,
       libraryTarget: 'umd',
       devtoolModuleFilenameTemplate: info =>
         path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
@@ -88,8 +88,8 @@ module.exports = (env, argv) => {
         base(env, argv),
         {
           output: {
-            filename: `${pkg.name}.js`,
-            sourceMapFilename: `${pkg.name}.js.map`
+            filename: `${userConfig.output}.js`,
+            sourceMapFilename: `${userConfig.output}.js.map`
           },
           optimization: {
             minimizer: []

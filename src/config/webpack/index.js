@@ -13,7 +13,7 @@ function webpackConfig (env) {
   env = env || 'production'
 
   return utils.getPkg().then((pkg) => {
-    const libraryName = utils.getLibraryName(pkg.name)
+    const libraryName = user.library
     const userConfig = user.webpack
     const entry = user.entry
     const environment = utils.getEnv(env).stringified
@@ -34,7 +34,7 @@ function webpackConfig (env) {
       ],
       devtool: sourcemap,
       output: {
-        filename: path.basename(entry),
+        filename: user.output.concat('.js'),
         library: libraryName,
         path: utils.getPathToDist()
       },

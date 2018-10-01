@@ -3,23 +3,25 @@
 const documentation = require('documentation')
 const glob = require('glob')
 const fs = require('fs-extra')
+const path = require('path')
 const pify = require('pify')
 const chalk = require('chalk')
 const vinyl = require('vinyl-fs')
 const streamArray = require('stream-array')
 
 const utils = require('../utils')
+const userConfig = require('../config/user')()
 const introTmpl = require('../config/intro-template.md')
 
 function generateDescription (pkg) {
   let example
   try {
-    example = fs.readFileSync(utils.getPathToExample())
+    example = fs.readFileSync(path.resolve(utils.getBasePath(), userConfig.docs.example))
   } catch (err) {
-    console.log(chalk.yellow('Warning: No `example.js` found in the root directory.'))
+    console.log(chalk.yellow(`Warning: No \`${userConfig.docs.example}\` found in the root directory.`))
   }
 
-  return introTmpl(pkg.name, pkg.repository.url, example)
+  return introTmpl(userConfig.docs.pkg, userConfig.docs.library, userConfig.docs.name, userConfig.docs.distDir, userConfig.docs.distFile, pkg.repository.url, example)
 }
 
 function getOpts (pkg) {

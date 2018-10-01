@@ -177,6 +177,13 @@ You can run it using
 $ aegir coverage
 ```
 
+To auto publish coverage reports from Travis to Codecov add this to
+your `.travis.yml` file.
+
+```yml
+script:
+  - npm run coverage -- -upload
+```
 
 ### Building
 

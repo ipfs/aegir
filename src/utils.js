@@ -81,7 +81,7 @@ exports.getUserConfig = () => {
   try {
     conf = require(exports.getUserConfigPath())
   } catch (err) {
-    // Ignored
+    console.error(err)
   }
   return conf
 }

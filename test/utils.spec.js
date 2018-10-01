@@ -58,16 +58,10 @@ describe('utils', () => {
     process.env.AEGIR_TEST = 'hello'
 
     const env = utils.getEnv()
-    expect(env.raw).to.eql({
-      NODE_ENV: 'test',
-      AEGIR_TEST: 'hello'
-    })
-    expect(env.stringified).to.eql({
-      'process.env': {
-        NODE_ENV: '"test"',
-        AEGIR_TEST: '"hello"'
-      }
-    })
+    expect(env.raw.NODE_ENV).to.eql('test')
+    expect(env.raw.AEGIR_TEST).to.eql('hello')
+    expect(env.stringified['process.env'].NODE_ENV).to.eql('"test"')
+    expect(env.stringified['process.env'].AEGIR_TEST).to.eql('"hello"')
 
     process.env.NODE_ENV = ''
     expect(utils.getEnv('production').raw).to.have.property('NODE_ENV', 'production')

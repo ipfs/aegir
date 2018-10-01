@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "15.0.1",
+  "version": "15.2.0",
   "description": "JavaScript project management",
   "leadMaintainer": "Victor Bjelkholm <victorbjelkholm@gmail.com>",
   "main": "cli.js",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "lint": "node cli.js lint",
-    "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node",
+    "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node --files 'test/**/*.spec.js'",
     "test:browser": "cross-env AEGIR_TEST=hello node cli.js test -t browser webworker --files test/browser.spec.js",
     "test": "npm run test:node && npm run test:browser",
     "coverage": "cross-env AEGIR_TEST=hello node cli.js coverage -t node",
@@ -82,7 +82,6 @@
     "karma-sourcemap-loader": "~0.3.7",
     "karma-webpack": "v4.0.0-beta.0",
     "listr": "~0.13.0",
-    "listr-update-renderer": "~0.4.0",
     "listr-verbose-renderer": "~0.4.1",
     "lodash": "^4.17.4",
     "mocha": "^4.0.1",
@@ -92,6 +91,7 @@
     "p-map": "^1.2.0",
     "pify": "^3.0.0",
     "pretty-hrtime": "^1.0.3",
+    "prompt-promise": "^1.0.3",
     "read-pkg-up": "^3.0.0",
     "resolve-bin": "~0.4.0",
     "rimraf": "^2.6.2",
@@ -129,8 +129,8 @@
     "JGAntunes <j.goncalo.antunes@gmail.com>",
     "Jakub Sztandera <kubuxu@protonmail.ch>",
     "Lars Gierth <lgierth@users.noreply.github.com>",
+    "Michael Garvin <gar+gh@danger.computer>",
     "Stephen Whitmore <stephen.whitmore@gmail.com>",
-    "Victor Bjelkholm <victorbjelkholm@gmail.com>",
     "Volker Mische <volker.mische@gmail.com>",
     "achingbrain <alex@achingbrain.net>",
     "dignifiedquire <dignifiedquire@gmail.com>",
@@ -138,7 +138,8 @@
     "greenkeeperio-bot <support@greenkeeper.io>",
     "kumavis <kumavis@users.noreply.github.com>",
     "mkg20001 <mkg20001@gmail.com>",
-    "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>"
+    "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>",
+    "victorbjelkholm <victorbjelkholm@gmail.com>"
   ],
   "devDependencies": {
     "chai": "^4.1.2",

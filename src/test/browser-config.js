@@ -20,26 +20,23 @@ function getPatterns (ctx) {
   ]
 }
 
-function webworkerClient (ctx) {
-  return {
-    mochaWebWorker: {
-      pattern: getPatterns(ctx),
-      mocha: {
-        timeout: ctx.timeout
+function getClient (isWebworker, ctx) {
+  const client = {
+    timeout: ctx.timeout
+  }
+  if (ctx.grep) {
+    client.grep = ctx.grep
+  }
+  if (isWebworker) {
+    return {
+      mochaWebWorker: {
+        pattern: getPatterns(ctx),
+        mocha: client
       }
     }
   }
-}
-
-function getClient (isWebworker, ctx) {
-  if (isWebworker) {
-    return webworkerClient(ctx)
-  }
-
   return {
-    mocha: {
-      timeout: ctx.timeout
-    }
+    mocha: client
   }
 }
 

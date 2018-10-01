@@ -6,3 +6,5 @@ node_modules
 /docs
 .nyc_output
 *.log
+*_patched*
+tmp

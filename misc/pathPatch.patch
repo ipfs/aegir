@@ -1,0 +1,17 @@
+--- ./node_modules/path-platform/path.js	2014-12-11 19:52:39.000000000 +0100
++++ path_patched.js	2018-04-20 16:37:12.380592290 +0200
+@@ -29,8 +29,7 @@
+ // system then
+ if (_path.posix) {
+   module.exports = _path;
+-  return;
+-}
++} else {
+ 
+ // resolves . and .. elements in a path array with directory names there
+ // must be no slashes or device names (c:\) in the array
+@@ -641,3 +640,4 @@
+ 
+ module.exports.posix = posix;
+ module.exports.win32 = win32;
++}

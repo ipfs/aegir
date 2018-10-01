@@ -1,0 +1,17 @@
+--- cli.js	2018-04-19 14:33:31.594938820 +0200
++++ cli_patched.js	2018-04-24 12:58:51.385785939 +0200
+@@ -2,14 +2,6 @@
+ 
+ 'use strict'
+ 
+-const updateNotifier = require('update-notifier')
+-const pkg = require('./package.json')
+-
+-updateNotifier({
+-  pkg: pkg,
+-  isGlobal: false
+-}).notify()
+-
+ require('yargs') // eslint-disable-line
+   .env('AEGIR')
+   .commandDir('cmds')

@@ -1,9 +1,7 @@
 'use strict'
 
-const documentation = require('documentation')
-const glob = require('glob')
+const documentation = require('@hugomrdias/documentation')
 const fs = require('fs-extra')
-const pify = require('pify')
 const chalk = require('chalk')
 const vinyl = require('vinyl-fs')
 const streamArray = require('stream-array')
@@ -57,14 +55,9 @@ function writeMdDocs (output) {
 }
 
 function build (ctx) {
-  return Promise.all([
-    utils.getPkg(),
-    pify(glob)('./src/**/*.js', {
-      cwd: process.cwd()
-    })
-  ]).then((res) => {
-    const pkg = res[0]
-    const files = res[1]
+  return  utils.getPkg()
+  .then((pkg) => {
+    const files = './src/index.js'
 
     return Promise.all(ctx.docsFormats.map((fmt) => {
       if (fmt === 'md') {

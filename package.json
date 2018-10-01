@@ -50,7 +50,6 @@
     "codecov": "^3.0.2",
     "conventional-changelog": "^1.1.7",
     "conventional-github-releaser": "^2.0.0",
-    "coveralls": "^3.0.0",
     "del": "^3.0.0",
     "detect-node": "^2.0.3",
     "documentation": "^5.3.3",

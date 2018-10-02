@@ -21,7 +21,7 @@ module.exports = {
     },
     'analyze': {
       alias: 'a',
-      describe: 'Analyze mode use experimental config. Opens weback-bundl-analyzer and write stats to disk',
+      describe: 'Analyze mode use experimental config. Opens weback-bundle-analyzer and write stats to disk',
       default: false
     }
   },

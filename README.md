@@ -215,6 +215,16 @@ Webpack will use the specified file as the entry point and output it to `dist/<f
 
 If `.aegir.js` file is not present in the project, webpack will use `src/index.js` as the default entry file.
 
+You can also make output filename different from entry filename with `output` field in `.aegir.js`:
+
+```javascript
+module.exports = {
+  output: "package",
+}
+```
+
+It should be without any extensions because `.js`, `.min.js` and `.js.map` will be appended during the build.
+
 #### Generating Webpack stats.json
 
 Pass the `--stats` option to have Webpack generate a `stats.json` file for the bundle and save it in the project root (see https://webpack.js.org/api/stats/). e.g.

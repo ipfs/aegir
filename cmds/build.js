@@ -18,6 +18,11 @@ module.exports = {
       alias: 'eebb',
       describe: 'Use experimental webpack config',
       default: false
+    },
+    'analyze': {
+      alias: 'a',
+      describe: 'Analyze mode use experimental config. Opens weback-bundl-analyzer and write stats to disk',
+      default: false
     }
   },
   handler (argv) {

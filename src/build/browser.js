@@ -35,23 +35,30 @@ function writeStats (ctx) {
 
 function minify (ctx, task) {
   const minifiedPath = path.join(process.cwd(), 'dist', 'index.min.js')
+  const mapPath = path.join(process.cwd(), 'dist', 'index.min.js.map')
 
   return fs.readFile(path.join(process.cwd(), 'dist', 'index.js'))
     .then((code) => {
       const result = Uglify.minify(code.toString(), {
         mangle: true,
-        compress: { unused: false }
+        compress: { unused: false },
+        sourceMap: {
+          filename: 'index.min.js',
+          url: 'index.min.js.map'
+        }
       })
       if (result.error) {
         throw result.error
       }
-      return result.code
+      return result
     })
-    .then((minified) => {
-      return fs.writeFile(
-        minifiedPath,
-        minified
-      )
+    .then(({code, map}) => {
+      return fs.writeFile(mapPath, map).then(() => {
+        return fs.writeFile(
+          minifiedPath,
+          code
+        )
+      })
     })
     .then(() => fs.stat(minifiedPath))
     .then((stats) => {

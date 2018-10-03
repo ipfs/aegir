@@ -10,9 +10,23 @@ const utils = require('../../utils')
 const base = require('./base')
 const user = require('../user')()
 
-function webpackConfig (userEnv) {
-  const env = userEnv || 'production'
-  debug('Running webpack with userEnv', userEnv, 'ends up being', env)
+const devtool = {
+  'development': 'source-map',
+  'production': 'source-map',
+  'test': 'inline-source-map'
+}
+
+const getDevtool = (env) => {
+  const d = devtool[env]
+  if (!d) {
+    const jsonStr = JSON.stringify(devtool, null, 2)
+    throw new Error(`Could not find devtool for '${env}' in ${jsonStr}`)
+  }
+  return d
+}
+
+function webpackConfig (env) {
+  debug('Running webpack with env', env)
 
   return utils.getPkg().then((pkg) => {
     const libraryName = utils.getLibraryName(pkg.name)
@@ -27,14 +41,14 @@ function webpackConfig (userEnv) {
     } else {
       environment.TEST_BROWSER_JS = JSON.stringify('')
     }
-    const sourcemap = env === 'test' ? 'inline-source-map' : 'source-map'
 
+    const mode = env === 'production' ? 'production' : 'development'
     return merge(base, {
-      mode: env === 'production' ? 'production' : 'development',
+      mode: mode,
       entry: [
         entry
       ],
-      devtool: sourcemap,
+      devtool: getDevtool(env),
       output: {
         filename: path.basename(entry),
         library: libraryName,

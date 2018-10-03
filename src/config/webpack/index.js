@@ -4,13 +4,15 @@ const merge = require('webpack-merge')
 const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
+const debug = require('debug')('aegir:webpack')
 
 const utils = require('../../utils')
 const base = require('./base')
 const user = require('../user')()
 
-function webpackConfig (env) {
-  env = env || 'production'
+function webpackConfig (userEnv) {
+  const env = userEnv || 'production'
+  debug('Running webpack with userEnv', userEnv, 'ends up being', env)
 
   return utils.getPkg().then((pkg) => {
     const libraryName = utils.getLibraryName(pkg.name)

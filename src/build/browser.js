@@ -13,7 +13,7 @@ const utils = require('../utils')
 const config = require('../config/webpack')
 
 function webpackBuild (ctx, task) {
-  return config().then((config) => {
+  return config('development').then((config) => {
     return pify(webpack)(config)
   }).then((stats) => {
     ctx.webpackResult = stats

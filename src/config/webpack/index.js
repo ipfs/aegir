@@ -4,13 +4,32 @@ const merge = require('webpack-merge')
 const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
+const debug = require('debug')('aegir:webpack')
 
 const utils = require('../../utils')
 const base = require('./base')
 const user = require('../user')()
 
+const devtool = {
+  development: 'source-map',
+  production: 'source-map',
+  test: 'inline-source-map'
+}
+
+const getDevtool = (env) => {
+  const d = devtool[env]
+  if (!d) {
+    const jsonStr = JSON.stringify(devtool, null, 2)
+    throw new Error(`Could not find devtool for '${env}' in ${jsonStr}`)
+  }
+  return d
+}
+
 function webpackConfig (env) {
-  env = env || 'production'
+  debug('Running webpack with env', env)
+  if (!env) {
+    throw new Error(`Missing argument 'env' when calling webpackConfig`)
+  }
 
   return utils.getPkg().then((pkg) => {
     const libraryName = utils.getLibraryName(pkg.name)
@@ -25,14 +44,14 @@ function webpackConfig (env) {
     } else {
       environment.TEST_BROWSER_JS = JSON.stringify('')
     }
-    const sourcemap = env === 'test' ? 'inline-source-map' : 'source-map'
 
+    const mode = env === 'production' ? 'production' : 'development'
     return merge(base, {
-      mode: env === 'production' ? 'production' : 'development',
+      mode: mode,
       entry: [
         entry
       ],
-      devtool: sourcemap,
+      devtool: getDevtool(env),
       output: {
         filename: path.basename(entry),
         library: libraryName,

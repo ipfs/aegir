@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "15.3.0",
+  "version": "15.3.1",
   "description": "JavaScript project management",
   "leadMaintainer": "Victor Bjelkholm <victorbjelkholm@gmail.com>",
   "main": "cli.js",

@@ -1,3 +1,13 @@
+<a name="15.3.1"></a>
+## [15.3.1](https://github.com/ipfs/aegir/compare/v15.3.0...v15.3.1) (2018-10-03)
+
+
+### Bug Fixes
+
+* bump version before building ([44e0b4d](https://github.com/ipfs/aegir/commit/44e0b4d)), closes [#208](https://github.com/ipfs/aegir/issues/208)
+
+
+
 <a name="15.3.0"></a>
 # [15.3.0](https://github.com/ipfs/aegir/compare/v15.2.0...v15.3.0) (2018-10-03)
 

@@ -31,7 +31,7 @@ function release (opts) {
     enabled: (ctx) => ctx.test
   }, {
     title: 'Build',
-    task: () => build,
+    task: (ctx) => build(ctx),
     enabled: (ctx) => ctx.build
   }, {
     title: 'Update Contributors',

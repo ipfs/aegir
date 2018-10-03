@@ -1,3 +1,23 @@
+<a name="15.3.0"></a>
+# [15.3.0](https://github.com/ipfs/aegir/compare/v15.2.0...v15.3.0) (2018-10-03)
+
+
+### Bug Fixes
+
+* build not run during release cmd ([6c6762f](https://github.com/ipfs/aegir/commit/6c6762f))
+* do not smother user config parse error ([9d615a8](https://github.com/ipfs/aegir/commit/9d615a8))
+* fix type in the docs template ([42a198d](https://github.com/ipfs/aegir/commit/42a198d))
+* generate sourcemap for minified build ([e581c68](https://github.com/ipfs/aegir/commit/e581c68))
+* unminified builds should not be minified ([af41034](https://github.com/ipfs/aegir/commit/af41034))
+* windows takes 2 minutes to exit ([3166c70](https://github.com/ipfs/aegir/commit/3166c70))
+
+
+### Features
+
+* set browsers with AEGIR_BROWSERS ([1600344](https://github.com/ipfs/aegir/commit/1600344))
+
+
+
 <a name="15.2.0"></a>
 # [15.2.0](https://github.com/ipfs/aegir/compare/v15.1.0...v15.2.0) (2018-09-17)
 

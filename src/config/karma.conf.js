@@ -15,6 +15,15 @@ if (process.env.TRAVIS) {
   browsers.push('ChromeCustom')
 }
 
+const browsersEnv = process.env.AEGIR_BROWSERS
+if (browsersEnv) {
+  if (browsersEnv.indexOf(',') !== -1) {
+    browsers = browsersEnv.split(',')
+  } else {
+    browsers = [browsersEnv]
+  }
+}
+
 module.exports = function (config) {
   const randomNumber = Math.floor(Math.random() * 10000)
   const junitFile = `junit-report-browser-${randomNumber}.xml`

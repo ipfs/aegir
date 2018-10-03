@@ -11,9 +11,9 @@ const base = require('./base')
 const user = require('../user')()
 
 const devtool = {
-  'development': 'source-map',
-  'production': 'source-map',
-  'test': 'inline-source-map'
+  development: 'source-map',
+  production: 'source-map',
+  test: 'inline-source-map'
 }
 
 const getDevtool = (env) => {
@@ -27,6 +27,9 @@ const getDevtool = (env) => {
 
 function webpackConfig (env) {
   debug('Running webpack with env', env)
+  if (!env) {
+    throw new Error(`Missing argument 'env' when calling webpackConfig`)
+  }
 
   return utils.getPkg().then((pkg) => {
     const libraryName = utils.getLibraryName(pkg.name)

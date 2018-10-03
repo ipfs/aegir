@@ -14,6 +14,7 @@
     "lint": "node cli.js lint",
     "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node --files 'test/**/*.spec.js'",
     "test:browser": "cross-env AEGIR_TEST=hello node cli.js test -t browser webworker --files test/browser.spec.js",
+    "test:cross-browser": "cross-env AEGIR_TEST=hello AEGIR_BROWSERS='Firefox,Chrome' npm run test:browser",
     "test": "npm run test:node && npm run test:browser",
     "coverage": "cross-env AEGIR_TEST=hello node cli.js coverage -t node",
     "watch": "cross-env AEGIR_TEST=hello node cli.js test -t node --watch",

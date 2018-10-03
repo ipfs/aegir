@@ -3,8 +3,8 @@
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const StatsPlugin = require('stats-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const StatsPlugin = require('stats-webpack-plugin')
 const {fromRoot, pkg, paths, getLibraryName} = require('../utils')
 const userConfig = require('./user')()
 const isProduction = process.env.NODE_ENV === 'production'
@@ -84,7 +84,7 @@ module.exports = (env, argv) => {
     ? userConfig.webpack(env, argv)
     : userConfig.webpack
 
-  if(process.env.AEGIR_BUILD_ANALYZE){
+  if (process.env.AEGIR_BUILD_ANALYZE) {
     return merge(
       base(env, argv),
       {
@@ -98,7 +98,7 @@ module.exports = (env, argv) => {
     )
   }
   if (isProduction) {
-   return [
+    return [
       merge(
         base(env, argv),
         {
@@ -118,7 +118,6 @@ module.exports = (env, argv) => {
       )
     ]
   }
-
 
   return merge(
     base(env, argv),

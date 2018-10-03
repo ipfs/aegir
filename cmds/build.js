@@ -19,9 +19,9 @@ module.exports = {
       describe: 'Use experimental webpack config',
       default: false
     },
-    'analyze': {
+    analyze: {
       alias: 'a',
-      describe: 'Analyze mode use experimental config. Opens weback-bundle-analyzer and write stats to disk',
+      describe: 'Analyze mode use experimental config. Opens webpack-bundle-analyzer and write stats to disk',
       default: false
     }
   },

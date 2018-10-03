@@ -11,7 +11,7 @@
     "aegir": "cli.js"
   },
   "pkg": {
-    "scripts": ["cmds/*.js", "node_modules/coveralls/lib/**/*.js", "src/config/**/*.js", "node_modules/.bin/**", ".pkg.js"],
+    "scripts": ["cmds/*.js", "node_modules/coveralls/lib/**/*.js", "src/config/**/*.js", "node_modules/.bin/**", ".pkg.js", "node_modules/worker-farm/lib/child/index.js"],
     "assets": ["node_modules/eslint-*/**/*"]
   },
   "scripts": {

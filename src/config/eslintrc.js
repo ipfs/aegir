@@ -37,6 +37,7 @@ module.exports = {
     'max-nested-callbacks': [2, 4],
     'max-depth': [2, 4],
     'valid-jsdoc': [2, {
+      requireReturn: false,
       requireParamDescription: false,
       requireReturnDescription: false
     }]

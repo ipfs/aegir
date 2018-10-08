@@ -55,27 +55,27 @@ function writeMdDocs (output) {
 }
 
 function build (ctx) {
-  return  utils.getPkg()
-  .then((pkg) => {
-    const files = './src/index.js'
+  return utils.getPkg()
+    .then((pkg) => {
+      const files = './src/index.js'
 
-    return Promise.all(ctx.docsFormats.map((fmt) => {
-      if (fmt === 'md') {
-        return documentation.build(files, getOpts(pkg))
-          .then((docs) => documentation.formats.md(docs))
-          .then(writeMdDocs)
-      }
-      if (fmt === 'html') {
-        return documentation.build(files, getOpts(pkg))
-          .then((docs) => documentation.formats.html(docs, {
-            theme: require.resolve('clean-documentation-theme'),
-            version: pkg.version,
-            name: pkg.name
-          }))
-          .then(writeDocs)
-      }
-    }))
-  })
+      return Promise.all(ctx.docsFormats.map((fmt) => {
+        if (fmt === 'md') {
+          return documentation.build(files, getOpts(pkg))
+            .then((docs) => documentation.formats.md(docs))
+            .then(writeMdDocs)
+        }
+        if (fmt === 'html') {
+          return documentation.build(files, getOpts(pkg))
+            .then((docs) => documentation.formats.html(docs, {
+              theme: require.resolve('clean-documentation-theme'),
+              version: pkg.version,
+              name: pkg.name
+            }))
+            .then(writeDocs)
+        }
+      }))
+    })
 }
 
 module.exports = build

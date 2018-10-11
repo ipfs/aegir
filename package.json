@@ -99,7 +99,7 @@
     "safe-buffer": "^5.1.1",
     "semver": "^5.4.1",
     "simple-git": "^1.85.0",
-    "stream-http": "^2.7.2",
+    "stream-http": "^3.0.0",
     "through": "^2.3.8",
     "transform-loader": "~0.2.4",
     "uglify-es": "^3.2.2",

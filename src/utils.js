@@ -79,7 +79,9 @@ exports.getUserConfigPath = () => {
 exports.getUserConfig = () => {
   let conf = {}
   try {
-    conf = require(exports.getUserConfigPath())
+    const path = exports.getUserConfigPath()
+    if (!path) return null
+    conf = require(path)
   } catch (err) {
     console.error(err)
   }

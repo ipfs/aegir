@@ -62,8 +62,12 @@ module.exports = {
     type: {
       describe: 'The type of version bump for this release',
       type: 'string',
-      choices: ['major', 'minor', 'patch', 'prerelease'],
+      choices: ['major', 'minor', 'patch', 'prepatch', 'preminor', 'premajor', 'prerelease'],
       default: 'patch'
+    },
+    preid: {
+      describe: 'The prerelease identifier',
+      type: 'string'
     },
     files: {
       alias: 'f',

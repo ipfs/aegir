@@ -78,6 +78,11 @@ module.exports = {
     exit: {
       describe: 'force shutdown of the event loop after test run: mocha will call process.exit',
       default: true
+    },
+    'dist-tag': {
+      describe: 'The npm tag to publish to',
+      type: 'string',
+      default: 'latest'
     }
   },
   handler (argv) {

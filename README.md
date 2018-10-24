@@ -246,11 +246,14 @@ $ aegir release --type minor
 $ aegir release
 
 # Major prerelease (1.0.0 -> 2.0.0-rc.0)
-$ aegir release --type premajor --preid rc
+$ aegir release --type premajor --preid rc --dist-tag next
 # Minor prerelease (1.0.0 -> 1.1.0-rc.0)
-$ aegir release --type preminor --preid rc
+$ aegir release --type preminor --preid rc --dist-tag next
 # Patch prerelease (1.0.0 -> 1.0.1-rc.0)
-$ aegir release --type preminor --preid rc
+$ aegir release --type preminor --preid rc --dist-tag next
+
+# Increment prerelease (1.1.0-rc.0 -> 1.1.0-rc.1)
+$ aegir release --type prerelease --preid rc --dist-tag next
 ```
 
 > This requires `AEGIR_GHTOKEN` to be set.

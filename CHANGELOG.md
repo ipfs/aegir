@@ -1,3 +1,8 @@
+<a name="17.0.0"></a>
+# [17.0.0](https://github.com/ipfs/aegir/compare/v16.0.0...v17.0.0) (2018-10-26)
+
+
+
 <a name="16.0.0"></a>
 # [16.0.0](https://github.com/ipfs/aegir/compare/v15.3.1...v16.0.0) (2018-10-26)
 

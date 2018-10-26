@@ -52,7 +52,7 @@ describe('lint', () => {
     process.chdir(cwd)
   })
 
-  it.skip('passes', function () {
+  it('lint itself (aegir)', function () {
     this.timeout(10 * 1000) // slow ci is slow
     return lint({ fix: false })
   })

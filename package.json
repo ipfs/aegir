@@ -100,7 +100,7 @@
     "semver": "^5.4.1",
     "simple-git": "^1.85.0",
     "stats-webpack-plugin": "~0.7.0",
-    "stream-http": "^2.7.2",
+    "stream-http": "^3.0.0",
     "through": "^2.3.8",
     "transform-loader": "~0.2.4",
     "uglify-es": "^3.2.2",
@@ -117,7 +117,7 @@
     "url": "https://github.com/ipfs/aegir"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.0.0"
   },
   "contributors": [
     "Alan Shaw <alan@tableflip.io>",

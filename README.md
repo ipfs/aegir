@@ -11,41 +11,7 @@
 
 ## Table of Contents
 
-Soon™
-
-## Migration from `v11`
-
-There was a large refactor from `v11` to `v12`, so there is some migration needed. All features you need should still be there, but you might need to change some things.
-
-### Custom Config
-
-The `aegir` section in `package.json` was not really useful anymore so it is not supported anymore. Any custom configuration you need can be done in `.aegir.js`.
-
-### Pre and Post Hooks
-
-As we are no longer using `gulp` the previous setup using a custom `gulpfile` will not work anymore. To setup hooks around your tests you can use a new configuration option `hooks` in `.aegir.js`.
-
-```js
-// .aegir.js
-module.exports = {
-  hooks: {
-    pre (callback) {
-      console.log('I am called before node and browser tests')
-      callback()
-    },
-    post (callback) {
-      console.log('I am called after node and browser tests')
-      callback()
-    }
-  }
-}
-```
-
-You can also specify `hooks.browser` and `hooks.node` if you have a different setup for browser and/or node based tests.
-
-### Renamed binaries
-
-`aegir` is now a single binary with subcommands. You should rename `aegir-test` to `aegir test` in your scripts.
+[Soon™](http://0.media.dorkly.cvcdn.com/11/66/90a5442391c143173baf1fd82e5b2449-10-gifs-of-soon-moments-in-games.jpg)
 
 ### Scoped Github Token
 

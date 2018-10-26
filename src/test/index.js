@@ -45,6 +45,6 @@ module.exports = {
 
       console.log(task.title)
       return task.task(opts)
-    }, {concurrency: 1})
+    }, { concurrency: 1 })
   }
 }

@@ -13,7 +13,7 @@ const arrify = require('arrify')
 const _ = require('lodash')
 const VerboseRenderer = require('listr-verbose-renderer')
 
-const {pkg, path: pkgPath} = readPkgUp.sync({
+const { pkg, path: pkgPath } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
 })
 const PKG_FILE = 'package.json'

@@ -1,7 +1,7 @@
 'use strict'
 const resolveBin = require('resolve-bin')
 const execa = require('execa')
-const {fromAegir} = require('./../utils')
+const { fromAegir } = require('./../utils')
 const bin = resolveBin.sync('webpack-cli')
 const rimraf = require('rimraf')
 const path = require('path')

@@ -2,7 +2,7 @@
 
 const execa = require('execa')
 const path = require('path')
-const {fromAegir, hook} = require('../utils')
+const { fromAegir, hook } = require('../utils')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 

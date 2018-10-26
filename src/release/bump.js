@@ -16,7 +16,7 @@ function bump (ctx, task) {
       task.title += `: v${version} -> v${newVersion}`
 
       pkg.version = newVersion
-      return fs.writeJson(getPathToPkg(), pkg, {spaces: 2})
+      return fs.writeJson(getPathToPkg(), pkg, { spaces: 2 })
     })
 }
 

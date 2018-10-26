@@ -3,7 +3,7 @@
 const merge = require('webpack-merge')
 const webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
-const {fromRoot, hasFile} = require('./../utils')
+const { fromRoot, hasFile } = require('./../utils')
 const isWebworker = process.env.AEGIR_WEBWORKER === 'true'
 const isProduction = process.env.NODE_ENV === 'production'
 const userConfig = require('./user')()
@@ -13,7 +13,7 @@ const env = {
     ? JSON.stringify(fromRoot('test', 'browser.js'))
     : JSON.stringify('')
 }
-const karmaWebpackConfig = merge(webpackConfig({production: isProduction}), {
+const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
   entry: '',
   devtool: 'inline-source-map',
   output: {

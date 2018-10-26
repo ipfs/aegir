@@ -1,7 +1,7 @@
 'use strict'
 const resolveBin = require('resolve-bin')
 const execa = require('execa')
-const {hook, fromAegir} = require('./../utils')
+const { hook, fromAegir } = require('./../utils')
 
 module.exports = (argv) => {
   const bin = resolveBin.sync('karma')

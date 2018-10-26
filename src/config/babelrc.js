@@ -1,5 +1,5 @@
 'use strict'
-const {hasPkgProp, browserslist} = require('./../utils')
+const { hasPkgProp, browserslist } = require('./../utils')
 const useBuiltinBrowserslist = !hasPkgProp('browserslist')
 
 const validateBoolOption = (name, value, defaultValue) => {

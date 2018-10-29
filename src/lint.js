@@ -14,7 +14,6 @@ const FILES = [
   'test/**/*.js',
   'src/**/*.js',
   'tasks/**/*.js',
-  'examples/**/*.js',
   'benchmarks/**/*.js',
   '!**/node_modules/**'
 ]

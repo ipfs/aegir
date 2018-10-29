@@ -1,9 +1,7 @@
 'use strict'
 
 const documentation = require('documentation')
-const glob = require('glob')
 const fs = require('fs-extra')
-const pify = require('pify')
 const chalk = require('chalk')
 const vinyl = require('vinyl-fs')
 const streamArray = require('stream-array')
@@ -24,6 +22,7 @@ function generateDescription (pkg) {
 
 function getOpts (pkg) {
   const opts = {
+    resolve: 'node',
     github: true
   }
   const configFile = utils.getPathToDocsConfig()
@@ -57,32 +56,27 @@ function writeMdDocs (output) {
 }
 
 function build (ctx) {
-  return Promise.all([
-    utils.getPkg(),
-    pify(glob)('./src/**/*.js', {
-      cwd: process.cwd()
-    })
-  ]).then((res) => {
-    const pkg = res[0]
-    const files = res[1]
+  return utils.getPkg()
+    .then((pkg) => {
+      const files = './src/index.js'
 
-    return Promise.all(ctx.docsFormats.map((fmt) => {
-      if (fmt === 'md') {
-        return documentation.build(files, getOpts(pkg))
-          .then((docs) => documentation.formats.md(docs))
-          .then(writeMdDocs)
-      }
-      if (fmt === 'html') {
-        return documentation.build(files, getOpts(pkg))
-          .then((docs) => documentation.formats.html(docs, {
-            theme: require.resolve('clean-documentation-theme'),
-            version: pkg.version,
-            name: pkg.name
-          }))
-          .then(writeDocs)
-      }
-    }))
-  })
+      return Promise.all(ctx.docsFormats.map((fmt) => {
+        if (fmt === 'md') {
+          return documentation.build(files, getOpts(pkg))
+            .then((docs) => documentation.formats.md(docs))
+            .then(writeMdDocs)
+        }
+        if (fmt === 'html') {
+          return documentation.build(files, getOpts(pkg))
+            .then((docs) => documentation.formats.html(docs, {
+              theme: require.resolve('clean-documentation-theme'),
+              version: pkg.version,
+              name: pkg.name
+            }))
+            .then(writeDocs)
+        }
+      }))
+    })
 }
 
 module.exports = build

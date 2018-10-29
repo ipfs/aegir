@@ -54,7 +54,7 @@
     "conventional-github-releaser": "^2.0.0",
     "del": "^3.0.0",
     "detect-node": "^2.0.4",
-    "documentation": "^8.1.2",
+    "documentation": "^9.0.0-alpha.1",
     "es6-promisify": "^6.0.1",
     "eslint": "^4.19.0",
     "eslint-config-standard": "^11.0.0",

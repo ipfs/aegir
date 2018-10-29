@@ -1,6 +1,6 @@
 'use strict'
 
-const documentation = require('@hugomrdias/documentation')
+const documentation = require('documentation')
 const fs = require('fs-extra')
 const chalk = require('chalk')
 const vinyl = require('vinyl-fs')
@@ -22,6 +22,7 @@ function generateDescription (pkg) {
 
 function getOpts (pkg) {
   const opts = {
+    resolve: 'node',
     github: true
   }
   const configFile = utils.getPathToDocsConfig()

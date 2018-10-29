@@ -14,7 +14,7 @@ const config = require('../config/webpack')
 const user = require('../config/user')()
 
 function webpackBuild (ctx, task) {
-  return config().then((config) => {
+  return config('development').then((config) => {
     return pify(webpack)(config)
   }).then((stats) => {
     ctx.webpackResult = stats
@@ -36,23 +36,30 @@ function writeStats (ctx) {
 
 function minify (ctx, task) {
   const minifiedPath = path.join(process.cwd(), 'dist', user.output.concat('.min.js'))
+  const mapPath = path.join(process.cwd(), 'dist', user.output.concat('.min.js.map'))
 
   return fs.readFile(path.join(process.cwd(), 'dist', user.output.concat('.js')))
     .then((code) => {
       const result = Uglify.minify(code.toString(), {
         mangle: true,
-        compress: { unused: false }
+        compress: { unused: false },
+        sourceMap: {
+          filename: user.output.concat('.min.js'),
+          url: user.output.concat('.min.js.map')
+        }
       })
       if (result.error) {
         throw result.error
       }
-      return result.code
+      return result
     })
-    .then((minified) => {
-      return fs.writeFile(
-        minifiedPath,
-        minified
-      )
+    .then(({ code, map }) => {
+      return fs.writeFile(mapPath, map).then(() => {
+        return fs.writeFile(
+          minifiedPath,
+          code
+        )
+      })
     })
     .then(() => fs.stat(minifiedPath))
     .then((stats) => {

@@ -47,7 +47,7 @@ describe('config - webpack', () => {
 
     const config = require('../../src/config/webpack')
 
-    return config().then((conf) => {
+    return config('test').then((conf) => {
       expect(conf).to.have.deep.property('entry', ['src/main.js'])
       expect(conf).to.have.nested.property('output.library', 'Example')
       expect(conf).to.have.property('devtool', 'eval')
@@ -80,7 +80,7 @@ describe('config - webpack', () => {
     })
   })
 
-  it('uses sourcemap as the default', () => {
+  it('fails if no env provided to webpack config', () => {
     mock('../../src/config/user', function () {
       return {
         webpack: {},
@@ -88,8 +88,27 @@ describe('config - webpack', () => {
       }
     })
     const config = mock.reRequire('../../src/config/webpack')
-    return config().then((webpack) => {
-      expect(webpack.devtool).to.equal('source-map')
+    try {
+      config()
+    } catch (err) {
+      expect(err.toString()).to.match(/missing argument/i)
+      expect(err.toString()).to.match(/env/i)
+      expect(err.toString()).to.match(/webpackConfig/i)
+    }
+  })
+  it('fails if unknown env provided to webpack config', () => {
+    mock('../../src/config/user', function () {
+      return {
+        webpack: {},
+        entry: ''
+      }
     })
+    const config = mock.reRequire('../../src/config/webpack')
+    try {
+      config('some-random-env')
+    } catch (err) {
+      expect(err.toString()).to.match(/some-random-env/i)
+      expect(err.toString()).to.match(/webpackConfig/i)
+    }
   })
 })

@@ -3,7 +3,9 @@
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const {fromRoot, pkg, paths, getLibraryName} = require('../utils')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const StatsPlugin = require('stats-webpack-plugin')
+const { fromRoot, pkg, paths, getLibraryName } = require('../utils')
 const userConfig = require('./user')()
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -73,7 +75,7 @@ const base = (env, argv) => {
     performance: {
       hints: false
     },
-    stats: true
+    stats: 'minimal'
   }
 }
 
@@ -82,6 +84,19 @@ module.exports = (env, argv) => {
     ? userConfig.webpack(env, argv)
     : userConfig.webpack
 
+  if (process.env.AEGIR_BUILD_ANALYZE) {
+    return merge(
+      base(env, argv),
+      {
+        plugins: [
+          new BundleAnalyzerPlugin(),
+          new StatsPlugin('stats.json')
+        ],
+        profile: true
+      },
+      external
+    )
+  }
   if (isProduction) {
     return [
       merge(

@@ -30,17 +30,17 @@ function release (opts) {
     task: (ctx) => test.run(ctx),
     enabled: (ctx) => ctx.test
   }, {
+    title: 'Bump Version',
+    task: bump,
+    enabled: (ctx) => ctx.bump
+  }, {
     title: 'Build',
-    task: () => build,
+    task: (ctx) => build(ctx),
     enabled: (ctx) => ctx.build
   }, {
     title: 'Update Contributors',
     task: contributors,
     enabled: (ctx) => ctx.contributors
-  }, {
-    title: 'Bump Version',
-    task: bump,
-    enabled: (ctx) => ctx.bump
   }, {
     title: 'Generate Changelog',
     task: changelog,

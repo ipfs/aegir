@@ -1,5 +1,5 @@
 'use strict'
-const {hasPkgProp, browserslist} = require('./../utils')
+const { hasPkgProp, browserslist } = require('./../utils')
 const useBuiltinBrowserslist = !hasPkgProp('browserslist')
 
 const validateBoolOption = (name, value, defaultValue) => {
@@ -65,7 +65,6 @@ module.exports = function (api, opts = {}) {
         require('@babel/plugin-transform-runtime').default,
         {
           helpers: false,
-          polyfill: false,
           regenerator: true
         }
       ]

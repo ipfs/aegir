@@ -60,7 +60,7 @@ function checkDependencyVersions () {
       .concat(checkVersions('Bundled dependency', pkg, 'bundledDependencies'))
 
     if (badVersions.length) {
-      badVersions.forEach(({type, name, version, message}) => {
+      badVersions.forEach(({ type, name, version, message }) => {
         console.log(`${type} ${name} had version ${version} - ${message}`)
       })
 

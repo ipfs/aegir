@@ -1,3 +1,19 @@
+<a name="17.0.1"></a>
+## [17.0.1](https://github.com/ipfs/aegir/compare/v17.0.0...v17.0.1) (2018-10-30)
+
+
+### Bug Fixes
+
+* fix documentation.js not loading files and change input file ([#272](https://github.com/ipfs/aegir/issues/272)) ([2830618](https://github.com/ipfs/aegir/commit/2830618))
+* remove CONFIG_FILE const ([c563c87](https://github.com/ipfs/aegir/commit/c563c87))
+
+
+### Features
+
+* add support for eslint overrides ([643f08c](https://github.com/ipfs/aegir/commit/643f08c))
+
+
+
 <a name="17.0.0"></a>
 # [17.0.0](https://github.com/ipfs/aegir/compare/v16.0.0...v17.0.0) (2018-10-26)
 

@@ -5,8 +5,6 @@ const path = require('path')
 const formatter = CLIEngine.getFormatter()
 const userConfig = require('./config/user')
 
-const CONFIG_FILE = path.resolve(__dirname, 'config', 'eslintrc.js')
-
 const FILES = [
   '*.js',
   'bin/**',
@@ -14,7 +12,6 @@ const FILES = [
   'test/**/*.js',
   'src/**/*.js',
   'tasks/**/*.js',
-  'examples/**/*.js',
   'benchmarks/**/*.js',
   '!**/node_modules/**'
 ]
@@ -75,7 +72,7 @@ function runLinter (opts = {}) {
   return new Promise((resolve, reject) => {
     const cli = new CLIEngine({
       useEslintrc: true,
-      configFile: CONFIG_FILE,
+      baseConfig: require('./config/eslintrc'),
       fix: opts.fix
     })
 

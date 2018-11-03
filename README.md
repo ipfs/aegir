@@ -9,11 +9,13 @@
 
 [Victor Bjelkholm](https://github.com/VictorBjelkholm)
 
+[![Throughput Graph](https://graphs.waffle.io/ipfs/aegir/throughput.svg)](https://waffle.io/ipfs/aegir/metrics/throughput)
+
 ## Table of Contents
 
 [Soon™](http://0.media.dorkly.cvcdn.com/11/66/90a5442391c143173baf1fd82e5b2449-10-gifs-of-soon-moments-in-games.jpg)
 
-### Scoped Github Token
+## Scoped Github Token
 
 Performing a release involves creating new commits and tags and then pushing them back to the repository you are releasing from. In order to do this you should create a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and store it in the environmental variable `AEGIR_GHTOKEN`.
 

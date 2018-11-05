@@ -81,8 +81,7 @@ module.exports = {
     },
     'dist-tag': {
       describe: 'The npm tag to publish to',
-      type: 'string',
-      default: 'latest'
+      type: 'string'
     }
   },
   handler (argv) {

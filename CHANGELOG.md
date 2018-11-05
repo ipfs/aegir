@@ -1,3 +1,41 @@
+<a name="17.0.1"></a>
+## [17.0.1](https://github.com/ipfs/aegir/compare/v17.0.0...v17.0.1) (2018-10-30)
+
+
+### Bug Fixes
+
+* fix documentation.js not loading files and change input file ([#272](https://github.com/ipfs/aegir/issues/272)) ([2830618](https://github.com/ipfs/aegir/commit/2830618))
+* remove CONFIG_FILE const ([c563c87](https://github.com/ipfs/aegir/commit/c563c87))
+
+
+### Features
+
+* add support for eslint overrides ([643f08c](https://github.com/ipfs/aegir/commit/643f08c))
+
+
+
+<a name="17.0.0"></a>
+# [17.0.0](https://github.com/ipfs/aegir/compare/v16.0.0...v17.0.0) (2018-10-26)
+
+
+
+<a name="16.0.0"></a>
+# [16.0.0](https://github.com/ipfs/aegir/compare/v15.3.1...v16.0.0) (2018-10-26)
+
+
+### Bug Fixes
+
+* dont require missing config ([6a5094c](https://github.com/ipfs/aegir/commit/6a5094c))
+* remove requirement to include [@returns](https://github.com/returns) in jsdoc ([d713393](https://github.com/ipfs/aegir/commit/d713393))
+* update stream http ([410b3ce](https://github.com/ipfs/aegir/commit/410b3ce))
+
+
+### Features
+
+* add analyze options and upgrade deps ([#274](https://github.com/ipfs/aegir/issues/274)) ([aa9a737](https://github.com/ipfs/aegir/commit/aa9a737))
+
+
+
 <a name="15.3.1"></a>
 ## [15.3.1](https://github.com/ipfs/aegir/compare/v15.3.0...v15.3.1) (2018-10-03)
 

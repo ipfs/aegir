@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 const Joi = require('joi')
-const promisify = require('es6-promisify')
+const { promisify } = require('es6-promisify')
 const utils = require('../utils')
 
 const hookSchema = Joi.object().keys({

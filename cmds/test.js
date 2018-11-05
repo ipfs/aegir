@@ -48,7 +48,7 @@ module.exports = {
     grep: {
       alias: 'g',
       type: 'string',
-      describe: 'Limit tests to those whose names match given pattern',
+      describe: 'Limit tests to those whose names match given pattern'
     },
     cors: {
       describe: 'Enable or disable CORS (only available in browser runs)',

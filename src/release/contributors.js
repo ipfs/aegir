@@ -34,7 +34,7 @@ function contributors (ctx) {
     const pkg = res[0]
     pkg.contributors = res[1]
 
-    return fs.writeJson(getPathToPkg(), pkg, {spaces: 2})
+    return fs.writeJson(getPathToPkg(), pkg, { spaces: 2 })
   }).then(() => {
     return pify(git.commit.bind(git))(
       'chore: update contributors',

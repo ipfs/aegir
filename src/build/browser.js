@@ -52,7 +52,7 @@ function minify (ctx, task) {
       }
       return result
     })
-    .then(({code, map}) => {
+    .then(({ code, map }) => {
       return fs.writeFile(mapPath, map).then(() => {
         return fs.writeFile(
           minifiedPath,

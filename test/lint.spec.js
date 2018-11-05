@@ -52,12 +52,9 @@ describe('lint', () => {
     process.chdir(cwd)
   })
 
-  it('passes', function () {
-    // slow ci is slow, appveyor is even slower...
-    this.timeout(5000)
-    return lint({
-      fix: false
-    })
+  it('lint itself (aegir)', function () {
+    this.timeout(10 * 1000) // slow ci is slow
+    return lint({ fix: false })
   })
 
   it('succeeds when package.json contains dependencies with good versions', function () {

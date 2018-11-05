@@ -5,9 +5,15 @@ const prompt = require('prompt-promise')
 
 function publish (ctx, task) {
   let publishArgs = ['publish']
+  let distTag = ctx['dist-tag']
 
-  if (ctx['dist-tag']) {
-    publishArgs = publishArgs.concat('--tag', ctx['dist-tag'])
+  // Prevent accidental publish of prerelease to "latest"
+  if (ctx.type.startsWith('pre') && !distTag) {
+    distTag = 'next'
+  }
+
+  if (distTag) {
+    publishArgs = publishArgs.concat('--tag', distTag)
     task.title += ` (npm ${publishArgs.join(' ')})`
   }
 

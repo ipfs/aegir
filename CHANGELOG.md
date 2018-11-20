@@ -1,3 +1,13 @@
+<a name="17.1.0"></a>
+# [17.1.0](https://github.com/ipfs/aegir/compare/v17.0.1...v17.1.0) (2018-11-20)
+
+
+### Features
+
+* prereleases ([#289](https://github.com/ipfs/aegir/issues/289)) ([f13d700](https://github.com/ipfs/aegir/commit/f13d700)), closes [/github.com/npm/node-semver/blob/6086e5ae8e8e253b915b3885a809cfa7532d28f7/semver.js#L365-L395](https://github.com//github.com/npm/node-semver/blob/6086e5ae8e8e253b915b3885a809cfa7532d28f7/semver.js/issues/L365-L395)
+
+
+
 <a name="17.0.1"></a>
 ## [17.0.1](https://github.com/ipfs/aegir/compare/v17.0.0...v17.0.1) (2018-10-30)
 

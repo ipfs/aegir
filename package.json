@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "17.0.1",
+  "version": "17.1.0",
   "description": "JavaScript project management",
   "leadMaintainer": "Victor Bjelkholm <victorbjelkholm@gmail.com>",
   "main": "cli.js",
@@ -119,6 +119,7 @@
     "node": ">=8.0.0"
   },
   "contributors": [
+    "Alan Shaw <alan.shaw@protocol.ai>",
     "Alan Shaw <alan@tableflip.io>",
     "David Dias <daviddias.p@gmail.com>",
     "Diogo Silva <fsdiogo@gmail.com>",

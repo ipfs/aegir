@@ -4,6 +4,7 @@ const CLIEngine = require('eslint').CLIEngine
 const path = require('path')
 const formatter = CLIEngine.getFormatter()
 const userConfig = require('./config/user')
+const globby = require('globby')
 
 const FILES = [
   '*.js',
@@ -69,7 +70,7 @@ function checkDependencyVersions () {
 }
 
 function runLinter (opts = {}) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const cli = new CLIEngine({
       useEslintrc: true,
       baseConfig: require('./config/eslintrc'),
@@ -77,7 +78,8 @@ function runLinter (opts = {}) {
     })
 
     const config = userConfig()
-    const files = (config.lint && config.lint.files) || FILES
+    const patterns = (config.lint && config.lint.files) || FILES
+    const files = await globby(patterns)
     const report = cli.executeOnFiles(files)
 
     console.log(formatter(report.results))

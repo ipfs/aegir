@@ -8,6 +8,9 @@ module.exports = {
   globals: {
     self: true
   },
+  plugins: [
+    'no-only-tests'
+  ],
   rules: {
     strict: [2, 'safe'],
     curly: 'error',
@@ -30,6 +33,7 @@ module.exports = {
     'no-labels': 2,
     'no-loop-func': 2,
     'no-nested-ternary': 1,
+    'no-only-tests/no-only-tests': 2,
     'no-script-url': 2,
     'no-warning-comments': 1,
     'quote-props': [2, 'as-needed'],

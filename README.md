@@ -7,7 +7,7 @@
 
 ## Lead Maintainer
 
-[Victor Bjelkholm](https://github.com/VictorBjelkholm)
+[Hugo Dias](https://github.com/hugomrdias)
 
 [![Throughput Graph](https://graphs.waffle.io/ipfs/aegir/throughput.svg)](https://waffle.io/ipfs/aegir/metrics/throughput)
 

@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "17.1.0",
+  "version": "17.1.1",
   "description": "JavaScript project management",
   "leadMaintainer": "Victor Bjelkholm <victorbjelkholm@gmail.com>",
   "main": "cli.js",
@@ -122,6 +122,7 @@
   "contributors": [
     "Alan Shaw <alan.shaw@protocol.ai>",
     "Alan Shaw <alan@tableflip.io>",
+    "Alex Potsides <alex@achingbrain.net>",
     "David Dias <daviddias.p@gmail.com>",
     "Diogo Silva <fsdiogo@gmail.com>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
@@ -138,15 +139,14 @@
     "Michael Garvin <gar+gh@danger.computer>",
     "Stephen Whitmore <stephen.whitmore@gmail.com>",
     "Vasco Santos <vasco.santos@ua.pt>",
+    "Victor Bjelkholm <victorbjelkholm@gmail.com>",
     "Volker Mische <volker.mische@gmail.com>",
-    "achingbrain <alex@achingbrain.net>",
     "dignifiedquire <dignifiedquire@gmail.com>",
     "greenkeeper[bot] <greenkeeper[bot]@users.noreply.github.com>",
     "greenkeeperio-bot <support@greenkeeper.io>",
     "kumavis <kumavis@users.noreply.github.com>",
     "mkg20001 <mkg20001@gmail.com>",
     "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>",
-    "victorbjelkholm <victorbjelkholm@gmail.com>",
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>"
   ],
   "devDependencies": {

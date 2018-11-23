@@ -1,3 +1,18 @@
+<a name="17.1.1"></a>
+## [17.1.1](https://github.com/ipfs/aegir/compare/v17.1.0...v17.1.1) (2018-11-23)
+
+
+### Bug Fixes
+
+* upgrade eslint to v5 ([#298](https://github.com/ipfs/aegir/issues/298)) ([8a3e9cd](https://github.com/ipfs/aegir/commit/8a3e9cd)), closes [eslint/eslint#10587](https://github.com/eslint/eslint/issues/10587)
+
+
+### Features
+
+* add rule to catch `.only` in tests ([#300](https://github.com/ipfs/aegir/issues/300)) ([1465a09](https://github.com/ipfs/aegir/commit/1465a09))
+
+
+
 <a name="17.1.0"></a>
 # [17.1.0](https://github.com/ipfs/aegir/compare/v17.0.1...v17.1.0) (2018-11-20)
 

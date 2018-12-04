@@ -33,11 +33,15 @@ point being `src/index.js`.
 
 All test files should be placed under `test`. Individual test files should end in `.spec.js` and setup files for the node and the browser should be `test/node.js` and `test/browser.js` respectively.
 
-Your `package.json` should have the following entries.
+Your `package.json` should have the following entries and should pass `aegir lint-package-json`.
 
 
 ```json
 "main": "src/index.js",
+"files": [
+  "src",
+  "dist"
+],
 "scripts": {
   "lint": "aegir lint",
   "release": "aegir release",
@@ -69,6 +73,7 @@ You can run it using
 
 ```bash
 $ aegir lint
+$ aegir lint-package-json
 ```
 
 ### Testing

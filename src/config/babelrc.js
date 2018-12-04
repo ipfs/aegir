@@ -36,23 +36,16 @@ module.exports = function (api, opts = {}) {
   return {
     presets: [
       isEnvTest && [
-        // ES features necessary for user's Node version
         require('@babel/preset-env').default,
         {
           targets: {
-            node: '8.11'
+            node: 'current'
           }
         }
       ],
       (isEnvProduction || isEnvDevelopment) && [
-        // Latest stable ECMAScript features
         require('@babel/preset-env').default,
         {
-          // `entry` transforms `@babel/polyfill` into individual requires for
-          // the targeted browsers. This is safer than `usage` which performs
-          // static code analysis to determine what's required.
-          // This is probably a fine default to help trim down bundles when
-          // end-users inevitably import '@babel/polyfill'.
           useBuiltIns: 'entry',
           modules: 'commonjs',
           targets

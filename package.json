@@ -101,6 +101,7 @@
     "simple-git": "^1.105.0",
     "stats-webpack-plugin": "~0.7.0",
     "stream-http": "^3.0.0",
+    "terser-webpack-plugin": "^1.1.0",
     "through": "^2.3.8",
     "transform-loader": "~0.2.4",
     "uglify-es": "^3.3.9",

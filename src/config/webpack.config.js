@@ -160,8 +160,8 @@ module.exports = (env, argv) => {
         base(env, argv),
         {
           output: {
-            filename: `${pkg.name}.js`,
-            sourceMapFilename: `${pkg.name}.js.map`
+            filename: 'index.js',
+            sourceMapFilename: 'index.js.map'
           },
           optimization: {
             minimize: false

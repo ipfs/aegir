@@ -5,7 +5,7 @@
       "require-bugs": "error",
       "require-bundledDependencies": "off",
       "require-config": "off",
-      "require-contributors": "warning",
+      "require-contributors": "off",
       "require-cpu": "off",
       "require-dependencies": "off",
       "require-description": "off",

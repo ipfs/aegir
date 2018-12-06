@@ -18,9 +18,11 @@ const { pkg, path: pkgPath } = readPkgUp.sync({
 })
 const PKG_FILE = 'package.json'
 const DIST_FOLDER = 'dist'
+const SRC_FOLDER = 'src'
 
 exports.paths = {
-  dist: DIST_FOLDER
+  dist: DIST_FOLDER,
+  src: SRC_FOLDER
 }
 exports.pkg = pkg
 exports.hasPkgProp = props => arrify(props).some(prop => _.has(pkg, prop))

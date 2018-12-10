@@ -1,4 +1,5 @@
 'use strict'
+const Listr = require('listr')
 
 module.exports = {
   command: 'test',
@@ -62,15 +63,18 @@ module.exports = {
     flow: {
       describe: 'Run test with Flow support',
       default: false
-    },
-    'enable-experimental-karma': {
-      alias: 'eek',
-      describe: 'Use the experimental karma config',
-      default: false
     }
   },
   handler (argv) {
-    const test = require('../src/test')
-    return test.run(argv)
+    const TASKS = require('../src/test')
+    const userConfig = require('../src/config/user')()
+    const t = new Listr(TASKS, {
+      concurrent: argv.target.length,
+      renderer: argv.target.length === 1 ? 'verbose' : 'default'
+    })
+
+    argv.hooks = userConfig.hooks
+    argv.userConfig = userConfig
+    return t.run(argv)
   }
 }

@@ -1,37 +1,36 @@
 'use strict'
+const resolveBin = require('resolve-bin')
+const execao = require('execa-output')
+const { throwError } = require('rxjs')
+const { catchError } = require('rxjs/operators')
+const { hook, fromAegir } = require('../utils')
 
-const Server = require('karma').Server
-
-const getConfig = require('./browser-config')
-const utils = require('../utils')
-
-function karma (config) {
-  return new Promise((resolve, reject) => {
-    const server = new Server(config, (exitCode) => {
-      if (exitCode > 0) {
-        reject(new Error('Some tests are failing'))
-      }
-
-      resolve()
+module.exports = (argv) => {
+  const bin = resolveBin.sync('karma')
+  const input = argv._.slice(1)
+  const watch = argv.watch ? ['--auto-watch', '--no-single-run'] : []
+  return hook('browser', 'pre')(argv.userConfig)
+    .then(() => {
+      return execao(bin, [
+        'start',
+        ...watch,
+        fromAegir('src/config/karma.conf.js'),
+        '--colors', // add supports-color
+        ...input
+      ], {
+        env: {
+          AEGIR_WEBWORKER: argv.webworker,
+          NODE_ENV: process.env.NODE_ENV || 'development'
+        }
+      })
+        .pipe(catchError(err => {
+          return throwError(Object.assign(new Error('Oops tests failed!'), {
+            cause: err.stdout
+          }))
+        }))
     })
-
-    server.start()
-  })
-}
-
-function testBrowser (isWebworker) {
-  const postHook = utils.hook('browser', 'post')
-  const preHook = utils.hook('browser', 'pre')
-
-  return (ctx) => {
-    return preHook(ctx)
-      .then(() => getConfig(isWebworker, ctx))
-      .then(karma)
-      .then(() => postHook(ctx))
-  }
-}
-
-module.exports = {
-  default: testBrowser(false),
-  webworker: testBrowser(true)
+    .then(process => {
+      hook('browser', 'post')(argv.userConfig)
+      return process
+    })
 }

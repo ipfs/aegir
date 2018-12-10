@@ -27,7 +27,11 @@ require('yargs') // eslint-disable-line
       }
       if (err) {
         console.error(chalk.red(err.message))
-        console.error(chalk.gray(err.stack))
+        if (err.cause) {
+          console.error(err.cause)
+        } else {
+          console.error(chalk.gray(err.stack))
+        }
       }
     }
     process.exit(1)

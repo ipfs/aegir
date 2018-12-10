@@ -1,7 +1,9 @@
 'use strict'
 
-const execa = require('execa')
 const path = require('path')
+const execao = require('execa-output')
+const { throwError } = require('rxjs')
+const { catchError } = require('rxjs/operators')
 const { fromAegir, hook } = require('../utils')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
@@ -97,25 +99,23 @@ function testNode (ctx) {
   const postHook = hook('node', 'post')
   const preHook = hook('node', 'pre')
 
-  let err
-
-  return preHook(ctx).then(() => {
-    return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
-      env: env,
-      cwd: process.cwd(),
-      preferLocal: true,
-      localDir: path.join(__dirname, '../..'),
-      stdin: process.stdin,
-      stdout: process.stdout,
-      stderr: process.stderr
-    }).catch((_err) => {
-      err = _err
-    })
-  }).then(() => postHook(ctx))
+  return preHook(ctx)
     .then(() => {
-      if (err) {
-        throw err
-      }
+      return execao(exec, args.concat(files.map((p) => path.normalize(p))), {
+        env: env,
+        cwd: process.cwd(),
+        preferLocal: true,
+        localDir: path.join(__dirname, '../..')
+      })
+        .pipe(catchError(err => {
+          return throwError(Object.assign(new Error('Oops tests failed!'), {
+            cause: err.stdout
+          }))
+        }))
+    })
+    .then(process => {
+      postHook(ctx)
+      return process
     })
 }
 

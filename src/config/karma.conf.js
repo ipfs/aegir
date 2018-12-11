@@ -3,11 +3,13 @@
 const merge = require('webpack-merge')
 const webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
-const { fromRoot, hasFile } = require('../utils')
+const { fromRoot, hasFile, fromAegir } = require('../utils')
 const isWebworker = process.env.AEGIR_WEBWORKER === 'true'
 const isProduction = process.env.NODE_ENV === 'production'
 const userConfig = require('./user')()
 const env = {
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  'process.env.IS_WEBPACK_BUILD': JSON.stringify(true),
   TEST_DIR: JSON.stringify(fromRoot('test')),
   TEST_BROWSER_JS: hasFile('test', 'browser.js')
     ? JSON.stringify(fromRoot('test', 'browser.js'))
@@ -31,8 +33,7 @@ const karmaConfig = (config) => {
     basePath: process.cwd(),
     files: [
       {
-        pattern: 'node_modules/aegir/src/config/karma-entry.js',
-        watched: false,
+        pattern: fromAegir('src/config/karma-entry.js'),
         included: !isWebworker
       },
       {
@@ -44,13 +45,14 @@ const karmaConfig = (config) => {
     ],
 
     preprocessors: {
-      'node_modules/aegir/src/config/karma-entry.js': [ 'webpack', 'sourcemap' ]
+      [fromAegir('src/config/karma-entry.js')]: [ 'webpack', 'sourcemap' ]
     },
 
     client: {
       mochaWebWorker: {
         pattern: [
-          'node_modules/aegir/src/config/karma-entry.js'
+          '/absolute/' + fromAegir('src/config/karma-entry.js'),
+          'src/config/karma-entry.js'
         ]
       }
     },

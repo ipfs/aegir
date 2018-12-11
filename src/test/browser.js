@@ -20,7 +20,7 @@ module.exports = (argv) => {
       ], {
         env: {
           AEGIR_WEBWORKER: argv.webworker,
-          NODE_ENV: process.env.NODE_ENV || 'development'
+          NODE_ENV: process.env.NODE_ENV || 'test'
         }
       })
         .pipe(catchError(err => {

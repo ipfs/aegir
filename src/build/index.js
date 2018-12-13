@@ -1,16 +1,31 @@
 'use strict'
 
-const build = require('./browser')
-const experimentalBuild = require('./experimental-browser')
-const debug = require('debug')('aegir:build')
+const path = require('path')
+const execa = require('execa')
+const rimraf = require('rimraf')
+const { fromAegir } = require('./../utils')
 
+// Clean dist
+rimraf.sync(path.join(process.cwd(), 'dist'))
+
+// Run webpack
 module.exports = (argv) => {
-  debug('argv', argv)
-  if (argv['enable-experimental-browser-builds']) {
-    debug('running experimental build')
-    return experimentalBuild(argv)
-  }
-
-  debug('running legacy build')
-  return build.run(argv)
+  const analyze = Boolean(process.env.AEGIR_BUILD_ANALYZE || argv.analyze)
+  const input = argv._.slice(1)
+  const useBuiltinConfig = !input.includes('--config')
+  const config = useBuiltinConfig
+    ? ['--config', fromAegir('src/config/webpack.config.js')]
+    : []
+  return execa('webpack-cli', [
+    ...config,
+    '--progress',
+    ...input
+  ], {
+    env: {
+      NODE_ENV: process.env.NODE_ENV || 'production',
+      AEGIR_BUILD_ANALYZE: analyze || ''
+    },
+    localDir: path.join(__dirname, '../..'),
+    stdio: 'inherit'
+  })
 }

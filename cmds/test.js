@@ -63,9 +63,8 @@ module.exports = {
       describe: 'Run test with Flow support',
       default: false
     },
-    'enable-experimental-karma': {
-      alias: 'eek',
-      describe: 'Use the experimental karma config',
+    progress: {
+      describe: 'Use progress reporters on mocha and karma',
       default: false
     }
   },

@@ -49,11 +49,17 @@ const karmaConfig = (config) => {
     },
 
     client: {
+      mocha: {
+        bail: true
+      },
       mochaWebWorker: {
         pattern: [
           '/absolute/' + fromAegir('src/config/karma-entry.js'),
           'src/config/karma-entry.js'
-        ]
+        ],
+        mocha: {
+          bail: true
+        }
       }
     },
 
@@ -63,13 +69,13 @@ const karmaConfig = (config) => {
       stats: 'errors-only'
     },
 
-    reporters: [
-      'mocha'
-    ],
+    // reporters: [
+    //   'mocha'
+    // ],
 
-    mochaReporter: {
-      output: 'autowatch'
-    },
+    // mochaReporter: {
+    //   output: 'autowatch'
+    // },
 
     junitReporter: {
       outputDir: process.cwd(),

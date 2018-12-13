@@ -1,5 +1,6 @@
 'use strict'
 const Listr = require('listr')
+const { hook } = require('../src/utils')
 
 module.exports = {
   command: 'test',
@@ -73,8 +74,10 @@ module.exports = {
       renderer: argv.target.length === 1 ? 'verbose' : 'default'
     })
 
-    argv.hooks = userConfig.hooks
     argv.userConfig = userConfig
-    return t.run(argv)
+
+    return hook(userConfig, ['hooks', 'pre'])
+      .then(() => t.run(argv))
+      .then(() => hook(userConfig, ['hooks', 'post']))
   }
 }

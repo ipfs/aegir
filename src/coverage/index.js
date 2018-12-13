@@ -10,7 +10,7 @@ const utils = require('../utils')
 const userConfig = require('../config/user')
 
 function coverage (opts) {
-  opts.hooks = userConfig().hooks
+  opts.userConfig = userConfig()
 
   const getCoverage = (ctx) => testNode(Object.assign({}, ctx, {
     coverage: true

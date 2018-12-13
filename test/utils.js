@@ -69,20 +69,18 @@ describe('utils', () => {
   })
 
   it('hook', () => {
-    const res = utils.hook('node', 'pre')({
-      hooks: {
-        node: {
-          pre () {
-            return Promise.resolve(10)
+    return Promise.all([
+      utils.hook({
+        hooks: {
+          node: {
+            pre (cb) {
+              cb(null, 10)
+            }
           }
         }
-      }
-    })
-
-    return Promise.all([
-      res,
-      utils.hook('node', 'pre')({ hooks: {} }),
-      utils.hook('node', 'pre')({ hooks: { browser: { pre: {} } } })
+      }, ['hooks', 'node', 'pre']),
+      utils.hook({ hooks: {} }, ['hooks', 'node', 'pre']),
+      utils.hook({ hooks: { browser: { pre: {} } } }, ['hooks', 'node', 'pre'])
     ]).then((results) => {
       expect(results).to.eql([
         10,

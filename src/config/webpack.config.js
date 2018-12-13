@@ -20,7 +20,7 @@ const base = (env, argv) => {
     .join('')
 
   return {
-    bail: Boolean(isProduction),
+    bail: true,
     mode: isProduction ? 'production' : 'development',
     devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
     entry: [userConfig.entry],

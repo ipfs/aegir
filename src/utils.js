@@ -11,6 +11,8 @@ const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
 const arrify = require('arrify')
 const _ = require('lodash')
+const dlv = require('dlv')
+const { promisify } = require('es6-promisify')
 const VerboseRenderer = require('listr-verbose-renderer')
 
 const { pkg, path: pkgPath } = readPkgUp.sync({
@@ -206,15 +208,12 @@ exports.getPathToDocsMdFile = () => {
   return path.join(exports.getPathToDocs(), 'index.md')
 }
 
-exports.hook = (env, key) => (ctx) => {
-  if (ctx && ctx.hooks) {
-    if (ctx.hooks[env] && ctx.hooks[env][key]) {
-      return ctx.hooks[env][key]()
-    }
-    if (ctx.hooks[key]) {
-      return ctx.hooks[key]()
-    }
-  }
+exports.hook = (obj, path) => {
+  const h = dlv(obj, path)
 
-  return Promise.resolve()
+  if (h) {
+    return promisify(h)()
+  } else {
+    return Promise.resolve()
+  }
 }

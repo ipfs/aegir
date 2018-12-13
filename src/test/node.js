@@ -96,12 +96,9 @@ function testNode (ctx) {
     ].concat(args)
   }
 
-  const postHook = hook('node', 'post')
-  const preHook = hook('node', 'pre')
-
-  return preHook(ctx)
+  return hook(ctx, ['userConfig', 'hooks', 'node', 'pre'])
     .then(() => {
-      return execao(exec, args.concat(files.map((p) => path.normalize(p))), {
+      const obs = execao(exec, args.concat(files.map((p) => path.normalize(p))), {
         env: env,
         cwd: process.cwd(),
         preferLocal: true,
@@ -109,13 +106,11 @@ function testNode (ctx) {
       })
         .pipe(catchError(err => {
           return throwError(Object.assign(new Error('Oops tests failed!'), {
-            cause: err.stdout
+            cause: ctx.target.length === 1 ? 'Error should be printed above.' : err.stdout
           }))
         }))
-    })
-    .then(process => {
-      postHook(ctx)
-      return process
+      obs.subscribe({ complete: () => { hook(ctx, ['userConfig', 'hooks', 'node', 'post']) } })
+      return obs
     })
 }
 

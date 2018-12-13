@@ -51,6 +51,7 @@
     "conventional-changelog": "^2.0.3",
     "conventional-github-releaser": "^2.0.0",
     "detect-node": "^2.0.4",
+    "dlv": "^1.1.2",
     "documentation": "^9.0.0-alpha.1",
     "es6-promisify": "^6.0.1",
     "eslint": "^5.9.0",

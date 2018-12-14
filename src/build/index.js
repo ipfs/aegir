@@ -13,12 +13,13 @@ module.exports = (argv) => {
   const analyze = Boolean(process.env.AEGIR_BUILD_ANALYZE || argv.analyze)
   const input = argv._.slice(1)
   const useBuiltinConfig = !input.includes('--config')
+  const progress = !input.includes('--progress') ? ['--progress'] : []
   const config = useBuiltinConfig
     ? ['--config', fromAegir('src/config/webpack.config.js')]
     : []
   return execa('webpack-cli', [
     ...config,
-    '--progress',
+    ...progress,
     ...input
   ], {
     env: {

@@ -5,10 +5,6 @@ const execa = require('execa')
 const rimraf = require('rimraf')
 const { fromAegir } = require('./../utils')
 
-// Clean dist
-rimraf.sync(path.join(process.cwd(), 'dist'))
-
-// Run webpack
 module.exports = (argv) => {
   const analyze = Boolean(process.env.AEGIR_BUILD_ANALYZE || argv.analyze)
   const input = argv._.slice(1)
@@ -17,6 +13,11 @@ module.exports = (argv) => {
   const config = useBuiltinConfig
     ? ['--config', fromAegir('src/config/webpack.config.js')]
     : []
+
+  // Clean dist
+  rimraf.sync(path.join(process.cwd(), 'dist'))
+
+  // Run webpack
   return execa('webpack-cli', [
     ...config,
     ...progress,

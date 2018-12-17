@@ -2,7 +2,21 @@
   "name": "aegir",
   "version": "17.1.1",
   "description": "JavaScript project management",
+  "keywords": [
+    "webpack",
+    "standard",
+    "lint",
+    "build"
+  ],
+  "homepage": "https://github.com/ipfs/aegir",
+  "bugs": "https://github.com/ipfs/aegir/issues",
+  "license": "MIT",
   "leadMaintainer": "Hugo Dias <hugomrdias@gmail.com>",
+  "files":[
+    "cmds",
+    "src",
+    "cli.js"
+  ],
   "main": "cli.js",
   "browser": {
     "fs": false
@@ -10,6 +24,7 @@
   "bin": {
     "aegir": "cli.js"
   },
+  "repository": "github:ipfs/aegir",
   "scripts": {
     "lint": "node cli.js lint",
     "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node --files 'test/**/*.spec.js'",
@@ -23,13 +38,6 @@
     "release-minor": "npm run test && node cli.js release --no-build --no-test --type minor",
     "release-major": "npm run test && node cli.js release --no-build --no-test --type major"
   },
-  "keywords": [
-    "webpack",
-    "standard",
-    "lint",
-    "build"
-  ],
-  "license": "MIT",
   "dependencies": {
     "@babel/cli": "7.1.2",
     "@babel/core": "7.1.2",
@@ -88,6 +96,7 @@
     "lodash": "^4.17.11",
     "mocha": "^5.2.0",
     "mocha-jenkins-reporter": "~0.4.1",
+    "npm-package-json-lint": "^3.4.1",
     "npm-which": "^3.0.1",
     "nyc": "^13.1.0",
     "p-map": "^2.0.0",
@@ -113,13 +122,22 @@
     "yargs": "^12.0.2",
     "yargs-parser": "^11.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ipfs/aegir"
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "mock-require": "^3.0.2",
+    "sinon": "^7.1.0"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
   },
+  "browserslist": [
+    ">1%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not ie < 11"
+  ],
   "contributors": [
     "Alan Shaw <alan.shaw@protocol.ai>",
     "Alan Shaw <alan@tableflip.io>",
@@ -149,17 +167,5 @@
     "mkg20001 <mkg20001@gmail.com>",
     "npmcdn-to-unpkg-bot <npmcdn-to-unpkg-bot@users.noreply.github.com>",
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>"
-  ],
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "cross-env": "^5.2.0",
-    "mock-require": "^3.0.2",
-    "sinon": "^7.1.0"
-  },
-  "browserslist": [
-    ">1%",
-    "last 2 versions",
-    "Firefox ESR",
-    "not ie < 11"
   ]
 }

@@ -100,6 +100,18 @@ const karmaConfig = (config, files, grep, progress) => {
       reporter: 'spec'
     },
 
+    plugins: [
+      'karma-chrome-launcher',
+      'karma-edge-launcher',
+      'karma-firefox-launcher',
+      'karma-junit-reporter',
+      'karma-mocha',
+      'karma-mocha-own-reporter',
+      'karma-mocha-webworker',
+      'karma-sourcemap-loader',
+      'karma-webpack'
+    ],
+
     autoWatch: false,
     singleRun: true,
     colors: true,

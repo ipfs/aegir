@@ -14,9 +14,4 @@ describe('browser', () => {
     expect(() => loadFixture('test/fixtures/asdalkdjaskldjatest.txt'))
       .to.throw()
   })
-
-  it('process.env', () => {
-    expect(process.env.NODE_ENV).to.eql('test')
-    expect(process.env.AEGIR_TEST).to.eql('hello')
-  })
 })

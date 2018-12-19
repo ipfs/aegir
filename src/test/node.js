@@ -25,8 +25,9 @@ function testNode (ctx) {
   }
 
   let args = [
+    ctx.progress && '--reporter=progress',
     '--ui', 'bdd'
-  ]
+  ].filter(Boolean)
 
   let files = [
     'test/node.js',

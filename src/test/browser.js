@@ -1,37 +1,35 @@
 'use strict'
+const path = require('path')
+const execa = require('execa')
+const { hook, fromAegir } = require('../utils')
 
-const Server = require('karma').Server
+module.exports = (argv) => {
+  const input = argv._.slice(1)
+  const watch = argv.watch ? ['--auto-watch', '--no-single-run'] : []
+  const files = argv.files ? ['--files-custom', ...argv.files] : []
+  const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
+  const grep = argv.grep ? ['--grep', argv.grep] : []
+  const progress = argv.progress ? ['--progress', argv.progress] : []
 
-const getConfig = require('./browser-config')
-const utils = require('../utils')
-
-function karma (config) {
-  return new Promise((resolve, reject) => {
-    const server = new Server(config, (exitCode) => {
-      if (exitCode > 0) {
-        reject(new Error('Some tests are failing'))
-      }
-
-      resolve()
+  return hook('browser', 'pre')(argv.userConfig)
+    .then(() => {
+      return execa('karma', [
+        'start',
+        fromAegir('src/config/karma.conf.js'),
+        ...watch,
+        ...files,
+        ...verbose,
+        ...grep,
+        ...progress,
+        ...input
+      ], {
+        env: {
+          AEGIR_WEBWORKER: argv.webworker,
+          NODE_ENV: process.env.NODE_ENV || 'test'
+        },
+        localDir: path.join(__dirname, '../..'),
+        stdio: 'inherit'
+      })
     })
-
-    server.start()
-  })
-}
-
-function testBrowser (isWebworker) {
-  const postHook = utils.hook('browser', 'post')
-  const preHook = utils.hook('browser', 'pre')
-
-  return (ctx) => {
-    return preHook(ctx)
-      .then(() => getConfig(isWebworker, ctx))
-      .then(karma)
-      .then(() => postHook(ctx))
-  }
-}
-
-module.exports = {
-  default: testBrowser(false),
-  webworker: testBrowser(true)
+    .then(() => hook('browser', 'post')(argv.userConfig))
 }

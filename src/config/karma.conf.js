@@ -1,65 +1,125 @@
 'use strict'
 
-let concurrency = 1
-let reporters = ['mocha-own']
+const merge = require('webpack-merge')
+const webpack = require('webpack')
+const webpackConfig = require('./webpack.config')
+const { fromRoot, hasFile } = require('../utils')
+const userConfig = require('./user')()
 
-if (process.env.CI) {
-  reporters.push('junit')
+const isProduction = process.env.NODE_ENV === 'production'
+const isWebworker = process.env.AEGIR_WEBWORKER === 'true'
+
+// Env to pass in the bundle with DefinePlugin
+const env = {
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  'process.env.IS_WEBPACK_BUILD': JSON.stringify(true),
+  TEST_DIR: JSON.stringify(fromRoot('test')),
+  TEST_BROWSER_JS: hasFile('test', 'browser.js')
+    ? JSON.stringify(fromRoot('test', 'browser.js'))
+    : JSON.stringify('')
 }
 
-let browsers = []
+// Webpack overrides for karma
+const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
+  entry: '',
+  devtool: 'inline-source-map',
+  output: {
+    libraryTarget: 'var'
+  },
+  plugins: [
+    new webpack.DefinePlugin(env)
+  ]
+})
 
-if (process.env.TRAVIS) {
-  browsers.push('FirefoxCustom')
-} else {
-  browsers.push('ChromeCustom')
-}
-
-const browsersEnv = process.env.AEGIR_BROWSERS
-if (browsersEnv) {
-  if (browsersEnv.indexOf(',') !== -1) {
-    browsers = browsersEnv.split(',')
-  } else {
-    browsers = [browsersEnv]
+const karmaConfig = (config, files, grep, progress) => {
+  // TODO: check why bail doesn't work
+  const mocha = {
+    bail: false,
+    grep
   }
-}
 
-module.exports = function (config) {
-  const randomNumber = Math.floor(Math.random() * 10000)
-  const junitFile = `junit-report-browser-${randomNumber}.xml`
-
-  config.set({
-    frameworks: ['mocha'],
+  return {
+    browsers: ['ChromeHeadless'],
+    frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
     basePath: process.cwd(),
-    webpackMiddleware: {
-      noInfo: true
+    files: files.map(f => {
+      return {
+        pattern: f,
+        included: !isWebworker
+      }
+    }).concat([
+      {
+        pattern: 'node_modules/aegir/src/config/karma-entry.js',
+        included: !isWebworker
+      },
+      {
+        pattern: 'test/fixtures/**/*',
+        watched: false,
+        served: true,
+        included: false
+      }
+    ]),
+
+    preprocessors: files.reduce((acc, f) => {
+      acc[f] = ['webpack', 'sourcemap']
+      return acc
+    }, {
+      'node_modules/aegir/src/config/karma-entry.js': [ 'webpack', 'sourcemap' ]
+    }),
+
+    client: {
+      mocha,
+      mochaWebWorker: {
+        pattern: [
+          ...files,
+          'node_modules/aegir/src/config/karma-entry.js'
+        ],
+        mocha
+      }
     },
-    plugins: config.plugins.concat([
-      'karma-webpack',
-      'karma-sourcemap-loader',
-      'karma-mocha',
-      'karma-mocha-webworker',
-      'karma-mocha-own-reporter',
-      'karma-junit-reporter',
-      'karma-chrome-launcher',
-      'karma-firefox-launcher'
-    ].map(m => require(m))),
-    reporters: reporters,
+
+    webpack: karmaWebpackConfig,
+
+    webpackMiddleware: {
+      stats: 'errors-only'
+    },
+
+    reporters: [
+      progress && 'progress',
+      !progress && 'mocha-own',
+      process.env.CI && 'junit'
+    ].filter(Boolean),
+
+    junitReporter: {
+      outputDir: process.cwd(),
+      outputFile: isWebworker ? 'junit-report-webworker.xml' : 'junit-report-browser.xml',
+      useBrowserName: false
+    },
+
     mochaOwnReporter: {
       reporter: 'spec'
     },
-    junitReporter: {
-      outputDir: process.cwd(),
-      outputFile: junitFile,
-      useBrowserName: false
-    },
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_WARN,
+
+    plugins: [
+      'karma-chrome-launcher',
+      'karma-edge-launcher',
+      'karma-firefox-launcher',
+      'karma-junit-reporter',
+      'karma-mocha',
+      'karma-mocha-own-reporter',
+      'karma-mocha-webworker',
+      'karma-sourcemap-loader',
+      'karma-webpack'
+    ],
+
     autoWatch: false,
-    browsers: browsers,
     singleRun: true,
-    concurrency: concurrency,
-    failOnEmptyTestSuite: true
-  })
+    colors: true,
+    browserNoActivityTimeout: 50 * 1000
+  }
+}
+
+module.exports = (config) => {
+  var argv = require('yargs-parser')(process.argv.slice(2), { array: ['files-custom'], boolean: ['progress'] })
+  config.set(merge(karmaConfig(config, argv.filesCustom, argv.grep, argv.progress), userConfig.karma))
 }

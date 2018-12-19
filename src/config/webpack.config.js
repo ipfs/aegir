@@ -178,6 +178,15 @@ module.exports = (env, argv) => {
 
   return merge(
     base(env, argv),
+    {
+      output: {
+        filename: 'index.js',
+        sourceMapFilename: 'index.js.map'
+      },
+      optimization: {
+        minimize: false
+      }
+    },
     external
   )
 }

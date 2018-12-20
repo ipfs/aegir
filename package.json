@@ -15,7 +15,8 @@
   "files": [
     "cmds",
     "src",
-    "cli.js"
+    "cli.js",
+    "fixtures.js"
   ],
   "main": "cli.js",
   "browser": {

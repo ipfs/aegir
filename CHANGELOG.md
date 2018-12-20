@@ -1,3 +1,13 @@
+<a name="18.0.1"></a>
+## [18.0.1](https://github.com/ipfs/aegir/compare/v18.0.0...v18.0.1) (2018-12-20)
+
+
+### Bug Fixes
+
+* add node 8 support ([7ec4cf5](https://github.com/ipfs/aegir/commit/7ec4cf5))
+
+
+
 <a name="18.0.0"></a>
 # [18.0.0](https://github.com/ipfs/aegir/compare/v17.1.1...v18.0.0) (2018-12-19)
 

@@ -8,6 +8,11 @@
     "lint",
     "build"
   ],
+  "aegir": {
+    "dependencyCheck": {
+      "additionalEntryPoints": ["./cmds/**/*"]
+    }
+  },
   "homepage": "https://github.com/ipfs/aegir",
   "bugs": "https://github.com/ipfs/aegir/issues",
   "license": "MIT",
@@ -64,6 +69,7 @@
     "del": "^3.0.0",
     "dependency-check": "^3.2.1",
     "detect-node": "^2.0.4",
+    "dlv": "^1.1.2",
     "documentation": "^9.0.0-alpha.1",
     "es6-promisify": "^6.0.1",
     "eslint": "^5.9.0",

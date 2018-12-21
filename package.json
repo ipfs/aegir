@@ -62,6 +62,7 @@
     "conventional-changelog": "^2.0.3",
     "conventional-github-releaser": "^2.0.0",
     "del": "^3.0.0",
+    "dependency-check": "^3.2.1",
     "detect-node": "^2.0.4",
     "documentation": "^9.0.0-alpha.1",
     "es6-promisify": "^6.0.1",

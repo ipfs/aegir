@@ -115,7 +115,7 @@ const karmaConfig = (config, files, grep, progress) => {
     autoWatch: false,
     singleRun: true,
     colors: true,
-    browserNoActivityTimeout: process.env.BROWSER_INACTIVITY_TIMEOUT || Infinity
+    browserNoActivityTimeout: process.env.BROWSER_INACTIVITY_TIMEOUT || 300 * 1000
   }
 }
 

@@ -1,3 +1,13 @@
+<a name="18.0.3"></a>
+## [18.0.3](https://github.com/ipfs/aegir/compare/v18.0.2...v18.0.3) (2019-01-08)
+
+
+### Bug Fixes
+
+* pull in karma-entry.js from current directory ([#313](https://github.com/ipfs/aegir/issues/313)) ([3597ce5](https://github.com/ipfs/aegir/commit/3597ce5))
+
+
+
 <a name="18.0.2"></a>
 ## [18.0.2](https://github.com/ipfs/aegir/compare/v18.0.1...v18.0.2) (2018-12-20)
 

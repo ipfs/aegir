@@ -38,6 +38,13 @@ const karmaConfig = (config, files, grep, progress) => {
     grep
   }
 
+  const karmaEntry = `${__dirname}/karma-entry.js`
+
+  if (!files.length) {
+    // only try to load *.spec.js if we aren't specifying custom files
+    files.push(karmaEntry)
+  }
+
   return {
     browsers: ['ChromeHeadless'],
     frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
@@ -49,10 +56,6 @@ const karmaConfig = (config, files, grep, progress) => {
       }
     }).concat([
       {
-        pattern: 'node_modules/aegir/src/config/karma-entry.js',
-        included: !isWebworker
-      },
-      {
         pattern: 'test/fixtures/**/*',
         watched: false,
         served: true,
@@ -63,16 +66,14 @@ const karmaConfig = (config, files, grep, progress) => {
     preprocessors: files.reduce((acc, f) => {
       acc[f] = ['webpack', 'sourcemap']
       return acc
-    }, {
-      'node_modules/aegir/src/config/karma-entry.js': [ 'webpack', 'sourcemap' ]
-    }),
+    }, {}),
 
     client: {
       mocha,
       mochaWebWorker: {
         pattern: [
           ...files,
-          'node_modules/aegir/src/config/karma-entry.js'
+          'karma-entry.js'
         ],
         mocha
       }

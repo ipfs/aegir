@@ -139,6 +139,12 @@ const karmaConfig = (config, files, grep, progress) => {
         // We must disable the Chrome sandbox when running Chrome inside Docker (Chrome's sandbox needs
         // more permissions than Docker allows by default)
         flags: ['--no-sandbox', '--disable-web-security']
+      },
+      FirefoxHeadlessNoCors: {
+        base: 'FirefoxHeadless',
+        prefs: {
+          'security.fileuri.strict_origin_policy': false
+        }
       }
     },
 

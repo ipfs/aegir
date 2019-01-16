@@ -2,6 +2,7 @@
 
 const merge = require('webpack-merge')
 const webpack = require('webpack')
+const path = require('path')
 const webpackConfig = require('./webpack.config')
 const { fromRoot, hasFile } = require('../utils')
 const userConfig = require('./user')()
@@ -28,7 +29,17 @@ const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
   },
   plugins: [
     new webpack.DefinePlugin(env)
-  ]
+  ],
+  module: {
+    rules: [
+      // instrument only testing sources with Istanbul
+      process.env.CI && {
+        test: /\.js$/,
+        use: { loader: 'istanbul-instrumenter-loader' },
+        include: path.resolve('src/')
+      }
+    ].filter(Boolean)
+  }
 })
 
 const karmaConfig = (config, files, grep, progress) => {
@@ -88,8 +99,16 @@ const karmaConfig = (config, files, grep, progress) => {
     reporters: [
       progress && 'progress',
       !progress && 'mocha-own',
-      process.env.CI && 'junit'
+      process.env.CI && 'junit',
+      process.env.CI && 'coverage-istanbul'
     ].filter(Boolean),
+
+    coverageIstanbulReporter: {
+      reports: ['json'],
+      dir: path.join(__dirname, 'coverage'),
+      combineBrowserReports: true,
+      fixWebpackSourcePaths: true
+    },
 
     junitReporter: {
       outputDir: process.cwd(),
@@ -110,8 +129,18 @@ const karmaConfig = (config, files, grep, progress) => {
       'karma-mocha-own-reporter',
       'karma-mocha-webworker',
       'karma-sourcemap-loader',
-      'karma-webpack'
+      'karma-webpack',
+      'karma-coverage-istanbul-reporter'
     ],
+
+    customLaunchers: {
+      ChromeDocker: {
+        base: 'ChromeHeadless',
+        // We must disable the Chrome sandbox when running Chrome inside Docker (Chrome's sandbox needs
+        // more permissions than Docker allows by default)
+        flags: ['--no-sandbox']
+      }
+    },
 
     autoWatch: false,
     singleRun: true,

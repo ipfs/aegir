@@ -73,7 +73,7 @@ function build (ctx) {
             .then((docs) => documentation.formats.html(docs, {
               theme: require.resolve('clean-documentation-theme'),
               version: pkg.version,
-              name: pkg.name
+              name: userConfig.docs.name
             }))
             .then(writeDocs)
         }

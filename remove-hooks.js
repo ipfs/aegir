@@ -13,20 +13,22 @@ const hooksList = [
 hooksList.forEach(([hook, fileHash]) => {
   const filePath = path.join(process.cwd(), hook)
   const hash = crypto.createHash('sha256')
-  try {
-    const input = fs.createReadStream(filePath)
-    input.on('readable', () => {
-      const data = input.read()
-      if (data) {
-        hash.update(data)
-      } else {
-        if (hash.digest('hex') === fileHash) {
+  const input = fs.createReadStream(filePath)
+
+  input.on('error', err => console.error(`Something went wrong deleting ${filePath}`, err))
+  input.on('readable', () => {
+    const data = input.read()
+    if (data) {
+      hash.update(data)
+    } else {
+      if (hash.digest('hex') === fileHash) {
+        try {
           console.log(`Deleting git hook: ${filePath}`)
+          fs.unlinkSync(filePath)
+        } catch (err) {
+          console.error(`Something went wrong deleting ${filePath}`, err)
         }
       }
-    })
-  } catch (err) {
-    fs.unlinkSync(filePath)
-    console.error(`Something went wrong deleting ${filePath}`, err)
-  }
+    }
+  })
 })

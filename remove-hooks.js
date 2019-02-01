@@ -15,7 +15,7 @@ hooksList.forEach(([hook, fileHash]) => {
   const hash = crypto.createHash('sha256')
   const input = fs.createReadStream(filePath)
 
-  input.on('error', err => console.error(`Something went wrong deleting ${filePath}`, err))
+  input.on('error', e => console.error(`Something went wrong deleting ${filePath}`))
   input.on('readable', () => {
     const data = input.read()
     if (data) {
@@ -26,7 +26,7 @@ hooksList.forEach(([hook, fileHash]) => {
           console.log(`Deleting git hook: ${filePath}`)
           fs.unlinkSync(filePath)
         } catch (err) {
-          console.error(`Something went wrong deleting ${filePath}`, err)
+          console.error(`Something went wrong deleting ${filePath}`)
         }
       }
     }

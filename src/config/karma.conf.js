@@ -29,17 +29,17 @@ const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
   },
   plugins: [
     new webpack.DefinePlugin(env)
-  ],
-  module: {
-    rules: [
-      // instrument only testing sources with Istanbul
-      process.env.CI && {
-        test: /\.js$/,
-        use: { loader: 'istanbul-instrumenter-loader' },
-        include: path.resolve('src/')
-      }
-    ].filter(Boolean)
-  }
+  ]
+  // module: {
+  //   rules: [
+  //     // instrument only testing sources with Istanbul
+  //     process.env.CI && {
+  //       test: /\.js$/,
+  //       use: { loader: 'istanbul-instrumenter-loader' },
+  //       include: path.resolve('src/')
+  //     }
+  //   ].filter(Boolean)
+  // }
 })
 
 const karmaConfig = (config, files, grep, progress) => {
@@ -99,8 +99,8 @@ const karmaConfig = (config, files, grep, progress) => {
     reporters: [
       progress && 'progress',
       !progress && 'mocha-own',
-      process.env.CI && 'junit',
-      process.env.CI && 'coverage-istanbul'
+      process.env.CI && 'junit'
+      // process.env.CI && 'coverage-istanbul'
     ].filter(Boolean),
 
     coverageIstanbulReporter: {

@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "eslint.autoFixOnSave": true,
+    "eslint.options": {
+        "configFile": "src/config/eslintrc.js"
+    }
+}

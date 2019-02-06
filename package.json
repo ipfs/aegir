@@ -37,7 +37,8 @@
     "watch": "cross-env AEGIR_TEST=hello node cli.js test -t node --watch",
     "release": "npm run test && node cli.js release --no-build --no-test",
     "release-minor": "npm run test && node cli.js release --no-build --no-test --type minor",
-    "release-major": "npm run test && node cli.js release --no-build --no-test --type major"
+    "release-major": "npm run test && node cli.js release --no-build --no-test --type major",
+    "dep-check": "dependency-check package.json './test/**/*.js' './src/**/*.js' -i aegir"
   },
   "dependencies": {
     "@babel/cli": "7.1.2",
@@ -64,6 +65,7 @@
     "conventional-changelog": "^2.0.3",
     "conventional-github-releaser": "^2.0.0",
     "del": "^3.0.0",
+    "dependency-check": "^3.3.0",
     "detect-node": "^2.0.4",
     "documentation": "^9.0.0-alpha.1",
     "es6-promisify": "^6.0.1",
@@ -112,12 +114,14 @@
     "semver": "^5.6.0",
     "simple-git": "^1.105.0",
     "stats-webpack-plugin": "~0.7.0",
+    "stream-array": "^1.1.2",
     "stream-http": "^3.0.0",
     "terser-webpack-plugin": "^1.1.0",
     "through": "^2.3.8",
     "transform-loader": "~0.2.4",
     "uglify-es": "^3.3.9",
     "update-notifier": "^2.5.0",
+    "vinyl-fs": "^3.0.3",
     "webpack": "^4.23.1",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",

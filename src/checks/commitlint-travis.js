@@ -69,7 +69,7 @@ async function lint (args, options) {
     COMMITLINT || commitlint,
     [
       '--extends',
-      '@commitlint/config-conventional ',
+      '@commitlint/config-conventional',
       ...args
     ],
     Object.assign({}, { stdio: ['pipe', 'inherit', 'inherit'] }, options)

@@ -34,7 +34,7 @@ jobs:
       name: firefox
       addons:
         firefox: latest
-      script: npm run test:browser -- --browsers FirefoxHeadless
+      script: npm run test:browser -- -- --browsers FirefoxHeadless
 
 notifications:
   email: false

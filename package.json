@@ -47,10 +47,12 @@
     "@babel/preset-env": "7.1.0",
     "@babel/register": "7.0.0",
     "@babel/runtime": "7.1.2",
-    "@commitlint/config-conventional": "^7.1.2",
+    "@commitlint/cli": "^7.5.0",
+    "@commitlint/config-conventional": "^7.5.0",
     "@commitlint/lint": "^7.2.1",
     "@commitlint/load": "^7.2.1",
     "@commitlint/read": "^7.1.2",
+    "@commitlint/travis-cli": "^7.5.0",
     "arrify": "^1.0.1",
     "async": "^2.6.1",
     "babel-loader": "8.0.4",
@@ -139,6 +141,11 @@
     "Firefox ESR",
     "not ie < 11"
   ],
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "contributors": [
     "Alan Shaw <alan.shaw@protocol.ai>",
     "Alan Shaw <alan@tableflip.io>",

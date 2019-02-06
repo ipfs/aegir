@@ -28,15 +28,13 @@ jobs:
       name: chrome
       addons:
         chrome: stable
-      script:
-        - npm run test:browser
+      script: npm run test:browser
 
     - stage: test
       name: firefox
       addons:
         firefox: latest
-      script:
-        - npm run test:browser -- --browsers FirefoxHeadless
+      script: npm run test:browser -- --browsers FirefoxHeadless
 
 notifications:
   email: false

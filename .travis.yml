@@ -20,8 +20,8 @@ jobs:
   include:
     - stage: check
       script:
-        - ./cli.js commitlint --travis
-        - ./cli.js dep-check -- -i aegir
+        - node cli.js commitlint --travis
+        - node cli.js dep-check -- -i aegir
         - npm run lint
 
     - stage: test

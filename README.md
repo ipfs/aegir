@@ -242,7 +242,7 @@ If you want no documentation generation you can pass `--no-docs` to the release 
 
 ### Documentation
 
-You can use `aegir-docs` to generate documentation. This uses [documentation.js](http://documentation.js.org/) with the theme [clean-documentation-theme](https://github.com/dignifiedquire/clean-documentation-theme).
+You can use `aegir docs` to generate documentation. This uses [documentation.js](http://documentation.js.org/) with the theme [clean-documentation-theme](https://github.com/dignifiedquire/clean-documentation-theme).
 
 To publish the documentation automatically to the `gh-pages` branch you can run
 

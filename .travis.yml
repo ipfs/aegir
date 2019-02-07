@@ -20,9 +20,9 @@ jobs:
   include:
     - stage: check
       script:
-        - ./cli.js check commitlint-travis
+        - ./cli.js commitlint --travis
+        - ./cli.js dep-check
         - npm run lint
-        - npm run dep-check
 
     - stage: test
       name: chrome

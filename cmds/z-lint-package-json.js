@@ -2,16 +2,18 @@
 
 const resolveBin = require('resolve-bin')
 const execa = require('execa')
-const { fromAegir, fromRoot } = require('./../src/utils')
+const { fromAegir, fromRoot } = require('../src/utils')
 
 const bin = resolveBin.sync('npm-package-json-lint', { executable: 'npmPkgJsonLint' })
 
 module.exports = {
   command: 'lint-package-json',
-  desc: 'Lint package.json',
+  desc: 'Lint package.json with aegir defaults.',
+  aliases: ['lint-package', 'lpj'],
   handler (argv) {
     const input = argv._.slice(1)
-    const useBuiltinConfig = !input.includes('--configFile')
+    const fowardOptions = argv['--'] ? argv['--'] : []
+    const useBuiltinConfig = !fowardOptions.includes('--configFile')
     const config = useBuiltinConfig
       ? ['-c', fromAegir('src/config/.npmpackagejsonlintrc.json')]
       : []
@@ -19,7 +21,8 @@ module.exports = {
     return execa(bin, [
       fromRoot('package.json'),
       ...config,
-      ...input
+      ...input,
+      ...fowardOptions
     ], {
       stdio: 'inherit'
     })

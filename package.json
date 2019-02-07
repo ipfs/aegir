@@ -145,6 +145,9 @@
     "Firefox ESR",
     "not ie < 11"
   ],
+  "yargs": {
+    "populate--": true
+  },
   "contributors": [
     "Alan Shaw <alan.shaw@protocol.ai>",
     "Alan Shaw <alan@tableflip.io>",

@@ -8,21 +8,20 @@ const StatsPlugin = require('stats-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { fromRoot, pkg, paths, getLibraryName } = require('../utils')
 const userConfig = require('./user')()
-const isProduction = process.env.NODE_ENV === 'production'
 
 const base = (env, argv) => {
   const filename = [
     'index',
-    isProduction ? '.min' : null,
+    env.production ? '.min' : null,
     '.js'
   ]
     .filter(Boolean)
     .join('')
 
   return {
-    bail: Boolean(isProduction),
-    mode: isProduction ? 'production' : 'development',
-    devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
+    bail: Boolean(env.production),
+    mode: env.production ? 'production' : 'development',
+    devtool: env.production ? 'source-map' : 'cheap-module-source-map',
     entry: [userConfig.entry],
     output: {
       path: fromRoot(paths.dist),
@@ -74,7 +73,7 @@ const base = (env, argv) => {
       }
     },
     optimization: {
-      minimize: isProduction,
+      minimize: env.production,
       minimizer: [
         // This is only used in production mode
         new TerserPlugin({
@@ -110,7 +109,7 @@ const base = (env, argv) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'process.env.NODE_ENV': JSON.stringify(env.production ? 'production' : 'development'),
         'process.env.IS_WEBPACK_BUILD': JSON.stringify(true)
       })
     ],
@@ -136,14 +135,14 @@ const base = (env, argv) => {
   }
 }
 
-module.exports = (env, argv) => {
+module.exports = (env = {}, argv) => {
   const external = typeof userConfig.webpack === 'function'
     ? userConfig.webpack(env, argv)
     : userConfig.webpack
 
   if (process.env.AEGIR_BUILD_ANALYZE) {
     return merge(
-      base(env, argv),
+      base(Object.assign(env, { production: true }), argv),
       {
         plugins: [
           new BundleAnalyzerPlugin(),
@@ -154,23 +153,15 @@ module.exports = (env, argv) => {
       external
     )
   }
-  if (isProduction) {
+
+  if (process.env.AEGIR_BUILD) {
     return [
       merge(
-        base(env, argv),
-        {
-          output: {
-            filename: 'index.js',
-            sourceMapFilename: 'index.js.map'
-          },
-          optimization: {
-            minimize: false
-          }
-        },
+        base(Object.assign(env, { production: true }), argv),
         external
       ),
       merge(
-        base(env, argv),
+        base(Object.assign(env, { production: false }), argv),
         external
       )
     ]
@@ -178,15 +169,6 @@ module.exports = (env, argv) => {
 
   return merge(
     base(env, argv),
-    {
-      output: {
-        filename: 'index.js',
-        sourceMapFilename: 'index.js.map'
-      },
-      optimization: {
-        minimize: false
-      }
-    },
     external
   )
 }

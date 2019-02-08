@@ -13,37 +13,14 @@ const validateBoolOption = (name, value, defaultValue) => {
 
   return value
 }
-module.exports = function (api, opts = {}) {
-  const env = process.env.BABEL_ENV || process.env.NODE_ENV
-  const isEnvDevelopment = env === 'development'
-  const isEnvProduction = env === 'production'
-  const isEnvTest = env === 'test'
-  const isFlowEnabled = validateBoolOption('flow', opts.flow, true)
-  const targets = useBuiltinBrowserslist ? {
-    browsers: browserslist[env]
-  } : {}
 
-  if (!isEnvDevelopment && !isEnvProduction && !isEnvTest) {
-    throw new Error(
-      'Using `babel-preset-aegir` requires that you specify `NODE_ENV` or ' +
-          '`BABEL_ENV` environment variables. Valid values are "development", ' +
-          '"test", and "production". Instead, received: ' +
-          JSON.stringify(env) +
-          '.'
-    )
-  }
+module.exports = function (api, opts = {}) {
+  const isFlowEnabled = validateBoolOption('flow', opts.flow, true)
+  const targets = useBuiltinBrowserslist ? { browsers: browserslist } : {}
 
   return {
     presets: [
-      isEnvTest && [
-        require('@babel/preset-env').default,
-        {
-          targets: {
-            node: 'current'
-          }
-        }
-      ],
-      (isEnvProduction || isEnvDevelopment) && [
+      [
         require('@babel/preset-env').default,
         {
           useBuiltIns: 'entry',
@@ -51,7 +28,7 @@ module.exports = function (api, opts = {}) {
           targets
         }
       ]
-    ].filter(Boolean),
+    ],
     plugins: [
       isFlowEnabled && [require('babel-plugin-transform-flow-comments')],
       [

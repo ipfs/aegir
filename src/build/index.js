@@ -25,6 +25,7 @@ module.exports = (argv) => {
   ], {
     env: {
       NODE_ENV: process.env.NODE_ENV || 'production',
+      AEGIR_BUILD: 'true',
       AEGIR_BUILD_ANALYZE: analyze || ''
     },
     localDir: path.join(__dirname, '../..'),

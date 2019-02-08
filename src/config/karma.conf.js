@@ -6,12 +6,11 @@ const webpackConfig = require('./webpack.config')
 const { fromRoot, hasFile } = require('../utils')
 const userConfig = require('./user')()
 
-const isProduction = process.env.NODE_ENV === 'production'
 const isWebworker = process.env.AEGIR_WEBWORKER === 'true'
 
 // Env to pass in the bundle with DefinePlugin
 const env = {
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  'process.env.NODE_ENV': JSON.stringify('production'),
   'process.env.IS_WEBPACK_BUILD': JSON.stringify(true),
   TEST_DIR: JSON.stringify(fromRoot('test')),
   TEST_BROWSER_JS: hasFile('test', 'browser.js')
@@ -20,7 +19,7 @@ const env = {
 }
 
 // Webpack overrides for karma
-const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
+const karmaWebpackConfig = merge(webpackConfig({ production: true }), {
   entry: '',
   devtool: 'inline-source-map',
   output: {

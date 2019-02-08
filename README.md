@@ -40,6 +40,14 @@ Your `package.json` should have the following entries and should pass `aegir lin
 }
 ```
 ## Add CI to your repo
+### Fix line endings in Windows 
+Create a .gitattributes file with the following content:
+```
+* text=auto
+test/fixtures/** text eol=lf
+# add more like the line above as needed
+```
+You will probably only need this if in your tests you compare file contents or file CIDs.   
 
 Create a file named .travis.yml with the following content:
 

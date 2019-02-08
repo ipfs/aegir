@@ -4,7 +4,7 @@ const execa = require('execa')
 const commitlintTravis = require('../src/checks/commitlint-travis')
 
 const EPILOG = `
-Supports options fowarding with '--' for more info check https://conventional-changelog.github.io/commitlint/#/reference-cli
+Supports options forwarding with '--' for more info check https://conventional-changelog.github.io/commitlint/#/reference-cli
 `
 
 module.exports = {
@@ -28,12 +28,12 @@ module.exports = {
     }
 
     const input = argv._.slice(1)
-    const fowardOptions = argv['--'] ? argv['--'] : []
+    const forwardOptions = argv['--'] ? argv['--'] : []
     return execa('commitlint', [
       '--extends',
       '@commitlint/config-conventional',
       ...input,
-      ...fowardOptions
+      ...forwardOptions
     ], {
       stdio: 'inherit',
       localDir: path.join(__dirname, '..')

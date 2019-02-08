@@ -3,7 +3,7 @@ const path = require('path')
 const execa = require('execa')
 
 const EPILOG = `
-Supports options fowarding with '--' for more info check https://github.com/maxogden/dependency-check#cli-usage
+Supports options forwarding with '--' for more info check https://github.com/maxogden/dependency-check#cli-usage
 `
 
 module.exports = {
@@ -17,12 +17,12 @@ module.exports = {
   },
   handler (argv) {
     const input = argv._.slice(1)
-    const fowardOptions = argv['--'] ? argv['--'] : []
+    const forwardOptions = argv['--'] ? argv['--'] : []
     const defaults = input.length ? input : ['package.json', './test/**/*.js', './src/**/*.js']
 
     return execa('dependency-check', [
       ...defaults,
-      ...fowardOptions
+      ...forwardOptions
     ], {
       stdio: 'inherit',
       localDir: path.join(__dirname, '..')

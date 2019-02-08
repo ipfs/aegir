@@ -2,7 +2,7 @@
 
 const EPILOG = `
 By default browser tests run in Chrome headless.
-Browser testing with Karma supports options fowarding with '--' for more info check https://karma-runner.github.io/3.0/config/configuration-file.html
+Browser testing with Karma supports options forwarding with '--' for more info check https://karma-runner.github.io/3.0/config/configuration-file.html
 `
 
 module.exports = {

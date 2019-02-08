@@ -5,7 +5,7 @@ const { hook, fromAegir } = require('../utils')
 
 module.exports = (argv) => {
   const input = argv._.slice(1)
-  const fowardOptions = argv['--'] ? argv['--'] : []
+  const forwardOptions = argv['--'] ? argv['--'] : []
   const watch = argv.watch ? ['--auto-watch', '--no-single-run'] : []
   const files = argv.files ? ['--files-custom', ...argv.files] : []
   const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
@@ -23,7 +23,7 @@ module.exports = (argv) => {
         ...grep,
         ...progress,
         ...input,
-        ...fowardOptions
+        ...forwardOptions
       ], {
         env: {
           AEGIR_WEBWORKER: argv.webworker,

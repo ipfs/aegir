@@ -8,7 +8,7 @@ const { fromAegir, fromRoot } = require('../src/utils')
 const bin = resolveBin.sync('npm-package-json-lint', { executable: 'npmPkgJsonLint' })
 
 const EPILOG = `
-Supports options fowarding with '--' for more info check https://github.com/tclindner/npm-package-json-lint#cli-commands-and-configuration
+Supports options forwarding with '--' for more info check https://github.com/tclindner/npm-package-json-lint#cli-commands-and-configuration
 `
 
 module.exports = {
@@ -21,8 +21,8 @@ module.exports = {
   },
   handler (argv) {
     const input = argv._.slice(1)
-    const fowardOptions = argv['--'] ? argv['--'] : []
-    const useBuiltinConfig = !fowardOptions.includes('--configFile')
+    const forwardOptions = argv['--'] ? argv['--'] : []
+    const useBuiltinConfig = !forwardOptions.includes('--configFile')
     const config = useBuiltinConfig
       ? ['-c', fromAegir('src/config/.npmpackagejsonlintrc.json')]
       : []
@@ -31,7 +31,7 @@ module.exports = {
       fromRoot('package.json'),
       ...config,
       ...input,
-      ...fowardOptions
+      ...forwardOptions
     ], {
       stdio: 'inherit',
       localDir: path.join(__dirname, '..')

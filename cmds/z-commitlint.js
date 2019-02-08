@@ -1,17 +1,26 @@
 'use strict'
-const commitlintTravis = require('../src/checks/commitlint-travis')
-// const resolveBin = require('resolve-bin')
+const path = require('path')
 const execa = require('execa')
+const commitlintTravis = require('../src/checks/commitlint-travis')
+
+const EPILOG = `
+Supports options fowarding with '--' for more info check https://conventional-changelog.github.io/commitlint/#/reference-cli
+`
 
 module.exports = {
   command: 'commitlint',
   aliases: ['cl', 'commit'],
-  desc: 'Run `commitlint` cli with aegir defaults.\nSupports options fowarding with `--` for more info check https://conventional-changelog.github.io/commitlint/#/reference-cli',
-  builder: {
-    travis: {
-      describe: 'Run `commitlint` in Travis CI mode.',
-      boolean: true
-    }
+  desc: 'Run `commitlint` cli with aegir defaults.',
+  builder: (yargs) => {
+    yargs
+      .epilog(EPILOG)
+      .example('npx aegir commitlint -- -E HUSKY_GIT_PARAMS', 'To use inside a package.json as a Husky commit-msg hook.')
+      .options({
+        travis: {
+          describe: 'Run `commitlint` in Travis CI mode.',
+          boolean: true
+        }
+      })
   },
   handler (argv) {
     if (argv.travis) {
@@ -26,7 +35,8 @@ module.exports = {
       ...input,
       ...fowardOptions
     ], {
-      stdio: 'inherit'
+      stdio: 'inherit',
+      localDir: path.join(__dirname, '..')
     })
   }
 }

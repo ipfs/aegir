@@ -28,8 +28,8 @@
   "repository": "github:ipfs/aegir",
   "scripts": {
     "lint": "node cli.js lint",
-    "test:node": "node cli.js test -t node --files 'test/**/*.spec.js'",
-    "test:browser": "node cli.js test -t browser webworker --files test/browser.spec.js",
+    "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node --files 'test/**/*.spec.js'",
+    "test:browser": "cross-env AEGIR_TEST=hello node cli.js test -t browser webworker --files test/browser.spec.js",
     "test:acceptance": "./test/acceptance.sh",
     "test": "npm run test:node && npm run test:browser",
     "coverage": "cross-env AEGIR_TEST=hello node cli.js coverage -t node",

@@ -21,7 +21,7 @@ cli.env('AEGIR')
   .epilog('Use `$0 <command> --help` to learn more about each command.')
   .commandDir('cmds')
   .demandCommand(1, 'You need at least one command.')
-  .option('d', {
+  .option('D', {
     desc: 'Show debug output.',
     type: 'boolean',
     default: false,

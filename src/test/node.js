@@ -6,27 +6,16 @@ const { fromAegir, hook } = require('../utils')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
-const coverageFiles = [
-  'src/**/*.js'
-]
-
-const coverageFilesExclude = [
-  'node_modules/**',
-  'test/**',
-  'dist/**',
-  'examples/**'
-]
-
 function testNode (ctx) {
   let exec = 'mocha'
 
-  const env = {
-    NODE_ENV: 'test'
-  }
+  const env = { NODE_ENV: 'test' }
+  const timeout = ctx.timeout || DEFAULT_TIMEOUT
 
   let args = [
     ctx.progress && '--reporter=progress',
-    '--ui', 'bdd'
+    '--ui', 'bdd',
+    '--timeout', timeout
   ].filter(Boolean)
 
   let files = [
@@ -52,12 +41,6 @@ function testNode (ctx) {
     args.push('--verbose')
   }
 
-  if (process.env.CI) {
-    args.push('--reporter=mocha-jenkins-reporter')
-    const randomNumber = Math.floor(Math.random() * 10000)
-    env.JUNIT_REPORT_PATH = path.join(process.cwd(), `junit-report-node-${randomNumber}.xml`)
-  }
-
   if (ctx.watch) {
     args.push('--watch')
   }
@@ -72,27 +55,6 @@ function testNode (ctx) {
 
   if (ctx.flow) {
     args.push(...['--resolve', fromAegir('src/test/register.js')])
-  }
-
-  const timeout = ctx.timeout || DEFAULT_TIMEOUT
-  if (ctx.coverage) {
-    exec = 'nyc'
-    args = [
-      '--include',
-      coverageFiles,
-      '--exclude',
-      coverageFilesExclude.join(' '),
-      '--reporter=lcov', '--reporter=text',
-      'mocha',
-      `--timeout=${timeout}`
-    ].concat(args)
-  }
-
-  if (!ctx.coverage) {
-    args = [
-      '--timeout',
-      timeout
-    ].concat(args)
   }
 
   const postHook = hook('node', 'post')

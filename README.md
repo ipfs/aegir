@@ -1,6 +1,7 @@
 # AEgir
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+[![Travis CI](https://flat.badgen.net/travis/ipfs/aegir)](https://travis-ci.com/ipfs/aegir)
 [![Dependency Status](https://david-dm.org/ipfs/aegir.svg?style=flat-square)](https://david-dm.org/ipfs/aegir)
 
 > Automated JavaScript project management.
@@ -9,19 +10,6 @@
 
 [Hugo Dias](https://github.com/hugomrdias)
 
-[![Throughput Graph](https://graphs.waffle.io/ipfs/aegir/throughput.svg)](https://waffle.io/ipfs/aegir/metrics/throughput)
-
-## Table of Contents
-
-[Soon™](http://0.media.dorkly.cvcdn.com/11/66/90a5442391c143173baf1fd82e5b2449-10-gifs-of-soon-moments-in-games.jpg)
-
-## Scoped Github Token
-
-Performing a release involves creating new commits and tags and then pushing them back to the repository you are releasing from. In order to do this you should create a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and store it in the environmental variable `AEGIR_GHTOKEN`.
-
-The only access scope it needs is `public_repo`.
-
-Be aware that by storing it in `~/.profile` or similar you will make it available to any program that runs on your computer.
 
 ## Project Structure
 
@@ -48,10 +36,68 @@ Your `package.json` should have the following entries and should pass `aegir lin
   "build": "aegir build",
   "test": "aegir test",
   "test:node": "aegir test --target node",
-  "test:browser": "aegir test --target browser",
-  "coverage": "aegir coverage",
-  "coverage-publish": "aegir coverage --upload"
+  "test:browser": "aegir test --target browser"
 }
+```
+## Add CI to your repo
+### Fix line endings in Windows 
+Create a .gitattributes file with the following content:
+```
+* text=auto
+test/fixtures/** text eol=lf
+# add more like the line above as needed
+```
+You will probably only need this if in your tests you compare file contents or file CIDs.   
+
+Create a file named .travis.yml with the following content:
+
+```yaml
+language: node_js
+cache: npm
+stages:
+  - check
+  - test
+  - cov
+
+node_js:
+  - '10'
+
+os:
+  - linux
+  - osx
+  - windows
+
+script: npx nyc -s npm run test:node -- --bail
+after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
+
+jobs:
+  include:
+    - stage: check
+      script:
+        - npx aegir commitlint --travis
+        - npx aegir dep-check
+        - npm run lint
+
+    - stage: test
+      name: chrome
+      addons:
+        chrome: stable
+      script: npx aegir test -t browser
+
+    - stage: test
+      name: firefox
+      addons:
+        firefox: latest
+      script: npx aegir test -t browser -- --browsers FirefoxHeadless
+
+notifications:
+  email: false
+
+```
+To add a CI badge to your README use :
+
+```yaml
+[![Travis CI](https://flat.badgen.net/travis/ipfs/aegir)](https://travis-ci.com/ipfs/aegir)
 ```
 
 ## Stack Requirements
@@ -144,33 +190,40 @@ module.exports = {
 
 ### Coverage
 
-You can run it using
+#### Node
+You can run your tests with `nyc` using
 
 ```bash
-$ aegir coverage
+$ npx nyc -s aegir test -t node
+# to check the report locally 
+$ npx nyc report --reporter=html && open coverage/index.html
+# or just for a text based reporter
+$ npx nyc report
 ```
+#### Browser
+> Not available yet PR open.
+
 
 To auto publish coverage reports from Travis to Codecov add this to
 your `.travis.yml` file.
 
 ```yml
-script:
-  - npm run coverage -- -upload
+after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
 ```
 
 ### Building
 
-This will build a browser ready version into `dist`, so after publishing the results will be available under
-
-```
-https://unpkg.com/<module-name>/dist/index.js
-https://unpkg.com/<module-name>/dist/index.min.js
-```
 
 You can run it using
 
 ```bash
 $ aegir build
+```
+This will build a browser ready version into `dist`, so after publishing the results will be available under
+
+```
+https://unpkg.com/<module-name>/dist/index.js
+https://unpkg.com/<module-name>/dist/index.min.js
 ```
 
 **Specifying a custom entry file for Webpack**
@@ -239,9 +292,17 @@ in `--no-changelog`.
 
 If you want no documentation generation you can pass `--no-docs` to the release task to disable documentation builds.
 
+#### Scoped Github Token
+
+Performing a release involves creating new commits and tags and then pushing them back to the repository you are releasing from. In order to do this you should create a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and store it in the environmental variable `AEGIR_GHTOKEN`.   
+
+The only access scope it needs is `public_repo`.
+
+Be aware that by storing it in `~/.profile` or similar you will make it available to any program that runs on your computer.
+
 ### Documentation
 
-You can use `aegir-docs` to generate documentation. This uses [documentation.js](http://documentation.js.org/) with the theme [clean-documentation-theme](https://github.com/dignifiedquire/clean-documentation-theme).
+You can use `aegir docs` to generate documentation. This uses [documentation.js](http://documentation.js.org/) with the theme [clean-documentation-theme](https://github.com/dignifiedquire/clean-documentation-theme).
 
 To publish the documentation automatically to the `gh-pages` branch you can run
 

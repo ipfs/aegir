@@ -8,8 +8,9 @@ const { fromAegir } = require('./../utils')
 module.exports = (argv) => {
   const analyze = Boolean(process.env.AEGIR_BUILD_ANALYZE || argv.analyze)
   const input = argv._.slice(1)
-  const useBuiltinConfig = !input.includes('--config')
-  const progress = !input.includes('--progress') ? ['--progress'] : []
+  const forwardOptions = argv['--'] ? argv['--'] : []
+  const useBuiltinConfig = !forwardOptions.includes('--config')
+  const progress = !forwardOptions.includes('--progress') ? ['--progress'] : []
   const config = useBuiltinConfig
     ? ['--config', fromAegir('src/config/webpack.config.js')]
     : []
@@ -21,7 +22,8 @@ module.exports = (argv) => {
   return execa('webpack-cli', [
     ...config,
     ...progress,
-    ...input
+    ...input,
+    ...forwardOptions
   ], {
     env: {
       NODE_ENV: process.env.NODE_ENV || 'production',

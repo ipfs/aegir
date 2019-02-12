@@ -195,6 +195,10 @@ You can run your tests with `nyc` using
 
 ```bash
 $ npx nyc -s aegir test -t node
+# to check the report locally 
+$ npx nyc report --reporter=html && open coverage/index.html
+# or just for a text based reporter
+$ npx nyc report
 ```
 #### Browser
 > Not available yet PR open.

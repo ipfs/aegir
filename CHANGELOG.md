@@ -1,3 +1,13 @@
+<a name="18.1.0"></a>
+# [18.1.0](https://github.com/ipfs/aegir/compare/v18.0.3...v18.1.0) (2019-02-12)
+
+
+### Bug Fixes
+
+* fix the debug alias ([5a47b7e](https://github.com/ipfs/aegir/commit/5a47b7e))
+
+
+
 <a name="18.0.3"></a>
 ## [18.0.3](https://github.com/ipfs/aegir/compare/v18.0.2...v18.0.3) (2019-01-08)
 

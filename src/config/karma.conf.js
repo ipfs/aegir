@@ -46,7 +46,13 @@ const karmaConfig = (config, files, grep, progress) => {
   }
 
   return {
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
     basePath: process.cwd(),
     files: files.map(f => {

@@ -1,3 +1,13 @@
+<a name="18.1.1"></a>
+## [18.1.1](https://github.com/ipfs/aegir/compare/v18.1.0...v18.1.1) (2019-02-19)
+
+
+### Bug Fixes
+
+* exclude fixtures from dep-check ([#334](https://github.com/ipfs/aegir/issues/334)) ([0b00c1f](https://github.com/ipfs/aegir/commit/0b00c1f))
+
+
+
 <a name="18.1.0"></a>
 # [18.1.0](https://github.com/ipfs/aegir/compare/v18.0.3...v18.1.0) (2019-02-12)
 

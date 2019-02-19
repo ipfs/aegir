@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "18.1.0",
+  "version": "18.1.1",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -157,8 +157,8 @@
     "Garren Smith <garren.smith@gmail.com>",
     "Haad <haadcode@users.noreply.github.com>",
     "Henrique Dias <hacdias@gmail.com>",
-    "Hugo Dias <hugomrdias@gmail.com>",
     "Hugo Dias <mail@hugodias.me>",
+    "Hugo Dias <hugomrdias@gmail.com>",
     "JGAntunes <j.goncalo.antunes@gmail.com>",
     "Jacob Heun <jacobheun@gmail.com>",
     "Jakub Sztandera <kubuxu@protonmail.ch>",

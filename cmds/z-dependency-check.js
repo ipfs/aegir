@@ -5,6 +5,12 @@ const execa = require('execa')
 const EPILOG = `
 Supports options forwarding with '--' for more info check https://github.com/maxogden/dependency-check#cli-usage
 `
+const defaultInput = [
+  'package.json',
+  './test/**/*.js',
+  './src/**/*.js',
+  '!./test/fixtures/**/*.js'
+]
 
 module.exports = {
   command: 'dependency-check',
@@ -18,7 +24,7 @@ module.exports = {
   handler (argv) {
     const input = argv._.slice(1)
     const forwardOptions = argv['--'] ? argv['--'] : []
-    const defaults = input.length ? input : ['package.json', './test/**/*.js', './src/**/*.js']
+    const defaults = input.length ? input : defaultInput
 
     return execa('dependency-check', [
       ...defaults,

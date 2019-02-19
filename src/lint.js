@@ -59,7 +59,7 @@ function checkDependencyVersions () {
 
     if (badVersions.length) {
       badVersions.forEach(({ type, name, version, message }) => {
-        console.log(`${type} ${name} had version ${version} - ${message}`)
+        console.log(`${type} ${name} had version ${version} - ${message}`) // eslint-disable-line no-console
       })
 
       return reject(new Error('Dependency version errors'))
@@ -82,7 +82,7 @@ function runLinter (opts = {}) {
     const files = await globby(patterns)
     const report = cli.executeOnFiles(files)
 
-    console.log(formatter(report.results))
+    console.log(formatter(report.results)) // eslint-disable-line no-console
 
     if (report.errorCount > 0) {
       return reject(new Error('Lint errors'))

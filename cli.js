@@ -37,19 +37,19 @@ cli.env('AEGIR')
 const args = cli.fail((msg, err, yargs) => {
   if (msg) {
     yargs.showHelp()
-    console.error(chalk.red(msg))
+    console.error(chalk.red(msg)) // eslint-disable-line no-console
   }
 
   if (err) {
-    console.error(chalk.red(err.message))
+    console.error(chalk.red(err.message)) // eslint-disable-line no-console
 
     if (args.debug) {
       // errors from execa output the child_process stderr
       if (err && err.stderr) {
-        console.error('Error running command: ', err.cmd, '\n')
-        console.error(err.stderr)
+        console.error('Error running command: ', err.cmd, '\n') // eslint-disable-line no-console
+        console.error(err.stderr) // eslint-disable-line no-console
       } else {
-        console.error(chalk.gray(err.stack))
+        console.error(chalk.gray(err.stack)) // eslint-disable-line no-console
       }
     }
   }

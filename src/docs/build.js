@@ -14,7 +14,7 @@ function generateDescription (pkg) {
   try {
     example = fs.readFileSync(utils.getPathToExample())
   } catch (err) {
-    console.log(chalk.yellow('Warning: No `example.js` found in the root directory.'))
+    console.log(chalk.yellow('Warning: No `example.js` found in the root directory.')) // eslint-disable-line no-console
   }
 
   return introTmpl(pkg.name, pkg.repository.url, example)

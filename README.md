@@ -103,6 +103,33 @@ To add a CI badge to your README use :
 [![Travis CI](https://flat.badgen.net/travis/ipfs/aegir)](https://travis-ci.com/ipfs/aegir)
 ```
 
+### Troubleshooting Windows jobs
+
+#### Caches timeout   
+
+If you get something like this 
+<img width="1082" alt="screenshot 2019-02-12 at 12 52 10" src="https://user-images.githubusercontent.com/314190/52636718-4f934f80-2ec5-11e9-9b8d-2d368ec4cf4a.png">
+Clean the caches for that repo/branch and restart.
+
+#### Secrets problem
+
+<img width="1062" alt="screenshot 2019-02-13 at 16 08 22" src="https://user-images.githubusercontent.com/314190/52725701-9eb2b080-2fa9-11e9-9508-2bd00ad31062.png">
+
+If your build stops in the  `nvs add 10` step you probably have secrets (ENV vars) in your Travis config and Windows doesn't work with secrets. You must delete all the secrets to make it works.
+
+<img width="1082" alt="screenshot 2019-02-13 at 16 06 56" src="https://user-images.githubusercontent.com/314190/52725628-7f1b8800-2fa9-11e9-995a-39341a3c7785.png">
+
+#### Allow failure on windows
+add the following 
+```yaml
+matrix:
+  fast_finish: true
+  allow_failures:
+    - os: windows
+```
+before this line https://github.com/libp2p/js-libp2p/blob/master/.travis.yml#L14
+
+
 ## Stack Requirements
 
 To bring you its many benefits, `aegir` requires

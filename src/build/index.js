@@ -10,7 +10,7 @@ module.exports = (argv) => {
   const input = argv._.slice(1)
   const forwardOptions = argv['--'] ? argv['--'] : []
   const useBuiltinConfig = !forwardOptions.includes('--config')
-  const progress = !forwardOptions.includes('--progress') ? ['--progress'] : []
+  const progress = !forwardOptions.includes('--progress') && !process.env.CI ? ['--progress'] : []
   const config = useBuiltinConfig
     ? ['--config', fromAegir('src/config/webpack.config.js')]
     : []

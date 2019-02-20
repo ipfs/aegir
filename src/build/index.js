@@ -3,7 +3,7 @@
 const path = require('path')
 const execa = require('execa')
 const rimraf = require('rimraf')
-const { fromAegir } = require('./../utils')
+const { fromAegir, getUserConfig } = require('./../utils')
 
 module.exports = (argv) => {
   const analyze = Boolean(process.env.AEGIR_BUILD_ANALYZE || argv.analyze)
@@ -19,7 +19,7 @@ module.exports = (argv) => {
   rimraf.sync(path.join(process.cwd(), 'dist'))
 
   // Run webpack
-  return execa('webpack-cli', [
+  const webpack = execa('webpack-cli', [
     ...config,
     ...progress,
     ...input,
@@ -32,4 +32,15 @@ module.exports = (argv) => {
     localDir: path.join(__dirname, '../..'),
     stdio: 'inherit'
   })
+
+  if (argv.bundlesize) {
+    return webpack
+      .then(r => {
+        return execa('bundlesize', ['-f', './dist/index.min.js', '-s', getUserConfig().bundlesize || '100kB'], {
+          localDir: path.join(__dirname, '..'),
+          stdio: 'inherit'
+        })
+      })
+  }
+  return webpack
 }

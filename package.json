@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "18.1.1",
+  "version": "18.2.0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -150,6 +150,7 @@
   "contributors": [
     "Alan Shaw <alan.shaw@protocol.ai>",
     "Alan Shaw <alan@tableflip.io>",
+    "Alberto Elias <hi@albertoelias.me>",
     "Alex Potsides <alex@achingbrain.net>",
     "David Dias <daviddias.p@gmail.com>",
     "Diogo Silva <fsdiogo@gmail.com>",

@@ -4,14 +4,17 @@ const path = require('path')
 const execa = require('execa')
 const rimraf = require('rimraf')
 const { fromAegir } = require('./../utils')
+const userConfig = require('../config/user')
+
+const config = userConfig()
 
 module.exports = (argv) => {
   const analyze = Boolean(process.env.AEGIR_BUILD_ANALYZE || argv.analyze)
   const input = argv._.slice(1)
   const forwardOptions = argv['--'] ? argv['--'] : []
   const useBuiltinConfig = !forwardOptions.includes('--config')
-  const progress = !forwardOptions.includes('--progress') ? ['--progress'] : []
-  const config = useBuiltinConfig
+  const progress = !forwardOptions.includes('--progress') && !process.env.CI ? ['--progress'] : []
+  const webpackConfig = useBuiltinConfig
     ? ['--config', fromAegir('src/config/webpack.config.js')]
     : []
 
@@ -19,8 +22,8 @@ module.exports = (argv) => {
   rimraf.sync(path.join(process.cwd(), 'dist'))
 
   // Run webpack
-  return execa('webpack-cli', [
-    ...config,
+  const webpack = execa('webpack-cli', [
+    ...webpackConfig,
     ...progress,
     ...input,
     ...forwardOptions
@@ -32,4 +35,15 @@ module.exports = (argv) => {
     localDir: path.join(__dirname, '../..'),
     stdio: 'inherit'
   })
+
+  if (argv.bundlesize) {
+    return webpack
+      .then(r => {
+        return execa('bundlesize', ['-f', config.bundlesize.path, '-s', config.bundlesize.maxSize], {
+          localDir: path.join(__dirname, '..'),
+          stdio: 'inherit'
+        })
+      })
+  }
+  return webpack
 }

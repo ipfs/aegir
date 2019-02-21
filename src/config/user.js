@@ -72,7 +72,11 @@ function userConfig () {
     webpack: {},
     karma: {},
     hooks: {},
-    entry: utils.fromRoot('src', 'index.js')
+    entry: utils.fromRoot('src', 'index.js'),
+    bundlesize: {
+      path: './dist/index.min.js',
+      maxSize: '100kB'
+    }
   })
 
   user.hooks = normalizeHooks(user.hooks)

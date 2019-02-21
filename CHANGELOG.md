@@ -1,3 +1,14 @@
+<a name="18.2.0"></a>
+# [18.2.0](https://github.com/ipfs/aegir/compare/v18.1.1...v18.2.0) (2019-02-21)
+
+
+### Features
+
+* add bundlesize support to the build cmd ([#335](https://github.com/ipfs/aegir/issues/335)) ([55b92a6](https://github.com/ipfs/aegir/commit/55b92a6))
+* adds no-sandbox to ChromeHeadless in karma config ([#333](https://github.com/ipfs/aegir/issues/333)) ([a6f4cc2](https://github.com/ipfs/aegir/commit/a6f4cc2))
+
+
+
 <a name="18.1.1"></a>
 ## [18.1.1](https://github.com/ipfs/aegir/compare/v18.1.0...v18.1.1) (2019-02-19)
 

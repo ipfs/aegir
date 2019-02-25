@@ -69,7 +69,6 @@ function build (ctx) {
         if (fmt === 'html') {
           return documentation.build(files, getOpts(pkg))
             .then((docs) => documentation.formats.html(docs, {
-              // theme: require.resolve('clean-documentation-theme'),
               version: pkg.version,
               name: pkg.name
             }))

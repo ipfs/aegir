@@ -59,7 +59,6 @@
     "browserify-zlib": "~0.2.0",
     "bundlesize": "~0.17.1",
     "chalk": "^2.4.1",
-    "clean-documentation-theme": "~0.5.2",
     "codecov": "^3.1.0",
     "conventional-changelog": "^2.0.3",
     "conventional-github-releaser": "^2.0.0",

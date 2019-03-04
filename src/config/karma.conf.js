@@ -34,6 +34,7 @@ const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
 const karmaConfig = (config, files, grep, progress) => {
   // TODO: check why bail doesn't work
   const mocha = {
+    timeout: 5000,
     bail: false,
     grep
   }

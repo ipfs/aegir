@@ -1,3 +1,13 @@
+<a name="18.2.1"></a>
+## [18.2.1](https://github.com/ipfs/aegir/compare/v18.2.0...v18.2.1) (2019-03-04)
+
+
+### Bug Fixes
+
+* use the same timeout for mocha and karma-mocha ([#338](https://github.com/ipfs/aegir/issues/338)) ([58fb8b0](https://github.com/ipfs/aegir/commit/58fb8b0))
+
+
+
 <a name="18.2.0"></a>
 # [18.2.0](https://github.com/ipfs/aegir/compare/v18.1.1...v18.2.0) (2019-02-21)
 

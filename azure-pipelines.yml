@@ -1,0 +1,55 @@
+
+jobs:
+- job: check
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'install node 10'
+  - task: Npm@1
+    displayName: 'npm install'
+  - script: |
+      node cli.js dep-check -- -i aegir
+      npm run lint
+    displayName: 'run checks'
+- job: test_mac
+  dependsOn: check
+  pool:
+    vmImage: 'macOS-10.13'
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'install node 10'
+  - task: Npm@1
+    displayName: 'npm install'
+  - script: npx nyc -s npm run test:node -- --bail
+- job: test_linux
+  dependsOn: check
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'install node 10'
+  - task: Npm@1
+    displayName: 'npm install'
+  - script: npx nyc -s npm run test:node -- --bail
+- job: test_windows
+  dependsOn: check
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '2.x'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'install node 10'
+  - task: Npm@1
+    displayName: 'npm install'
+  - powershell: npx nyc -s npm run test:node -- --bail

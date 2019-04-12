@@ -1,3 +1,8 @@
+<a name="18.2.2"></a>
+## [18.2.2](https://github.com/ipfs/aegir/compare/v18.2.1...v18.2.2) (2019-04-12)
+
+
+
 <a name="18.2.1"></a>
 ## [18.2.1](https://github.com/ipfs/aegir/compare/v18.2.0...v18.2.1) (2019-03-04)
 

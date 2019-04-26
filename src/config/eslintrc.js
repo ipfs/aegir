@@ -44,6 +44,7 @@ module.exports = {
       requireReturn: false,
       requireParamDescription: false,
       requireReturnDescription: false
-    }]
+    }],
+    'require-await': 2
   }
 }

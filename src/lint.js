@@ -25,12 +25,21 @@ function checkDependencyVersions () {
       Object.keys(pkg[key]).forEach(name => {
         const version = pkg[key][name]
 
-        if (/^(?!~)([<>=^]{1,2})[0]/.test(version)) {
+        if (/^(?!~)([<>=^]{1,2})0\.0/.test(version)) {
           badVersions.push({
             type,
             name,
             version,
-            message: 'development (e.g. < 1.0.0) versions should start with a ~'
+            message: 'early versions (e.g. < 0.1.0) should start with a ~ or have no range'
+          })
+        }
+
+        if (/^(?![~^])([<>=]{1,2})0/.test(version)) {
+          badVersions.push({
+            type,
+            name,
+            version,
+            message: 'development versions (e.g. < 1.0.0) should start with a ^ or ~'
           })
         }
 

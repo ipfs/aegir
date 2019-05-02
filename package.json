@@ -57,7 +57,7 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-flow-comments": "^6.22.0",
     "browserify-zlib": "~0.2.0",
-    "bundlesize": "~0.17.1",
+    "@condenast/bundlesize": "~0.18.1",
     "chalk": "^2.4.1",
     "clean-documentation-theme": "~0.5.2",
     "codecov": "^3.1.0",

@@ -48,7 +48,7 @@ module.exports = async function main () {
   }
 }
 
-async function git (args, options) {
+function git (args, options) {
   return execa(GIT, args, Object.assign({}, { stdio: 'inherit' }, options))
 }
 
@@ -64,7 +64,7 @@ async function isClean () {
   return !(result.stdout && result.stdout.trim())
 }
 
-async function lint (args, options) {
+function lint (args, options) {
   return execa(
     COMMITLINT || commitlint,
     [

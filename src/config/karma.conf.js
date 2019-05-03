@@ -31,11 +31,11 @@ const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
   ]
 })
 
-const karmaConfig = (config, files, grep, progress) => {
-  // TODO: check why bail doesn't work
+const karmaConfig = (config, files, grep, progress, bail) => {
   const mocha = {
+    reporter: 'spec',
     timeout: 5000,
-    bail: false,
+    bail: bail,
     grep
   }
 
@@ -94,18 +94,19 @@ const karmaConfig = (config, files, grep, progress) => {
 
     reporters: [
       progress && 'progress',
-      !progress && 'mocha-own',
+      !progress && 'mocha',
       process.env.CI && 'junit'
     ].filter(Boolean),
+
+    mochaReporter: {
+      output: 'autowatch',
+      showDiff: true
+    },
 
     junitReporter: {
       outputDir: process.cwd(),
       outputFile: isWebworker ? 'junit-report-webworker.xml' : 'junit-report-browser.xml',
       useBrowserName: false
-    },
-
-    mochaOwnReporter: {
-      reporter: 'spec'
     },
 
     plugins: [
@@ -114,7 +115,7 @@ const karmaConfig = (config, files, grep, progress) => {
       'karma-firefox-launcher',
       'karma-junit-reporter',
       'karma-mocha',
-      'karma-mocha-own-reporter',
+      'karma-mocha-reporter',
       'karma-mocha-webworker',
       'karma-sourcemap-loader',
       'karma-webpack'
@@ -128,6 +129,6 @@ const karmaConfig = (config, files, grep, progress) => {
 }
 
 module.exports = (config) => {
-  var argv = require('yargs-parser')(process.argv.slice(2), { array: ['files-custom'], boolean: ['progress'] })
-  config.set(merge(karmaConfig(config, argv.filesCustom, argv.grep, argv.progress), userConfig.karma))
+  var argv = require('yargs-parser')(process.argv.slice(2), { array: ['files-custom'], boolean: ['progress', 'bail'] })
+  config.set(merge(karmaConfig(config, argv.filesCustom, argv.grep, argv.progress, argv.bail), userConfig.karma))
 }

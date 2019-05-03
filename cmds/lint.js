@@ -6,6 +6,7 @@ module.exports = {
   builder: {
     fix: {
       alias: 'f',
+      type: 'boolean',
       describe: 'Automatically fix errors if possible',
       default: false
     }

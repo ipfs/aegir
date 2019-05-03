@@ -12,11 +12,13 @@ module.exports = {
       .options({
         analyze: {
           alias: 'a',
+          type: 'boolean',
           describe: 'Analyze mode. Opens webpack-bundle-analyzer and write stats to disk',
           default: false
         },
         bundlesize: {
           alias: 'b',
+          type: 'boolean',
           describe: 'Checks your bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize`.',
           default: false
         }

@@ -6,6 +6,7 @@ module.exports = {
   builder: {
     publish: {
       alias: 'p',
+      type: 'boolean',
       describe: 'Publish to GitHub Pages',
       default: false
     },

@@ -11,6 +11,7 @@ module.exports = (argv) => {
   const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
   const grep = argv.grep ? ['--grep', argv.grep] : []
   const progress = argv.progress ? ['--progress', argv.progress] : []
+  const bail = argv.bail ? ['--bail', argv.bail] : []
 
   return hook('browser', 'pre')(argv.userConfig)
     .then(() => {
@@ -23,6 +24,7 @@ module.exports = (argv) => {
         ...grep,
         ...progress,
         ...input,
+        ...bail,
         ...forwardOptions
       ], {
         env: {

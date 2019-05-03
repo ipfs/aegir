@@ -32,6 +32,7 @@ cli.env('AEGIR')
   .alias('v', 'version')
   .group(['help', 'version', 'debug'], 'Global Options:')
   .wrap(cli.terminalWidth())
+  .parserConfiguration({ 'populate--': true })
   // .strict() // this doesnt allow for cross-env AEGIR_TEST=hello node cli.js test -t node --files 'test/**/*.spec.js' "--bail"
 
 const args = cli.fail((msg, err, yargs) => {

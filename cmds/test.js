@@ -25,11 +25,13 @@ module.exports = {
         verbose: {
           alias: 'v',
           describe: 'Print verbose test output',
+          type: 'boolean',
           default: false
         },
         watch: {
           alias: 'w',
           describe: 'Watch files for changes and rerun tests',
+          type: 'boolean',
           default: false
         },
         files: {
@@ -41,6 +43,7 @@ module.exports = {
         parallel: {
           alias: 'p',
           describe: 'Run tests in parallel (only available in node)',
+          type: 'boolean',
           default: true
         },
         timeout: {
@@ -50,10 +53,12 @@ module.exports = {
         },
         exit: {
           describe: 'Force shutdown of the event loop after test run: mocha will call process.exit',
+          type: 'boolean',
           default: true
         },
         colors: {
           describe: 'Enable colors on output (only available in node runs)',
+          type: 'boolean',
           default: true
         },
         grep: {
@@ -64,14 +69,17 @@ module.exports = {
         bail: {
           alias: 'b',
           describe: 'Mocha should bail once a test fails',
+          type: 'boolean',
           default: false
         },
         flow: {
           describe: 'Run test with Flow support',
+          type: 'boolean',
           default: false
         },
         progress: {
           describe: 'Use progress reporters on mocha and karma',
+          type: 'boolean',
           default: false
         }
       })

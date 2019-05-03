@@ -20,38 +20,47 @@ module.exports = {
     },
     build: {
       describe: 'Run build tasks before release',
+      type: 'boolean',
       default: true
     },
     test: {
       describe: 'Run test tasks before release',
+      type: 'boolean',
       default: true
     },
     lint: {
       describe: 'Run lint task before release',
+      type: 'boolean',
       default: true
     },
     contributors: {
       describe: 'Update contributors based on the git history',
+      type: 'boolean',
       default: true
     },
     bump: {
       describe: 'Bump the package version',
+      type: 'boolean',
       default: true
     },
     changelog: {
       describe: 'Generate or update the CHANGELOG.md',
+      type: 'boolean',
       default: true
     },
     publish: {
       describe: 'Publish to npm',
+      type: 'boolean',
       default: true
     },
     ghrelease: {
       describe: 'Genereate GitHub release',
+      type: 'boolean',
       default: true
     },
     docs: {
       describe: 'Generate and publish documentation',
+      type: 'boolean',
       default: true
     },
     ghtoken: {
@@ -77,6 +86,7 @@ module.exports = {
     },
     exit: {
       describe: 'force shutdown of the event loop after test run: mocha will call process.exit',
+      type: 'boolean',
       default: true
     },
     'dist-tag': {

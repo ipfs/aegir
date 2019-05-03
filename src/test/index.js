@@ -27,7 +27,7 @@ module.exports = {
         return Promise.resolve()
       }
 
-      console.log(task.title)
+      console.log(task.title) // eslint-disable-line no-console
       return task.task(opts)
     }, { concurrency: 1 })
   }

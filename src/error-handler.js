@@ -7,8 +7,8 @@ function onError (err) {
     return
   }
 
-  console.log(chalk.red(err.message))
-  console.log(chalk.gray(err.stack))
+  console.log(chalk.red(err.message)) // eslint-disable-line no-console
+  console.log(chalk.gray(err.stack)) // eslint-disable-line no-console
   process.exit(1)
 }
 

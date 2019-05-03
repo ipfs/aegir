@@ -22,7 +22,7 @@ module.exports = {
     'linebreak-style': [1, 'unix'],
     'no-alert': 2,
     'no-case-declarations': 2,
-    'no-console': 1,
+    'no-console': 2,
     'no-constant-condition': 2,
     'no-continue': 1,
     'no-div-regex': 2,

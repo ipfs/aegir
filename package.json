@@ -68,6 +68,8 @@
     "dependency-check": "^3.3.0",
     "detect-node": "^2.0.4",
     "documentation": "^10.1.0",
+    "electron": "^4.2.0",
+    "electron-mocha": "^8.0.1",
     "es6-promisify": "^6.0.1",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",

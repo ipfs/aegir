@@ -15,6 +15,11 @@ module.exports = {
       .example('aegir test -t browser -- --browsers Firefox,Chrome,Safari', 'Tell Karma to run tests in several browsers at the same time.')
       .example('aegir test -w -t browser -- --browser Chrome', 'Debug tests with watch mode and tell Karma to open Chrome in a non-headless mode.')
       .options({
+        '100': {
+          describe: 'Check coverage and validate 100% was covered.',
+          type: 'boolean',
+          default: false
+        },
         target: {
           alias: 't',
           describe: 'In which target environment to execute the tests',

@@ -62,6 +62,18 @@ function testNode (ctx) {
 
   let err
 
+  if (ctx['100']) {
+    args = [
+      '--check-coverage',
+      '--branches=100',
+      '--functions=100',
+      '--lines=100',
+      '--statements=100',
+      exec
+    ].concat(args)
+    exec = 'nyc'
+  }
+
   return preHook(ctx).then(() => {
     return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
       env: env,

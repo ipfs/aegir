@@ -19,7 +19,7 @@ module.exports = {
           alias: 't',
           describe: 'In which target environment to execute the tests',
           type: 'array',
-          choices: ['node', 'browser', 'webworker'],
+          choices: ['node', 'browser', 'webworker', 'electron'],
           default: ['node', 'browser', 'webworker']
         },
         verbose: {

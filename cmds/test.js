@@ -14,12 +14,16 @@ module.exports = {
       .example('aegir test -t webworker', 'Run tests in the browser with Karma inside a webworker.')
       .example('aegir test -t browser -- --browsers Firefox,Chrome,Safari', 'Tell Karma to run tests in several browsers at the same time.')
       .example('aegir test -w -t browser -- --browser Chrome', 'Debug tests with watch mode and tell Karma to open Chrome in a non-headless mode.')
+      .example(
+        'aegir test -t electron-renderer -- --interactive',
+        'Debug electron renderer test with a persistent window.'
+      )
       .options({
         target: {
           alias: 't',
           describe: 'In which target environment to execute the tests',
           type: 'array',
-          choices: ['node', 'browser', 'webworker', 'electron'],
+          choices: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer'],
           default: ['node', 'browser', 'webworker']
         },
         verbose: {

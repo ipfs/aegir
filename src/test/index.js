@@ -18,8 +18,13 @@ const TASKS = [
   },
   {
     title: 'Test Electron Main',
+    task: (opts) => require('./electron')(Object.assign(opts, { renderer: false })),
+    enabled: (ctx) => ctx.target.includes('electron-main')
+  },
+  {
+    title: 'Test Electron Renderer',
     task: (opts) => require('./electron')(Object.assign(opts, { renderer: true })),
-    enabled: (ctx) => ctx.target.includes('electron')
+    enabled: (ctx) => ctx.target.includes('electron-renderer')
   }
 
 ]

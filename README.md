@@ -95,7 +95,12 @@ jobs:
       addons:
         firefox: latest
       script: npx aegir test -t browser -t webworker -- --browsers FirefoxHeadless
-
+    
+    - stage: test
+      name: electron
+      script:
+        - npx aegir test -t electron-main
+        - npx aegir test -t electron-renderer
 notifications:
   email: false
 

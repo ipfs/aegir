@@ -1,3 +1,13 @@
+<a name="19.0.3"></a>
+## [19.0.3](https://github.com/ipfs/aegir/compare/v19.0.2...v19.0.3) (2019-05-24)
+
+
+### Bug Fixes
+
+* fix gh release ([8eba533](https://github.com/ipfs/aegir/commit/8eba533))
+
+
+
 <a name="19.0.2"></a>
 ## [19.0.2](https://github.com/ipfs/aegir/compare/v19.0.1...v19.0.2) (2019-05-24)
 

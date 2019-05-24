@@ -98,6 +98,8 @@ jobs:
     
     - stage: test
       name: electron
+      before_script:
+        - export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start
       script:
         - npx aegir test -t electron-main
         - npx aegir test -t electron-renderer

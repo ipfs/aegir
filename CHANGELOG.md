@@ -1,3 +1,33 @@
+<a name="19.0.0"></a>
+# [19.0.0](https://github.com/ipfs/aegir/compare/v18.2.2...v19.0.0) (2019-05-24)
+
+
+### Bug Fixes
+
+* allow development versions to use caret ([#356](https://github.com/ipfs/aegir/issues/356)) ([4a50e11](https://github.com/ipfs/aegir/commit/4a50e11)), closes [#346](https://github.com/ipfs/aegir/issues/346)
+* fix breaking change from read-pkg-up ([1b3205c](https://github.com/ipfs/aegir/commit/1b3205c))
+* fix corejs babel config ([2660dc3](https://github.com/ipfs/aegir/commit/2660dc3))
+* make AEGir Node.js 12 compatible ([#357](https://github.com/ipfs/aegir/issues/357)) ([924eed2](https://github.com/ipfs/aegir/commit/924eed2))
+* update dependencies ([e280ead](https://github.com/ipfs/aegir/commit/e280ead))
+* update electron test config ([b15aca8](https://github.com/ipfs/aegir/commit/b15aca8))
+
+
+### Features
+
+* add support for electron in tests ([#359](https://github.com/ipfs/aegir/issues/359)) ([4363230](https://github.com/ipfs/aegir/commit/4363230))
+* add support for electron renderer in test and docs ([b170814](https://github.com/ipfs/aegir/commit/b170814))
+* change linting rules to make `console.foo` an error ([#299](https://github.com/ipfs/aegir/issues/299)) ([30191ac](https://github.com/ipfs/aegir/commit/30191ac))
+* require await in functions marked async ([#355](https://github.com/ipfs/aegir/issues/355)) ([b26ac5c](https://github.com/ipfs/aegir/commit/b26ac5c)), closes [#354](https://github.com/ipfs/aegir/issues/354)
+* update deps and cleanup ([#358](https://github.com/ipfs/aegir/issues/358)) ([1cb8cf2](https://github.com/ipfs/aegir/commit/1cb8cf2)), closes [#350](https://github.com/ipfs/aegir/issues/350) [#193](https://github.com/ipfs/aegir/issues/193)
+
+
+### BREAKING CHANGES
+
+* lots of deps updated hidden problems might still exist
+* console.* statement are NOW a lint error  
+
+
+
 <a name="18.2.2"></a>
 ## [18.2.2](https://github.com/ipfs/aegir/compare/v18.2.1...v18.2.2) (2019-04-12)
 

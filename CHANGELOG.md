@@ -1,3 +1,8 @@
+<a name="19.0.1"></a>
+## [19.0.1](https://github.com/ipfs/aegir/compare/v19.0.0...v19.0.1) (2019-05-24)
+
+
+
 <a name="19.0.0"></a>
 # [19.0.0](https://github.com/ipfs/aegir/compare/v18.2.2...v19.0.0) (2019-05-24)
 

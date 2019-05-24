@@ -81,7 +81,7 @@
     "execa": "^1.0.0",
     "filesize": "^4.1.2",
     "findup-sync": "^3.0.0",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^8.0.1",
     "gh-pages": "^2.0.1",
     "git-validate": "^2.2.4",
     "globby": "^9.2.0",

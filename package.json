@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "18.2.2",
+  "version": "19.0.0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -167,6 +167,7 @@
     "Vasco Santos <vasco.santos@ua.pt>",
     "Victor Bjelkholm <victorbjelkholm@gmail.com>",
     "Volker Mische <volker.mische@gmail.com>",
+    "dependabot-preview[bot] <dependabot-preview[bot]@users.noreply.github.com>",
     "dignifiedquire <dignifiedquire@gmail.com>",
     "greenkeeper[bot] <greenkeeper[bot]@users.noreply.github.com>",
     "greenkeeperio-bot <support@greenkeeper.io>",

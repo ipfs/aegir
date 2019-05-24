@@ -6,7 +6,8 @@ const pify = require('pify')
 function github (opts) {
   return pify(conventionalGithubReleaser)({
     type: 'oauth',
-    token: opts.ghtoken
+    token: opts.ghtoken,
+    url: 'https://api.github.com/'
   }, {
     preset: 'angular'
   })

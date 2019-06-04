@@ -97,13 +97,15 @@ jobs:
       script: npx aegir test -t browser -t webworker -- --browsers FirefoxHeadless
     
     - stage: test
-      name: electron
-      install:
-        - export DISPLAY=':99.0'
-        - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+      name: electron-main
       script:
-        - npx aegir test -t electron-main
-        - npx aegir test -t electron-renderer
+        - xvfb-run npx aegir test -t electron-main -- --bail
+    
+    - stage: test
+      name: electron-renderer
+      script:
+        - xvfb-run npx aegir test -t electron-renderer -- --bail
+
 notifications:
   email: false
 

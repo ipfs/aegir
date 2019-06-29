@@ -43,7 +43,7 @@ const base = (env, argv) => {
               use: {
                 loader: require.resolve('babel-loader'),
                 options: {
-                  presets: [require('./babelrc')],
+                  presets: [require('./babelrc')()],
                   babelrc: false,
                   cacheDirectory: true
                 }
@@ -55,7 +55,7 @@ const base = (env, argv) => {
               use: {
                 loader: require.resolve('babel-loader'),
                 options: {
-                  presets: [require('./babelrc')],
+                  presets: [require('./babelrc')()],
                   babelrc: false,
                   cacheDirectory: true,
                   sourceMaps: false

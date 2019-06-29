@@ -1,3 +1,14 @@
+<a name="19.0.4"></a>
+## [19.0.4](https://github.com/ipfs/aegir/compare/v19.0.3...v19.0.4) (2019-06-29)
+
+
+### Bug Fixes
+
+* update docs for electron ci config ([ff6e16b](https://github.com/ipfs/aegir/commit/ff6e16b))
+* use default babel config and update browserslist ([#382](https://github.com/ipfs/aegir/issues/382)) ([4ad7f19](https://github.com/ipfs/aegir/commit/4ad7f19)), closes [#379](https://github.com/ipfs/aegir/issues/379) [#380](https://github.com/ipfs/aegir/issues/380) [#381](https://github.com/ipfs/aegir/issues/381)
+
+
+
 <a name="19.0.3"></a>
 ## [19.0.3](https://github.com/ipfs/aegir/compare/v19.0.2...v19.0.3) (2019-05-24)
 

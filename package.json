@@ -48,7 +48,7 @@
     "@babel/runtime": "^7.4.5",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
-    "@commitlint/lint": "^7.2.1",
+    "@commitlint/lint": "^8.0.0",
     "@commitlint/load": "^8.0.0",
     "@commitlint/read": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",

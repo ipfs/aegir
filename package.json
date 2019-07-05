@@ -84,7 +84,7 @@
     "fs-extra": "^8.0.1",
     "gh-pages": "^2.0.1",
     "git-validate": "^2.2.4",
-    "globby": "^9.2.0",
+    "globby": "^10.0.1",
     "json-loader": "~0.5.7",
     "karma": "^4.1.0",
     "karma-chrome-launcher": "^2.2.0",

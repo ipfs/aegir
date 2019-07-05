@@ -67,3 +67,60 @@ describe('config - user', () => {
     })
   })
 })
+
+describe('config - user with async hooks', () => {
+  let config
+
+  before(() => {
+    mock('../../src/utils', {
+      getPkg () {
+        return Promise.resolve({
+          name: 'example'
+        })
+      },
+      getUserConfig () {
+        return {
+          webpack: {
+            devtool: 'eval'
+          },
+          entry: 'src/main.js',
+          hooks: {
+            async pre () {
+              await Promise.resolve()
+
+              return 'pre done async'
+            },
+            async post () {
+              await Promise.resolve()
+
+              return 'post done async'
+            }
+          }
+        }
+      },
+      getLibraryName () {
+        return 'Example'
+      },
+      getPathToDist () {
+        return 'dist'
+      },
+      getPathToNodeModules () {
+        return 'aegir/node_modules'
+      },
+      fromRoot () {
+        return './src/index.js'
+      }
+    })
+
+    config = mock.reRequire('../../src/config/user')()
+  })
+
+  after(() => {
+    mock.stop('../../src/utils.js')
+  })
+
+  it('supports async hooks', async () => {
+    expect(await config.hooks.browser.pre()).to.eql('pre done async')
+    expect(await config.hooks.browser.post()).to.eql('post done async')
+  })
+})

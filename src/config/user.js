@@ -27,7 +27,10 @@ const HOOK_STAGES = [
 
 function promisifyHooks (hooks) {
   Object.keys(hooks).forEach((key) => {
-    hooks[key] = promisify(hooks[key])
+    if (hooks[key].length) {
+      // hook takes args, is expecting a callback so promisify it
+      hooks[key] = promisify(hooks[key])
+    }
   })
 
   return hooks

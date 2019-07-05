@@ -1,3 +1,13 @@
+<a name="19.0.5"></a>
+## [19.0.5](https://github.com/ipfs/aegir/compare/v19.0.4...v19.0.5) (2019-07-05)
+
+
+### Features
+
+* support async hooks ([#390](https://github.com/ipfs/aegir/issues/390)) ([717f888](https://github.com/ipfs/aegir/commit/717f888)), closes [ipfs/js-ipfsd-ctl#353](https://github.com/ipfs/js-ipfsd-ctl/issues/353) [ipfs/js-ipfs#1670](https://github.com/ipfs/js-ipfs/issues/1670)
+
+
+
 <a name="19.0.4"></a>
 ## [19.0.4](https://github.com/ipfs/aegir/compare/v19.0.3...v19.0.4) (2019-06-29)
 

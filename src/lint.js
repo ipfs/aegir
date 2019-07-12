@@ -4,7 +4,6 @@ const path = require('path')
 const globby = require('globby')
 const { CLIEngine } = require('eslint')
 const userConfig = require('./config/user')
-const { fromAegir } = require('./utils')
 const formatter = CLIEngine.getFormatter()
 
 const FILES = [
@@ -82,7 +81,7 @@ function checkDependencyVersions () {
 function runLinter (opts = {}) {
   const cli = new CLIEngine({
     useEslintrc: true,
-    baseConfig: require(fromAegir('src/config/eslintrc.js')),
+    baseConfig: require('./config/eslintrc.js'),
     fix: opts.fix
   })
 

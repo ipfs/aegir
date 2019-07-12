@@ -7,11 +7,11 @@ const { fromAegir, hook } = require('../utils')
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
 function testNode (ctx) {
-  const exec = 'mocha'
+  let exec = 'mocha'
   const env = { NODE_ENV: 'test' }
   const timeout = ctx.timeout || DEFAULT_TIMEOUT
 
-  const args = [
+  let args = [
     ctx.progress && '--reporter=progress',
     '--ui', 'bdd',
     '--timeout', timeout

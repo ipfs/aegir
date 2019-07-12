@@ -60,7 +60,6 @@
     "babel-plugin-transform-flow-comments": "^6.22.0",
     "browserify-zlib": "~0.2.0",
     "chalk": "^2.4.1",
-    "clean-documentation-theme": "~0.5.2",
     "codecov": "^3.3.0",
     "conventional-changelog": "^3.1.4",
     "conventional-github-releaser": "^3.1.3",

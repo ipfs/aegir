@@ -1,10 +1,11 @@
 'use strict'
 
-const CLIEngine = require('eslint').CLIEngine
 const path = require('path')
-const formatter = CLIEngine.getFormatter()
-const userConfig = require('./config/user')
 const globby = require('globby')
+const { CLIEngine } = require('eslint')
+const userConfig = require('./config/user')
+const { fromAegir } = require('./utils')
+const formatter = CLIEngine.getFormatter()
 
 const FILES = [
   '*.js',
@@ -81,7 +82,7 @@ function checkDependencyVersions () {
 function runLinter (opts = {}) {
   const cli = new CLIEngine({
     useEslintrc: true,
-    baseConfig: require('./config/eslintrc'),
+    baseConfig: require(fromAegir('src/config/eslintrc.js')),
     fix: opts.fix
   })
 

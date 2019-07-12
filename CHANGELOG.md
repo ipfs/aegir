@@ -1,3 +1,24 @@
+<a name="20.0.0"></a>
+# [20.0.0](https://github.com/ipfs/aegir/compare/v19.0.5...v20.0.0) (2019-07-12)
+
+
+### Bug Fixes
+
+* use the default docs theme ([#396](https://github.com/ipfs/aegir/issues/396)) ([ca63d17](https://github.com/ipfs/aegir/commit/ca63d17)), closes [#369](https://github.com/ipfs/aegir/issues/369)
+
+
+### Features
+
+* aegir test --100 for full coverage validation ([#360](https://github.com/ipfs/aegir/issues/360)) ([690c459](https://github.com/ipfs/aegir/commit/690c459))
+* update deps and make lint --fix work ([#395](https://github.com/ipfs/aegir/issues/395)) ([7db9e4c](https://github.com/ipfs/aegir/commit/7db9e4c)), closes [#311](https://github.com/ipfs/aegir/issues/311)
+
+
+### BREAKING CHANGES
+
+* The eslint rules changes, you will need to `run npx aegir lint --fix`
+
+
+
 <a name="19.0.5"></a>
 ## [19.0.5](https://github.com/ipfs/aegir/compare/v19.0.4...v19.0.5) (2019-07-05)
 

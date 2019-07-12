@@ -79,26 +79,25 @@ function checkDependencyVersions () {
 }
 
 function runLinter (opts = {}) {
-  return new Promise(async (resolve, reject) => {
-    const cli = new CLIEngine({
-      useEslintrc: true,
-      baseConfig: require('./config/eslintrc'),
-      fix: opts.fix
-    })
-
-    const config = userConfig()
-    const patterns = (config.lint && config.lint.files) || FILES
-    const files = await globby(patterns)
-    const report = cli.executeOnFiles(files)
-
-    console.log(formatter(report.results)) // eslint-disable-line no-console
-
-    if (report.errorCount > 0) {
-      return reject(new Error('Lint errors'))
-    }
-
-    resolve()
+  const cli = new CLIEngine({
+    useEslintrc: true,
+    baseConfig: require('./config/eslintrc'),
+    fix: opts.fix
   })
+
+  const config = userConfig()
+  const patterns = (config.lint && config.lint.files) || FILES
+  return globby(patterns)
+    .then(files => {
+      const report = cli.executeOnFiles(files)
+
+      console.log(formatter(report.results)) // eslint-disable-line no-console
+
+      if (report.errorCount > 0) {
+        throw new Error('Lint errors')
+      }
+      return report
+    })
 }
 
 function lint (opts) {

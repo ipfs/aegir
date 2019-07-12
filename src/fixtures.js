@@ -46,7 +46,7 @@ function syncXhr (filePath) {
 
   if (request.status === 200) {
     const filestream = request.responseText
-    let res = new Uint8Array(filestream.length)
+    const res = new Uint8Array(filestream.length)
 
     for (let i = 0; i < filestream.length; i++) {
       res[i] = filestream.charCodeAt(i) & 0xff

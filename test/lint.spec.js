@@ -4,12 +4,13 @@
 const lint = require('../src/lint')
 const expect = require('chai').expect
 const path = require('path')
-const os = require('os')
 const fs = require('fs')
+const del = require('del')
 const series = require('async/series')
 
+const TEMP_FOLDER = path.join(__dirname, '../node_modules/.temp-test')
 const setupProjectWithDeps = (deps) => {
-  const tmpDir = path.join(os.tmpdir(), `test-${Math.random()}`)
+  const tmpDir = path.join(TEMP_FOLDER, `test-${Math.random()}`)
 
   return new Promise((resolve, reject) => {
     series([
@@ -47,13 +48,17 @@ const dependenciesShouldFailLinting = (deps) => {
 
 describe('lint', () => {
   const cwd = process.cwd()
+  before(() => {
+    fs.mkdirSync(TEMP_FOLDER, { recursive: true })
+  })
 
   after(() => {
     process.chdir(cwd)
+    del(TEMP_FOLDER)
   })
 
   it('lint itself (aegir)', function () {
-    this.timeout(10 * 1000) // slow ci is slow
+    this.timeout(20 * 1000) // slow ci is slow
     return lint({ fix: false })
   })
 

@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "19.0.5",
+  "version": "20.0.0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -162,6 +162,7 @@
     "Jakub Sztandera <kubuxu@protonmail.ch>",
     "Lars Gierth <lgierth@users.noreply.github.com>",
     "Michael Garvin <gar+gh@danger.computer>",
+    "Mikeal Rogers <mikeal.rogers@gmail.com>",
     "Stephen Whitmore <stephen.whitmore@gmail.com>",
     "Vasco Santos <vasco.santos@ua.pt>",
     "Victor Bjelkholm <victorbjelkholm@gmail.com>",

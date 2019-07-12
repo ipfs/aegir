@@ -90,7 +90,9 @@ function runLinter (opts = {}) {
   return globby(patterns)
     .then(files => {
       const report = cli.executeOnFiles(files)
-
+      if (opts.fix) {
+        CLIEngine.outputFixes(report)
+      }
       console.log(formatter(report.results)) // eslint-disable-line no-console
 
       if (report.errorCount > 0) {

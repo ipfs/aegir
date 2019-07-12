@@ -58,7 +58,7 @@ describe('lint', () => {
   })
 
   it('lint itself (aegir)', function () {
-    this.timeout(10 * 1000) // slow ci is slow
+    this.timeout(20 * 1000) // slow ci is slow
     return lint({ fix: false })
   })
 

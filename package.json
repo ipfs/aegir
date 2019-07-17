@@ -103,7 +103,7 @@
     "npm-package-json-lint": "^3.7.0",
     "npm-which": "^3.0.1",
     "nyc": "^14.1.0",
-    "p-map": "^2.1.0",
+    "p-map": "^3.0.0",
     "pify": "^4.0.1",
     "pretty-hrtime": "^1.0.3",
     "prompt-promise": "^1.0.3",

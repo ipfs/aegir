@@ -67,7 +67,7 @@
     "dependency-check": "^3.4.1",
     "detect-node": "^2.0.4",
     "documentation": "^12.0.1",
-    "electron": "^5.0.6",
+    "electron": "^6.0.1",
     "electron-mocha": "^8.0.3",
     "es6-promisify": "^6.0.1",
     "eslint": "^6.0.1",

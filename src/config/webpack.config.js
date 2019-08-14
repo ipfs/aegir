@@ -30,6 +30,7 @@ const base = (env, argv) => {
       sourceMapFilename: filename + '.map',
       library: getLibraryName(pkg.name),
       libraryTarget: 'umd',
+      globalObject: 'self',
       devtoolModuleFilenameTemplate: info =>
         path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
     },

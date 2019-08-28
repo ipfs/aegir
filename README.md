@@ -285,10 +285,10 @@ If `.aegir.js` file is not present in the project, webpack will use `src/index.j
 
 #### Generating Webpack stats.json
 
-Pass the `--stats` option to have Webpack generate a `stats.json` file for the bundle and save it in the project root (see https://webpack.js.org/api/stats/). e.g.
+Pass the `--analyze` option to have Webpack generate a `stats.json` file for the bundle and save it in the project root (see https://webpack.js.org/api/stats/). e.g.
 
 ```bash
-aegir build --stats
+aegir build --analyze
 ```
 
 ### Releasing

@@ -12,6 +12,7 @@ const fs = require('fs-extra')
 const arrify = require('arrify')
 const _ = require('lodash')
 const VerboseRenderer = require('listr-verbose-renderer')
+const execa = require('execa')
 
 const { package: pkg, path: pkgPath } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
@@ -212,4 +213,13 @@ exports.hook = (env, key) => (ctx) => {
   }
 
   return Promise.resolve()
+}
+
+exports.exec = (command, args) => {
+  const result = execa(command, args)
+
+  result.stdout.pipe(process.stdout)
+  result.stderr.pipe(process.stderr)
+
+  return result
 }

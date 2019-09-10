@@ -2,6 +2,10 @@
 
 'use strict'
 
+process.on('unhandledRejection', (err) => {
+  throw err
+})
+
 const updateNotifier = require('update-notifier')
 const chalk = require('chalk')
 const pkg = require('./package.json')

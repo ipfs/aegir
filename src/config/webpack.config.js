@@ -30,7 +30,7 @@ const base = (env, argv) => {
       sourceMapFilename: filename + '.map',
       library: getLibraryName(pkg.name),
       libraryTarget: 'umd',
-      globalObject: 'self',
+      globalObject: 'self', // Use `self` as `window` doesn't not exist within a Service/Web Worker context
       devtoolModuleFilenameTemplate: info =>
         path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
     },

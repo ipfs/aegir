@@ -1,3 +1,13 @@
+<a name="20.1.0"></a>
+# [20.1.0](https://github.com/ipfs/aegir/compare/v20.0.0...v20.1.0) (2019-09-10)
+
+
+### Features
+
+* add commands for publishing rc ([#419](https://github.com/ipfs/aegir/issues/419)) ([d1cc8d5](https://github.com/ipfs/aegir/commit/d1cc8d5))
+
+
+
 <a name="20.0.0"></a>
 # [20.0.0](https://github.com/ipfs/aegir/compare/v19.0.5...v20.0.0) (2019-07-12)
 

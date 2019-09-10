@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "20.0.0",
+  "version": "20.1.0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -144,6 +144,7 @@
     "not ie < 11"
   ],
   "contributors": [
+    "Adam Uhlíř <adam@uhlir.dev>",
     "Alan Shaw <alan.shaw@protocol.ai>",
     "Alan Shaw <alan@tableflip.io>",
     "Alberto Elias <hi@albertoelias.me>",
@@ -167,6 +168,7 @@
     "Vasco Santos <vasco.santos@ua.pt>",
     "Victor Bjelkholm <victorbjelkholm@gmail.com>",
     "Volker Mische <volker.mische@gmail.com>",
+    "dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>",
     "dependabot-preview[bot] <dependabot-preview[bot]@users.noreply.github.com>",
     "dignifiedquire <dignifiedquire@gmail.com>",
     "greenkeeper[bot] <greenkeeper[bot]@users.noreply.github.com>",

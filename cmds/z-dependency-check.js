@@ -28,6 +28,7 @@ module.exports = {
 
     return execa('dependency-check', [
       ...defaults,
+      '--missing',
       ...forwardOptions
     ], {
       stdio: 'inherit',

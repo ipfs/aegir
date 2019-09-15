@@ -26,7 +26,7 @@ async function isHeadOfMaster () {
 
 async function updateLastSuccessfulBuild (opts) {
   if (!isHeadOfMaster()) {
-    console.info(`Will only run on the master branch`) // eslint-disable-line no-console
+    console.info('Will only run on the master branch') // eslint-disable-line no-console
 
     return
   }

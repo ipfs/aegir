@@ -54,7 +54,7 @@
     "@commitlint/travis-cli": "^8.0.0",
     "@hapi/joi": "^15.1.0",
     "arrify": "^2.0.1",
-    "async": "^2.6.1",
+    "async": "^3.1.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-flow-comments": "^6.22.0",
     "browserify-zlib": "~0.2.0",

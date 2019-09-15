@@ -151,7 +151,7 @@ describe('lint', () => {
         const dir = `test-${Date.now()}`
 
         fs.mkdirSync(dir)
-        fs.writeFileSync(`${dir}/test.js`, `'use strict'\n\nmodule.exports = {}\n`)
+        fs.writeFileSync(`${dir}/test.js`, '\'use strict\'\n\nmodule.exports = {}\n')
         fs.writeFileSync(
           '.aegir.js',
           `module.exports = { lint: { files: ['${dir}/*.js'] } }`
@@ -167,7 +167,7 @@ describe('lint', () => {
         const dir = `test-${Date.now()}`
 
         fs.mkdirSync(dir)
-        fs.writeFileSync(`${dir}/test.js`, `() .> {`)
+        fs.writeFileSync(`${dir}/test.js`, '() .> {')
         fs.writeFileSync(
           '.aegir.js',
           `module.exports = { lint: { files: ['${dir}/*.js'] } }`

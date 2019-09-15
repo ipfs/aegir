@@ -19,7 +19,7 @@ module.exports = {
         'Debug electron renderer test with a persistent window.'
       )
       .options({
-        '100': {
+        100: {
           describe: 'Check coverage and validate 100% was covered.',
           type: 'boolean',
           default: false
@@ -29,7 +29,7 @@ module.exports = {
           describe: 'In which target environment to execute the tests',
           type: 'array',
           choices: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer'],
-          default: ['node', 'browser', 'webworker']
+          default: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer']
         },
         verbose: {
           alias: 'v',

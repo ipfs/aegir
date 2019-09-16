@@ -63,21 +63,19 @@ stages:
   - cov
 
 node_js:
-  - '10'
   - '12'
+  - '10'
 
 os:
   - linux
   - osx
+  - windows
 
 script: npx nyc -s npm run test:node -- --bail
 after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
 
 jobs:
   include:
-    - os: windows
-      cache: false
-
     - stage: check
       script:
         - npx aegir commitlint --travis
@@ -98,13 +96,15 @@ jobs:
     
     - stage: test
       name: electron-main
+      os: osx
       script:
-        - xvfb-run npx aegir test -t electron-main -- --bail
+        - npx aegir test -t electron-main --bail
     
     - stage: test
       name: electron-renderer
+      os: osx
       script:
-        - xvfb-run npx aegir test -t electron-renderer -- --bail
+        - npx aegir test -t electron-renderer --bail
 
 notifications:
   email: false

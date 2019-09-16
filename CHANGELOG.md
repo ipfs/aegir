@@ -1,3 +1,24 @@
+<a name="20.2.0"></a>
+# [20.2.0](https://github.com/ipfs/aegir/compare/v20.1.0...v20.2.0) (2019-09-16)
+
+
+### Bug Fixes
+
+* fix linter ([903bd03](https://github.com/ipfs/aegir/commit/903bd03))
+
+
+### Features
+
+* adds command to update release candidates ([#421](https://github.com/ipfs/aegir/issues/421)) ([36de3ff](https://github.com/ipfs/aegir/commit/36de3ff))
+* update deps ([#423](https://github.com/ipfs/aegir/issues/423)) ([24ba24b](https://github.com/ipfs/aegir/commit/24ba24b))
+
+
+### BREAKING CHANGES
+
+* linter upgrade you may need to fix linting problems
+
+
+
 <a name="20.1.0"></a>
 # [20.1.0](https://github.com/ipfs/aegir/compare/v20.0.0...v20.1.0) (2019-09-10)
 

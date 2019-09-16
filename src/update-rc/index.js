@@ -21,15 +21,15 @@ async function updateRc (opts) {
   console.info(`Checking out branch ${opts.branch}`) // eslint-disable-line no-console
   await exec('git', ['checkout', opts.branch])
 
-  console.info(`Removing dependencies`) // eslint-disable-line no-console
+  console.info('Removing dependencies') // eslint-disable-line no-console
   await exec('rm', ['-rf', 'node_modules', 'package-lock.json'])
 
-  console.info(`Installing dependencies`) // eslint-disable-line no-console
+  console.info('Installing dependencies') // eslint-disable-line no-console
   await exec('npm', ['ci'])
 
   console.info('Updating', opts.preId) // eslint-disable-line no-console
   await release({
-    type: `prerelease`,
+    type: 'prerelease',
     preid: opts.preId,
     'dist-tag': opts.distTag,
     build: false,

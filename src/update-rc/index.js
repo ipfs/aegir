@@ -3,11 +3,9 @@
 const {
   exec
 } = require('../utils')
-const path = require('path')
 const release = require('../release')
-const semver = require('semver')
 
-async function publishRc (opts) {
+async function updateRc (opts) {
   try {
     console.info(`Removing local copy of ${opts.branch}`) // eslint-disable-line no-console
     await exec('git', ['branch', '-D', opts.branch])
@@ -29,29 +27,9 @@ async function publishRc (opts) {
   console.info(`Installing dependencies`) // eslint-disable-line no-console
   await exec('npm', ['ci'])
 
-  console.info('Reading version number') // eslint-disable-line no-console
-  const pkg = require(path.join(process.cwd(), 'package.json'))
-
-  console.info('Found version number', pkg.version) // eslint-disable-line no-console
-  const version = pkg.version
-  const newVersion = semver.inc(version, opts.type)
-  const newVersionBranch = `v${newVersion.split('.').filter((sub, i) => {
-    return i < 2
-  }).join('.')}.x`
-  console.info('Creating release branch', newVersionBranch) // eslint-disable-line no-console
-
-  await exec('git', ['checkout', '-b', newVersionBranch])
-  await exec('git', ['push', 'origin', `${newVersionBranch}:${newVersionBranch}`])
-
-  if (version.includes('-')) {
-    // already a pre${opts.type}, change from prepatch, preminor, etc to 'prerelease'
-    // e.g. 0.38.0-pre.1 -> 0.38.0-rc.0
-    opts.type = 'release'
-  }
-
-  console.info('Creating', opts.preId) // eslint-disable-line no-console
+  console.info('Updating', opts.preId) // eslint-disable-line no-console
   await release({
-    type: `pre${opts.type}`,
+    type: `prerelease`,
     preid: opts.preId,
     'dist-tag': opts.distTag,
     build: false,
@@ -71,4 +49,4 @@ async function publishRc (opts) {
   await exec('git', ['push'])
 }
 
-module.exports = publishRc
+module.exports = updateRc

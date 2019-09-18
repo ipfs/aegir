@@ -94,8 +94,7 @@ const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
     // run the tests without our upgrade - if they are failing, no point in continuing
     await exec('npm', ['test'])
   } catch (err) {
-    console.info(err) // eslint-disable-line no-console
-    console.info(`Failed to run the tests of ${modulePkg.name}, aborting`) // eslint-disable-line no-console
+    console.info(`Failed to run the tests of ${modulePkg.name}, aborting`, err.message) // eslint-disable-line no-console
 
     return
   }
@@ -142,7 +141,7 @@ const testMonoRepo = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
   // test each package that depends on ipfs/http client
   for (const pattern of packages) {
     for await (const match of glob(targetDir, pattern)) {
-      testModule(path.join(targetDir, match), ipfsDir, ipfsPkg, httpClientPkg)
+      await testModule(path.join(targetDir, match), ipfsDir, ipfsPkg, httpClientPkg)
     }
   }
 }

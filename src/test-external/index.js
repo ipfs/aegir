@@ -39,30 +39,31 @@ const isMonoRepo = (targetDir) => {
 }
 
 const installDependencies = async (targetDir) => {
-  if (fs.existsSync(path.join(targetDir, 'package-lock.json')) || fs.existsSync(path.join(targetDir, 'npm-shrinkwrap.json'))) {
-    console.info('Installing dependencies using `npm ci`') // eslint-disable-line no-console
-    await exec('npm', ['ci'])
-  } else {
-    console.info('Installing dependencies using `npm install`') // eslint-disable-line no-console
-    await exec('npm', ['install'])
-  }
+  console.info('Installing dependencies') // eslint-disable-line no-console
+  await exec('npm', ['install'], {
+    cwd: targetDir
+  })
 }
 
 const linkIPFSInDir = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
-  process.chdir(targetDir)
-
   const modulePkgPath = path.join(targetDir, 'package.json')
   const modulePkg = require(modulePkgPath)
 
   // if the project also depends on the http client, upgrade it to the same version we are using
   if (dependsOn('ipfs-http-client', modulePkg)) {
     console.info('Upgrading ipfs-http-client dependency to', httpClientPkg.version) // eslint-disable-line no-console
-    await exec('npm', ['install', `ipfs-http-client@${httpClientPkg.version}`])
+    await exec('npm', ['install', `ipfs-http-client@${httpClientPkg.version}`], {
+      cwd: targetDir
+    })
   }
 
   console.info(`Linking ipfs@${ipfsPkg.version} in dir ${targetDir}`) // eslint-disable-line no-console
-  await exec('npx', ['connect-deps', 'link', path.relative(await fs.realpath(targetDir), await fs.realpath(ipfsDir))])
-  await exec('npx', ['connect-deps', 'connect'])
+  await exec('npx', ['connect-deps', 'link', path.relative(await fs.realpath(targetDir), await fs.realpath(ipfsDir))], {
+    cwd: targetDir
+  })
+  await exec('npx', ['connect-deps', 'connect'], {
+    cwd: targetDir
+  })
 }
 
 const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
@@ -88,11 +89,11 @@ const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
     return
   }
 
-  process.chdir(targetDir)
-
   try {
     // run the tests without our upgrade - if they are failing, no point in continuing
-    await exec('npm', ['test'])
+    await exec('npm', ['test'], {
+      cwd: targetDir
+    })
   } catch (err) {
     console.info(`Failed to run the tests of ${modulePkg.name}, aborting`, err.message) // eslint-disable-line no-console
 
@@ -103,30 +104,32 @@ const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
   await linkIPFSInDir(targetDir, ipfsDir, ipfsPkg, httpClientPkg)
 
   // run the tests with the new IPFS/IPFSHTTPClient
-  await exec('npm', ['test'])
+  await exec('npm', ['test'], {
+    cwd: targetDir
+  })
 }
 
 const testRepo = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
-  process.chdir(targetDir)
-
   await installDependencies(targetDir)
   await testModule(targetDir, ipfsDir, ipfsPkg, httpClientPkg)
 }
 
 const testMonoRepo = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
-  process.chdir(targetDir)
-
   await installDependencies(targetDir)
 
   let lerna = path.join('node_modules', '.bin', 'lerna')
 
   if (!fs.existsSync(lerna)) {
     // no lerna in project depenencies :(
-    await exec('npm', ['install', '-g', 'lerna'])
+    await exec('npm', ['install', '-g', 'lerna'], {
+      cwd: targetDir
+    })
     lerna = 'lerna'
   }
 
-  await exec(lerna, ['bootstrap'])
+  await exec(lerna, ['bootstrap'], {
+    cwd: targetDir
+  })
 
   // read package targetDir config
   const config = require(path.join(targetDir, 'lerna.json'))
@@ -154,7 +157,9 @@ async function testExternal (opts) {
   const targetDir = path.join(os.tmpdir(), `${opts.name}-${Date.now()}`)
 
   console.info(`Cloning ${opts.repo} into ${targetDir}`) // eslint-disable-line no-console
-  await exec('git', ['clone', opts.repo, targetDir])
+  await exec('git', ['clone', opts.repo, targetDir], {
+    quiet: true
+  })
 
   if (isMonoRepo(targetDir)) {
     await testMonoRepo(targetDir, ipfsDir, ipfsPkg, httpClientPkg)

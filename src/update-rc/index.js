@@ -48,7 +48,9 @@ async function updateRc (opts) {
   })
 
   console.info(`Updating branch ${opts.branch}`) // eslint-disable-line no-console
-  await exec('git', ['push'])
+  await exec('git', ['push'], {
+    quiet: true
+  })
 }
 
 module.exports = updateRc

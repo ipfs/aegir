@@ -50,7 +50,9 @@ async function updateReleaseBranchLockfiles (opts) {
   }
 
   console.info(`Pushing ${opts.branch} branch`) // eslint-disable-line no-console
-  await exec('git', ['push', 'origin', `${opts.branch}:${opts.branch}`])
+  await exec('git', ['push', 'origin', `${opts.branch}:${opts.branch}`], {
+    quiet: true
+  })
 }
 
 module.exports = updateReleaseBranchLockfiles

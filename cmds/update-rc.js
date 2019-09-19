@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  command: 'update-rc [branch]',
+  command: 'update-rc <branch>',
   desc: 'Update a release candidate',
   builder: {
     branch: {

@@ -60,7 +60,9 @@ async function updateLastSuccessfulBuild (opts) {
 
   try {
     console.info(`Deleting remote ${opts.branch} branch`) // eslint-disable-line no-console
-    await exec('git', ['push', 'origin', `:${opts.branch}`])
+    await exec('git', ['push', 'origin', `:${opts.branch}`], {
+      quiet: true
+    })
   } catch (err) {
     if (!err.message.includes('remote ref does not exist')) {
       throw err
@@ -68,7 +70,9 @@ async function updateLastSuccessfulBuild (opts) {
   }
 
   console.info(`Pushing ${opts.branch} branch`) // eslint-disable-line no-console
-  await exec('git', ['push', 'origin', `${tempBranch}:${opts.branch}`])
+  await exec('git', ['push', 'origin', `${tempBranch}:${opts.branch}`], {
+    quiet: true
+  })
 }
 
 module.exports = updateLastSuccessfulBuild

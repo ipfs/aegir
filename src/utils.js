@@ -215,10 +215,13 @@ exports.hook = (env, key) => (ctx) => {
   return Promise.resolve()
 }
 
-exports.exec = (command, args) => {
-  const result = execa(command, args)
+exports.exec = (command, args, options = {}) => {
+  const result = execa(command, args, options)
 
-  result.stdout.pipe(process.stdout)
+  if (!options.quiet) {
+    result.stdout.pipe(process.stdout)
+  }
+
   result.stderr.pipe(process.stderr)
 
   return result

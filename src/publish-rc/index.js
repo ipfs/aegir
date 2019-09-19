@@ -41,7 +41,9 @@ async function publishRc (opts) {
   console.info('Creating release branch', newVersionBranch) // eslint-disable-line no-console
 
   await exec('git', ['checkout', '-b', newVersionBranch])
-  await exec('git', ['push', 'origin', `${newVersionBranch}:${newVersionBranch}`])
+  await exec('git', ['push', 'origin', `${newVersionBranch}:${newVersionBranch}`], {
+    quiet: true
+  })
 
   if (version.includes('-')) {
     // already a pre${opts.type}, change from prepatch, preminor, etc to 'prerelease'
@@ -68,7 +70,9 @@ async function publishRc (opts) {
   })
 
   console.info(`Updating branch ${opts.branch}`) // eslint-disable-line no-console
-  await exec('git', ['push'])
+  await exec('git', ['push'], {
+    quiet: true
+  })
 }
 
 module.exports = publishRc

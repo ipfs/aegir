@@ -6,6 +6,8 @@ const {
 const release = require('../release')
 
 async function updateRc (opts) {
+  await exec('git', ['checkout', 'master'])
+
   try {
     console.info(`Removing local copy of ${opts.branch}`) // eslint-disable-line no-console
     await exec('git', ['branch', '-D', opts.branch])
@@ -46,7 +48,9 @@ async function updateRc (opts) {
   })
 
   console.info(`Updating branch ${opts.branch}`) // eslint-disable-line no-console
-  await exec('git', ['push'])
+  await exec('git', ['push'], {
+    quiet: true
+  })
 }
 
 module.exports = updateRc

@@ -7,10 +7,11 @@ const { fromRoot, hasFile } = require('../utils')
 const userConfig = require('./user')()
 
 const isProduction = process.env.NODE_ENV === 'production'
-const isWebworker = process.env.AEGIR_WEBWORKER === 'true'
+const isWebworker = process.env.AEGIR_RUNNER === 'webworker'
 
 // Env to pass in the bundle with DefinePlugin
 const env = {
+  'process.env.AEGIR_RUNNER': JSON.stringify(process.env.AEGIR_RUNNER),
   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   'process.env.IS_WEBPACK_BUILD': JSON.stringify(true),
   TEST_DIR: JSON.stringify(fromRoot('test')),
@@ -31,12 +32,13 @@ const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
   ]
 })
 
-const karmaConfig = (config, files, grep, progress, bail) => {
+const karmaConfig = (config, argv) => {
+  const files = argv.filesCustom
   const mocha = {
     reporter: 'spec',
-    timeout: 5000,
-    bail: bail,
-    grep
+    timeout: Number(argv.timeout),
+    bail: argv.bail,
+    grep: argv.grep
   }
 
   const karmaEntry = `${__dirname}/karma-entry.js`
@@ -93,8 +95,8 @@ const karmaConfig = (config, files, grep, progress, bail) => {
     },
 
     reporters: [
-      progress && 'progress',
-      !progress && 'mocha',
+      argv.progress && 'progress',
+      !argv.progress && 'mocha',
       process.env.CI && 'junit'
     ].filter(Boolean),
 
@@ -129,6 +131,10 @@ const karmaConfig = (config, files, grep, progress, bail) => {
 }
 
 module.exports = (config) => {
-  var argv = require('yargs-parser')(process.argv.slice(2), { array: ['files-custom'], boolean: ['progress', 'bail'] })
-  config.set(merge(karmaConfig(config, argv.filesCustom, argv.grep, argv.progress, argv.bail), userConfig.karma))
+  var argv = require('yargs-parser')(process.argv.slice(2), {
+    array: ['files-custom'],
+    boolean: ['progress', 'bail'],
+    string: ['timeout']
+  })
+  config.set(merge(karmaConfig(config, argv), userConfig.karma))
 }

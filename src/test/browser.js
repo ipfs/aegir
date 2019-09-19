@@ -12,6 +12,7 @@ module.exports = (argv) => {
   const grep = argv.grep ? ['--grep', argv.grep] : []
   const progress = argv.progress ? ['--progress', argv.progress] : []
   const bail = argv.bail ? ['--bail', argv.bail] : []
+  const timeout = argv.timeout ? ['--timeout', argv.timeout] : []
 
   return hook('browser', 'pre')(argv.userConfig)
     .then(() => {
@@ -25,11 +26,12 @@ module.exports = (argv) => {
         ...progress,
         ...input,
         ...bail,
+        ...timeout,
         ...forwardOptions
       ], {
         env: {
-          AEGIR_WEBWORKER: argv.webworker,
-          NODE_ENV: process.env.NODE_ENV || 'test'
+          NODE_ENV: process.env.NODE_ENV || 'test',
+          AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser'
         },
         localDir: path.join(__dirname, '../..'),
         stdio: 'inherit'

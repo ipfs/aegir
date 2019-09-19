@@ -8,7 +8,10 @@ const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
 function testNode (ctx) {
   let exec = 'mocha'
-  const env = { NODE_ENV: 'test' }
+  const env = {
+    NODE_ENV: 'test',
+    AEGIR_RUNNER: 'node'
+  }
   const timeout = ctx.timeout || DEFAULT_TIMEOUT
 
   let args = [

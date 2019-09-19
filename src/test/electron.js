@@ -12,6 +12,7 @@ module.exports = (argv) => {
   const grep = argv.grep ? ['--grep', argv.grep] : []
   const progress = argv.progress ? ['--reporter=progress'] : []
   const bail = argv.bail ? ['--bail', argv.bail] : []
+  const timeout = argv.timeout ? ['--timeout', argv.bail] : []
   const renderer = argv.renderer ? ['--renderer'] : []
 
   return hook('browser', 'pre')(argv.userConfig)
@@ -24,12 +25,16 @@ module.exports = (argv) => {
         ...grep,
         ...progress,
         ...bail,
+        ...timeout,
         ['--colors'],
         ...renderer,
         ...forwardOptions
       ], {
         localDir: path.join(__dirname, '../..'),
-        stdio: 'inherit'
+        stdio: 'inherit',
+        env: {
+          AEGIR_RUNNER: argv.renderer ? 'electron-renderer' : 'electron-main'
+        }
       })
     })
     .then(() => hook('browser', 'post')(argv.userConfig))

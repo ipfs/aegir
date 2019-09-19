@@ -1,3 +1,19 @@
+<a name="20.3.0"></a>
+# [20.3.0](https://github.com/ipfs/aegir/compare/v20.2.0...v20.3.0) (2019-09-19)
+
+
+### Bug Fixes
+
+* push to the current branch ([#426](https://github.com/ipfs/aegir/issues/426)) ([d82815a](https://github.com/ipfs/aegir/commit/d82815a))
+
+
+### Features
+
+* add AEGIR_RUNNER env var and support timeout in the browser and electron test runners. ([61cc413](https://github.com/ipfs/aegir/commit/61cc413))
+* add test-external command ([#425](https://github.com/ipfs/aegir/issues/425)) ([92236ba](https://github.com/ipfs/aegir/commit/92236ba))
+
+
+
 <a name="20.2.0"></a>
 # [20.2.0](https://github.com/ipfs/aegir/compare/v20.1.0...v20.2.0) (2019-09-16)
 

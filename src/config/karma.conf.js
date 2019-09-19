@@ -36,7 +36,7 @@ const karmaConfig = (config, argv) => {
   const files = argv.filesCustom
   const mocha = {
     reporter: 'spec',
-    timeout: argv.timeout ? Number(argv.timeout): 5000,
+    timeout: argv.timeout ? Number(argv.timeout) : 5000,
     bail: argv.bail,
     grep: argv.grep
   }

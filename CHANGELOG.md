@@ -1,3 +1,13 @@
+<a name="20.3.1"></a>
+## [20.3.1](https://github.com/ipfs/aegir/compare/v20.3.0...v20.3.1) (2019-09-19)
+
+
+### Bug Fixes
+
+* fix karma timeout ([a413878](https://github.com/ipfs/aegir/commit/a413878))
+
+
+
 <a name="20.3.0"></a>
 # [20.3.0](https://github.com/ipfs/aegir/compare/v20.2.0...v20.3.0) (2019-09-19)
 

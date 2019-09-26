@@ -46,11 +46,6 @@ async function updateRc (opts) {
     docs: true,
     ghtoken: opts.ghtoken || process.env.AEGIR_GHTOKEN
   })
-
-  console.info(`Updating branch ${opts.branch}`) // eslint-disable-line no-console
-  await exec('git', ['push'], {
-    quiet: true
-  })
 }
 
 module.exports = updateRc

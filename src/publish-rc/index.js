@@ -35,7 +35,7 @@ async function publishRc (opts) {
   console.info('Found version number', pkg.version) // eslint-disable-line no-console
   const version = pkg.version
   const newVersion = semver.inc(version, opts.type)
-  const newVersionBranch = `v${newVersion.split('.').filter((sub, i) => {
+  const newVersionBranch = `${opts.prefix}v${newVersion.split('.').filter((sub, i) => {
     return i < 2
   }).join('.')}.x`
   console.info('Creating release branch', newVersionBranch) // eslint-disable-line no-console

@@ -23,6 +23,11 @@ module.exports = {
       describe: 'What sort of update this will be',
       type: 'string',
       default: 'minor'
+    },
+    prefix: {
+      describe: 'What to prefix the branch name with',
+      type: 'string',
+      default: 'release/'
     }
   },
   handler (argv) {

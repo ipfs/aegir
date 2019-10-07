@@ -31,8 +31,8 @@ module.exports = {
     }
   },
   handler (argv) {
-    const publishRc = require('../src/publish-rc')
+    const cmd = require('../src/publish-rc')
     const onError = require('../src/error-handler')
-    publishRc(argv).catch(onError)
+    cmd(argv).catch(onError)
   }
 }

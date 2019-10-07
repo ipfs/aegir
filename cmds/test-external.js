@@ -11,6 +11,10 @@ module.exports = {
     repo: {
       describe: 'The external module\'s repo URL',
       type: 'string'
+    },
+    branch: {
+      describe: 'A branch to use from the external repo',
+      type: 'string'
     }
   },
   handler (argv) {

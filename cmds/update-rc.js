@@ -2,6 +2,7 @@
 
 module.exports = {
   command: 'update-rc <branch>',
+  example: 'update-rc release/v0.38.x',
   desc: 'Update a release candidate',
   builder: {
     branch: {
@@ -20,8 +21,8 @@ module.exports = {
     }
   },
   handler (argv) {
-    const publishRc = require('../src/update-rc')
+    const cmd = require('../src/update-rc')
     const onError = require('../src/error-handler')
-    publishRc(argv).catch(onError)
+    cmd(argv).catch(onError)
   }
 }

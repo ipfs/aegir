@@ -16,8 +16,8 @@ module.exports = {
     }
   },
   handler (argv) {
-    const updateLastPassingBuild = require('../src/update-last-successful-build')
+    const cmd = require('../src/update-last-successful-build')
     const onError = require('../src/error-handler')
-    updateLastPassingBuild(argv).catch(onError)
+    cmd(argv).catch(onError)
   }
 }

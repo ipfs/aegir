@@ -161,6 +161,12 @@ async function testExternal (opts) {
     quiet: true
   })
 
+  if (opts.branch) {
+    await exec('git', ['checkout', opts.branch], {
+      cwd: targetDir
+    })
+  }
+
   if (isMonoRepo(targetDir)) {
     await testMonoRepo(targetDir, ipfsDir, ipfsPkg, httpClientPkg)
   } else {

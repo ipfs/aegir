@@ -1,3 +1,19 @@
+<a name="20.3.2"></a>
+## [20.3.2](https://github.com/ipfs/aegir/compare/v20.3.1...v20.3.2) (2019-10-10)
+
+
+### Bug Fixes
+
+* remove electron from the defaults target ([9ff4633](https://github.com/ipfs/aegir/commit/9ff4633))
+* remove manual push after rc publish ([#432](https://github.com/ipfs/aegir/issues/432)) ([dfc5bb5](https://github.com/ipfs/aegir/commit/dfc5bb5)), closes [#426](https://github.com/ipfs/aegir/issues/426)
+
+
+### Features
+
+* prefix rc with release ([#431](https://github.com/ipfs/aegir/issues/431)) ([8b1cf8a](https://github.com/ipfs/aegir/commit/8b1cf8a))
+
+
+
 <a name="20.3.1"></a>
 ## [20.3.1](https://github.com/ipfs/aegir/compare/v20.3.0...v20.3.1) (2019-09-19)
 

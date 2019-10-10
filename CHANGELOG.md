@@ -1,3 +1,13 @@
+<a name="20.4.0"></a>
+# [20.4.0](https://github.com/ipfs/aegir/compare/v20.3.2...v20.4.0) (2019-10-10)
+
+
+### Features
+
+* allow testing branches of third party repos ([#438](https://github.com/ipfs/aegir/issues/438)) ([39ed250](https://github.com/ipfs/aegir/commit/39ed250))
+
+
+
 <a name="20.3.2"></a>
 ## [20.3.2](https://github.com/ipfs/aegir/compare/v20.3.1...v20.3.2) (2019-10-10)
 

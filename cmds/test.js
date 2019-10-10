@@ -29,7 +29,7 @@ module.exports = {
           describe: 'In which target environment to execute the tests',
           type: 'array',
           choices: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer'],
-          default: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer']
+          default: ['node', 'browser', 'webworker']
         },
         verbose: {
           alias: 'v',

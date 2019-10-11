@@ -32,7 +32,6 @@ module.exports = {
           default: ['node', 'browser', 'webworker']
         },
         verbose: {
-          alias: 'v',
           describe: 'Print verbose test output',
           type: 'boolean',
           default: false

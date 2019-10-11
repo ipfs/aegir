@@ -1,3 +1,13 @@
+<a name="20.4.1"></a>
+## [20.4.1](https://github.com/ipfs/aegir/compare/v20.4.0...v20.4.1) (2019-10-11)
+
+
+### Bug Fixes
+
+* force --verbose for verbose mode ([#447](https://github.com/ipfs/aegir/issues/447)) ([5ed2fbe](https://github.com/ipfs/aegir/commit/5ed2fbe))
+
+
+
 <a name="20.4.0"></a>
 # [20.4.0](https://github.com/ipfs/aegir/compare/v20.3.2...v20.4.0) (2019-10-10)
 

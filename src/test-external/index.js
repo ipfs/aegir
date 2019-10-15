@@ -38,8 +38,9 @@ const isMonoRepo = (targetDir) => {
   return fs.existsSync(path.join(targetDir, 'lerna.json'))
 }
 
-const hasPackageLock = (targetDir) => {
-  return fs.existsSync(path.join(targetDir, 'package-lock.json'))
+const hasNpmLock = (targetDir) => {
+  return fs.existsSync(path.join(targetDir, 'package-lock.json')) ||
+    fs.existsSync(path.join(targetDir, 'npm-shrinkwrap.json'))
 }
 
 const hasYarnLock = (targetDir) => {
@@ -52,7 +53,7 @@ const installDependencies = async (targetDir) => {
     await exec('yarn', ['install'], {
       cwd: targetDir
     })
-  } else if (hasPackageLock(targetDir)) {
+  } else if (hasNpmLock(targetDir)) {
     await exec('npm', ['ci'], {
       cwd: targetDir
     })

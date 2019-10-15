@@ -38,11 +38,29 @@ const isMonoRepo = (targetDir) => {
   return fs.existsSync(path.join(targetDir, 'lerna.json'))
 }
 
+const hasPackageLock = (targetDir) => {
+  return fs.existsSync(path.join(targetDir, 'package-lock.json'))
+}
+
+const hasYarnLock = (targetDir) => {
+  return fs.existsSync(path.join(targetDir, 'yarn.lock'))
+}
+
 const installDependencies = async (targetDir) => {
   console.info('Installing dependencies') // eslint-disable-line no-console
-  await exec('npm', ['install'], {
-    cwd: targetDir
-  })
+  if (hasYarnLock(targetDir)) {
+    await exec('yarn', ['install'], {
+      cwd: targetDir
+    })
+  } else if (hasPackageLock(targetDir)) {
+    await exec('npm', ['ci'], {
+      cwd: targetDir
+    })
+  } else {
+    await exec('npm', ['install'], {
+      cwd: targetDir
+    })
+  }
 }
 
 const linkIPFSInDir = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {

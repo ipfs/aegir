@@ -18,22 +18,6 @@ const findHttpClientPkg = (targetDir) => {
   return require(location.replace('src/index.js', 'package.json'))
 }
 
-const isDep = (name, pkg) => {
-  return Object.keys(pkg.dependencies || {}).filter(dep => dep === name).pop()
-}
-
-const isDevDep = (name, pkg) => {
-  return Object.keys(pkg.devDependencies || {}).filter(dep => dep === name).pop()
-}
-
-const isOptionalDep = (name, pkg) => {
-  return Object.keys(pkg.optionalDendencies || {}).filter(dep => dep === name).pop()
-}
-
-const dependsOn = (name, pkg) => {
-  return isDep(name, pkg) || isDevDep(name, pkg) || isOptionalDep(name, pkg)
-}
-
 const isMonoRepo = (targetDir) => {
   return fs.existsSync(path.join(targetDir, 'lerna.json'))
 }
@@ -64,12 +48,16 @@ const installDependencies = async (targetDir) => {
   }
 }
 
-const linkIPFSInDir = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
-  const modulePkgPath = path.join(targetDir, 'package.json')
-  const modulePkg = require(modulePkgPath)
+const removeExtraIPFSInstalls = async (targetDir) => {
+  for await (const extra of glob(targetDir, 'node_modules/**/node_modules/{ipfs,ipfs-http-client}')) {
+    console.info('Removing extra module', extra) // eslint-disable-line no-console
+    await fs.remove(extra)
+  }
+}
 
+const linkIPFSInDir = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
   // if the project also depends on the http client, upgrade it to the same version we are using
-  if (dependsOn('ipfs-http-client', modulePkg)) {
+  if (fs.existsSync(path.join(targetDir, 'node_modules', 'ipfs-http-client'))) {
     console.info('Upgrading ipfs-http-client dependency to', httpClientPkg.version) // eslint-disable-line no-console
     await exec('npm', ['install', `ipfs-http-client@${httpClientPkg.version}`], {
       cwd: targetDir
@@ -83,6 +71,10 @@ const linkIPFSInDir = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
   await exec('npx', ['connect-deps', 'connect'], {
     cwd: targetDir
   })
+
+  // remove extraneous `ipfs` and `ipfs-http-client` dependencies
+  console.info('Removing any non-top-level ipfs/ipfs-http-client deps') // eslint-disable-line no-console
+  await removeExtraIPFSInstalls(targetDir)
 }
 
 const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
@@ -96,8 +88,8 @@ const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
 
   const modulePkg = require(pkgPath)
 
-  if (!dependsOn('ipfs', modulePkg) && !dependsOn('ipfs-http-client', modulePkg)) {
-    console.info(`Module ${modulePkg.name} does not depend on IPFS or the IPFS HTTP Client`) // eslint-disable-line no-console
+  if (!fs.existsSync(path.join(targetDir, 'node_modules', 'ipfs')) && !fs.existsSync(path.join(targetDir, 'node_modules', 'ipfs'))) {
+    console.info(`Module ${modulePkg.name} have IPFS or the IPFS HTTP Client in it's dependency tree`) // eslint-disable-line no-console
 
     return
   }

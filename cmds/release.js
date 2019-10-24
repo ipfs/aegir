@@ -83,6 +83,11 @@ module.exports = {
       type: 'string',
       default: ''
     },
+    metadata: {
+      describe: 'SemVer metadata to be appended to released version',
+      type: 'string',
+      default: ''
+    },
     type: {
       describe: 'The type of version bump for this release',
       type: 'string',

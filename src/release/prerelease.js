@@ -10,7 +10,7 @@ function validGh (opts) {
 
   if (!opts.ghtoken) {
     return Promise.reject(new Error('Missing GitHub access token. ' +
-                                    'Have you set `AEGIR_GHTOKEN`?'))
+      'Have you set `AEGIR_GHTOKEN`?'))
   }
   return Promise.resolve()
 }
@@ -24,13 +24,23 @@ async function isDirty () {
   }
 }
 
+function isMetadataValid (opts) {
+  if (opts.metadata && !opts.metadata.match(/^[0-9A-Za-z-]+$/)) {
+    return Promise.reject(new Error('The metadata has to consists only of alphanumeric characters and hypen!'))
+  }
+
+  return Promise.resolve()
+}
+
 // Validate that all requirements are met before starting the release
 // - No dirty git
 // - github token for github release, if github release is enabled
+// - Metadata is valid string
 function prerelease (opts) {
   return Promise.all([
     isDirty(),
-    validGh(opts)
+    validGh(opts),
+    isMetadataValid(opts)
   ])
 }
 

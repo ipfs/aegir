@@ -21,7 +21,7 @@ async function publishRc (opts) {
   await exec('git', ['fetch'])
 
   console.info(`Checking out branch ${opts.branch}`) // eslint-disable-line no-console
-  await exec('git', ['checkout', opts.branch])
+  await exec('git', ['checkout', '--track', `origin/${opts.branch}`])
 
   console.info('Removing dependencies') // eslint-disable-line no-console
   await exec('rm', ['-rf', 'node_modules', 'package-lock.json'])

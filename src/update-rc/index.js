@@ -44,7 +44,8 @@ async function updateRc (opts) {
     publish: true,
     ghrelease: true,
     docs: true,
-    ghtoken: opts.ghtoken || process.env.AEGIR_GHTOKEN
+    ghtoken: opts.ghtoken || process.env.AEGIR_GHTOKEN,
+    remote: opts.remote
   })
 }
 

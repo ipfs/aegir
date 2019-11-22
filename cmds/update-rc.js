@@ -9,6 +9,11 @@ module.exports = {
       describe: 'Where the latest release branch is',
       type: 'string'
     },
+    remote: {
+      describe: 'Which remote to use',
+      type: 'string',
+      default: 'origin'
+    },
     distTag: {
       describe: 'The dist tag to publish the rc as',
       type: 'string',

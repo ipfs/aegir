@@ -4,8 +4,8 @@ const git = require('simple-git')(process.cwd())
 const pify = require('pify')
 const execa = require('execa')
 
-async function push () {
-  const remote = 'origin'
+async function push (opts) {
+  const remote = opts.remote || 'origin'
   const branch = (await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'], {
     cwd: process.cwd()
   })).stdout

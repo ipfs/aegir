@@ -8,6 +8,11 @@ module.exports = {
       describe: 'Which branch to update',
       type: 'string'
     },
+    remote: {
+      describe: 'Which remote to use',
+      type: 'string',
+      default: 'origin'
+    },
     message: {
       describe: 'The message to use when adding the shrinkwrap and yarn.lock file',
       type: 'string',

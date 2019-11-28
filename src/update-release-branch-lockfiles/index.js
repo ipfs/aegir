@@ -22,7 +22,7 @@ async function updateReleaseBranchLockfiles (opts) {
   await exec('git', ['fetch'])
 
   console.info(`Checking out branch ${opts.branch}`) // eslint-disable-line no-console
-  await exec('git', ['checkout', opts.branch])
+  await exec('git', ['checkout', '--track', `${opts.remote}/${opts.branch}`])
 
   console.info('Removing dependencies') // eslint-disable-line no-console
   await exec('rm', ['-rf', 'node_modules', 'package-lock.json', 'yarn.lock', 'npm-shrinkwrap.json'])

@@ -21,7 +21,7 @@ async function publishRc (opts) {
   await exec('git', ['fetch'])
 
   console.info(`Checking out branch ${opts.branch}`) // eslint-disable-line no-console
-  await exec('git', ['checkout', opts.branch])
+  await exec('git', ['checkout', '--track', `${opts.remote}/${opts.branch}`])
 
   console.info('Removing dependencies') // eslint-disable-line no-console
   await exec('rm', ['-rf', 'node_modules', 'package-lock.json'])
@@ -41,7 +41,7 @@ async function publishRc (opts) {
   console.info('Creating release branch', newVersionBranch) // eslint-disable-line no-console
 
   await exec('git', ['checkout', '-b', newVersionBranch])
-  await exec('git', ['push', 'origin', `${newVersionBranch}:${newVersionBranch}`], {
+  await exec('git', ['push', opts.remote, `${newVersionBranch}:${newVersionBranch}`], {
     quiet: true
   })
 
@@ -66,7 +66,8 @@ async function publishRc (opts) {
     publish: true,
     ghrelease: true,
     docs: true,
-    ghtoken: opts.ghtoken || process.env.AEGIR_GHTOKEN
+    ghtoken: opts.ghtoken || process.env.AEGIR_GHTOKEN,
+    remote: opts.remote
   })
 }
 

@@ -22,7 +22,7 @@ async function updateReleaseBranchLockfiles (opts) {
   await exec('git', ['fetch'])
 
   console.info(`Checking out branch ${opts.branch}`) // eslint-disable-line no-console
-  await exec('git', ['checkout', opts.branch])
+  await exec('git', ['checkout', '--track', `${opts.remote}/${opts.branch}`])
 
   console.info('Removing dependencies') // eslint-disable-line no-console
   await exec('rm', ['-rf', 'node_modules', 'package-lock.json', 'yarn.lock', 'npm-shrinkwrap.json'])
@@ -50,7 +50,7 @@ async function updateReleaseBranchLockfiles (opts) {
   }
 
   console.info(`Pushing ${opts.branch} branch`) // eslint-disable-line no-console
-  await exec('git', ['push', 'origin', `${opts.branch}:${opts.branch}`], {
+  await exec('git', ['push', opts.remote, `${opts.branch}:${opts.branch}`], {
     quiet: true
   })
 }

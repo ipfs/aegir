@@ -10,14 +10,14 @@ async function findCurrentBranch () {
   return result.stdout.replace('ref: ', '').trim()
 }
 
-async function findMasterCommit () {
-  const result = await exec('git', ['show-ref', '-s', 'origin/master'])
+async function findMasterCommit (opts) {
+  const result = await exec('git', ['show-ref', '-s', `${opts.remote}/master`])
 
   return result.stdout.trim()
 }
 
-async function isHeadOfMaster () {
-  const master = await findMasterCommit()
+async function isHeadOfMaster (opts) {
+  const master = await findMasterCommit(opts)
   const branch = await findCurrentBranch()
 
   // we either have master checked out or a single commit
@@ -25,7 +25,7 @@ async function isHeadOfMaster () {
 }
 
 async function updateLastSuccessfulBuild (opts) {
-  if (!isHeadOfMaster()) {
+  if (!isHeadOfMaster(opts)) {
     console.info('Will only run on the master branch') // eslint-disable-line no-console
 
     return
@@ -60,7 +60,7 @@ async function updateLastSuccessfulBuild (opts) {
 
   try {
     console.info(`Deleting remote ${opts.branch} branch`) // eslint-disable-line no-console
-    await exec('git', ['push', 'origin', `:${opts.branch}`], {
+    await exec('git', ['push', opts.remote, `:${opts.branch}`], {
       quiet: true
     })
   } catch (err) {
@@ -70,7 +70,7 @@ async function updateLastSuccessfulBuild (opts) {
   }
 
   console.info(`Pushing ${opts.branch} branch`) // eslint-disable-line no-console
-  await exec('git', ['push', 'origin', `${tempBranch}:${opts.branch}`], {
+  await exec('git', ['push', opts.remote, `${tempBranch}:${opts.branch}`], {
     quiet: true
   })
 }

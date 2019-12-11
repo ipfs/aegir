@@ -9,6 +9,11 @@ module.exports = {
       type: 'string',
       default: 'build/last-successful'
     },
+    remote: {
+      describe: 'Which remote to use',
+      type: 'string',
+      default: 'origin'
+    },
     distTag: {
       describe: 'The dist tag to publish the rc as',
       type: 'string',

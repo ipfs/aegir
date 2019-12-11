@@ -9,6 +9,11 @@ module.exports = {
       type: 'string',
       default: 'build/last-successful'
     },
+    remote: {
+      describe: 'Which remote to use',
+      type: 'string',
+      default: 'origin'
+    },
     message: {
       describe: 'The message to use when adding the shrinkwrap and yarn.lock file',
       type: 'string',

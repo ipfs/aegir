@@ -1,3 +1,19 @@
+<a name="20.5.0"></a>
+# [20.5.0](https://github.com/ipfs/aegir/compare/v20.4.1...v20.5.0) (2019-12-11)
+
+
+### Bug Fixes
+
+* specify remote for branch to checkout ([#465](https://github.com/ipfs/aegir/issues/465)) ([cb94e01](https://github.com/ipfs/aegir/commit/cb94e01))
+
+
+### Features
+
+* support lockfiles during text-external ([#450](https://github.com/ipfs/aegir/issues/450)) ([7ee3d14](https://github.com/ipfs/aegir/commit/7ee3d14))
+* update deps should be non breaking ([c74a430](https://github.com/ipfs/aegir/commit/c74a430))
+
+
+
 <a name="20.4.1"></a>
 ## [20.4.1](https://github.com/ipfs/aegir/compare/v20.4.0...v20.4.1) (2019-10-11)
 

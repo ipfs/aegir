@@ -111,7 +111,7 @@
     "read-pkg-up": "^7.0.1",
     "resolve-bin": "~0.4.0",
     "rimraf": "^3.0.0",
-    "semver": "^6.3.0",
+    "semver": "^7.1.1",
     "simple-git": "^1.128.0",
     "stats-webpack-plugin": "~0.7.0",
     "stream-array": "^1.1.2",

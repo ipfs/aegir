@@ -111,11 +111,17 @@ const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
   try {
     // run the tests without our upgrade - if they are failing, no point in continuing
     await exec('npm', ['test'], {
-      cwd: targetDir
+      cwd: targetDir,
+      env: {
+        // ensure custom js-ipfs is not used for the first run
+        IPFS_JS_EXEC: undefined
+      }
     })
   } catch (err) {
     console.info(`Failed to run the tests of ${modulePkg.name}, aborting`, err.message) // eslint-disable-line no-console
-
+    // We won't be able to test if js-ipfs HEAD caused regression
+    // if upstream tests are broken. We abort and return exit code 0,
+    // as there is no point in breaking the build.
     return
   }
 

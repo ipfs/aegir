@@ -1,3 +1,13 @@
+<a name="20.5.1"></a>
+## [20.5.1](https://github.com/ipfs/aegir/compare/v20.5.0...v20.5.1) (2020-01-16)
+
+
+### Bug Fixes
+
+* fix typo in aegir test --help examples ([082cc58](https://github.com/ipfs/aegir/commit/082cc58))
+
+
+
 <a name="20.5.0"></a>
 # [20.5.0](https://github.com/ipfs/aegir/compare/v20.4.1...v20.5.0) (2019-12-11)
 

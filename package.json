@@ -52,7 +52,7 @@
     "@commitlint/load": "^8.0.0",
     "@commitlint/read": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
-    "@hapi/joi": "^15.1.0",
+    "@hapi/joi": "^17.1.0",
     "arrify": "^2.0.1",
     "async": "^2.6.1",
     "babel-loader": "^8.0.5",

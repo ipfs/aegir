@@ -89,6 +89,11 @@ module.exports = {
           describe: 'Use progress reporters on mocha and karma',
           type: 'boolean',
           default: false
+        },
+        noUnhandledPromiseRejections: {
+          describe: 'If true, unhandledRejection events will cause tests to fail',
+          type: 'boolean',
+          default: true
         }
       })
   },

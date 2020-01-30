@@ -100,7 +100,7 @@
     "listr": "~0.14.2",
     "listr-verbose-renderer": "~0.6.0",
     "lodash": "^4.17.14",
-    "mocha": "^6.2.2",
+    "mocha": "^7.0.1",
     "npm-package-json-lint": "^4.4.0",
     "npm-which": "^3.0.1",
     "nyc": "^14.1.0",

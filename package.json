@@ -130,7 +130,9 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "cross-env": "^6.0.3",
+    "dirty-chai": "^2.0.1",
     "mock-require": "^3.0.2",
     "sinon": "^7.4.2"
   },

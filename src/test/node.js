@@ -17,7 +17,8 @@ function testNode (ctx) {
   let args = [
     ctx.progress && '--reporter=progress',
     '--ui', 'bdd',
-    '--timeout', timeout
+    '--timeout', timeout,
+    `--unhandled-rejections=${ctx.noUnhandledPromiseRejections ? 'strict' : 'warn'}`
   ].filter(Boolean)
 
   let files = [

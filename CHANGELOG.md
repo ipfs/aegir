@@ -1,3 +1,13 @@
+<a name="20.6.0"></a>
+# [20.6.0](https://github.com/ipfs/aegir/compare/v20.5.1...v20.6.0) (2020-02-04)
+
+
+### Features
+
+* make unhandled promise rejections fail tests ([#507](https://github.com/ipfs/aegir/issues/507)) ([b634474](https://github.com/ipfs/aegir/commit/b634474)), closes [#505](https://github.com/ipfs/aegir/issues/505)
+
+
+
 <a name="20.5.1"></a>
 ## [20.5.1](https://github.com/ipfs/aegir/compare/v20.5.0...v20.5.1) (2020-01-16)
 

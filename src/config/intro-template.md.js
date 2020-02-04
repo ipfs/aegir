@@ -1,6 +1,6 @@
 'use strict'
 
-const _ = require('lodash')
+const camelCase = require('camelcase')
 
 function exampleTmpl (example) {
   if (!example) {
@@ -34,11 +34,11 @@ $ npm install --save ${name}
 You can then \`require()\` ${name} as normal:
 
 \`\`\`js
-const ${_.camelCase(name.replace(/-/g, ' '))} = require('${name}')
+const ${camelCase(name)} = require('${name}')
 \`\`\`
 
 ## In the Browser
-${_.upperFirst(name)} should work in any ES2015 environment out of the box.
+\`${name}\` should work in any ECMAScript 2018 environment out of the box.
 
 Usage:
 
@@ -46,7 +46,7 @@ Usage:
 <script type="text/javascript" src="index.js"></script>
 \`\`\`
 
-The portable versions of ${name}, including \`index.js\` and \`index.min.js\`, are included in the \`/dist\` folder. ${_.upperFirst(name)} can also be found on [unpkg.com](https://unpkg.com) under
+The portable versions of \`${name}\`, including \`index.js\` and \`index.min.js\`, are included in the \`/dist\` folder. \`${name}\` can also be found on [unpkg.com](https://unpkg.com) under
 
 - https://unpkg.com/${name}/dist/index.min.js
 - https://unpkg.com/${name}/dist/index.js

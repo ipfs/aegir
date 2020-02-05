@@ -33,6 +33,7 @@ module.exports = (argv) => {
       AEGIR_BUILD_ANALYZE: analyze || ''
     },
     localDir: path.join(__dirname, '../..'),
+    preferLocal: true,
     stdio: 'inherit'
   })
 
@@ -41,6 +42,7 @@ module.exports = (argv) => {
       .then(r => {
         return execa('bundlesize', ['-f', config.bundlesize.path, '-s', config.bundlesize.maxSize], {
           localDir: path.join(__dirname, '..'),
+          preferLocal: true,
           stdio: 'inherit'
         })
       })

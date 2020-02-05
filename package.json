@@ -102,7 +102,6 @@
     "pify": "^4.0.1",
     "prompt-promise": "^1.0.3",
     "read-pkg-up": "^7.0.1",
-    "resolve-bin": "~0.4.0",
     "rimraf": "^3.0.1",
     "semver": "^7.1.2",
     "simple-git": "^1.131.0",
@@ -129,7 +128,7 @@
   },
   "engines": {
     "node": ">=10.0.0",
-    "npm": ">=5.0.0"
+    "npm": ">=6.0.0"
   },
   "browserslist": [
     ">1%",

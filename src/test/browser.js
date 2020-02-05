@@ -33,6 +33,7 @@ module.exports = (argv) => {
           NODE_ENV: process.env.NODE_ENV || 'test',
           AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser'
         },
+        preferLocal: true,
         localDir: path.join(__dirname, '../..'),
         stdio: 'inherit'
       })

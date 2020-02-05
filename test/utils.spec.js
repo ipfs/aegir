@@ -42,7 +42,7 @@ describe('utils', () => {
     const cases = [
       ['hello world', 'HelloWorld'],
       ['peer-id', 'PeerId'],
-      ['Peer ID', 'PeerId'],
+      ['Peer ID', 'PeerID'],
       ['aegir', 'Aegir']
     ]
     cases.forEach((c) => {

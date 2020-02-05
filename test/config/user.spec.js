@@ -21,11 +21,11 @@ describe('config - user', () => {
           },
           entry: 'src/main.js',
           hooks: {
-            pre (cb) {
-              cb(null, 'pre')
+            pre () {
+              return Promise.resolve('pre')
             },
-            post (cb) {
-              cb(null, 'post')
+            post () {
+              return Promise.resolve('post')
             }
           }
         }

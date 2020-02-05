@@ -5,30 +5,17 @@ const lint = require('../src/lint')
 const expect = require('chai').expect
 const path = require('path')
 const fs = require('fs')
-const del = require('del')
-const series = require('async/series')
+const rimraf = require('rimraf')
 
 const TEMP_FOLDER = path.join(__dirname, '../node_modules/.temp-test')
-const setupProjectWithDeps = (deps) => {
+const setupProjectWithDeps = async (deps) => {
   const tmpDir = path.join(TEMP_FOLDER, `test-${Math.random()}`)
-
-  return new Promise((resolve, reject) => {
-    series([
-      (cb) => fs.mkdir(tmpDir, cb),
-      (cb) => fs.writeFile(path.join(tmpDir, 'package.json'), JSON.stringify({
-        name: 'my-project',
-        dependencies: deps
-      }), cb)
-    ], (error) => {
-      if (error) {
-        return reject(error)
-      }
-
-      process.chdir(tmpDir)
-
-      resolve()
-    })
-  })
+  await fs.promises.mkdir(tmpDir)
+  await fs.promises.writeFile(path.join(tmpDir, 'package.json'), JSON.stringify({
+    name: 'my-project',
+    dependencies: deps
+  }))
+  process.chdir(tmpDir)
 }
 const dependenciesShouldPassLinting = (deps) => {
   return setupProjectWithDeps(deps)
@@ -54,7 +41,7 @@ describe('lint', () => {
 
   after(() => {
     process.chdir(cwd)
-    del(TEMP_FOLDER)
+    rimraf.sync(TEMP_FOLDER)
   })
 
   it('lint itself (aegir)', function () {

@@ -1,12 +1,12 @@
 /* global self */
 'use strict'
 
-const { isNode } = require('ipfs-utils/src/env')
+const { isNode, isElectron } = require('ipfs-utils/src/env')
 const path = require('path')
 
 // note: filePath needs to be relative to the module root
 module.exports = function loadFixtures (filePath, module) {
-  if (isNode) {
+  if (isNode || isElectron) {
     if (module) {
       filePath = path.join(module, filePath)
     }

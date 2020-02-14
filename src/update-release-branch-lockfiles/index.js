@@ -27,14 +27,21 @@ async function updateReleaseBranchLockfiles (opts) {
   console.info('Removing dependencies') // eslint-disable-line no-console
   await exec('rm', ['-rf', 'node_modules', 'package-lock.json', 'yarn.lock', 'npm-shrinkwrap.json'])
 
-  console.info('Creating yarn.lock') // eslint-disable-line no-console
-  await exec('yarn')
-
   console.info('Installing dependencies') // eslint-disable-line no-console
-  await exec('npm', ['install'])
+  await exec('npm', ['install', '--production'])
+
+  console.info('Removing package-lock.json') // eslint-disable-line no-console
+  await exec('rm', ['-rf', 'package-lock.json']) // removing package-lock after install prevents dev deps being added to the shrinkwrap file
 
   console.info('Creating npm-shrinkwrap.json') // eslint-disable-line no-console
   await exec('npm', ['shrinkwrap'])
+
+  console.info('Creating yarn.lock') // eslint-disable-line no-console
+  await exec('yarn', [], {
+    env: {
+      NODE_ENV: 'production'
+    }
+  })
 
   try {
     console.info('Committing') // eslint-disable-line no-console

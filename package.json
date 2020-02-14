@@ -20,7 +20,8 @@
   ],
   "main": "cli.js",
   "browser": {
-    "fs": false
+    "fs": false,
+    "./src/fixtures.js": "./src/fixtures.browser.js"
   },
   "bin": {
     "aegir": "cli.js"

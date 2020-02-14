@@ -1,3 +1,13 @@
+<a name="21.0.2"></a>
+## [21.0.2](https://github.com/ipfs/aegir/compare/v21.0.1...v21.0.2) (2020-02-14)
+
+
+### Bug Fixes
+
+* fix electron detection ([#520](https://github.com/ipfs/aegir/issues/520)) ([0b911ec](https://github.com/ipfs/aegir/commit/0b911ec))
+
+
+
 <a name="21.0.1"></a>
 ## [21.0.1](https://github.com/ipfs/aegir/compare/v21.0.0...v21.0.1) (2020-02-14)
 

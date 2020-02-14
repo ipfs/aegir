@@ -1,3 +1,13 @@
+<a name="20.6.1"></a>
+## [20.6.1](https://github.com/ipfs/aegir/compare/v20.6.0...v20.6.1) (2020-02-14)
+
+
+### Bug Fixes
+
+* remove package-lock before generating npm-shrinkwrap file ([#518](https://github.com/ipfs/aegir/issues/518)) ([02fc308](https://github.com/ipfs/aegir/commit/02fc308)), closes [#516](https://github.com/ipfs/aegir/issues/516)
+
+
+
 <a name="20.6.0"></a>
 # [20.6.0](https://github.com/ipfs/aegir/compare/v20.5.1...v20.6.0) (2020-02-04)
 

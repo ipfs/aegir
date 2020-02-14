@@ -1,3 +1,18 @@
+<a name="21.0.0"></a>
+# [21.0.0](https://github.com/ipfs/aegir/compare/v20.6.1...v21.0.0) (2020-02-14)
+
+
+### Bug Fixes
+
+* cleanup, update deps, remove deps ([#512](https://github.com/ipfs/aegir/issues/512)) ([6d4d25a](https://github.com/ipfs/aegir/commit/6d4d25a))
+
+
+### BREAKING CHANGES
+
+* hooks no longer support callbacks, eslint packages were updated so errors maybe appear and contributors list feature will change a bit.
+
+
+
 <a name="20.6.1"></a>
 ## [20.6.1](https://github.com/ipfs/aegir/compare/v20.6.0...v20.6.1) (2020-02-14)
 

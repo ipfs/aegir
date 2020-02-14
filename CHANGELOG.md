@@ -1,3 +1,13 @@
+<a name="21.0.1"></a>
+## [21.0.1](https://github.com/ipfs/aegir/compare/v21.0.0...v21.0.1) (2020-02-14)
+
+
+### Bug Fixes
+
+* better default for userconfig ([4a7f21d](https://github.com/ipfs/aegir/commit/4a7f21d))
+
+
+
 <a name="21.0.0"></a>
 # [21.0.0](https://github.com/ipfs/aegir/compare/v20.6.1...v21.0.0) (2020-02-14)
 

@@ -75,7 +75,9 @@ exports.getUserConfig = () => {
   let conf = {}
   try {
     const path = exports.getUserConfigPath()
-    if (!path) return null
+    if (!path) {
+      return {}
+    }
     conf = require(path)
   } catch (err) {
     console.error(err) // eslint-disable-line no-console

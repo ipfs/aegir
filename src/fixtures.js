@@ -1,7 +1,7 @@
 /* global self */
 'use strict'
 
-const isNode = require('detect-node')
+const { isNode } = require('ipfs-utils/src/env')
 const path = require('path')
 
 // note: filePath needs to be relative to the module root

@@ -124,7 +124,7 @@
     "cross-env": "^7.0.0",
     "dirty-chai": "^2.0.1",
     "mock-require": "^3.0.2",
-    "sinon": "^8.1.1"
+    "sinon": "^9.0.0"
   },
   "engines": {
     "node": ">=10.0.0",

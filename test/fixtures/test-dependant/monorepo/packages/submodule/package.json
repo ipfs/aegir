@@ -1,0 +1,13 @@
+{
+  "name": "submodule",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "it-all": "1.0.0"
+  }
+}

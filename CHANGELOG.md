@@ -1,3 +1,13 @@
+<a name="21.1.0"></a>
+# [21.1.0](https://github.com/ipfs/aegir/compare/v21.0.2...v21.1.0) (2020-02-19)
+
+
+### Features
+
+* test dependants ([#525](https://github.com/ipfs/aegir/issues/525)) ([4f42860](https://github.com/ipfs/aegir/commit/4f42860))
+
+
+
 <a name="21.0.2"></a>
 ## [21.0.2](https://github.com/ipfs/aegir/compare/v21.0.1...v21.0.2) (2020-02-14)
 

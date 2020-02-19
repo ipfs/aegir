@@ -8,16 +8,6 @@ const {
 const fs = require('fs-extra')
 const glob = require('it-glob')
 
-const findHttpClientPkg = (targetDir) => {
-  const location = require.resolve('ipfs-http-client', {
-    paths: [
-      targetDir
-    ]
-  })
-
-  return require(location.replace('src/index.js', 'package.json'))
-}
-
 const isDep = (name, pkg) => {
   return Object.keys(pkg.dependencies || {}).filter(dep => dep === name).pop()
 }
@@ -47,6 +37,16 @@ const hasYarnLock = (targetDir) => {
   return fs.existsSync(path.join(targetDir, 'yarn.lock'))
 }
 
+const printFailureMessage = (message) => {
+  console.info('-------------------------------------------------------------------') // eslint-disable-line no-console
+  console.info('') // eslint-disable-line no-console
+  console.info(message) // eslint-disable-line no-console
+  console.info('') // eslint-disable-line no-console
+  console.info('Dependant project has not been tested with updated dependencies') // eslint-disable-line no-console
+  console.info('') // eslint-disable-line no-console
+  console.info('-------------------------------------------------------------------') // eslint-disable-line no-console
+}
+
 const installDependencies = async (targetDir) => {
   console.info('Installing dependencies') // eslint-disable-line no-console
   if (hasYarnLock(targetDir)) {
@@ -64,46 +64,56 @@ const installDependencies = async (targetDir) => {
   }
 }
 
-const linkIPFSInDir = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
+const upgradeDependenciesInDir = async (targetDir, deps) => {
   const modulePkgPath = path.join(targetDir, 'package.json')
   const modulePkg = require(modulePkgPath)
 
-  // if the project also depends on the http client, upgrade it to the same version we are using
-  if (dependsOn('ipfs-http-client', modulePkg)) {
-    console.info('Upgrading ipfs-http-client dependency to', httpClientPkg.version) // eslint-disable-line no-console
-    await exec('npm', ['install', `ipfs-http-client@${httpClientPkg.version}`], {
-      cwd: targetDir
-    })
+  modulePkg.dependencies = modulePkg.dependencies || {}
+  modulePkg.peerDependencies = modulePkg.peerDependencies || {}
+  modulePkg.optionalDependencies = modulePkg.optionalDependencies || {}
+  modulePkg.devDependencies = modulePkg.devDependencies || {}
+
+  console.info('Upgrading deps') // eslint-disable-line no-console
+
+  for (const dep of Object.keys(deps)) {
+    const existingVersion = modulePkg.dependencies[dep] || modulePkg.peerDependencies[dep] || modulePkg.optionalDependencies[dep] || modulePkg.devDependencies[dep]
+    console.info('Upgrading', dep, 'from version', existingVersion, 'to', deps[dep]) // eslint-disable-line no-console
+
+    if (modulePkg.dependencies[dep] || modulePkg.peerDependencies[dep] || modulePkg.optionalDependencies[dep]) {
+      modulePkg.dependencies[dep] = deps[dep]
+    } else if (modulePkg.devDependencies[dep]) {
+      modulePkg.devDependencies[dep] = deps[dep]
+    }
   }
 
-  console.info(`Linking ipfs@${ipfsPkg.version} in dir ${targetDir}`) // eslint-disable-line no-console
-  await exec('npx', ['connect-deps', 'link', path.relative(await fs.realpath(targetDir), await fs.realpath(ipfsDir))], {
-    cwd: targetDir
-  })
-  await exec('npx', ['connect-deps', 'connect'], {
+  await fs.writeFile(modulePkgPath, JSON.stringify(modulePkg, null, 2))
+
+  await exec('npm', ['install'], {
     cwd: targetDir
   })
 }
 
-const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
+const testModule = async (targetDir, deps) => {
   const pkgPath = path.join(targetDir, 'package.json')
 
   if (!fs.existsSync(pkgPath)) {
-    console.info(`No package.json found at ${pkgPath}`) // eslint-disable-line no-console
+    printFailureMessage(`No package.json found at ${pkgPath}`)
 
     return
   }
 
   const modulePkg = require(pkgPath)
 
-  if (!dependsOn('ipfs', modulePkg) && !dependsOn('ipfs-http-client', modulePkg)) {
-    console.info(`Module ${modulePkg.name} does not depend on IPFS or the IPFS HTTP Client`) // eslint-disable-line no-console
+  for (const dep of Object.keys(deps)) {
+    if (!dependsOn(dep, modulePkg)) {
+      printFailureMessage(`Module ${modulePkg.name} does not depend on ${dep}`)
 
-    return
+      return
+    }
   }
 
   if (!modulePkg.scripts || !modulePkg.scripts.test) {
-    console.info(`Module ${modulePkg.name} has no tests`) // eslint-disable-line no-console
+    printFailureMessage(`Module ${modulePkg.name} has no tests`)
 
     return
   }
@@ -114,26 +124,26 @@ const testModule = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
       cwd: targetDir
     })
   } catch (err) {
-    console.info(`Failed to run the tests of ${modulePkg.name}, aborting`, err.message) // eslint-disable-line no-console
+    printFailureMessage(`Failed to run the tests of ${modulePkg.name}, aborting`, err.message)
 
     return
   }
 
-  // upgrade IPFS to the rc
-  await linkIPFSInDir(targetDir, ipfsDir, ipfsPkg, httpClientPkg)
+  // upgrade passed dependencies
+  await upgradeDependenciesInDir(targetDir, deps)
 
-  // run the tests with the new IPFS/IPFSHTTPClient
+  // run the tests with the new deps
   await exec('npm', ['test'], {
     cwd: targetDir
   })
 }
 
-const testRepo = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
+const testRepo = async (targetDir, deps) => {
   await installDependencies(targetDir)
-  await testModule(targetDir, ipfsDir, ipfsPkg, httpClientPkg)
+  await testModule(targetDir, deps)
 }
 
-const testMonoRepo = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
+const testMonoRepo = async (targetDir, deps) => {
   await installDependencies(targetDir)
 
   let lerna = path.join('node_modules', '.bin', 'lerna')
@@ -163,17 +173,13 @@ const testMonoRepo = async (targetDir, ipfsDir, ipfsPkg, httpClientPkg) => {
   // test each package that depends on ipfs/http client
   for (const pattern of packages) {
     for await (const match of glob(targetDir, pattern)) {
-      await testModule(path.join(targetDir, match), ipfsDir, ipfsPkg, httpClientPkg)
+      await testModule(path.join(targetDir, match), deps)
     }
   }
 }
 
-async function testExternal (opts) {
-  // work out our versions
-  const ipfsDir = process.cwd()
-  const ipfsPkg = require(path.join(ipfsDir, 'package.json'))
-  const httpClientPkg = findHttpClientPkg(ipfsDir)
-  const targetDir = path.join(os.tmpdir(), `${opts.name}-${Date.now()}`)
+async function testDependant (opts) {
+  const targetDir = path.join(os.tmpdir(), `test-dependant-${Date.now()}`)
 
   console.info(`Cloning ${opts.repo} into ${targetDir}`) // eslint-disable-line no-console
   await exec('git', ['clone', opts.repo, targetDir], {
@@ -187,13 +193,13 @@ async function testExternal (opts) {
   }
 
   if (isMonoRepo(targetDir)) {
-    await testMonoRepo(targetDir, ipfsDir, ipfsPkg, httpClientPkg)
+    await testMonoRepo(targetDir, opts.deps)
   } else {
-    await testRepo(targetDir, ipfsDir, ipfsPkg, httpClientPkg)
+    await testRepo(targetDir, opts.deps)
   }
 
   console.info(`Removing ${targetDir}`) // eslint-disable-line no-console
   await fs.remove(targetDir)
 }
 
-module.exports = testExternal
+module.exports = testDependant

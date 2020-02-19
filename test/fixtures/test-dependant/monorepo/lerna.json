@@ -1,0 +1,15 @@
+{
+  "lerna": "3.20.2",
+  "packages": [
+    "packages/*"
+  ],
+  "version": "independent",
+  "command": {
+    "bootstrap": {
+      "hoist": true
+    },
+    "run": {
+      "stream": true
+    }
+  }
+}

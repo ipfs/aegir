@@ -1,0 +1,13 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "dependencies": {
+    "it-all": "1.0.0"
+  }
+}

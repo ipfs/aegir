@@ -37,6 +37,16 @@ const hasYarnLock = (targetDir) => {
   return fs.existsSync(path.join(targetDir, 'yarn.lock'))
 }
 
+const printFailureMessage = (message) => {
+  console.info('-------------------------------------------------------------------') // eslint-disable-line no-console
+  console.info('') // eslint-disable-line no-console
+  console.info(message) // eslint-disable-line no-console
+  console.info('') // eslint-disable-line no-console
+  console.info('Dependant project has not been tested with updated dependencies') // eslint-disable-line no-console
+  console.info('') // eslint-disable-line no-console
+  console.info('-------------------------------------------------------------------') // eslint-disable-line no-console
+}
+
 const installDependencies = async (targetDir) => {
   console.info('Installing dependencies') // eslint-disable-line no-console
   if (hasYarnLock(targetDir)) {
@@ -87,7 +97,7 @@ const testModule = async (targetDir, deps) => {
   const pkgPath = path.join(targetDir, 'package.json')
 
   if (!fs.existsSync(pkgPath)) {
-    console.info(`No package.json found at ${pkgPath}`) // eslint-disable-line no-console
+    printFailureMessage(`No package.json found at ${pkgPath}`)
 
     return
   }
@@ -96,14 +106,14 @@ const testModule = async (targetDir, deps) => {
 
   for (const dep of Object.keys(deps)) {
     if (!dependsOn(dep, modulePkg)) {
-      console.info(`Module ${modulePkg.name} does not depend on ${dep}`) // eslint-disable-line no-console
+      printFailureMessage(`Module ${modulePkg.name} does not depend on ${dep}`)
 
       return
     }
   }
 
   if (!modulePkg.scripts || !modulePkg.scripts.test) {
-    console.info(`Module ${modulePkg.name} has no tests`) // eslint-disable-line no-console
+    printFailureMessage(`Module ${modulePkg.name} has no tests`)
 
     return
   }
@@ -114,7 +124,7 @@ const testModule = async (targetDir, deps) => {
       cwd: targetDir
     })
   } catch (err) {
-    console.info(`Failed to run the tests of ${modulePkg.name}, aborting`, err.message) // eslint-disable-line no-console
+    printFailureMessage(`Failed to run the tests of ${modulePkg.name}, aborting`, err.message)
 
     return
   }

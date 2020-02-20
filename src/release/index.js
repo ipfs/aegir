@@ -12,15 +12,13 @@ const releaseChecks = require('./prerelease')
 const bump = require('./bump')
 const changelog = require('./changelog')
 const commit = require('./commit')
+const tag = require('./tag')
 const contributors = require('./contributors')
 const github = require('./github')
 const publish = require('./publish')
 const push = require('./push')
 
 function release (opts) {
-  // enable publishing for docs
-  opts.publish = true
-
   const tasks = new Listr([{
     title: 'Lint',
     task: lint,
@@ -47,10 +45,16 @@ function release (opts) {
     enabled: (ctx) => ctx.changelog
   }, {
     title: 'Commit to Git',
-    task: commit
+    task: commit,
+    enabled: (ctx) => ctx.commit
+  }, {
+    title: 'Tag release',
+    task: tag,
+    enabled: (ctx) => ctx.tag
   }, {
     title: 'Push to GitHub',
-    task: push
+    task: push,
+    enabled: (ctx) => ctx.push
   }, {
     title: 'Generate GitHub Release',
     task: github,

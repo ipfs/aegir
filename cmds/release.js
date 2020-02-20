@@ -53,8 +53,23 @@ module.exports = {
       type: 'boolean',
       default: true
     },
+    commit: {
+      describe: 'Commit changes to git',
+      type: 'boolean',
+      default: true
+    },
+    tag: {
+      describe: 'Create release tag in git',
+      type: 'boolean',
+      default: true
+    },
+    push: {
+      describe: 'Push changes to GitHub',
+      type: 'boolean',
+      default: true
+    },
     ghrelease: {
-      describe: 'Genereate GitHub release',
+      describe: 'Generate GitHub release',
       type: 'boolean',
       default: true
     },

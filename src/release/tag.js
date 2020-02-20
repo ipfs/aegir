@@ -6,19 +6,12 @@ const fs = require('fs-extra')
 
 const getPathToPkg = require('../utils').getPathToPkg
 
-const files = ['package.json', 'CHANGELOG.md']
-
-async function commit () {
-  await pify(git.add.bind(git))(files)
-
+async function tag () {
   const {
     version
   } = await fs.readJson(getPathToPkg())
 
-  await pify(git.commit.bind(git))(
-    `chore: release version v${version}`,
-    files
-  )
+  await pify(git.addTag.bind(git))(`v${version}`)
 }
 
-module.exports = commit
+module.exports = tag

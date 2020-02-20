@@ -1,3 +1,13 @@
+<a name="21.2.0"></a>
+# [21.2.0](https://github.com/ipfs/aegir/compare/v21.1.0...v21.2.0) (2020-02-20)
+
+
+### Features
+
+* allow enabling/disabling each part of the release process ([#526](https://github.com/ipfs/aegir/issues/526)) ([9c44626](https://github.com/ipfs/aegir/commit/9c44626))
+
+
+
 <a name="21.1.0"></a>
 # [21.1.0](https://github.com/ipfs/aegir/compare/v21.0.2...v21.1.0) (2020-02-19)
 

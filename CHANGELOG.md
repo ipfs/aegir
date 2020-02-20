@@ -1,3 +1,13 @@
+<a name="21.3.0"></a>
+# [21.3.0](https://github.com/ipfs/aegir/compare/v21.2.0...v21.3.0) (2020-02-20)
+
+
+### Bug Fixes
+
+* update deps ([ad0bcc3](https://github.com/ipfs/aegir/commit/ad0bcc3))
+
+
+
 <a name="21.2.0"></a>
 # [21.2.0](https://github.com/ipfs/aegir/compare/v21.1.0...v21.2.0) (2020-02-20)
 

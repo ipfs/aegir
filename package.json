@@ -75,7 +75,7 @@
     "findup-sync": "^4.0.0",
     "fs-extra": "^8.1.0",
     "gh-pages": "^2.2.0",
-    "git-authors-cli": "^1.0.20",
+    "git-authors-cli": "^1.0.23",
     "git-validate": "^2.2.4",
     "globby": "^11.0.0",
     "ipfs-utils": "^0.7.1",
@@ -99,7 +99,7 @@
     "nyc": "^15.0.0",
     "p-map": "^3.0.0",
     "pascalcase": "^1.0.0",
-    "pify": "^4.0.1",
+    "pify": "^5.0.0",
     "prompt-promise": "^1.0.3",
     "read-pkg-up": "^7.0.1",
     "rimraf": "^3.0.1",
@@ -116,7 +116,7 @@
     "webpack-cli": "^3.3.10",
     "webpack-merge": "^4.2.2",
     "yargs": "^15.1.0",
-    "yargs-parser": "^16.1.0"
+    "yargs-parser": "^17.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -124,7 +124,7 @@
     "cross-env": "^7.0.0",
     "dirty-chai": "^2.0.1",
     "mock-require": "^3.0.2",
-    "sinon": "^8.1.1"
+    "sinon": "^9.0.0"
   },
   "engines": {
     "node": ">=10.0.0",

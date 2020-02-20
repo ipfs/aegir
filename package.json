@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "21.2.0",
+  "version": "21.3.0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -138,16 +138,28 @@
   ],
   "contributors": [
     "dignifiedquire <dignifiedquire@gmail.com>",
+    "Hugo Dias <hugomrdias@gmail.com>",
+    "victorbjelkholm <victorbjelkholm@gmail.com>",
     "David Dias <daviddias.p@gmail.com>",
     "Alex Potsides <alex@achingbrain.net>",
+    "Volker Mische <volker.mische@gmail.com>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
     "Alan Shaw <alan@tableflip.io>",
+    "Jacob Heun <jacobheun@gmail.com>",
+    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
     "Henrique Dias <hacdias@gmail.com>",
+    "Francis Yuen <fyuen@godaddy.com>",
     "Maciej Krüger <mkg20001@gmail.com>",
+    "Alberto Elias <hi@albertoelias.me>",
     "Diogo Silva <fsdiogo@gmail.com>",
+    "Garren Smith <garren.smith@gmail.com>",
     "JGAntunes <j.goncalo.antunes@gmail.com>",
+    "Jakub Sztandera <kubuxu@protonmail.ch>",
     "Adam Uhlíř <adam@uhlir.dev>",
+    "Marcin Rataj <lidel@lidel.org>",
     "Michael Garvin <gar+gh@danger.computer>",
-    "Stephen Whitmore <stephen.whitmore@gmail.com>"
+    "Mikeal Rogers <mikeal.rogers@gmail.com>",
+    "Stephen Whitmore <stephen.whitmore@gmail.com>",
+    "Vasco Santos <vasco.santos@ua.pt>"
   ]
 }

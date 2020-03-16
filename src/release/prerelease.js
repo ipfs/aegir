@@ -1,7 +1,6 @@
 'use strict'
 
-const git = require('simple-git')(process.cwd())
-const pify = require('pify')
+const execa = require('execa')
 
 // Check if there are valid GitHub credentials for publishing this module
 function validGh (opts) {
@@ -17,13 +16,12 @@ function validGh (opts) {
 }
 
 // Is the current git workspace dirty?
-function isDirty () {
-  return pify(git.raw.bind(git))(['status', '-s'])
-    .then((out) => {
-      if (out && out.trim().length > 0) {
-        throw new Error('Dirty git repo, aborting')
-      }
-    })
+async function isDirty () {
+  const out = await execa('git', ['status', '-s'])
+
+  if (out.stdout.trim().length > 0) {
+    throw new Error('Dirty git repo, aborting')
+  }
 }
 
 // Validate that all requirements are met before starting the release

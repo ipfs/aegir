@@ -263,11 +263,12 @@ function extractFile (zipPath) {
 }
 
 exports.getElectron = async () => {
+  const pkg = require('./../package.json')
   const version = pkg.devDependencies.electron.slice(1)
-  const spinner = ora(`Downloading electron: ${version}.`).start()
+  const spinner = ora(`Downloading electron: ${version}`).start()
   const zip = await download(version)
-  spinner.text = 'Extracting electron to system cache.'
+  spinner.text = 'Extracting electron to system cache'
   const electronPath = await extractFile(zip)
-  spinner.succeed('Electron ready to use.')
+  spinner.succeed('Electron ready to use')
   return electronPath
 }

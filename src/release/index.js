@@ -25,7 +25,10 @@ function release (opts) {
     enabled: (ctx) => ctx.lint
   }, {
     title: 'Test',
-    task: (ctx) => test.run(ctx),
+    task: (ctx) => {
+      ctx.progress = true
+      return test.run(ctx)
+    },
     enabled: (ctx) => ctx.test
   }, {
     title: 'Bump Version',

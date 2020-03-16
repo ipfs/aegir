@@ -35,7 +35,7 @@
     "test": "npm run test:node && npm run test:browser",
     "coverage": "cross-env AEGIR_TEST=hello node cli.js coverage -t node",
     "watch": "cross-env AEGIR_TEST=hello node cli.js test -t node --watch",
-    "release": "node cli.js release --no-build --no-test",
+    "release": "cross-env AEGIR_TEST=hello  node cli.js release --no-build",
     "release-minor": "node cli.js release --no-build --no-test --type minor",
     "release-major": "node cli.js release --no-build --no-test --type major"
   },

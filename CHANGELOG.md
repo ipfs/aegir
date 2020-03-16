@@ -1,3 +1,15 @@
+<a name="21.3.1"></a>
+## [21.3.1](https://github.com/ipfs/aegir/compare/v21.3.0...v21.3.1) (2020-03-16)
+
+
+### Bug Fixes
+
+* fix webpack warn, make electron lazy ([#521](https://github.com/ipfs/aegir/issues/521)) ([68fc177](https://github.com/ipfs/aegir/commit/68fc177))
+* pass --full-trace option to electron-mocha ([#519](https://github.com/ipfs/aegir/issues/519)) ([a100c87](https://github.com/ipfs/aegir/commit/a100c87)), closes [/github.com/jprichardson/electron-mocha/blob/master/lib/run.js#L166](https://github.com//github.com/jprichardson/electron-mocha/blob/master/lib/run.js/issues/L166)
+* run tests with progress ([e27eded](https://github.com/ipfs/aegir/commit/e27eded))
+
+
+
 <a name="21.3.0"></a>
 # [21.3.0](https://github.com/ipfs/aegir/compare/v21.2.0...v21.3.0) (2020-02-20)
 

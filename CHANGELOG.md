@@ -1,3 +1,13 @@
+<a name="21.3.2"></a>
+## [21.3.2](https://github.com/ipfs/aegir/compare/v21.3.1...v21.3.2) (2020-03-16)
+
+
+### Bug Fixes
+
+* use execa for dirty check ([682cd11](https://github.com/ipfs/aegir/commit/682cd11))
+
+
+
 <a name="21.3.1"></a>
 ## [21.3.1](https://github.com/ipfs/aegir/compare/v21.3.0...v21.3.1) (2020-03-16)
 

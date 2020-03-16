@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const execa = require('execa')
-const { hook } = require('../utils')
+const { hook, getElectron } = require('../utils')
 
 module.exports = (argv) => {
   const input = argv._.slice(1)
@@ -16,7 +16,8 @@ module.exports = (argv) => {
   const renderer = argv.renderer ? ['--renderer'] : []
 
   return hook('browser', 'pre')(argv.userConfig)
-    .then(() => {
+    .then(() => getElectron())
+    .then((electronPath) => {
       return execa('electron-mocha', [
         ...input,
         ...files,
@@ -35,7 +36,9 @@ module.exports = (argv) => {
         preferLocal: true,
         stdio: 'inherit',
         env: {
-          AEGIR_RUNNER: argv.renderer ? 'electron-renderer' : 'electron-main'
+          NODE_ENV: process.env.NODE_ENV || 'test',
+          AEGIR_RUNNER: argv.renderer ? 'electron-renderer' : 'electron-main',
+          ELECTRON_PATH: electronPath
         }
       })
     })

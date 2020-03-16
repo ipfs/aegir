@@ -5,6 +5,10 @@
  */
 'use strict'
 
+const os = require('os')
+const ora = require('ora')
+const extract = require('extract-zip')
+const { download } = require('@electron/get')
 const path = require('path')
 const findUp = require('findup-sync')
 const readPkgUp = require('read-pkg-up')
@@ -224,4 +228,47 @@ exports.exec = (command, args, options = {}) => {
   result.stderr.pipe(process.stderr)
 
   return result
+}
+
+function getPlatformPath () {
+  const platform = process.env.npm_config_platform || os.platform()
+
+  switch (platform) {
+    case 'mas':
+    case 'darwin':
+      return 'Electron.app/Contents/MacOS/Electron'
+    case 'freebsd':
+    case 'openbsd':
+    case 'linux':
+      return 'electron'
+    case 'win32':
+      return 'electron.exe'
+    default:
+      throw new Error('Electron builds are not available on platform: ' + platform)
+  }
+}
+
+function extractFile (zipPath) {
+  const electronPath = path.join(path.dirname(zipPath), getPlatformPath())
+  if (fs.existsSync(electronPath)) {
+    return Promise.resolve(electronPath)
+  }
+  return new Promise((resolve, reject) => {
+    extract(zipPath, { dir: path.dirname(zipPath) }, err => {
+      if (err) return reject(err)
+
+      resolve(electronPath)
+    })
+  })
+}
+
+exports.getElectron = async () => {
+  const pkg = require('./../package.json')
+  const version = pkg.devDependencies.electron.slice(1)
+  const spinner = ora(`Downloading electron: ${version}`).start()
+  const zip = await download(version)
+  spinner.text = 'Extracting electron to system cache'
+  const electronPath = await extractFile(zip)
+  spinner.succeed('Electron ready to use')
+  return electronPath
 }

@@ -27,6 +27,7 @@ module.exports = (argv) => {
         ...bail,
         ...timeout,
         ['--colors'],
+        ['--full-trace'],
         ...renderer,
         ...forwardOptions
       ], {

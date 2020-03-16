@@ -116,7 +116,7 @@
     "webpack-cli": "^3.3.10",
     "webpack-merge": "^4.2.2",
     "yargs": "^15.1.0",
-    "yargs-parser": "^17.0.0"
+    "yargs-parser": "^18.1.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",

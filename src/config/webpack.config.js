@@ -128,7 +128,33 @@ const base = (env, argv) => {
       __dirname: 'mock',
       Buffer: true,
       setImmediate: true
-    } : false
+    } : {
+      global: true,
+      __filename: 'mock',
+      __dirname: 'mock',
+      dgram: false,
+      fs: false,
+      net: false,
+      tls: false,
+      child_process: false,
+      console: false,
+      process: false,
+      Buffer: false,
+      setImmediate: false,
+      os: false,
+      assert: false,
+      constants: false,
+      events: false,
+      http: false,
+      path: false,
+      querystring: false,
+      stream: false,
+      string_decoder: false,
+      timers: false,
+      url: false,
+      util: false,
+      crypto: false
+    }
   }
 }
 

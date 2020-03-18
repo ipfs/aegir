@@ -72,10 +72,6 @@ const karmaConfig = (config, argv) => {
       }
     ]),
 
-    proxies: {
-      '/test/fixtures/': '/base/test/fixtures/'
-    },
-
     preprocessors: files.reduce((acc, f) => {
       acc[f] = ['webpack', 'sourcemap']
       return acc

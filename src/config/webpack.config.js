@@ -115,7 +115,7 @@ const base = (env, argv) => {
       })
     ],
     target: 'web',
-    node: {
+    node: process.env.AEGIR_NODE === 'true' ? {
       dgram: 'empty',
       fs: 'empty',
       net: 'empty',
@@ -128,11 +128,7 @@ const base = (env, argv) => {
       __dirname: 'mock',
       Buffer: true,
       setImmediate: true
-    },
-    performance: {
-      hints: false
-    },
-    stats: 'minimal'
+    } : false
   }
 }
 
@@ -141,7 +137,7 @@ module.exports = (env, argv) => {
     ? userConfig.webpack(env, argv)
     : userConfig.webpack
 
-  if (process.env.AEGIR_BUILD_ANALYZE) {
+  if (process.env.AEGIR_BUILD_ANALYZE === 'true') {
     return merge(
       base(env, argv),
       {

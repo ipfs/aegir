@@ -10,6 +10,11 @@ module.exports = {
     yargs
       .epilog(EPILOG)
       .options({
+        node: {
+          type: 'boolean',
+          describe: 'Flag to control when to tell the bundler to include node global packages.',
+          default: true
+        },
         analyze: {
           alias: 'a',
           type: 'boolean',

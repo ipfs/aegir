@@ -9,7 +9,6 @@ const userConfig = require('../config/user')
 const config = userConfig()
 
 module.exports = (argv) => {
-  const analyze = Boolean(process.env.AEGIR_BUILD_ANALYZE || argv.analyze)
   const input = argv._.slice(1)
   const forwardOptions = argv['--'] ? argv['--'] : []
   const useBuiltinConfig = !forwardOptions.includes('--config')
@@ -30,7 +29,8 @@ module.exports = (argv) => {
   ], {
     env: {
       NODE_ENV: process.env.NODE_ENV || 'production',
-      AEGIR_BUILD_ANALYZE: analyze || ''
+      AEGIR_BUILD_ANALYZE: argv.analyze,
+      AEGIR_NODE: argv.node
     },
     localDir: path.join(__dirname, '../..'),
     preferLocal: true,

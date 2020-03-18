@@ -1,3 +1,13 @@
+<a name="21.3.3"></a>
+## [21.3.3](https://github.com/ipfs/aegir/compare/v21.3.2...v21.3.3) (2020-03-18)
+
+
+### Bug Fixes
+
+* fix karma fixture loading ([d2fa1ce](https://github.com/ipfs/aegir/commit/d2fa1ce))
+
+
+
 <a name="21.3.2"></a>
 ## [21.3.2](https://github.com/ipfs/aegir/compare/v21.3.1...v21.3.2) (2020-03-16)
 

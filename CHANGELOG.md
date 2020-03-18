@@ -1,3 +1,13 @@
+<a name="21.4.0"></a>
+# [21.4.0](https://github.com/ipfs/aegir/compare/v21.3.3...v21.4.0) (2020-03-18)
+
+
+### Features
+
+* add node options to test and build ([a756945](https://github.com/ipfs/aegir/commit/a756945))
+
+
+
 <a name="21.3.3"></a>
 ## [21.3.3](https://github.com/ipfs/aegir/compare/v21.3.2...v21.3.3) (2020-03-18)
 

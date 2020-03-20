@@ -162,7 +162,6 @@ module.exports = (env, argv) => {
   const external = typeof userConfig.webpack === 'function'
     ? userConfig.webpack(env, argv)
     : userConfig.webpack
-
   if (process.env.AEGIR_BUILD_ANALYZE === 'true') {
     return merge(
       base(env, argv),

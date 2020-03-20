@@ -1,3 +1,14 @@
+<a name="21.4.1"></a>
+## [21.4.1](https://github.com/ipfs/aegir/compare/v21.4.0...v21.4.1) (2020-03-20)
+
+
+### Bug Fixes
+
+* fix fixtures loading ([ec16728](https://github.com/ipfs/aegir/commit/ec16728)), closes [#533](https://github.com/ipfs/aegir/issues/533)
+* improve --node false ([d3a104f](https://github.com/ipfs/aegir/commit/d3a104f))
+
+
+
 <a name="21.4.0"></a>
 # [21.4.0](https://github.com/ipfs/aegir/compare/v21.3.3...v21.4.0) (2020-03-18)
 

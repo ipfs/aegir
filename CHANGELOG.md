@@ -1,3 +1,13 @@
+<a name="21.4.3"></a>
+## [21.4.3](https://github.com/ipfs/aegir/compare/v21.4.2...v21.4.3) (2020-03-20)
+
+
+### Bug Fixes
+
+* fix node flag ([17ec20b](https://github.com/ipfs/aegir/commit/17ec20b))
+
+
+
 <a name="21.4.2"></a>
 ## [21.4.2](https://github.com/ipfs/aegir/compare/v21.4.1...v21.4.2) (2020-03-20)
 

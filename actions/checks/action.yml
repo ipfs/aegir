@@ -1,0 +1,5 @@
+name: 'Check'
+description: 'Checks action for IPFS repos.'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

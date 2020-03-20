@@ -1,0 +1,12 @@
+name: Checks
+
+on: [push]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./actions/checks
+      with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -4,7 +4,7 @@
  * @module aegir/utils
  */
 'use strict'
-
+const { constants, createBrotliCompress, createGzip } = require('zlib')
 const os = require('os')
 const ora = require('ora')
 const extract = require('extract-zip')
@@ -220,4 +220,36 @@ exports.getElectron = async () => {
   }
   spinner.succeed('Electron ready to use')
   return electronPath
+}
+
+exports.brotliSize = (path) => {
+  return new Promise((resolve, reject) => {
+    let size = 0
+    const pipe = fs.createReadStream(path).pipe(createBrotliCompress({
+      params: {
+        [constants.BROTLI_PARAM_QUALITY]: 11
+      }
+    }))
+    pipe.on('error', reject)
+    pipe.on('data', buf => {
+      size += buf.length
+    })
+    pipe.on('end', () => {
+      resolve(size)
+    })
+  })
+}
+
+exports.gzipSize = (path) => {
+  return new Promise((resolve, reject) => {
+    let size = 0
+    const pipe = fs.createReadStream(path).pipe(createGzip({ level: 9 }))
+    pipe.on('error', reject)
+    pipe.on('data', buf => {
+      size += buf.length
+    })
+    pipe.on('end', () => {
+      resolve(size)
+    })
+  })
 }

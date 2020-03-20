@@ -32,7 +32,7 @@ module.exports = (argv) => {
         env: {
           NODE_ENV: process.env.NODE_ENV || 'test',
           AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser',
-          AEGIR_NODE: argv.node
+          AEGIR_NODE: argv.node || 'true'
         },
         preferLocal: true,
         localDir: path.join(__dirname, '../..'),

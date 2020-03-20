@@ -1,3 +1,13 @@
+<a name="21.4.2"></a>
+## [21.4.2](https://github.com/ipfs/aegir/compare/v21.4.1...v21.4.2) (2020-03-20)
+
+
+### Bug Fixes
+
+* fix browser tests node flag ([fbbd77a](https://github.com/ipfs/aegir/commit/fbbd77a))
+
+
+
 <a name="21.4.1"></a>
 ## [21.4.1](https://github.com/ipfs/aegir/compare/v21.4.0...v21.4.1) (2020-03-20)
 

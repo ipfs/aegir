@@ -115,20 +115,7 @@ const base = (env, argv) => {
       })
     ],
     target: 'web',
-    node: process.env.AEGIR_NODE === 'true' ? {
-      dgram: 'empty',
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty',
-      child_process: 'empty',
-      console: false,
-      global: true,
-      process: true,
-      __filename: 'mock',
-      __dirname: 'mock',
-      Buffer: true,
-      setImmediate: true
-    } : {
+    node: process.env.AEGIR_NODE === 'false' ? {
       global: true,
       __filename: 'mock',
       __dirname: 'mock',
@@ -154,6 +141,19 @@ const base = (env, argv) => {
       url: false,
       util: false,
       crypto: false
+    } : {
+      dgram: 'empty',
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty',
+      child_process: 'empty',
+      console: false,
+      global: true,
+      process: true,
+      __filename: 'mock',
+      __dirname: 'mock',
+      Buffer: true,
+      setImmediate: true
     }
   }
 }

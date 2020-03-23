@@ -1,3 +1,13 @@
+<a name="21.4.4"></a>
+## [21.4.4](https://github.com/ipfs/aegir/compare/v21.4.3...v21.4.4) (2020-03-23)
+
+
+### Bug Fixes
+
+* fix release node flag and remove progress ([ac2baa7](https://github.com/ipfs/aegir/commit/ac2baa7))
+
+
+
 <a name="21.4.3"></a>
 ## [21.4.3](https://github.com/ipfs/aegir/compare/v21.4.2...v21.4.3) (2020-03-20)
 

@@ -1,3 +1,13 @@
+<a name="21.4.5"></a>
+## [21.4.5](https://github.com/ipfs/aegir/compare/v21.4.4...v21.4.5) (2020-03-25)
+
+
+### Bug Fixes
+
+* add buffer to fixtures ([775e986](https://github.com/ipfs/aegir/commit/775e986))
+
+
+
 <a name="21.4.4"></a>
 ## [21.4.4](https://github.com/ipfs/aegir/compare/v21.4.3...v21.4.4) (2020-03-23)
 

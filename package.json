@@ -56,6 +56,7 @@
     "@electron/get": "^1.9.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-flow-comments": "^6.22.0",
+    "buffer": "^5.5.0",
     "bundlesize": "~0.18.0",
     "camelcase": "^5.3.1",
     "chalk": "^3.0.0",

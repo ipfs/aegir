@@ -1,6 +1,7 @@
 /* global self */
 'use strict'
 
+const { Buffer } = require('buffer')
 // note: filePath needs to be relative to the module root
 module.exports = function loadFixtures (filePath, module) {
   if (module) {

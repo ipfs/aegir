@@ -1,3 +1,19 @@
+<a name="21.5.0"></a>
+# [21.5.0](https://github.com/ipfs/aegir/compare/v21.4.5...v21.5.0) (2020-04-13)
+
+
+### Bug Fixes
+
+* disable gpg sign in tests ([8714603](https://github.com/ipfs/aegir/commit/8714603))
+* fix path in the fixture test ([30e9331](https://github.com/ipfs/aegir/commit/30e9331))
+
+
+### Features
+
+* add testing helpers ([a9d0561](https://github.com/ipfs/aegir/commit/a9d0561))
+
+
+
 <a name="21.4.5"></a>
 ## [21.4.5](https://github.com/ipfs/aegir/compare/v21.4.4...v21.4.5) (2020-03-25)
 

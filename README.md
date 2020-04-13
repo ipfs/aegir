@@ -53,7 +53,7 @@ To bring you its many benefits, `aegir` requires
 - [Karma](https://github.com/karma-runner/karma) for browser tests
 
 ## Testing helpers
-In addition to running the tests `aegir` also provides several helpers to be used be the tests.
+In addition to running the tests `aegir` also provides several helpers to be used by the tests.
 
 #### Fixtures
 

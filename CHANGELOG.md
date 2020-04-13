@@ -1,3 +1,8 @@
+<a name="21.5.1"></a>
+## [21.5.1](https://github.com/ipfs/aegir/compare/v21.5.0...v21.5.1) (2020-04-13)
+
+
+
 <a name="21.5.0"></a>
 # [21.5.0](https://github.com/ipfs/aegir/compare/v21.4.5...v21.5.0) (2020-04-13)
 

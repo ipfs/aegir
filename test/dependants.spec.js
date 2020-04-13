@@ -36,7 +36,7 @@ const git = {
     })
   },
   commit: async (name, message) => {
-    await execa('git', ['commit', '-m', message], {
+    await execa('git', ['commit', '-m', message, '--no-gpg-sign'], {
       cwd: dirs[name]
     })
   }

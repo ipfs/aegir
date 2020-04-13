@@ -8,5 +8,7 @@ chai.use(require('dirty-chai'))
 chai.use(require('chai-subset'))
 
 module.exports = {
-  expect: chai.expect
+  expect: chai.expect,
+  assert: chai.assert,
+  chai
 }

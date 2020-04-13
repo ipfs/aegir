@@ -1,3 +1,13 @@
+<a name="21.6.0"></a>
+# [21.6.0](https://github.com/ipfs/aegir/compare/v21.5.1...v21.6.0) (2020-04-13)
+
+
+### Features
+
+* export assert and chai itself ([dbe8145](https://github.com/ipfs/aegir/commit/dbe8145))
+
+
+
 <a name="21.5.1"></a>
 ## [21.5.1](https://github.com/ipfs/aegir/compare/v21.5.0...v21.5.1) (2020-04-13)
 

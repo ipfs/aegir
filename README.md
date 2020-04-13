@@ -127,6 +127,10 @@ console.log(await req.text())
 const req = await fetch('http://127.0.0.1:3000/redirect?to=http://127.0.0.1:3000/echo')
 console.log(await req.text())
 
+// download endpoint
+const req = await fetch('http://127.0.0.1:3000/download?data=helloWorld')
+console.log(await req.text())
+
 await server.stop()
 
 ```

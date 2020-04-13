@@ -2,6 +2,7 @@
 /* eslint-env mocha */
 
 const http = require('ipfs-utils/src/http')
+const { Buffer } = require('buffer')
 const { expect } = require('../../utils/chai')
 const EchoServer = require('../../utils/echo-server')
 const { format } = require('iso-url')
@@ -39,5 +40,22 @@ describe('echo server spec', () => {
     const req = await http.post('echo', { base: url, body: '{"test":"1"}' })
     const res = await req.text()
     expect(res).to.be.eq('{"test":"1"}')
+  })
+
+  it('download endpoint with text', async () => {
+    const req = await http.get('download', { base: url, searchParams: { data: 'hello world' } })
+    const res = await req.text()
+    expect(res).to.be.eq('hello world')
+  })
+  it('download endpoint without data', async () => {
+    const req = await http.get('download', { base: url })
+    const res = await req.text()
+    expect(res).to.be.eq('')
+  })
+
+  it('download endpoint with arraybuffer', async () => {
+    const req = await http.get('download', { base: url, searchParams: { data: 'hello world' } })
+    const res = Buffer.from(await req.arrayBuffer())
+    expect(res).to.be.deep.eq(Buffer.from('hello world'))
   })
 })

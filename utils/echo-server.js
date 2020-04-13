@@ -4,6 +4,7 @@ const send = require('@polka/send-type')
 const polka = require('polka')
 const cors = require('cors')
 const http = require('http')
+const { Buffer } = require('buffer')
 const getPort = require('./get-port')
 
 class EchoServer {
@@ -30,6 +31,9 @@ class EchoServer {
         })
         .all('/echo', (req, res) => {
           send(res, 200, req)
+        })
+        .all('/download', (req, res) => {
+          send(res, 200, Buffer.from(req.query.data || ''))
         })
 
       const listen = new Promise((resolve, reject) => {

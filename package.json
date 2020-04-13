@@ -104,7 +104,7 @@
     "listr": "~0.14.2",
     "merge-options": "^2.0.0",
     "mocha": "^7.1.1",
-    "npm-package-json-lint": "^4.5.1",
+    "npm-package-json-lint": "^5.0.0",
     "nyc": "^15.0.1",
     "ora": "^4.0.3",
     "p-map": "^4.0.0",

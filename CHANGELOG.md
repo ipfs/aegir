@@ -1,3 +1,13 @@
+<a name="21.7.0"></a>
+# [21.7.0](https://github.com/ipfs/aegir/compare/v21.6.0...v21.7.0) (2020-04-13)
+
+
+### Features
+
+* add download endpoint to echo server ([4fc3220](https://github.com/ipfs/aegir/commit/4fc3220))
+
+
+
 <a name="21.6.0"></a>
 # [21.6.0](https://github.com/ipfs/aegir/compare/v21.5.1...v21.6.0) (2020-04-13)
 

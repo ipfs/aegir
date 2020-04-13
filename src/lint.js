@@ -14,6 +14,7 @@ const FILES = [
   'src/**/*.js',
   'tasks/**/*.js',
   'benchmarks/**/*.js',
+  'utils/**/*.js',
   '!**/node_modules/**'
 ]
 

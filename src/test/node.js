@@ -78,7 +78,7 @@ function testNode (ctx) {
   }
 
   return preHook(ctx)
-    .then((hook) => {
+    .then((hook = {}) => {
       return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
         env: { ...env, ...hook.env },
         cwd: process.cwd(),

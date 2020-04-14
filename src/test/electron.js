@@ -16,7 +16,7 @@ module.exports = (argv) => {
   const renderer = argv.renderer ? ['--renderer'] : []
 
   return hook('browser', 'pre')(argv.userConfig)
-    .then((hook) => Promise.all([hook, getElectron()]))
+    .then((hook = {}) => Promise.all([hook, getElectron()]))
     .then(([hook, electronPath]) => {
       return execa('electron-mocha', [
         ...input,

@@ -248,27 +248,16 @@ function getPlatformPath () {
   }
 }
 
-function extractFile (zipPath) {
-  const electronPath = path.join(path.dirname(zipPath), getPlatformPath())
-  if (fs.existsSync(electronPath)) {
-    return Promise.resolve(electronPath)
-  }
-  return new Promise((resolve, reject) => {
-    extract(zipPath, { dir: path.dirname(zipPath) }, err => {
-      if (err) return reject(err)
-
-      resolve(electronPath)
-    })
-  })
-}
-
 exports.getElectron = async () => {
   const pkg = require('./../package.json')
   const version = pkg.devDependencies.electron.slice(1)
   const spinner = ora(`Downloading electron: ${version}`).start()
-  const zip = await download(version)
-  spinner.text = 'Extracting electron to system cache'
-  const electronPath = await extractFile(zip)
+  const zipPath = await download(version)
+  const electronPath = path.join(path.dirname(zipPath), getPlatformPath())
+  if (!fs.existsSync(electronPath)) {
+    spinner.text = 'Extracting electron to system cache'
+    await extract(zipPath, { dir: path.dirname(zipPath) })
+  }
   spinner.succeed('Electron ready to use')
   return electronPath
 }

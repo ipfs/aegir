@@ -15,7 +15,7 @@ module.exports = (argv) => {
   const timeout = argv.timeout ? ['--timeout', argv.timeout] : []
 
   return hook('browser', 'pre')(argv.userConfig)
-    .then(() => {
+    .then(({ env }) => {
       return execa('karma', [
         'start',
         fromAegir('src/config/karma.conf.js'),
@@ -32,7 +32,9 @@ module.exports = (argv) => {
         env: {
           NODE_ENV: process.env.NODE_ENV || 'test',
           AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser',
-          AEGIR_NODE: argv.node
+          AEGIR_NODE: argv.node,
+          IS_WEBPACK_BUILD: true,
+          ...env
         },
         preferLocal: true,
         localDir: path.join(__dirname, '../..'),

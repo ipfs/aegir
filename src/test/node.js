@@ -77,19 +77,21 @@ function testNode (ctx) {
     exec = 'nyc'
   }
 
-  return preHook(ctx).then(() => {
-    return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
-      env: env,
-      cwd: process.cwd(),
-      preferLocal: true,
-      localDir: path.join(__dirname, '../..'),
-      stdin: process.stdin,
-      stdout: process.stdout,
-      stderr: process.stderr
-    }).catch((_err) => {
-      err = _err
+  return preHook(ctx)
+    .then((hook) => {
+      return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
+        env: { ...env, ...hook.env },
+        cwd: process.cwd(),
+        preferLocal: true,
+        localDir: path.join(__dirname, '../..'),
+        stdin: process.stdin,
+        stdout: process.stdout,
+        stderr: process.stderr
+      }).catch((_err) => {
+        err = _err
+      })
     })
-  }).then(() => postHook(ctx))
+    .then(() => postHook(ctx))
     .then(() => {
       if (err) {
         throw err

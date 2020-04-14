@@ -16,8 +16,8 @@ module.exports = (argv) => {
   const renderer = argv.renderer ? ['--renderer'] : []
 
   return hook('browser', 'pre')(argv.userConfig)
-    .then(() => getElectron())
-    .then((electronPath) => {
+    .then((hook) => Promise.all([hook, getElectron()]))
+    .then(([hook, electronPath]) => {
       return execa('electron-mocha', [
         ...input,
         ...files,
@@ -38,7 +38,8 @@ module.exports = (argv) => {
         env: {
           NODE_ENV: process.env.NODE_ENV || 'test',
           AEGIR_RUNNER: argv.renderer ? 'electron-renderer' : 'electron-main',
-          ELECTRON_PATH: electronPath
+          ELECTRON_PATH: electronPath,
+          ...hook.env
         }
       })
     })

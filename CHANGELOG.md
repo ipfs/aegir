@@ -1,3 +1,13 @@
+<a name="21.8.0"></a>
+# [21.8.0](https://github.com/ipfs/aegir/compare/v21.7.0...v21.8.0) (2020-04-14)
+
+
+### Features
+
+* forward env to webpack ([ee90e20](https://github.com/ipfs/aegir/commit/ee90e20))
+
+
+
 <a name="21.7.0"></a>
 # [21.7.0](https://github.com/ipfs/aegir/compare/v21.6.0...v21.7.0) (2020-04-13)
 

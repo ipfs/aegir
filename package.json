@@ -83,7 +83,7 @@
     "execa": "^4.0.0",
     "extract-zip": "^1.6.7",
     "findup-sync": "^4.0.0",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.0",
     "gh-pages": "^2.2.0",
     "git-authors-cli": "^1.0.24",
     "git-validate": "^2.2.4",

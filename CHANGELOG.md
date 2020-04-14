@@ -1,3 +1,13 @@
+<a name="21.8.1"></a>
+## [21.8.1](https://github.com/ipfs/aegir/compare/v21.8.0...v21.8.1) (2020-04-14)
+
+
+### Bug Fixes
+
+* fix undefined hook return ([1e90b5c](https://github.com/ipfs/aegir/commit/1e90b5c))
+
+
+
 <a name="21.8.0"></a>
 # [21.8.0](https://github.com/ipfs/aegir/compare/v21.7.0...v21.8.0) (2020-04-14)
 

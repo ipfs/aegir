@@ -121,46 +121,6 @@ exports.getListrConfig = () => {
 }
 
 /**
- * Get current env variables for inclusion.
- *
- * @param {string} [env='development']
- *
- * @returns {Object}
- */
-exports.getEnv = (env) => {
-  const PREFIX = /^AEGIR_/i
-  let NODE_ENV = env || 'development'
-  if (JSON.stringify(process.env.NODE_ENV) !== JSON.stringify(undefined) && process.env.NODE_ENV) {
-    NODE_ENV = process.env.NODE_ENV
-  }
-
-  const raw = Object.keys(process.env)
-    .filter((key) => PREFIX.test(key))
-    .reduce((env, key) => {
-      if (key === 'AEGIR_GHTOKEN') {
-        return env
-      } else {
-        env[key] = process.env[key]
-        return env
-      }
-    }, {
-      NODE_ENV: NODE_ENV
-    })
-
-  const stringifed = {
-    'process.env': Object.keys(raw).reduce((env, key) => {
-      env[key] = JSON.stringify(raw[key])
-      return env
-    }, {})
-  }
-
-  return {
-    raw: raw,
-    stringified: stringifed
-  }
-}
-
-/**
  * Path to example file.
  *
  * @returns {string}

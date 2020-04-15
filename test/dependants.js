@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 'use strict'
 
-const expect = require('chai').expect
+const { expect } = require('../utils/chai')
 const execa = require('execa')
 const fs = require('fs-extra')
 const path = require('path')
@@ -69,7 +69,6 @@ describe('dependants', function () {
           DISAMBIGUATOR: diff
         }
       })
-
       expect(output.stdout).to.include(`${diff}-dependency-version=1.0.0`)
       expect(output.stdout).to.include(`${diff}-dependency-version=1.0.1`)
     })

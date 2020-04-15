@@ -2,7 +2,7 @@
 'use strict'
 
 const loadFixture = require('../fixtures')
-const expect = require('chai').expect
+const { expect } = require('../utils/chai')
 const path = require('path')
 
 describe('fixtures', () => {

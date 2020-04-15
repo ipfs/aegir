@@ -3,7 +3,7 @@
 
 const sinon = require('sinon')
 const path = require('path')
-const expect = require('chai').expect
+const { expect } = require('../utils/chai')
 
 const utils = require('../src/utils')
 
@@ -36,6 +36,7 @@ describe('utils', () => {
   it('getUserConfig', () => {
     sinon.stub(utils, 'getUserConfigPath').returns(path.join(__dirname, 'fixtures/.aegir.js'))
     expect(utils.getUserConfig()).to.eql({ config: 'mine' })
+    sinon.restore()
   })
 
   it('getLibraryName', () => {
@@ -52,20 +53,6 @@ describe('utils', () => {
 
   it('getPathToNodeModules', () => {
     expect(utils.getPathToNodeModules()).to.match(/node_modules$/)
-  })
-
-  it('getEnv', () => {
-    process.env.AEGIR_TEST = 'hello'
-
-    const env = utils.getEnv()
-    expect(env.raw.NODE_ENV).to.eql('test')
-    expect(env.raw.AEGIR_TEST).to.eql('hello')
-    expect(env.stringified['process.env'].NODE_ENV).to.eql('"test"')
-    expect(env.stringified['process.env'].AEGIR_TEST).to.eql('"hello"')
-
-    process.env.NODE_ENV = ''
-    expect(utils.getEnv('production').raw).to.have.property('NODE_ENV', 'production')
-    process.env.NODE_ENV = 'test'
   })
 
   it('hook', () => {

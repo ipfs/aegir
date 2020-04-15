@@ -2,7 +2,7 @@
 'use strict'
 
 const lint = require('../src/lint')
-const expect = require('chai').expect
+const { expect } = require('../utils/chai')
 const path = require('path')
 const fs = require('fs')
 const rimraf = require('rimraf')
@@ -138,7 +138,7 @@ describe('lint', () => {
         const dir = `test-${Date.now()}`
 
         fs.mkdirSync(dir)
-        fs.writeFileSync(`${dir}/test.js`, '\'use strict\'\n\nmodule.exports = {}\n')
+        fs.writeFileSync(`${dir}/test-pass.js`, '\'use strict\'\n\nmodule.exports = {}\n')
         fs.writeFileSync(
           '.aegir.js',
           `module.exports = { lint: { files: ['${dir}/*.js'] } }`
@@ -147,21 +147,18 @@ describe('lint', () => {
       .then(() => lint())
   })
 
-  it('should fail in user defined path globs', () => {
-    return setupProjectWithDeps([])
-      .then(() => {
-        // Directory not included in the default globs
-        const dir = `test-${Date.now()}`
+  it('should fail in user defined path globs', async () => {
+    await setupProjectWithDeps([])
+    // Directory not included in the default globs
+    const dir = `test-${Date.now()}`
 
-        fs.mkdirSync(dir)
-        fs.writeFileSync(`${dir}/test.js`, '() .> {')
-        fs.writeFileSync(
-          '.aegir.js',
+    fs.mkdirSync(dir)
+    fs.writeFileSync(`${dir}/test-fail.js`, '() .> {')
+    fs.writeFileSync(
+      '.aegir.js',
           `module.exports = { lint: { files: ['${dir}/*.js'] } }`
-        )
-      })
-      .then(() => lint())
-      .then(() => { throw new Error('Should have failed!') })
-      .catch(error => expect(error.message).to.contain('Lint errors'))
+    )
+
+    await expect(lint()).to.eventually.be.rejectedWith('Lint errors')
   })
 })

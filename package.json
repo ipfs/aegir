@@ -30,12 +30,12 @@
   "repository": "github:ipfs/aegir",
   "scripts": {
     "lint": "node cli.js lint",
-    "test:node": "cross-env AEGIR_TEST=hello node cli.js test -t node --files 'test/**/*.spec.js'",
-    "test:browser": "cross-env AEGIR_TEST=hello node cli.js test -t browser webworker --files test/browser.spec.js",
+    "test:node": "node cli.js test -t node",
+    "test:browser": "node cli.js test -t browser webworker",
     "test:acceptance": "./test/acceptance.sh",
     "test": "npm run test:node && npm run test:browser",
-    "coverage": "cross-env AEGIR_TEST=hello node cli.js coverage -t node",
-    "watch": "cross-env AEGIR_TEST=hello node cli.js test -t node --watch",
+    "coverage": "node cli.js coverage -t node",
+    "watch": "node cli.js test -t node --watch",
     "release": "node cli.js release --no-test --no-build",
     "release-minor": "node cli.js release --no-build --no-test --type minor",
     "release-major": "node cli.js release --no-build --no-test --type major"
@@ -96,7 +96,6 @@
     "karma-cli": "^2.0.0",
     "karma-edge-launcher": "~0.4.2",
     "karma-firefox-launcher": "^1.3.0",
-    "karma-junit-reporter": "^2.0.1",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
     "karma-mocha-webworker": "^1.3.0",
@@ -131,7 +130,6 @@
     "yargs-parser": "^18.1.2"
   },
   "devDependencies": {
-    "cross-env": "^7.0.0",
     "electron": "^8.2.2",
     "iso-url": "^0.4.7",
     "mock-require": "^3.0.2",

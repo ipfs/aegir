@@ -6,14 +6,10 @@ const webpackConfig = require('./webpack.config')
 const { fromRoot, hasFile } = require('../utils')
 const userConfig = require('./user')()
 
-const isProduction = process.env.NODE_ENV === 'production'
 const isWebworker = process.env.AEGIR_RUNNER === 'webworker'
 
 // Env to pass in the bundle with DefinePlugin
 const env = {
-  'process.env.AEGIR_RUNNER': JSON.stringify(process.env.AEGIR_RUNNER),
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-  'process.env.IS_WEBPACK_BUILD': JSON.stringify(true),
   TEST_DIR: JSON.stringify(fromRoot('test')),
   TEST_BROWSER_JS: hasFile('test', 'browser.js')
     ? JSON.stringify(fromRoot('test', 'browser.js'))
@@ -21,7 +17,7 @@ const env = {
 }
 
 // Webpack overrides for karma
-const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
+const karmaWebpackConfig = merge(webpackConfig(), {
   entry: '',
   devtool: 'inline-source-map',
   output: {
@@ -58,19 +54,21 @@ const karmaConfig = (config, argv) => {
     },
     frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
     basePath: process.cwd(),
-    files: files.map(f => {
-      return {
-        pattern: f,
-        included: !isWebworker
-      }
-    }).concat([
-      {
-        pattern: 'test/fixtures/**/*',
-        watched: false,
-        served: true,
-        included: false
-      }
-    ]),
+    files: files
+      .map(f => {
+        return {
+          pattern: f,
+          included: !isWebworker
+        }
+      })
+      .concat([
+        {
+          pattern: 'test/fixtures/**/*',
+          watched: false,
+          served: true,
+          included: false
+        }
+      ]),
 
     preprocessors: files.reduce((acc, f) => {
       acc[f] = ['webpack', 'sourcemap']
@@ -96,8 +94,7 @@ const karmaConfig = (config, argv) => {
 
     reporters: [
       argv.progress && 'progress',
-      !argv.progress && 'mocha',
-      process.env.CI && 'junit'
+      !argv.progress && 'mocha'
     ].filter(Boolean),
 
     mochaReporter: {
@@ -105,17 +102,10 @@ const karmaConfig = (config, argv) => {
       showDiff: true
     },
 
-    junitReporter: {
-      outputDir: process.cwd(),
-      outputFile: isWebworker ? 'junit-report-webworker.xml' : 'junit-report-browser.xml',
-      useBrowserName: false
-    },
-
     plugins: [
       'karma-chrome-launcher',
       'karma-edge-launcher',
       'karma-firefox-launcher',
-      'karma-junit-reporter',
       'karma-mocha',
       'karma-mocha-reporter',
       'karma-mocha-webworker',

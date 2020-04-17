@@ -91,7 +91,7 @@
     "ipfs-utils": "^2.1.0",
     "it-glob": "~0.0.5",
     "json-loader": "~0.5.7",
-    "karma": "^4.4.1",
+    "karma": "^5.0.2",
     "karma-chrome-launcher": "^3.1.0",
     "karma-cli": "^2.0.0",
     "karma-edge-launcher": "~0.4.2",

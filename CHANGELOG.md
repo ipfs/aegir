@@ -1,3 +1,23 @@
+<a name="21.9.0"></a>
+# [21.9.0](https://github.com/ipfs/aegir/compare/v21.8.1...v21.9.0) (2020-04-20)
+
+
+### Bug Fixes
+
+* add test to dependency check ([bf81ee2](https://github.com/ipfs/aegir/commit/bf81ee2))
+* bump electron to 8.2.2 ([cacb7af](https://github.com/ipfs/aegir/commit/cacb7af))
+* remove karma junit ([9a2ad2c](https://github.com/ipfs/aegir/commit/9a2ad2c))
+* remove unused util ([cefd014](https://github.com/ipfs/aegir/commit/cefd014))
+
+
+### Features
+
+* bump extract-zip to 2.0.0 ([b1f80fd](https://github.com/ipfs/aegir/commit/b1f80fd))
+* bump karma to 5.0.1 ([e229a66](https://github.com/ipfs/aegir/commit/e229a66))
+* improve errors and dep check cmd ([64f16db](https://github.com/ipfs/aegir/commit/64f16db)), closes [#428](https://github.com/ipfs/aegir/issues/428)
+
+
+
 <a name="21.8.1"></a>
 ## [21.8.1](https://github.com/ipfs/aegir/compare/v21.8.0...v21.8.1) (2020-04-14)
 

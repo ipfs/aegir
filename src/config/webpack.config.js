@@ -22,7 +22,7 @@ const base = (env, argv) => {
   return {
     bail: Boolean(isProduction),
     mode: isProduction ? 'production' : 'development',
-    devtool: isProduction ? 'source-map' : undefined,
+    devtool: isProduction ? undefined : 'source-map',
     entry: [userConfig.entry],
     output: {
       path: fromRoot(paths.dist),

@@ -1,3 +1,13 @@
+<a name="21.9.1"></a>
+## [21.9.1](https://github.com/ipfs/aegir/compare/v21.9.0...v21.9.1) (2020-04-30)
+
+
+### Bug Fixes
+
+* better stack traces and add process to node: false ([1f2dab6](https://github.com/ipfs/aegir/commit/1f2dab6))
+
+
+
 <a name="21.9.0"></a>
 # [21.9.0](https://github.com/ipfs/aegir/compare/v21.8.1...v21.9.0) (2020-04-20)
 

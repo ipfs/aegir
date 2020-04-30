@@ -19,7 +19,6 @@ const env = {
 // Webpack overrides for karma
 const karmaWebpackConfig = merge(webpackConfig(), {
   entry: '',
-  devtool: 'inline-source-map',
   output: {
     libraryTarget: 'var'
   },

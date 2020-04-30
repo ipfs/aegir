@@ -22,7 +22,7 @@ const base = (env, argv) => {
   return {
     bail: Boolean(isProduction),
     mode: isProduction ? 'production' : 'development',
-    devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
+    devtool: isProduction ? 'source-map' : undefined,
     entry: [userConfig.entry],
     output: {
       path: fromRoot(paths.dist),
@@ -30,8 +30,7 @@ const base = (env, argv) => {
       sourceMapFilename: filename + '.map',
       library: getLibraryName(pkg.name),
       libraryTarget: 'umd',
-      devtoolModuleFilenameTemplate: info =>
-        path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
+      devtoolModuleFilenameTemplate: info => 'file:' + encodeURI(info.absoluteResourcePath)
     },
     module: {
       rules: [
@@ -122,7 +121,7 @@ const base = (env, argv) => {
       tls: false,
       child_process: false,
       console: false,
-      process: false,
+      process: true, // TODO remove this once readable-stream is fixed
       Buffer: false,
       setImmediate: false,
       os: false,

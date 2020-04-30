@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "21.9.0",
+  "version": "21.9.1",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -162,13 +162,14 @@
     "Alberto Elias <hi@albertoelias.me>",
     "Diogo Silva <fsdiogo@gmail.com>",
     "Garren Smith <garren.smith@gmail.com>",
+    "Hector Sanjuan <code@hector.link>",
     "JGAntunes <j.goncalo.antunes@gmail.com>",
     "Jakub Sztandera <kubuxu@protonmail.ch>",
-    "Adam Uhlíř <adam@uhlir.dev>",
     "Marcin Rataj <lidel@lidel.org>",
     "Michael Garvin <gar+gh@danger.computer>",
     "Mikeal Rogers <mikeal.rogers@gmail.com>",
     "Stephen Whitmore <stephen.whitmore@gmail.com>",
-    "Vasco Santos <vasco.santos@ua.pt>"
+    "Vasco Santos <vasco.santos@ua.pt>",
+    "Adam Uhlíř <adam@uhlir.dev>"
   ]
 }

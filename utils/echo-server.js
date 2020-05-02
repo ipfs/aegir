@@ -5,7 +5,9 @@ const polka = require('polka')
 const cors = require('cors')
 const http = require('http')
 const { Buffer } = require('buffer')
+const stringify = require('json-stringify-safe')
 const getPort = require('./get-port')
+const toBuffer = require('it-to-buffer')
 
 class EchoServer {
   constructor (options = {}) {
@@ -29,8 +31,21 @@ class EchoServer {
         .all('/echo/query', (req, res) => {
           send(res, 200, req.query)
         })
-        .all('/echo', (req, res) => {
-          send(res, 200, req)
+        .all('/echo', async (req, res) => {
+          // try to echo the body back to the sender
+          const contentType = req.headers['content-type']
+
+          if (contentType) {
+            req.body = await toBuffer(req)
+
+            if (contentType.includes('text/plain')) {
+              req.body = req.body.toString('utf8')
+            } else if (contentType.includes('application/json')) {
+              req.body = JSON.parse(req.body)
+            }
+          }
+
+          send(res, 200, stringify(req))
         })
         .all('/download', (req, res) => {
           send(res, 200, Buffer.from(req.query.data || ''))

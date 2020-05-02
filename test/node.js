@@ -1,5 +1,6 @@
 'use strict'
 
+require('./echo-server')
 require('./utils')
 require('./test')
 require('./lint')

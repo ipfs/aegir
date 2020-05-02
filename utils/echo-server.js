@@ -29,6 +29,9 @@ class EchoServer {
         .all('/echo/query', (req, res) => {
           send(res, 200, req.query)
         })
+        .all('/echo/headers', (req, res) => {
+          send(res, 200, req.headers)
+        })
         .all('/echo', (req, res) => {
           send(res, 200, req)
         })

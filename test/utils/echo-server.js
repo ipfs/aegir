@@ -58,4 +58,10 @@ describe('echo server spec', () => {
     const res = Buffer.from(await req.arrayBuffer())
     expect(res).to.be.deep.eq(Buffer.from('hello world'))
   })
+
+  it('get with headers', async () => {
+    const req = await http.get('echo/headers', { base: url, headers: { foo: 'bar' } })
+    const res = await req.json()
+    expect(res).to.deep.include({ foo: 'bar' })
+  })
 })

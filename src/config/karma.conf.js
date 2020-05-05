@@ -10,6 +10,7 @@ const isWebworker = process.env.AEGIR_RUNNER === 'webworker'
 
 // Env to pass in the bundle with DefinePlugin
 const env = {
+  'process.env': JSON.stringify(process.env),
   TEST_DIR: JSON.stringify(fromRoot('test')),
   TEST_BROWSER_JS: hasFile('test', 'browser.js')
     ? JSON.stringify(fromRoot('test', 'browser.js'))

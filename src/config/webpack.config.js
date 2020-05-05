@@ -108,10 +108,12 @@ const base = (env, argv) => {
       ]
     },
     plugins: [
-      new webpack.DefinePlugin({ 'process.env': JSON.stringify({
-        DEBUG: process.env.DEBUG,
-        NODE_ENV: process.env.NODE_ENV
-      }) })
+      new webpack.DefinePlugin({
+        'process.env': JSON.stringify({
+          DEBUG: process.env.DEBUG,
+          NODE_ENV: process.env.NODE_ENV
+        })
+      })
     ],
     target: 'web',
     node: process.env.AEGIR_NODE === 'false' ? {

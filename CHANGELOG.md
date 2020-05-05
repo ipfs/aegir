@@ -1,3 +1,13 @@
+<a name="21.10.1"></a>
+## [21.10.1](https://github.com/ipfs/aegir/compare/v21.10.0...v21.10.1) (2020-05-05)
+
+
+### Bug Fixes
+
+* whitelist process env keys ([#557](https://github.com/ipfs/aegir/issues/557)) ([e36e1de](https://github.com/ipfs/aegir/commit/e36e1de))
+
+
+
 <a name="21.10.0"></a>
 # [21.10.0](https://github.com/ipfs/aegir/compare/v21.9.2...v21.10.0) (2020-05-05)
 

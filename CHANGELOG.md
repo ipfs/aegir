@@ -1,3 +1,13 @@
+<a name="21.10.0"></a>
+# [21.10.0](https://github.com/ipfs/aegir/compare/v21.9.2...v21.10.0) (2020-05-05)
+
+
+### Features
+
+* echo request headers ([#553](https://github.com/ipfs/aegir/issues/553)) ([8444136](https://github.com/ipfs/aegir/commit/8444136))
+
+
+
 <a name="21.9.2"></a>
 ## [21.9.2](https://github.com/ipfs/aegir/compare/v21.9.1...v21.9.2) (2020-04-30)
 

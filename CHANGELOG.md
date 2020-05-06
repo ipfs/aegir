@@ -1,3 +1,13 @@
+<a name="21.10.2"></a>
+## [21.10.2](https://github.com/ipfs/aegir/compare/v21.10.1...v21.10.2) (2020-05-06)
+
+
+### Bug Fixes
+
+* fix process.env in karma tests ([#559](https://github.com/ipfs/aegir/issues/559)) ([09ba9c6](https://github.com/ipfs/aegir/commit/09ba9c6))
+
+
+
 <a name="21.10.1"></a>
 ## [21.10.1](https://github.com/ipfs/aegir/compare/v21.10.0...v21.10.1) (2020-05-05)
 

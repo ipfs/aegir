@@ -1,3 +1,18 @@
+<a name="22.0.0"></a>
+# [22.0.0](https://github.com/ipfs/aegir/compare/v21.10.2...v22.0.0) (2020-05-07)
+
+
+### Features
+
+* turn off sourcemaps for production builds ([#549](https://github.com/ipfs/aegir/issues/549)) ([19bb300](https://github.com/ipfs/aegir/commit/19bb300))
+
+
+### BREAKING CHANGES
+
+* no more sourcemaps and unminified bundle for productions builds
+
+
+
 <a name="21.10.2"></a>
 ## [21.10.2](https://github.com/ipfs/aegir/compare/v21.10.1...v21.10.2) (2020-05-06)
 

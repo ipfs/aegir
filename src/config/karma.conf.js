@@ -19,7 +19,6 @@ const env = {
 
 // Webpack overrides for karma
 const karmaWebpackConfig = merge.strategy({ plugins: 'replace' })(webpackConfig(), {
-  devtool: 'source-map',
   entry: '',
   output: {
     libraryTarget: 'var'

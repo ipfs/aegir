@@ -22,7 +22,6 @@ const base = (env, argv) => {
   return {
     bail: Boolean(isProduction),
     mode: isProduction ? 'production' : 'development',
-    devtool: isProduction ? undefined : 'source-map',
     entry: [userConfig.entry],
     output: {
       path: fromRoot(paths.dist),
@@ -176,39 +175,9 @@ module.exports = (env, argv) => {
       external
     )
   }
-  if (isProduction) {
-    return [
-      merge(
-        base(env, argv),
-        {
-          output: {
-            filename: 'index.js',
-            sourceMapFilename: 'index.js.map'
-          },
-          optimization: {
-            minimize: false
-          }
-        },
-        external
-      ),
-      merge(
-        base(env, argv),
-        external
-      )
-    ]
-  }
 
   return merge(
     base(env, argv),
-    {
-      output: {
-        filename: 'index.js',
-        sourceMapFilename: 'index.js.map'
-      },
-      optimization: {
-        minimize: false
-      }
-    },
     external
   )
 }

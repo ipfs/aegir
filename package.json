@@ -118,7 +118,7 @@
     "simple-git": "^1.131.0",
     "stats-webpack-plugin": "~0.7.0",
     "stream-array": "^1.1.2",
-    "terser-webpack-plugin": "^2.3.6",
+    "terser-webpack-plugin": "^3.0.2",
     "transform-loader": "~0.2.4",
     "update-notifier": "^4.0.0",
     "vinyl-fs": "^3.0.3",

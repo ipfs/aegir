@@ -215,7 +215,7 @@ https://unpkg.com/<module-name>/dist/index.min.js
 
 **Specifying a custom entry file for Webpack**
 
-By default, `aegir` uses `src/index.js` as the entry file for Webpack. You can customize which file to use as the entry point by specifying `entry` field in your user configuration file. To do this, create `.aegir.js` file in your project's root diretory and add point the `entry` field to the file Webpack should use as the entry:
+By default, `aegir` uses `src/index.js` as the entry file for Webpack. You can customize which file to use as the entry point by specifying `entry` field in your user configuration file. To do this, create `.aegir.js` file in your project's root directory and add point the `entry` field to the file Webpack should use as the entry:
 
 ```javascript
 module.exports = {

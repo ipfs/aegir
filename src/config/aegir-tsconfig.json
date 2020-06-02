@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "target": "es2018",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "stripInternal": true,
+        "strict": false,
+        "alwaysStrict": true,
+        "strictNullChecks": true,
+        "noFallthroughCasesInSwitch": true,
+        "preserveConstEnums": true,
+        "noEmitOnError": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        "removeComments": false,
+        "skipLibCheck": true,
+        "lib": [
+            "ES2018",
+            "DOM"
+        ]
+    }
+}

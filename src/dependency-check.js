@@ -17,8 +17,8 @@ const defaultInput = [
 /**
  * Check dependencies
  *
- * @param {Object} argv
- * @param {ExecaOptions} execaOptions
+ * @param {object} argv
+ * @param {ExecaOptions} execaOptions - execa options
  * @returns {ExecaChildProcess}
  */
 const check = (argv = { _: [] }, execaOptions) => {

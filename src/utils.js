@@ -38,43 +38,28 @@ exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
 /**
  * Gets the top level path of the project aegir is executed in.
  *
- * @returns {string}
+ * @returns {string} - base path
  */
 exports.getBasePath = () => {
   return process.cwd()
 }
 
-/**
- * @returns {string}
- */
 exports.getPathToPkg = () => {
   return path.join(exports.getBasePath(), PKG_FILE)
 }
 
-/**
- * @returns {Promise<Object>}
- */
 exports.getPkg = () => {
   return fs.readJson(exports.getPathToPkg())
 }
 
-/**
- * @returns {string}
- */
 exports.getPathToDist = () => {
   return path.join(exports.getBasePath(), DIST_FOLDER)
 }
 
-/**
- * @returns {string}
- */
 exports.getUserConfigPath = () => {
   return findUp('.aegir.js')
 }
 
-/**
- * @returns {Object}
- */
 exports.getUserConfig = () => {
   let conf = {}
   try {
@@ -92,9 +77,9 @@ exports.getUserConfig = () => {
 /**
  * Converts the given name from something like `peer-id` to `PeerId`.
  *
- * @param {string} name
+ * @param {string} name - lib name in kebad
  *
- * @returns {string}
+ * @returns {string} - lib name in pascal
  */
 exports.getLibraryName = (name) => {
   return pascalcase(name)
@@ -103,7 +88,7 @@ exports.getLibraryName = (name) => {
 /**
  * Get the absolute path to `node_modules` for aegir itself
  *
- * @returns {string}
+ * @returns {string} - path to node modules
  */
 exports.getPathToNodeModules = () => {
   return path.resolve(__dirname, '../node_modules')
@@ -112,7 +97,7 @@ exports.getPathToNodeModules = () => {
 /**
  * Get the config for Listr.
  *
- * @returns {Object}
+ * @returns {object}
  */
 exports.getListrConfig = () => {
   return {

@@ -56,6 +56,8 @@
     "@commitlint/travis-cli": "^8.3.5",
     "@electron/get": "^1.10.0",
     "@polka/send-type": "^0.5.2",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^14.0.9",
     "aegir-typedoc-theme": "~0.0.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-flow-comments": "^6.22.0",

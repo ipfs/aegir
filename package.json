@@ -71,7 +71,7 @@
     "cors": "^2.8.5",
     "dependency-check": "^4.1.0",
     "dirty-chai": "^2.0.1",
-    "documentation": "^12.1.4",
+    "documentation": "^13.0.1",
     "electron-mocha": "^8.2.0",
     "eslint": "^6.3.0",
     "eslint-config-standard": "^14.1.1",

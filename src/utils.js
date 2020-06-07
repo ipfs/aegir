@@ -77,7 +77,7 @@ exports.getUserConfig = () => {
 /**
  * Converts the given name from something like `peer-id` to `PeerId`.
  *
- * @param {string} name - lib name in kebad
+ * @param {string} name - lib name in kebab
  *
  * @returns {string} - lib name in pascal
  */

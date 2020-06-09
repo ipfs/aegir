@@ -1,12 +1,53 @@
-name: Checks
-
+name: ci
 on: [push]
 
 jobs:
-  checks:
+  check:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - run: yarn
+    - name: lint
+      run: yarn lint
+    - name: dependencies
+      run: ./cli.js dep-check -- -i aegir
     - uses: ./actions/checks
+      name: size
       with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+  test-node:
+    needs: check
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        node: [12]
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: yarn
+      - run: npx nyc --reporter=lcov npm run test:node -- --bail
+      - uses: codecov/codecov-action@v1
+  test-chrome:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn
+      - run: npm run test:browser
+  test-firefox:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn
+      - run: npm run test:browser -- -- --browsers FirefoxHeadless

@@ -54,7 +54,7 @@ const args = cli.fail((msg, err, yargs) => {
     if (args.debug) {
       console.error('\n', err)
     } else {
-      console.error('\n', chalk.red(err.message))
+      console.error(chalk.red(err.message))
     }
   }
 

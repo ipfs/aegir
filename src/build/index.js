@@ -45,14 +45,15 @@ module.exports = async (argv) => {
     const gzip = await gzipSize(path.join(stats.outputPath, stats.assets[0].name))
     const maxsize = bytes(config.bundlesize.maxSize)
     const diff = gzip - maxsize
-    console.log('Size:', bytes(gzip))
 
-    if (diff > 0) {
-      throw new Error(`${bytes(diff)} ${diff > 0 ? 'above' : 'below'} the limit of ${bytes(maxsize)}`)
-    }
-    console.log(`${bytes(Math.abs(diff))} ${diff > 0 ? 'above' : 'below'} the ${bytes(maxsize)} limit.`)
     console.log('Use http://webpack.github.io/analyse/ to load "./dist/stats.json".')
     console.log(`Check previous sizes in https://bundlephobia.com/result?p=${pkg.name}@${pkg.version}`)
+
+    if (diff > 0) {
+      throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxsize)})`)
+    } else {
+      console.log(`${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxsize)})`)
+    }
   }
   return webpack
 }

@@ -144,6 +144,9 @@
     "Firefox ESR",
     "not ie < 11"
   ],
+  "eslintConfig": {
+    "extends": "./src/config/eslintrc.js"
+  },
   "contributors": [
     "dignifiedquire <dignifiedquire@gmail.com>",
     "Hugo Dias <hugomrdias@gmail.com>",

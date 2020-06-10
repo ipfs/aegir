@@ -4,7 +4,6 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const StatsPlugin = require('stats-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { fromRoot, pkg, paths, getLibraryName } = require('../utils')
 const userConfig = require('./user')()
@@ -154,7 +153,11 @@ const base = (env, argv) => {
       __dirname: 'mock',
       Buffer: true,
       setImmediate: true
-    }
+    },
+    performance: {
+      hints: false
+    },
+    stats: 'errors-warnings'
   }
 }
 
@@ -167,8 +170,7 @@ module.exports = (env, argv) => {
       base(env, argv),
       {
         plugins: [
-          new BundleAnalyzerPlugin(),
-          new StatsPlugin('stats.json')
+          new BundleAnalyzerPlugin({ generateStatsFile: true, analyzerMode: 'static', logLevel: 'error', openAnalyzer: process.env.CI === undefined })
         ],
         profile: true
       },

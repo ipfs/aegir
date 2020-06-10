@@ -15,16 +15,10 @@ module.exports = {
           describe: 'Flag to control when to tell the bundler to include node global packages.',
           default: true
         },
-        analyze: {
-          alias: 'a',
-          type: 'boolean',
-          describe: 'Analyze mode. Opens webpack-bundle-analyzer and write stats to disk',
-          default: false
-        },
         bundlesize: {
           alias: 'b',
           type: 'boolean',
-          describe: 'Checks your bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize`.',
+          describe: 'Analyse bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize`.',
           default: false
         }
       })

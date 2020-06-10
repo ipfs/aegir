@@ -1,0 +1,9 @@
+name: 'Bundle Size'
+description: 'Bundle size action for IPFS repos.'
+inputs:
+  github_token:
+    description: The GITHUB_TOKEN secret
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

@@ -1,0 +1,22 @@
+{
+  "name": "checks-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "ncc build index.js"
+  },
+  "dependencies": {
+    "@actions/artifact": "^0.2.0",
+    "@actions/core": "^1.2.3",
+    "@actions/exec": "^1.0.3",
+    "@actions/github": "^2.1.1",
+    "cosmiconfig": "^6.0.0",
+    "execa": "^4.0.0",
+    "globby": "^11.0.0"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.21.1"
+  }
+}

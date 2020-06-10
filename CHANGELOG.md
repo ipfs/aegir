@@ -1,3 +1,13 @@
+<a name="22.1.0"></a>
+# [22.1.0](https://github.com/ipfs/aegir/compare/v22.0.0...v22.1.0) (2020-06-10)
+
+
+### Features
+
+* checks action and bundlesize check improvements ([#532](https://github.com/ipfs/aegir/issues/532)) ([435bb20](https://github.com/ipfs/aegir/commit/435bb20))
+
+
+
 <a name="22.0.0"></a>
 # [22.0.0](https://github.com/ipfs/aegir/compare/v21.10.2...v22.0.0) (2020-05-07)
 

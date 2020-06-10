@@ -11,7 +11,7 @@ jobs:
       run: yarn lint
     - name: dependencies
       run: ./cli.js dep-check -- -i aegir
-    - uses: ./actions/checks
+    - uses: ./actions/bundle-size
       name: size
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}

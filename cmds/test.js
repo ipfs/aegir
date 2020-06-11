@@ -80,11 +80,6 @@ module.exports = {
           type: 'boolean',
           default: false
         },
-        flow: {
-          describe: 'Run test with Flow support',
-          type: 'boolean',
-          default: false
-        },
         progress: {
           describe: 'Use progress reporters on mocha and karma',
           type: 'boolean',

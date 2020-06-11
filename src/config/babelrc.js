@@ -1,24 +1,11 @@
 'use strict'
 const { pkg, browserslist } = require('./../utils')
 
-const validateBoolOption = (name, value, defaultValue) => {
-  if (typeof value === 'undefined') {
-    value = defaultValue
-  }
-
-  if (typeof value !== 'boolean') {
-    throw new Error(`Preset aegir: '${name}' option must be a boolean.`)
-  }
-
-  return value
-}
-
 module.exports = function (opts = {}) {
   const env = process.env.BABEL_ENV || process.env.NODE_ENV
   const isEnvDevelopment = env === 'development'
   const isEnvProduction = env === 'production'
   const isEnvTest = env === 'test'
-  const isFlowEnabled = validateBoolOption('flow', opts.flow, true)
   const targets = { browsers: pkg.browserslist || browserslist }
 
   if (!isEnvDevelopment && !isEnvProduction && !isEnvTest) {
@@ -44,7 +31,6 @@ module.exports = function (opts = {}) {
       ]
     ].filter(Boolean),
     plugins: [
-      isFlowEnabled && [require('babel-plugin-transform-flow-comments')],
       [
         require('@babel/plugin-transform-runtime').default,
         {

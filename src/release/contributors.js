@@ -1,22 +1,22 @@
 'use strict'
 
-const git = require('simple-git')(process.cwd())
-const pify = require('pify')
+const git = require('simple-git/promise')(process.cwd())
 const execa = require('execa')
 const { getPathToPkg } = require('../utils')
 
 const contributors = async () => {
   await execa('git-authors-cli', ['--print', 'false'])
 
-  const res = await pify(git.status.bind(git))()
+  const res = await git.status()
 
   if (!res.modified.length) {
     return
   }
 
-  await pify(git.commit.bind(git))(
+  await git.commit(
     'chore: update contributors',
-    getPathToPkg(), {
+    getPathToPkg(),
+    {
       '--no-verify': true
     }
   )

@@ -1,7 +1,6 @@
 'use strict'
 
-const git = require('simple-git')(process.cwd())
-const pify = require('pify')
+const git = require('simple-git/promise')(process.cwd())
 const execa = require('execa')
 
 async function push (opts) {
@@ -9,7 +8,7 @@ async function push (opts) {
   const branch = (await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'], {
     cwd: process.cwd()
   })).stdout
-  return pify(git.push.bind(git))(
+  return git.push(
     remote,
     branch,
     {

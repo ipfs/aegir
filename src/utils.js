@@ -35,6 +35,19 @@ exports.repoDirectory = path.dirname(pkgPath)
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
 exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
+
+/**
+ * Get package version
+ *
+ * @returns {string} version
+ */
+exports.pkgVersion = async () => {
+  const {
+    version
+  } = await fs.readJson(exports.getPathToPkg())
+  return version
+}
+
 /**
  * Gets the top level path of the project aegir is executed in.
  *
@@ -49,13 +62,6 @@ exports.getBasePath = () => {
  */
 exports.getPathToPkg = () => {
   return path.join(exports.getBasePath(), PKG_FILE)
-}
-
-/**
- * @returns {Promise<Object>}
- */
-exports.getPkg = () => {
-  return fs.readJson(exports.getPathToPkg())
 }
 
 /**

@@ -13,7 +13,7 @@ describe('test', () => {
         path.join(__dirname, 'fixtures', 'tests', 'unhandled-promise-rejection.js')
       ],
       noUnhandledPromiseRejections: true
-    })).to.eventually.be.rejected()
+    }, { stdio: 'pipe' })).to.eventually.be.rejected()
   })
 
   it('unhandled promise rejections should not fail tests when overridden', async () => {
@@ -23,6 +23,6 @@ describe('test', () => {
         path.join(__dirname, 'fixtures', 'tests', 'unhandled-promise-rejection.js')
       ],
       noUnhandledPromiseRejections: false
-    })
+    }, { stdio: 'pipe' })
   })
 })

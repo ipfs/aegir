@@ -46,7 +46,7 @@ describe('lint', () => {
 
   it('lint itself (aegir)', function () {
     this.timeout(20 * 1000) // slow ci is slow
-    return lint({ fix: false })
+    return lint({ fix: false, silent: true })
   })
 
   it('succeeds when package.json contains dependencies with good versions', function () {
@@ -144,7 +144,7 @@ describe('lint', () => {
           `module.exports = { lint: { files: ['${dir}/*.js'] } }`
         )
       })
-      .then(() => lint())
+      .then(() => lint({ silent: true }))
   })
 
   it('should fail in user defined path globs', async () => {
@@ -159,6 +159,6 @@ describe('lint', () => {
           `module.exports = { lint: { files: ['${dir}/*.js'] } }`
     )
 
-    await expect(lint()).to.eventually.be.rejectedWith('Lint errors')
+    await expect(lint({ silent: true })).to.eventually.be.rejectedWith('Lint errors')
   })
 })

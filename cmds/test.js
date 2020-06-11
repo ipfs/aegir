@@ -94,11 +94,6 @@ module.exports = {
           describe: 'If true, unhandledRejection events will cause tests to fail',
           type: 'boolean',
           default: true
-        },
-        node: {
-          type: 'boolean',
-          describe: 'Flag to control when to tell the bundler to include node global packages.',
-          default: true
         }
       })
   },

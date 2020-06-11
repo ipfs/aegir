@@ -124,7 +124,9 @@ const base = (env, argv) => {
       tls: false,
       child_process: false,
       console: false,
-      process: true, // TODO remove this once readable-stream is fixed
+      // TODO remove this once readable-stream is fixed probably on in v4
+      // https://github.com/nodejs/readable-stream/pull/435
+      process: true,
       Buffer: false,
       setImmediate: false,
       os: false,

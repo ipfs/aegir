@@ -34,6 +34,12 @@ cli
     default: false,
     alias: 'debug'
   })
+  // TODO remove after webpack 5 upgrade
+  .options('node', {
+    type: 'boolean',
+    describe: 'Flag to control if bundler should inject node globals or built-ins.',
+    default: false
+  })
   .help()
   .alias('h', 'help')
   .alias('v', 'version')

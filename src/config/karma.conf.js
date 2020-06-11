@@ -104,7 +104,6 @@ const karmaConfig = (config, argv) => {
 
     plugins: [
       'karma-chrome-launcher',
-      'karma-edge-launcher',
       'karma-firefox-launcher',
       'karma-mocha',
       'karma-mocha-reporter',

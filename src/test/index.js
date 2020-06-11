@@ -3,17 +3,17 @@
 const TASKS = [
   {
     title: 'Test Node.js',
-    task: (opts) => require('./node')(opts),
+    task: (opts, execaOptions) => require('./node')(opts, execaOptions),
     enabled: (ctx) => ctx.target.includes('node')
   },
   {
     title: 'Test Browser',
-    task: (opts) => require('./browser')(opts),
+    task: require('./browser'),
     enabled: (ctx) => ctx.target.includes('browser')
   },
   {
     title: 'Test Webworker',
-    task: (opts) => require('./browser')(Object.assign(opts, { webworker: true })),
+    task: (opts, execaOptions) => require('./browser')(Object.assign(opts, { webworker: true }), execaOptions),
     enabled: (ctx) => ctx.target.includes('webworker')
   },
   {
@@ -30,7 +30,7 @@ const TASKS = [
 ]
 
 module.exports = {
-  run (opts) {
+  run (opts, execaOptions) {
     const userConfig = require('../config/user')()
     const pmap = require('p-map')
 
@@ -43,7 +43,7 @@ module.exports = {
       }
 
       console.log(task.title) // eslint-disable-line no-console
-      return task.task(opts)
+      return task.task(opts, execaOptions)
     }, { concurrency: 1 })
   }
 }

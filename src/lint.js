@@ -94,7 +94,9 @@ function runLinter (opts = {}) {
       if (opts.fix) {
         CLIEngine.outputFixes(report)
       }
-      console.log(formatter(report.results)) // eslint-disable-line no-console
+      if (!opts.silent) {
+        console.log(formatter(report.results)) // eslint-disable-line no-console
+      }
 
       if (report.errorCount > 0) {
         throw new Error('Lint errors')

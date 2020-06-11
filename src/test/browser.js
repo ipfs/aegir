@@ -2,8 +2,11 @@
 const path = require('path')
 const execa = require('execa')
 const { hook, fromAegir } = require('../utils')
+const merge = require('merge-options')
 
-module.exports = (argv) => {
+/** @typedef { import("execa").Options} ExecaOptions */
+
+module.exports = (argv, execaOptions) => {
   const input = argv._.slice(1)
   const forwardOptions = argv['--'] ? argv['--'] : []
   const watch = argv.watch ? ['--auto-watch', '--no-single-run'] : []
@@ -16,30 +19,36 @@ module.exports = (argv) => {
 
   return hook('browser', 'pre')(argv.userConfig)
     .then((hook = {}) => {
-      return execa('karma', [
-        'start',
-        fromAegir('src/config/karma.conf.js'),
-        ...watch,
-        ...files,
-        ...verbose,
-        ...grep,
-        ...progress,
-        ...input,
-        ...bail,
-        ...timeout,
-        ...forwardOptions
-      ], {
-        env: {
-          NODE_ENV: process.env.NODE_ENV || 'test',
-          AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser',
-          AEGIR_NODE: argv.node,
-          IS_WEBPACK_BUILD: true,
-          ...hook.env
-        },
-        preferLocal: true,
-        localDir: path.join(__dirname, '../..'),
-        stdio: 'inherit'
-      })
+      return execa('karma',
+        [
+          'start',
+          fromAegir('src/config/karma.conf.js'),
+          ...watch,
+          ...files,
+          ...verbose,
+          ...grep,
+          ...progress,
+          ...input,
+          ...bail,
+          ...timeout,
+          ...forwardOptions
+        ],
+        merge(
+          {
+            env: {
+              NODE_ENV: process.env.NODE_ENV || 'test',
+              AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser',
+              AEGIR_NODE: argv.node,
+              IS_WEBPACK_BUILD: true,
+              ...hook.env
+            },
+            preferLocal: true,
+            localDir: path.join(__dirname, '../..'),
+            stdio: 'inherit'
+          },
+          execaOptions
+        )
+      )
     })
     .then(() => hook('browser', 'post')(argv.userConfig))
 }

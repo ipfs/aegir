@@ -1,3 +1,24 @@
+<a name="23.0.0"></a>
+# [23.0.0](https://github.com/ipfs/aegir/compare/v22.1.0...v23.0.0) (2020-06-12)
+
+
+### Bug Fixes
+
+* remove support for flow ([#579](https://github.com/ipfs/aegir/issues/579)) ([870c64d](https://github.com/ipfs/aegir/commit/870c64d))
+
+
+### Features
+
+* clean up deps, utils, release cmd and docs ([#581](https://github.com/ipfs/aegir/issues/581)) ([4b4ce35](https://github.com/ipfs/aegir/commit/4b4ce35))
+
+
+### BREAKING CHANGES
+
+* remove karma-edge and remove `docsFormats` from `docs` cmd
+* Flow support was removed
+
+
+
 <a name="22.1.0"></a>
 # [22.1.0](https://github.com/ipfs/aegir/compare/v22.0.0...v22.1.0) (2020-06-10)
 

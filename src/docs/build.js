@@ -15,18 +15,20 @@ const { fromRoot, hasFile } = require('../utils')
  * @param {ExecaOptions} execaOptions
  * @returns {ExecaChildProcess}
  */
-const docs = (argv = { _: [] }, execaOptions = {}) => {
+const docs = (argv, execaOptions = {}) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
+  const format = forwardOptions.some(v => ['--format', '-f'].includes(v)) ? [] : ['--format', 'html']
+  const output = forwardOptions.some(v => ['--output', '-o'].includes(v)) ? [] : ['--output', fromRoot('docs')]
   const config = hasFile('documentation.yml') ? ['--config', fromRoot('documentation.yml')] : []
   return execa('documentation',
     [
       'build',
       fromRoot('src/index.js'),
-      '--format', 'html',
-      '--resolve', 'node',
-      '--github',
-      '--output', fromRoot('docs'),
+      ...format,
+      ...output,
       ...config,
+      '--github',
+      '--resolve', 'node',
       ...forwardOptions
     ],
     merge(

@@ -9,13 +9,6 @@ module.exports = {
       type: 'boolean',
       describe: 'Publish to GitHub Pages',
       default: false
-    },
-    docsFormats: {
-      alias: 'd',
-      describe: 'Which documentation formats to build',
-      type: 'array',
-      choices: ['html', 'md'],
-      default: ['html']
     }
   },
   handler (argv) {

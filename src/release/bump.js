@@ -3,7 +3,7 @@
 const semver = require('semver')
 const fs = require('fs-extra')
 
-const getPathToPkg = require('../utils').getPathToPkg
+const { getPathToPkg } = require('../utils')
 
 function bump (ctx, task) {
   const { type, preid } = ctx

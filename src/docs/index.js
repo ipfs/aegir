@@ -12,7 +12,7 @@ const TASKS = new Listr([{
   task: () => clean('docs')
 }, {
   title: 'Generating documentation',
-  task: build
+  task: (ctx) => build(ctx)
 }, {
   title: 'Publish to GitHub Pages',
   task: publish,

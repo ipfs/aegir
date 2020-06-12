@@ -22,12 +22,12 @@ function release (opts) {
   const tasks = new Listr([
     {
       title: 'Lint',
-      task: lint,
+      task: (ctx) => lint({ ...ctx, silent: true }),
       enabled: (ctx) => ctx.lint
     },
     {
       title: 'Test',
-      task: (ctx) => test.run(ctx),
+      task: (ctx) => test.run({ ...ctx, progress: true }),
       enabled: (ctx) => ctx.test
     },
     {

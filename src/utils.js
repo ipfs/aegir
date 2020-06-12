@@ -35,6 +35,19 @@ exports.repoDirectory = path.dirname(pkgPath)
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
 exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
+
+/**
+ * Get package version
+ *
+ * @returns {string} version
+ */
+exports.pkgVersion = async () => {
+  const {
+    version
+  } = await fs.readJson(exports.getPathToPkg())
+  return version
+}
+
 /**
  * Gets the top level path of the project aegir is executed in.
  *
@@ -49,13 +62,6 @@ exports.getBasePath = () => {
  */
 exports.getPathToPkg = () => {
   return path.join(exports.getBasePath(), PKG_FILE)
-}
-
-/**
- * @returns {Promise<Object>}
- */
-exports.getPkg = () => {
-  return fs.readJson(exports.getPathToPkg())
 }
 
 /**
@@ -118,51 +124,6 @@ exports.getListrConfig = () => {
   return {
     renderer: 'verbose'
   }
-}
-
-/**
- * Path to example file.
- *
- * @returns {string}
- */
-exports.getPathToExample = () => {
-  return path.join(exports.getBasePath(), 'example.js')
-}
-
-/**
- * Path to documentation config file.
- *
- * @returns {string}
- */
-exports.getPathToDocsConfig = () => {
-  return path.join(exports.getBasePath(), 'documentation.yml')
-}
-
-/**
- * Path to documentation folder.
- *
- * @returns {string}
- */
-exports.getPathToDocs = () => {
-  return path.join(exports.getBasePath(), 'docs')
-}
-
-/**
- * Path to documentation index.html.
- *
- * @returns {string}
- */
-exports.getPathToDocsFile = () => {
-  return path.join(exports.getPathToDocs(), 'index.html')
-}
-
-/**
- * Path to documentation index.md.
- *
- * @returns {string}
- */
-exports.getPathToDocsMdFile = () => {
-  return path.join(exports.getPathToDocs(), 'index.md')
 }
 
 exports.hook = (env, key) => (ctx) => {

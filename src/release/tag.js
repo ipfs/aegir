@@ -1,17 +1,11 @@
 'use strict'
 
-const git = require('simple-git')(process.cwd())
-const pify = require('pify')
-const fs = require('fs-extra')
+const git = require('simple-git/promise')(process.cwd())
 
-const getPathToPkg = require('../utils').getPathToPkg
+const { pkgVersion } = require('../utils')
 
 async function tag () {
-  const {
-    version
-  } = await fs.readJson(getPathToPkg())
-
-  await pify(git.addTag.bind(git))(`v${version}`)
+  await git.addTag(`v${await pkgVersion()}`)
 }
 
 module.exports = tag

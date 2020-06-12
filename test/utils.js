@@ -19,12 +19,6 @@ describe('utils', () => {
     process.cwd.restore()
   })
 
-  it('getPkg', () => {
-    return utils.getPkg().then((pkg) => {
-      expect(pkg.name).to.eql('aegir')
-    })
-  })
-
   it('getPathToDist', () => {
     expect(utils.getPathToDist()).to.match(/dist$/)
   })

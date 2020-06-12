@@ -3,10 +3,13 @@
 const execa = require('execa')
 const path = require('path')
 const { hook } = require('../utils')
+const merge = require('merge-options')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
-function testNode (ctx) {
+/** @typedef { import("execa").Options} ExecaOptions */
+
+function testNode (ctx, execaOptions) {
   let exec = 'mocha'
   const env = {
     NODE_ENV: 'test',
@@ -59,8 +62,6 @@ function testNode (ctx) {
   const postHook = hook('node', 'post')
   const preHook = hook('node', 'pre')
 
-  let err
-
   if (ctx['100']) {
     args = [
       '--check-coverage',
@@ -75,24 +76,20 @@ function testNode (ctx) {
 
   return preHook(ctx)
     .then((hook = {}) => {
-      return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
-        env: { ...env, ...hook.env },
-        cwd: process.cwd(),
-        preferLocal: true,
-        localDir: path.join(__dirname, '../..'),
-        stdin: process.stdin,
-        stdout: process.stdout,
-        stderr: process.stderr
-      }).catch((_err) => {
-        err = _err
-      })
+      return execa(exec,
+        args.concat(files.map((p) => path.normalize(p))),
+        merge(
+          {
+            env: { ...env, ...hook.env },
+            preferLocal: true,
+            localDir: path.join(__dirname, '../..'),
+            stdio: 'inherit'
+          },
+          execaOptions
+        )
+      )
     })
     .then(() => postHook(ctx))
-    .then(() => {
-      if (err) {
-        throw err
-      }
-    })
 }
 
 module.exports = testNode

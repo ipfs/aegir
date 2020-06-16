@@ -26,6 +26,7 @@ module.exports = function (opts = {}) {
           corejs: 3,
           useBuiltIns: 'entry',
           modules: 'commonjs',
+          bugfixes: true,
           targets
         }
       ]

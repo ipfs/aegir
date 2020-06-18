@@ -40,9 +40,10 @@ Your `package.json` should have the following entries and should pass `aegir lin
 }
 ```
 ## Travis Setup
-
 Check this tutorial https://github.com/ipfs/aegir/wiki/Travis-Setup
 
+## Github Action Setup
+Check this tutorial https://github.com/ipfs/aegir/wiki/Github-Actions-Setup
 
 ## Stack Requirements
 

@@ -6,7 +6,8 @@ module.exports = {
     sourceType: 'script'
   },
   globals: {
-    self: true
+    self: true,
+    mocha: true
   },
   plugins: [
     'no-only-tests'

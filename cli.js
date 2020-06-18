@@ -17,6 +17,7 @@ updateNotifier({
 }).notify()
 
 const cli = require('yargs')
+const { config } = require('./src/config/user')
 cli
   .scriptName('aegir')
   .env('AEGIR')
@@ -26,13 +27,18 @@ cli
   .example('$0 test -t webworker -- --browsers Firefox', 'If the command supports `--` can be used to forward options to the underlying tool.')
   .example('npm test -- -- --browsers Firefox', 'If `npm test` translates to `aegir test -t browser` and you want to forward options you need to use `-- --` instead.')
   .epilog('Use `$0 <command> --help` to learn more about each command.')
+  .middleware((yargs) => {
+    yargs.config = config()
+  })
   .commandDir('cmds')
-  .demandCommand(1, 'You need at least one command.')
-  .option('D', {
+  .help()
+  .alias('help', 'h')
+  .alias('version', 'v')
+  .option('debug', {
     desc: 'Show debug output.',
     type: 'boolean',
     default: false,
-    alias: 'debug'
+    alias: 'd'
   })
   // TODO remove after webpack 5 upgrade
   .options('node', {
@@ -40,10 +46,13 @@ cli
     describe: 'Flag to control if bundler should inject node globals or built-ins.',
     default: false
   })
-  .help()
-  .alias('h', 'help')
-  .alias('v', 'version')
-  .group(['help', 'version', 'debug'], 'Global Options:')
+  .options('ts', {
+    type: 'boolean',
+    describe: 'Enable support for Typescript',
+    default: false
+  })
+  .group(['help', 'version', 'debug', 'node', 'ts'], 'Global Options:')
+  .demandCommand(1, 'You need at least one command.')
   .wrap(cli.terminalWidth())
   .parserConfiguration({ 'populate--': true })
   .recommendCommands()

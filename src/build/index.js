@@ -33,12 +33,24 @@ module.exports = async (argv) => {
     env: {
       NODE_ENV: process.env.NODE_ENV || 'production',
       AEGIR_BUILD_ANALYZE: argv.bundlesize,
-      AEGIR_NODE: argv.node
+      AEGIR_NODE: argv.node,
+      AEGIR_TS: argv.ts
     },
     localDir: path.join(__dirname, '../..'),
     preferLocal: true,
     stdio: 'inherit'
   })
+
+  if (argv.ts) {
+    await execa('tsc', [
+      '--outDir', './dist/src',
+      '--declaration'
+    ], {
+      localDir: path.join(__dirname, '../..'),
+      preferLocal: true,
+      stdio: 'inherit'
+    })
+  }
 
   if (argv.bundlesize) {
     const stats = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'dist/stats.json')))

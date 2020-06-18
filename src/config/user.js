@@ -1,5 +1,6 @@
 'use strict'
 
+const { cosmiconfigSync } = require('cosmiconfig')
 const merge = require('merge-options')
 const utils = require('../utils')
 
@@ -49,4 +50,31 @@ function userConfig () {
   return user
 }
 
+const config = () => {
+  let cosmiconfig
+  try {
+    const configExplorer = cosmiconfigSync('aegir', {
+      searchPlaces: ['package.json', '.aegir.js']
+    })
+    const { config } = configExplorer.search()
+    cosmiconfig = config || {}
+  } catch (err) {
+    cosmiconfig = {}
+  }
+  const conf = merge({
+    webpack: {},
+    karma: {},
+    hooks: {},
+    entry: utils.fromRoot('src', 'index.js'),
+    bundlesize: {
+      path: './dist/index.min.js',
+      maxSize: '100kB'
+    }
+  },
+  cosmiconfig)
+
+  return conf
+}
+
 module.exports = userConfig
+userConfig.config = config

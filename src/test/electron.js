@@ -15,7 +15,6 @@ module.exports = (argv) => {
   const timeout = argv.timeout ? ['--timeout', argv.bail] : []
   const renderer = argv.renderer ? ['--renderer'] : []
   const ts = argv.ts ? ['--require', fromAegir('src/config/register.js')] : []
-  console.log('ts', ts)
 
   return hook('browser', 'pre')(argv.userConfig)
     .then((hook = {}) => Promise.all([hook, getElectron()]))

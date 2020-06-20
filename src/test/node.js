@@ -2,7 +2,7 @@
 
 const execa = require('execa')
 const path = require('path')
-const { hook } = require('../utils')
+const { hook, fromAegir } = require('../utils')
 const merge = require('merge-options')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
@@ -13,7 +13,8 @@ function testNode (ctx, execaOptions) {
   let exec = 'mocha'
   const env = {
     NODE_ENV: 'test',
-    AEGIR_RUNNER: 'node'
+    AEGIR_RUNNER: 'node',
+    AEGIR_TS: ctx.ts
   }
   const timeout = ctx.timeout || DEFAULT_TIMEOUT
 
@@ -25,8 +26,8 @@ function testNode (ctx, execaOptions) {
   ].filter(Boolean)
 
   let files = [
-    'test/node.js',
-    'test/**/*.spec.js'
+    'test/node.{js,ts}',
+    'test/**/*.spec.{js,ts}'
   ]
 
   if (ctx.colors) {
@@ -59,6 +60,10 @@ function testNode (ctx, execaOptions) {
     args.push('--bail')
   }
 
+  if (ctx.ts) {
+    args.push(...['--require', fromAegir('src/config/register.js')])
+  }
+
   const postHook = hook('node', 'post')
   const preHook = hook('node', 'pre')
 
@@ -80,7 +85,10 @@ function testNode (ctx, execaOptions) {
         args.concat(files.map((p) => path.normalize(p))),
         merge(
           {
-            env: { ...env, ...hook.env },
+            env: {
+              ...env,
+              ...hook.env
+            },
             preferLocal: true,
             localDir: path.join(__dirname, '../..'),
             stdio: 'inherit'

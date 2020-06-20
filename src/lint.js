@@ -7,15 +7,16 @@ const userConfig = require('./config/user')
 const formatter = CLIEngine.getFormatter()
 
 const FILES = [
-  '*.js',
+  '*.{js,ts}',
   'bin/**',
-  'config/**/*.js',
-  'test/**/*.js',
-  'src/**/*.js',
-  'tasks/**/*.js',
-  'benchmarks/**/*.js',
-  'utils/**/*.js',
-  '!**/node_modules/**'
+  'config/**/*.{js,ts}',
+  'test/**/*.{js,ts}',
+  'src/**/*.{js,ts}',
+  'tasks/**/*.{js,ts}',
+  'benchmarks/**/*.{js,ts}',
+  'utils/**/*.{js,ts}',
+  '!**/node_modules/**',
+  '!**/*.d.ts'
 ]
 
 function checkDependencyVersions () {
@@ -82,7 +83,7 @@ function checkDependencyVersions () {
 function runLinter (opts = {}) {
   const cli = new CLIEngine({
     useEslintrc: true,
-    baseConfig: require('./config/eslintrc.js'),
+    baseConfig: opts.ts ? require('./config/eslintrc-ts.js') : require('./config/eslintrc.js'),
     fix: opts.fix
   })
 

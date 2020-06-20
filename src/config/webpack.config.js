@@ -8,6 +8,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const { fromRoot, pkg, paths, getLibraryName } = require('../utils')
 const userConfig = require('./user')()
 const isProduction = process.env.NODE_ENV === 'production'
+const isTSEnable = process.env.AEGIR_TS === 'true'
 
 const base = (env, argv) => {
   const filename = [
@@ -21,7 +22,7 @@ const base = (env, argv) => {
   return {
     bail: Boolean(isProduction),
     mode: isProduction ? 'production' : 'development',
-    entry: [userConfig.entry],
+    entry: [isTSEnable ? fromRoot('src', 'index.ts') : fromRoot('src', 'index.js')],
     output: {
       path: fromRoot(paths.dist),
       filename: filename,
@@ -35,7 +36,7 @@ const base = (env, argv) => {
         {
           oneOf: [
             {
-              test: /\.js$/,
+              test: /\.(js|ts)$/,
               include: fromRoot(paths.src),
               use: {
                 loader: require.resolve('babel-loader'),
@@ -64,6 +65,7 @@ const base = (env, argv) => {
       ]
     },
     resolve: {
+      extensions: ['.wasm', '.mjs', '.js', '.json', '.ts', '.d.ts'],
       alias: {
         '@babel/runtime': path.dirname(
           require.resolve('@babel/runtime/package.json')

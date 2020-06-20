@@ -5,15 +5,16 @@ const webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
 const { fromRoot, hasFile } = require('../utils')
 const userConfig = require('./user')()
-
+const isTSEnable = process.env.AEGIR_TS === 'true'
 const isWebworker = process.env.AEGIR_RUNNER === 'webworker'
 
 // Env to pass in the bundle with DefinePlugin
 const env = {
+  TS_ENABLED: process.env.AEGIR_TS,
   'process.env': JSON.stringify(process.env),
   TEST_DIR: JSON.stringify(fromRoot('test')),
-  TEST_BROWSER_JS: hasFile('test', 'browser.js')
-    ? JSON.stringify(fromRoot('test', 'browser.js'))
+  TEST_BROWSER_JS: hasFile('test', isTSEnable ? 'browser.ts' : 'browser.js')
+    ? JSON.stringify(fromRoot('test', isTSEnable ? 'browser.ts' : 'browser.js'))
     : JSON.stringify('')
 }
 
@@ -25,7 +26,27 @@ const karmaWebpackConfig = merge.strategy({ plugins: 'replace' })(webpackConfig(
   },
   plugins: [
     new webpack.DefinePlugin(env)
-  ]
+  ],
+  module: {
+    rules: [
+      {
+        oneOf: [
+          {
+            test: /\.(js|ts)$/,
+            include: fromRoot('test'),
+            use: {
+              loader: require.resolve('babel-loader'),
+              options: {
+                presets: [require('./babelrc')()],
+                babelrc: false,
+                cacheDirectory: true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
 })
 
 const karmaConfig = (config, argv) => {

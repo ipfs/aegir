@@ -1,3 +1,19 @@
+<a name="25.0.0"></a>
+# [25.0.0](https://github.com/ipfs/aegir/compare/v24.0.0...v25.0.0) (2020-06-20)
+
+
+### Bug Fixes
+
+* remove docsFormats from release cmd ([39e44b0](https://github.com/ipfs/aegir/commit/39e44b0))
+* use bugfixes: true in the babel config ([2fc9878](https://github.com/ipfs/aegir/commit/2fc9878))
+
+
+### Features
+
+* support ts([#584](https://github.com/ipfs/aegir/issues/584)) ([9dc23a3](https://github.com/ipfs/aegir/commit/9dc23a3))
+
+
+
 <a name="24.0.0"></a>
 # [24.0.0](https://github.com/ipfs/aegir/compare/v23.0.0...v24.0.0) (2020-06-16)
 

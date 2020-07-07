@@ -75,7 +75,7 @@
     "dependency-check": "^4.1.0",
     "dirty-chai": "^2.0.1",
     "documentation": "^13.0.1",
-    "electron-mocha": "^8.2.0",
+    "electron-mocha": "^9.0.1",
     "eslint": "^6.3.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.21.2",

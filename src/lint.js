@@ -83,7 +83,7 @@ function checkDependencyVersions () {
 function runLinter (opts = {}) {
   const cli = new CLIEngine({
     useEslintrc: true,
-    baseConfig: opts.ts ? require('./config/eslintrc-ts.js') : require('./config/eslintrc.js'),
+    baseConfig: require('./config/eslintrc.js'),
     fix: opts.fix
   })
 

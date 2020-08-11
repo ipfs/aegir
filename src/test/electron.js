@@ -10,6 +10,7 @@ module.exports = (argv) => {
   const files = argv.files.length ? [...argv.files] : ['test/**/*.spec.{js,ts}']
   const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
   const grep = argv.grep ? ['--grep', argv.grep] : []
+  const invert = argv.invert ? ['--invert'] : []
   const progress = argv.progress ? ['--reporter=progress'] : []
   const bail = argv.bail ? ['--bail', argv.bail] : []
   const timeout = argv.timeout ? ['--timeout', argv.bail] : []
@@ -25,6 +26,7 @@ module.exports = (argv) => {
         ...watch,
         ...verbose,
         ...grep,
+        ...invert,
         ...progress,
         ...bail,
         ...timeout,

@@ -55,7 +55,8 @@ const karmaConfig = (config, argv) => {
     reporter: 'spec',
     timeout: argv.timeout ? Number(argv.timeout) : 5000,
     bail: argv.bail,
-    grep: argv.grep
+    grep: argv.grep,
+    invert: argv.invert
   }
 
   const karmaEntry = `${__dirname}/karma-entry.js`

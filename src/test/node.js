@@ -40,6 +40,10 @@ function testNode (ctx, execaOptions) {
     args.push(`--grep=${ctx.grep}`)
   }
 
+  if (ctx.invert) {
+    args.push('--invert')
+  }
+
   if (ctx.files && ctx.files.length > 0) {
     files = ctx.files
   }

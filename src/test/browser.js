@@ -13,6 +13,7 @@ module.exports = (argv, execaOptions) => {
   const files = argv.files ? ['--files-custom', ...argv.files] : []
   const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
   const grep = argv.grep ? ['--grep', argv.grep] : []
+  const invert = argv.invert ? ['--invert'] : []
   const progress = argv.progress ? ['--progress', argv.progress] : []
   const bail = argv.bail ? ['--bail', argv.bail] : []
   const timeout = argv.timeout ? ['--timeout', argv.timeout] : []
@@ -27,6 +28,7 @@ module.exports = (argv, execaOptions) => {
           ...files,
           ...verbose,
           ...grep,
+          ...invert,
           ...progress,
           ...input,
           ...bail,

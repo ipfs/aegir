@@ -1,3 +1,18 @@
+<a name="25.1.0"></a>
+# [25.1.0](https://github.com/ipfs/aegir/compare/v25.0.0...v25.1.0) (2020-08-11)
+
+
+### Bug Fixes
+
+* update bundlesize help command ([#617](https://github.com/ipfs/aegir/issues/617)) ([beedcdb](https://github.com/ipfs/aegir/commit/beedcdb))
+
+
+### Features
+
+* add support for the mocha --invert flag ([#622](https://github.com/ipfs/aegir/issues/622)) ([964d05f](https://github.com/ipfs/aegir/commit/964d05f))
+
+
+
 <a name="25.0.0"></a>
 # [25.0.0](https://github.com/ipfs/aegir/compare/v24.0.0...v25.0.0) (2020-06-20)
 

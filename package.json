@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "25.0.0",
+  "version": "25.1.0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -157,8 +157,8 @@
     "Dmitriy Ryajov <dryajov@gmail.com>",
     "Alan Shaw <alan.shaw@protocol.ai>",
     "Jacob Heun <jacobheun@gmail.com>",
-    "Henrique Dias <hacdias@gmail.com>",
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
+    "Henrique Dias <hacdias@gmail.com>",
     "Francis Yuen <fyuen@godaddy.com>",
     "Maciej Krüger <mkg20001@gmail.com>",
     "Adam Uhlíř <adam@uhlir.dev>",

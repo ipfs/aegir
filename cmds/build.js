@@ -13,7 +13,7 @@ module.exports = {
         bundlesize: {
           alias: 'b',
           type: 'boolean',
-          describe: 'Analyse bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize`.',
+          describe: 'Analyse bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize.maxSize`.',
           default: false
         }
       })

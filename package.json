@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "25.1.0",
+  "version": "26.0.0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -155,10 +155,10 @@
     "Alex Potsides <alex@achingbrain.net>",
     "Volker Mische <volker.mische@gmail.com>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
-    "Alan Shaw <alan.shaw@protocol.ai>",
     "Jacob Heun <jacobheun@gmail.com>",
-    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
+    "Alan Shaw <alan.shaw@protocol.ai>",
     "Henrique Dias <hacdias@gmail.com>",
+    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
     "Francis Yuen <fyuen@godaddy.com>",
     "Maciej Krüger <mkg20001@gmail.com>",
     "Adam Uhlíř <adam@uhlir.dev>",
@@ -166,6 +166,7 @@
     "Diogo Silva <fsdiogo@gmail.com>",
     "Garren Smith <garren.smith@gmail.com>",
     "Hector Sanjuan <code@hector.link>",
+    "Irakli Gozalishvili <contact@gozala.io>",
     "JGAntunes <j.goncalo.antunes@gmail.com>",
     "Jakub Sztandera <kubuxu@protonmail.ch>",
     "Marcin Rataj <lidel@lidel.org>",

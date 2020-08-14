@@ -1,3 +1,18 @@
+<a name="26.0.0"></a>
+# [26.0.0](https://github.com/ipfs/aegir/compare/v25.1.0...v26.0.0) (2020-08-14)
+
+
+### Features
+
+* Use file type based lint rules ([#621](https://github.com/ipfs/aegir/issues/621)) ([fdc002e](https://github.com/ipfs/aegir/commit/fdc002e))
+
+
+### BREAKING CHANGES
+
+* new linting file used for .ts files
+
+
+
 <a name="25.1.0"></a>
 # [25.1.0](https://github.com/ipfs/aegir/compare/v25.0.0...v25.1.0) (2020-08-11)
 

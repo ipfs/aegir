@@ -161,4 +161,9 @@ describe('lint', () => {
 
     await expect(lint({ silent: true })).to.eventually.be.rejectedWith('Lint errors')
   })
+
+  it('should lint ts and js with different parsers rules', async () => {
+    process.chdir(path.join(__dirname, './fixtures/js+ts/'))
+    await lint()
+  })
 })

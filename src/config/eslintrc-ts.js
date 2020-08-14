@@ -7,7 +7,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   extends: [
-    fromAegir('src/config/eslintrc.js'),
+    fromAegir('src/config/eslintrc-js.js'),
     'plugin:@typescript-eslint/recommended'
   ]
 }

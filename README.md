@@ -183,7 +183,7 @@ You can run your tests with `nyc` using
 
 ```bash
 $ npx nyc -s aegir test -t node
-# to check the report locally 
+# to check the report locally
 $ npx nyc report --reporter=html && open coverage/index.html
 # or just for a text based reporter
 $ npx nyc report
@@ -236,6 +236,34 @@ Pass the `--analyze` option to have Webpack generate a `stats.json` file for the
 aegir build --analyze
 ```
 
+### Generating types
+
+This will generate `.d.ts` files from files in your project.  Suitable for use in a `prepublishOnly` [npm script](https://docs.npmjs.com/misc/scripts).
+
+```console
+$ aegir generate-types PATTERN
+```
+
+It supports a glob pattern as the argument, but to prevent cli expansion you should wrap it in quotes:
+
+```console
+$ aegir generate-types 'src/**/*.js'
+```
+
+Pass the `--overwrite` option to remove `.d.ts` files that would be generated:
+
+```console
+$ aegir generate-types --overwrite 'src/**/*.js'
+```
+
+Any flags or config to pass to `tsc` can be specified as forward options:
+
+```console
+$ aegir generate-types --overwrite 'src/**/*.js' -- --allowJs --esModuleInterop
+```
+
+Since these are generated files you may wish to add `*.d.ts` to your `.gitignore` file if you are generating types from JSDocs as part of a js project release.
+
 ### Releasing
 
 1. Run linting
@@ -282,7 +310,7 @@ If you want no documentation generation you can pass `--no-docs` to the release 
 
 #### Scoped Github Token
 
-Performing a release involves creating new commits and tags and then pushing them back to the repository you are releasing from. In order to do this you should create a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and store it in the environmental variable `AEGIR_GHTOKEN`.   
+Performing a release involves creating new commits and tags and then pushing them back to the repository you are releasing from. In order to do this you should create a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and store it in the environmental variable `AEGIR_GHTOKEN`.
 
 The only access scope it needs is `public_repo`.
 

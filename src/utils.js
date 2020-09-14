@@ -39,7 +39,7 @@ exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
 /**
  * Get package version
  *
- * @returns {string} version
+ * @returns {string} - version
  */
 exports.pkgVersion = async () => {
   const {
@@ -51,36 +51,24 @@ exports.pkgVersion = async () => {
 /**
  * Gets the top level path of the project aegir is executed in.
  *
- * @returns {string}
+ * @returns {string} - base path
  */
 exports.getBasePath = () => {
   return process.cwd()
 }
 
-/**
- * @returns {string}
- */
 exports.getPathToPkg = () => {
   return path.join(exports.getBasePath(), PKG_FILE)
 }
 
-/**
- * @returns {string}
- */
 exports.getPathToDist = () => {
   return path.join(exports.getBasePath(), DIST_FOLDER)
 }
 
-/**
- * @returns {string}
- */
 exports.getUserConfigPath = () => {
   return findUp('.aegir.js')
 }
 
-/**
- * @returns {Object}
- */
 exports.getUserConfig = () => {
   let conf = {}
   try {
@@ -98,9 +86,8 @@ exports.getUserConfig = () => {
 /**
  * Converts the given name from something like `peer-id` to `PeerId`.
  *
- * @param {string} name
- *
- * @returns {string}
+ * @param {string} name - lib name in kebab
+ * @returns {string} - lib name in pascal
  */
 exports.getLibraryName = (name) => {
   return pascalcase(name)
@@ -108,8 +95,6 @@ exports.getLibraryName = (name) => {
 
 /**
  * Get the absolute path to `node_modules` for aegir itself
- *
- * @returns {string}
  */
 exports.getPathToNodeModules = () => {
   return path.resolve(__dirname, '../node_modules')
@@ -118,7 +103,7 @@ exports.getPathToNodeModules = () => {
 /**
  * Get the config for Listr.
  *
- * @returns {Object}
+ * @returns {{renderer: 'verbose'}} - config for Listr
  */
 exports.getListrConfig = () => {
   return {

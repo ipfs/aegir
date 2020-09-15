@@ -75,7 +75,7 @@
     "documentation": "^13.0.1",
     "electron-mocha": "^8.2.0",
     "eslint": "^6.8.0",
-    "eslint-config-ipfs": "git://github.com/gozala/eslint-config-ipfs#default",
+    "eslint-config-ipfs": "^0.1.0",
     "execa": "^4.0.0",
     "extract-zip": "^2.0.1",
     "findup-sync": "^4.0.0",

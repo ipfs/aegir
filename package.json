@@ -54,7 +54,7 @@
     "@commitlint/lint": "^8.3.5",
     "@commitlint/load": "^8.3.5",
     "@commitlint/read": "^8.3.4",
-    "@commitlint/travis-cli": "^8.3.5",
+    "@commitlint/travis-cli": "^11.0.0",
     "@electron/get": "^1.10.0",
     "@polka/send-type": "^0.5.2",
     "babel-loader": "^8.0.5",

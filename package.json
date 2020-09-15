@@ -50,7 +50,7 @@
     "@babel/register": "^7.10.1",
     "@babel/runtime": "^7.10.2",
     "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^8.3.5",
     "@commitlint/load": "^8.3.5",
     "@commitlint/read": "^8.3.4",

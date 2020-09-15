@@ -83,7 +83,7 @@ function checkDependencyVersions () {
 function runLinter (opts = {}) {
   const cli = new CLIEngine({
     useEslintrc: true,
-    baseConfig: require('./config/eslintrc.js'),
+    baseConfig: { extends: 'ipfs' },
     fix: opts.fix
   })
 

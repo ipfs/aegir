@@ -8,15 +8,23 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 
 const TEMP_FOLDER = path.join(__dirname, '../node_modules/.temp-test')
-const setupProjectWithDeps = async (deps) => {
+
+const setupProject = async (project) => {
   const tmpDir = path.join(TEMP_FOLDER, `test-${Math.random()}`)
   await fs.promises.mkdir(tmpDir)
-  await fs.promises.writeFile(path.join(tmpDir, 'package.json'), JSON.stringify({
-    name: 'my-project',
-    dependencies: deps
-  }))
+  for (const [name, content] of Object.entries(project)) {
+    await fs.promises.writeFile(path.join(tmpDir, name), content)
+  }
   process.chdir(tmpDir)
 }
+
+const setupProjectWithDeps = deps => setupProject({
+  'package.json': JSON.stringify({
+    name: 'my-project',
+    dependencies: deps
+  })
+})
+
 const dependenciesShouldPassLinting = (deps) => {
   return setupProjectWithDeps(deps)
     .then(() => lint())
@@ -31,6 +39,24 @@ const dependenciesShouldFailLinting = (deps) => {
     .catch(error => {
       expect(error.message).to.contain('Dependency version errors')
     })
+}
+
+const projectShouldPassLint = async (project) => {
+  await setupProject(project)
+  await lint()
+}
+
+const projectShouldFailLint = async (project) => {
+  await setupProject(project)
+  let failed = false
+  try {
+    await lint({ silent: true })
+  } catch (error) {
+    failed = true
+    expect(error.message).to.contain('Lint errors')
+  }
+
+  expect(failed).to.equal(true, 'Should have failed!')
 }
 
 describe('lint', () => {
@@ -165,5 +191,63 @@ describe('lint', () => {
   it('should lint ts and js with different parsers rules', async () => {
     process.chdir(path.join(__dirname, './fixtures/js+ts/'))
     await lint()
+  })
+
+  it('should pass if no .eslintrc found and does not follows ipfs eslint rules', async () => {
+    await projectShouldFailLint({
+      'package.json': JSON.stringify({
+        name: 'no-config-fail',
+        main: 'index.js'
+      }),
+      'index.js': '"use strict"\nmodule.exports = () => {}\n'
+    })
+  })
+
+  it('should pass if no .eslintrc found but code follows ipfs eslint rules', async () => {
+    await projectShouldPassLint({
+      'package.json': JSON.stringify({
+        name: 'no-config-fail',
+        main: 'index.js'
+      }),
+      'index.js': '\'use strict\'\nmodule.exports = () => {}\n'
+    })
+  })
+
+  it('should fail if .eslintrc overules ipfs and code does not follow it', async () => {
+    await projectShouldFailLint({
+      'package.json': JSON.stringify({
+        name: 'with-config-fail',
+        main: 'index.js'
+      }),
+      'index.js': '\'use strict\'\nmodule.exports = () => {}\n',
+      '.eslintrc': JSON.stringify({
+        extends: 'ipfs',
+        rules: {
+          quotes: [
+            'error',
+            'double'
+          ]
+        }
+      })
+    })
+  })
+
+  it('should pass if .eslintrc overules ipfs and code follows it', async () => {
+    await projectShouldPassLint({
+      'package.json': JSON.stringify({
+        name: 'with-config-fail',
+        main: 'index.js'
+      }),
+      'index.js': '"use strict"\nmodule.exports = () => {}\n',
+      '.eslintrc': JSON.stringify({
+        extends: 'ipfs',
+        rules: {
+          quotes: [
+            'error',
+            'double'
+          ]
+        }
+      })
+    })
   })
 })

@@ -11,9 +11,9 @@ const { fromRoot, hasFile } = require('../utils')
 /**
  * Build docs
  *
- * @param {Object} argv
- * @param {ExecaOptions} execaOptions
- * @returns {ExecaChildProcess}
+ * @param {object} argv - Command line arguments passed to the process.
+ * @param {ExecaOptions} execaOptions - execa options.
+ * @returns {ExecaChildProcess} - Child process that builds docs.
  */
 const docs = (argv, execaOptions = {}) => {
   const forwardOptions = argv['--'] ? argv['--'] : []

@@ -1,3 +1,13 @@
+<a name="27.0.0"></a>
+# [27.0.0](https://github.com/ipfs/aegir/compare/v26.0.0...v27.0.0) (2020-10-06)
+
+
+### Features
+
+* factor eslint config to eslint-config-ipfs ([#638](https://github.com/ipfs/aegir/issues/638)) ([0fb42b9](https://github.com/ipfs/aegir/commit/0fb42b9))
+
+
+
 <a name="26.0.0"></a>
 # [26.0.0](https://github.com/ipfs/aegir/compare/v25.1.0...v26.0.0) (2020-08-14)
 

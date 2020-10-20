@@ -1,60 +1,16 @@
 /* eslint-disable no-console */
 'use strict'
-const path = require('path')
-const fs = require('fs-extra')
 const artifact = require('@actions/artifact')
 const execa = require('execa')
 const globby = require('globby')
+const readPkgUp = require('read-pkg-up')
+const fs = require('fs')
 const { pkg } = require('../../src/utils')
 
 const aegirExec = pkg.name === 'aegir' ? './cli.js' : 'aegir'
 
 /** @typedef {import("@actions/github").GitHub } Github */
 /** @typedef {import("@actions/github").context } Context */
-
-/**
- * Get files for a PR
- *
- * @param {Github} octokit
- * @param {Context} context
- * @return {string[]}
- */
-const prFiles = async (octokit, context) => {
-  const pr = await octokit.repos.listPullRequestsAssociatedWithCommit({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    commit_sha: context.sha
-  })
-
-  if (pr.data.length === 0) {
-    throw new Error(`no PRs associated with commit ${context.sha}`)
-  }
-
-  const prFiles = await octokit.pulls.listFiles({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    pull_number: pr.data[0].number
-  })
-
-  return prFiles.data.map(f => f.filename)
-}
-
-const prPackages = (files) => {
-  const baseDir = 'packages'
-
-  const packages = []
-  for (const file of files) {
-    if (file.startsWith(baseDir)) {
-      const pkgName = file.split('/')[1]
-      const pkgPath = path.join(process.cwd(), baseDir, pkgName)
-      if (!packages.includes(pkgPath)) {
-        packages.push(pkgPath)
-      }
-    }
-  }
-
-  return packages
-}
 
 /**
  * Bundle Size Check
@@ -65,8 +21,13 @@ const prPackages = (files) => {
  */
 const sizeCheck = async (octokit, context, baseDir) => {
   let check = null
-  const pkgName = baseDir.split('/').pop()
-  const checkName = isMonorepo() ? `size: ${pkgName}` : 'size'
+  baseDir = fs.realpathSync(baseDir)
+
+  const { packageJson } = readPkgUp.sync({
+    cwd: baseDir
+  })
+  const pkgName = packageJson.name
+  const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` :  'size'
 
   try {
     check = await octokit.checks.create({
@@ -126,13 +87,6 @@ const sizeCheck = async (octokit, context, baseDir) => {
   }
 }
 
-const isMonorepo = () => {
-  return fs.existsSync(path.join(process.cwd(), 'packages'))
-}
-
 module.exports = {
-  prFiles,
-  prPackages,
-  sizeCheck,
-  isMonorepo
+  sizeCheck
 }

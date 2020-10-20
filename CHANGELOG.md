@@ -1,3 +1,12 @@
+## [28.0.1](https://github.com/ipfs/aegir/compare/v28.0.0...v28.0.1) (2020-10-20)
+
+
+### Bug Fixes
+
+* remove which, revert to available mocha ([5b77754](https://github.com/ipfs/aegir/commit/5b77754baaa82a197ad5e741c6be8413fdb76f63))
+
+
+
 # [28.0.0](https://github.com/ipfs/aegir/compare/v27.0.0...v28.0.0) (2020-10-20)
 
 

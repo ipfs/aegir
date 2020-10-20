@@ -1,3 +1,17 @@
+# [28.0.0](https://github.com/ipfs/aegir/compare/v27.0.0...v28.0.0) (2020-10-20)
+
+
+### Bug Fixes
+
+* remove --noUnhandledPromiseRejections option ([#653](https://github.com/ipfs/aegir/issues/653)) ([e478259](https://github.com/ipfs/aegir/commit/e47825947a19df31207c1819d36609207ec9d805))
+
+
+### Features
+
+* allow overriding runtime path for bundle size check ([#652](https://github.com/ipfs/aegir/issues/652)) ([f2ad1b9](https://github.com/ipfs/aegir/commit/f2ad1b9da5597ac54fc1d161c5b4a06195109b43))
+
+
+
 <a name="27.0.0"></a>
 # [27.0.0](https://github.com/ipfs/aegir/compare/v26.0.0...v27.0.0) (2020-10-06)
 

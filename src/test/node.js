@@ -4,13 +4,14 @@ const execa = require('execa')
 const path = require('path')
 const { hook, fromAegir } = require('../utils')
 const merge = require('merge-options')
+const which = require('which')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
 /** @typedef { import("execa").Options} ExecaOptions */
 
 function testNode (ctx, execaOptions) {
-  let exec = 'mocha'
+  let exec = which.sync('mocha')
   const env = {
     NODE_ENV: 'test',
     AEGIR_RUNNER: 'node',
@@ -21,8 +22,7 @@ function testNode (ctx, execaOptions) {
   let args = [
     ctx.progress && '--reporter=progress',
     '--ui', 'bdd',
-    '--timeout', timeout,
-    `--unhandled-rejections=${ctx.noUnhandledPromiseRejections ? 'strict' : 'warn'}`
+    '--timeout', timeout
   ].filter(Boolean)
 
   let files = [

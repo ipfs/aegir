@@ -1,7 +1,6 @@
 'use strict'
 
 require('./utils')
-require('./test')
 require('./lint')
 require('./fixtures')
 require('./dependants')

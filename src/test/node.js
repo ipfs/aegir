@@ -4,14 +4,13 @@ const execa = require('execa')
 const path = require('path')
 const { hook, fromAegir } = require('../utils')
 const merge = require('merge-options')
-const which = require('which')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
 /** @typedef { import("execa").Options} ExecaOptions */
 
 function testNode (ctx, execaOptions) {
-  let exec = which.sync('mocha')
+  let exec = 'mocha'
   const env = {
     NODE_ENV: 'test',
     AEGIR_RUNNER: 'node',

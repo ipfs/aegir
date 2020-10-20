@@ -17,7 +17,7 @@ const aegirExec = pkg.name === 'aegir' ? './cli.js' : 'aegir'
  *
  * @param {Github} octokit
  * @param {Context} context
- * @return {string[]}
+ * @returns {string[]}
  */
 const prFiles = async (octokit, context) => {
   const pr = await octokit.repos.listPullRequestsAssociatedWithCommit({
@@ -47,7 +47,11 @@ const prPackages = (files) => {
     if (file.startsWith(baseDir)) {
       const pkgName = file.split('/')[1]
       const pkgPath = path.join(process.cwd(), baseDir, pkgName)
-      if (!packages.includes(pkgPath)) {
+      if (
+        !packages.includes(pkgPath) &&
+        // Allow opt-out via `.nosizecheck` file.
+        !fs.existsSync(path.join(pkgPath, '.nosizecheck'))
+      ) {
         packages.push(pkgPath)
       }
     }

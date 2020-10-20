@@ -14,7 +14,8 @@
     "@actions/github": "^2.1.1",
     "cosmiconfig": "^6.0.0",
     "execa": "^4.0.0",
-    "globby": "^11.0.0"
+    "globby": "^11.0.0",
+    "read-pkg-up": "^7.0.1"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.21.1"

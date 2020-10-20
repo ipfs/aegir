@@ -1,3 +1,12 @@
+## [28.0.2](https://github.com/ipfs/aegir/compare/v28.0.1...v28.0.2) (2020-10-20)
+
+
+### Bug Fixes
+
+* downgrade electron and electron-mocha ([#655](https://github.com/ipfs/aegir/issues/655)) ([caf4c8f](https://github.com/ipfs/aegir/commit/caf4c8f6555190c74704a5396d11525336a2d8d2))
+
+
+
 ## [28.0.1](https://github.com/ipfs/aegir/compare/v28.0.0...v28.0.1) (2020-10-20)
 
 

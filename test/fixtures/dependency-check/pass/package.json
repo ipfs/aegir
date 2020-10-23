@@ -1,0 +1,10 @@
+{
+    "name": "dep-check-pass",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies": {
+        "execa": "1.0.0",
+        "pico": "1.0.0"
+    }
+}
+  

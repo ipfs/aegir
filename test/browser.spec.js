@@ -11,7 +11,7 @@ describe('browser', () => {
   })
 
   it('non existing fixtures', () => {
-    expect(() => loadFixture('test/fixtures/asdalkdjaskldjatest.txt'))
+    expect(() => loadFixture('/test/fixtures/asdalkdjaskldjatest.txt'))
       .to.throw()
   })
 })

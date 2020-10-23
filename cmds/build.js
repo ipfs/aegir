@@ -10,16 +10,10 @@ module.exports = {
     yargs
       .epilog(EPILOG)
       .options({
-        analyze: {
-          alias: 'a',
-          type: 'boolean',
-          describe: 'Analyze mode. Opens webpack-bundle-analyzer and write stats to disk',
-          default: false
-        },
         bundlesize: {
           alias: 'b',
           type: 'boolean',
-          describe: 'Checks your bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize`.',
+          describe: 'Analyse bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize.maxSize`.',
           default: false
         }
       })

@@ -11,13 +11,6 @@ module.exports = {
       choices: ['node', 'browser', 'webworker'],
       default: ['node', 'browser', 'webworker']
     },
-    docsFormats: {
-      alias: 'd',
-      describe: 'Which documentation formats to build',
-      type: 'array',
-      choices: ['html', 'md'],
-      default: ['html']
-    },
     build: {
       describe: 'Run build tasks before release',
       type: 'boolean',
@@ -53,8 +46,23 @@ module.exports = {
       type: 'boolean',
       default: true
     },
+    commit: {
+      describe: 'Commit changes to git',
+      type: 'boolean',
+      default: true
+    },
+    tag: {
+      describe: 'Create release tag in git',
+      type: 'boolean',
+      default: true
+    },
+    push: {
+      describe: 'Push changes to GitHub',
+      type: 'boolean',
+      default: true
+    },
     ghrelease: {
-      describe: 'Genereate GitHub release',
+      describe: 'Generate GitHub release',
       type: 'boolean',
       default: true
     },

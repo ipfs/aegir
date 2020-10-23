@@ -4,16 +4,19 @@
  * @module aegir/utils
  */
 'use strict'
-
+const { constants, createBrotliCompress, createGzip } = require('zlib')
+const os = require('os')
+const ora = require('ora')
+const extract = require('extract-zip')
+const { download } = require('@electron/get')
 const path = require('path')
 const findUp = require('findup-sync')
 const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
-const arrify = require('arrify')
-const _ = require('lodash')
-const VerboseRenderer = require('listr-verbose-renderer')
+const execa = require('execa')
+const pascalcase = require('pascalcase')
 
-const { package: pkg, path: pkgPath } = readPkgUp.sync({
+const { packageJson: pkg, path: pkgPath } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
 })
 const PKG_FILE = 'package.json'
@@ -25,7 +28,6 @@ exports.paths = {
   src: SRC_FOLDER
 }
 exports.pkg = pkg
-exports.hasPkgProp = props => arrify(props).some(prop => _.has(pkg, prop))
 // TODO: get this from aegir package.json
 exports.browserslist = '>1% or node >=10 and not ie 11 and not dead'
 
@@ -33,51 +35,47 @@ exports.repoDirectory = path.dirname(pkgPath)
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
 exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
+
+/**
+ * Get package version
+ *
+ * @returns {string} - version
+ */
+exports.pkgVersion = async () => {
+  const {
+    version
+  } = await fs.readJson(exports.getPathToPkg())
+  return version
+}
+
 /**
  * Gets the top level path of the project aegir is executed in.
  *
- * @returns {string}
+ * @returns {string} - base path
  */
 exports.getBasePath = () => {
   return process.cwd()
 }
 
-/**
- * @returns {string}
- */
 exports.getPathToPkg = () => {
   return path.join(exports.getBasePath(), PKG_FILE)
 }
 
-/**
- * @returns {Promise<Object>}
- */
-exports.getPkg = () => {
-  return fs.readJson(exports.getPathToPkg())
-}
-
-/**
- * @returns {string}
- */
 exports.getPathToDist = () => {
   return path.join(exports.getBasePath(), DIST_FOLDER)
 }
 
-/**
- * @returns {string}
- */
 exports.getUserConfigPath = () => {
   return findUp('.aegir.js')
 }
 
-/**
- * @returns {Object}
- */
 exports.getUserConfig = () => {
   let conf = {}
   try {
     const path = exports.getUserConfigPath()
-    if (!path) return null
+    if (!path) {
+      return {}
+    }
     conf = require(path)
   } catch (err) {
     console.error(err) // eslint-disable-line no-console
@@ -88,18 +86,15 @@ exports.getUserConfig = () => {
 /**
  * Converts the given name from something like `peer-id` to `PeerId`.
  *
- * @param {string} name
- *
- * @returns {string}
+ * @param {string} name - lib name in kebab
+ * @returns {string} - lib name in pascal
  */
 exports.getLibraryName = (name) => {
-  return _.upperFirst(_.camelCase(name))
+  return pascalcase(name)
 }
 
 /**
  * Get the absolute path to `node_modules` for aegir itself
- *
- * @returns {string}
  */
 exports.getPathToNodeModules = () => {
   return path.resolve(__dirname, '../node_modules')
@@ -108,97 +103,12 @@ exports.getPathToNodeModules = () => {
 /**
  * Get the config for Listr.
  *
- * @returns {Object}
+ * @returns {{renderer: 'verbose'}} - config for Listr
  */
 exports.getListrConfig = () => {
   return {
-    renderer: VerboseRenderer
+    renderer: 'verbose'
   }
-}
-
-/**
- * Get current env variables for inclusion.
- *
- * @param {string} [env='development']
- *
- * @returns {Object}
- */
-exports.getEnv = (env) => {
-  const PREFIX = /^AEGIR_/i
-  let NODE_ENV = env || 'development'
-  if (JSON.stringify(process.env.NODE_ENV) !== JSON.stringify(undefined) && process.env.NODE_ENV) {
-    NODE_ENV = process.env.NODE_ENV
-  }
-
-  const raw = Object.keys(process.env)
-    .filter((key) => PREFIX.test(key))
-    .reduce((env, key) => {
-      if (key === 'AEGIR_GHTOKEN') {
-        return env
-      } else {
-        env[key] = process.env[key]
-        return env
-      }
-    }, {
-      NODE_ENV: NODE_ENV
-    })
-
-  const stringifed = {
-    'process.env': Object.keys(raw).reduce((env, key) => {
-      env[key] = JSON.stringify(raw[key])
-      return env
-    }, {})
-  }
-
-  return {
-    raw: raw,
-    stringified: stringifed
-  }
-}
-
-/**
- * Path to example file.
- *
- * @returns {string}
- */
-exports.getPathToExample = () => {
-  return path.join(exports.getBasePath(), 'example.js')
-}
-
-/**
- * Path to documentation config file.
- *
- * @returns {string}
- */
-exports.getPathToDocsConfig = () => {
-  return path.join(exports.getBasePath(), 'documentation.yml')
-}
-
-/**
- * Path to documentation folder.
- *
- * @returns {string}
- */
-exports.getPathToDocs = () => {
-  return path.join(exports.getBasePath(), 'docs')
-}
-
-/**
- * Path to documentation index.html.
- *
- * @returns {string}
- */
-exports.getPathToDocsFile = () => {
-  return path.join(exports.getPathToDocs(), 'index.html')
-}
-
-/**
- * Path to documentation index.md.
- *
- * @returns {string}
- */
-exports.getPathToDocsMdFile = () => {
-  return path.join(exports.getPathToDocs(), 'index.md')
 }
 
 exports.hook = (env, key) => (ctx) => {
@@ -212,4 +122,80 @@ exports.hook = (env, key) => (ctx) => {
   }
 
   return Promise.resolve()
+}
+
+exports.exec = (command, args, options = {}) => {
+  const result = execa(command, args, options)
+
+  if (!options.quiet) {
+    result.stdout.pipe(process.stdout)
+  }
+
+  result.stderr.pipe(process.stderr)
+
+  return result
+}
+
+function getPlatformPath () {
+  const platform = process.env.npm_config_platform || os.platform()
+
+  switch (platform) {
+    case 'mas':
+    case 'darwin':
+      return 'Electron.app/Contents/MacOS/Electron'
+    case 'freebsd':
+    case 'openbsd':
+    case 'linux':
+      return 'electron'
+    case 'win32':
+      return 'electron.exe'
+    default:
+      throw new Error('Electron builds are not available on platform: ' + platform)
+  }
+}
+
+exports.getElectron = async () => {
+  const pkg = require('./../package.json')
+  const version = pkg.devDependencies.electron.slice(1)
+  const spinner = ora(`Downloading electron: ${version}`).start()
+  const zipPath = await download(version)
+  const electronPath = path.join(path.dirname(zipPath), getPlatformPath())
+  if (!fs.existsSync(electronPath)) {
+    spinner.text = 'Extracting electron to system cache'
+    await extract(zipPath, { dir: path.dirname(zipPath) })
+  }
+  spinner.succeed('Electron ready to use')
+  return electronPath
+}
+
+exports.brotliSize = (path) => {
+  return new Promise((resolve, reject) => {
+    let size = 0
+    const pipe = fs.createReadStream(path).pipe(createBrotliCompress({
+      params: {
+        [constants.BROTLI_PARAM_QUALITY]: 11
+      }
+    }))
+    pipe.on('error', reject)
+    pipe.on('data', buf => {
+      size += buf.length
+    })
+    pipe.on('end', () => {
+      resolve(size)
+    })
+  })
+}
+
+exports.gzipSize = (path) => {
+  return new Promise((resolve, reject) => {
+    let size = 0
+    const pipe = fs.createReadStream(path).pipe(createGzip({ level: 9 }))
+    pipe.on('error', reject)
+    pipe.on('data', buf => {
+      size += buf.length
+    })
+    pipe.on('end', () => {
+      resolve(size)
+    })
+  })
 }

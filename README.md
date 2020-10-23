@@ -1,7 +1,7 @@
 # AEgir
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
-[![Travis CI](https://flat.badgen.net/travis/ipfs/aegir)](https://travis-ci.com/ipfs/aegir)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ipfs/aegir/ci/master?style=flat-square)
 [![Dependency Status](https://david-dm.org/ipfs/aegir.svg?style=flat-square)](https://david-dm.org/ipfs/aegir)
 
 > Automated JavaScript project management.
@@ -39,109 +39,11 @@ Your `package.json` should have the following entries and should pass `aegir lin
   "test:browser": "aegir test --target browser"
 }
 ```
-## Add CI to your repo
-### Fix line endings in Windows   
+## Travis Setup
+Check this tutorial https://github.com/ipfs/aegir/wiki/Travis-Setup
 
-> You will probably only need this if in your tests you compare file contents or file CIDs. If you **don't do those things** just add the `* text=auto` part.
-
-Create a .gitattributes file with the following content:
-```
-* text=auto
-test/fixtures/** text eol=lf
-# add more like the line above as needed
-```
-  
-### Activate Travis
-Create a file named .travis.yml with the following content:
-
-```yaml
-language: node_js
-cache: npm
-stages:
-  - check
-  - test
-  - cov
-
-node_js:
-  - '10'
-  - '12'
-
-os:
-  - linux
-  - osx
-
-script: npx nyc -s npm run test:node -- --bail
-after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
-
-jobs:
-  include:
-    - os: windows
-      cache: false
-
-    - stage: check
-      script:
-        - npx aegir commitlint --travis
-        - npx aegir dep-check
-        - npm run lint
-
-    - stage: test
-      name: chrome
-      addons:
-        chrome: stable
-      script: npx aegir test -t browser -t webworker
-
-    - stage: test
-      name: firefox
-      addons:
-        firefox: latest
-      script: npx aegir test -t browser -t webworker -- --browsers FirefoxHeadless
-    
-    - stage: test
-      name: electron-main
-      script:
-        - xvfb-run npx aegir test -t electron-main -- --bail
-    
-    - stage: test
-      name: electron-renderer
-      script:
-        - xvfb-run npx aegir test -t electron-renderer -- --bail
-
-notifications:
-  email: false
-
-```
-To add a CI badge to your README use :
-
-```yaml
-[![Travis CI](https://flat.badgen.net/travis/ipfs/aegir)](https://travis-ci.com/ipfs/aegir)
-```
-
-### Troubleshooting Windows jobs
-
-#### Caches timeout   
-
-If you get something like this 
-<img width="1082" alt="screenshot 2019-02-12 at 12 52 10" src="https://user-images.githubusercontent.com/314190/52636718-4f934f80-2ec5-11e9-9b8d-2d368ec4cf4a.png">
-Clean the caches for that repo/branch and restart.
-
-#### Secrets problem
-
-<img width="1062" alt="screenshot 2019-02-13 at 16 08 22" src="https://user-images.githubusercontent.com/314190/52725701-9eb2b080-2fa9-11e9-9508-2bd00ad31062.png">
-
-If your build stops in the  `nvs add 10` step you probably have secrets (ENV vars) in your Travis config and Windows doesn't work with secrets. You must delete all the secrets to make it works.
-
-<img width="1082" alt="screenshot 2019-02-13 at 16 06 56" src="https://user-images.githubusercontent.com/314190/52725628-7f1b8800-2fa9-11e9-995a-39341a3c7785.png">
-
-#### Allow failure on windows
-add the following 
-```yaml
-matrix:
-  fast_finish: true
-  allow_failures:
-    - os: windows
-```
-before this line https://github.com/libp2p/js-libp2p/blob/master/.travis.yml#L14
-
+## Github Action Setup
+Check this tutorial https://github.com/ipfs/aegir/wiki/Github-Actions-Setup
 
 ## Stack Requirements
 
@@ -151,35 +53,8 @@ To bring you its many benefits, `aegir` requires
 - Tests written in [Mocha](https://github.com/mochajs/mocha)
 - [Karma](https://github.com/karma-runner/karma) for browser tests
 
-## Tasks
-
-### Linting
-
-Linting uses [eslint](http://eslint.org/) and [standard](https://github.com/feross/standard)
-with [some custom rules](https://github.com/ipfs/eslint-config-aegir) to enforce some more strictness.
-
-You can run it using
-
-```bash
-$ aegir lint
-$ aegir lint-package-json
-```
-
-### Testing
-
-You can run it using
-
-```bash
-$ aegir test
-```
-
-There are also browser and node specific tasks
-
-```bash
-$ aegir test --target node
-$ aegir test --target browser
-$ aegir test --target webworker
-```
+## Testing helpers
+In addition to running the tests `aegir` also provides several helpers to be used by the tests.
 
 #### Fixtures
 
@@ -230,6 +105,76 @@ module.exports = {
 }
 ```
 
+#### Echo Server
+HTTP echo server for testing purposes.
+
+```js
+const EchoServer = require('aegir/utils/echo-server')
+const server = new EchoServer()
+await server.start()
+
+// search params echo endpoint
+const req = await fetch('http://127.0.0.1:3000/echo/query?test=one')
+console.log(await req.text())
+
+// body echo endpoint
+const req = await fetch('http://127.0.0.1:3000/echo', {
+  method: 'POST',
+  body: '{"key": "value"}'
+})
+console.log(await req.text())
+
+// redirect endpoint
+const req = await fetch('http://127.0.0.1:3000/redirect?to=http://127.0.0.1:3000/echo')
+console.log(await req.text())
+
+// download endpoint
+const req = await fetch('http://127.0.0.1:3000/download?data=helloWorld')
+console.log(await req.text())
+
+await server.stop()
+
+```
+
+#### Get Port
+Helper to find an available port to put a server listening on.
+```js
+const getPort = require('aegir/utils/get-port')
+const port = await getPort(3000, '127.0.0.1')
+// if 3000 is available returns 3000 if not returns a free port.
+
+```
+
+## Tasks
+
+### Linting
+
+Linting uses [eslint](http://eslint.org/) and [standard](https://github.com/feross/standard)
+with [some custom rules](https://github.com/ipfs/eslint-config-aegir) to enforce some more strictness.
+
+You can run it using
+
+```bash
+$ aegir lint
+$ aegir lint-package-json
+```
+
+### Testing
+
+You can run it using
+
+```bash
+$ aegir test
+```
+
+There are also browser and node specific tasks
+
+```bash
+$ aegir test --target node
+$ aegir test --target browser
+$ aegir test --target webworker
+```
+
 
 ### Coverage
 
@@ -271,7 +216,7 @@ https://unpkg.com/<module-name>/dist/index.min.js
 
 **Specifying a custom entry file for Webpack**
 
-By default, `aegir` uses `src/index.js` as the entry file for Webpack. You can customize which file to use as the entry point by specifying `entry` field in your user configuration file. To do this, create `.aegir.js` file in your project's root diretory and add point the `entry` field to the file Webpack should use as the entry:
+By default, `aegir` uses `src/index.js` as the entry file for Webpack. You can customize which file to use as the entry point by specifying `entry` field in your user configuration file. To do this, create `.aegir.js` file in your project's root directory and add point the `entry` field to the file Webpack should use as the entry:
 
 ```javascript
 module.exports = {
@@ -285,10 +230,10 @@ If `.aegir.js` file is not present in the project, webpack will use `src/index.j
 
 #### Generating Webpack stats.json
 
-Pass the `--stats` option to have Webpack generate a `stats.json` file for the bundle and save it in the project root (see https://webpack.js.org/api/stats/). e.g.
+Pass the `--analyze` option to have Webpack generate a `stats.json` file for the bundle and save it in the project root (see https://webpack.js.org/api/stats/). e.g.
 
 ```bash
-aegir build --stats
+aegir build --analyze
 ```
 
 ### Releasing

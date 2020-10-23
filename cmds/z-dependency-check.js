@@ -1,16 +1,12 @@
+/* eslint-disable no-console */
 'use strict'
-const path = require('path')
-const execa = require('execa')
+
+const ora = require('ora')
+const depCheck = require('../src/dependency-check')
 
 const EPILOG = `
 Supports options forwarding with '--' for more info check https://github.com/maxogden/dependency-check#cli-usage
 `
-const defaultInput = [
-  'package.json',
-  './test/**/*.js',
-  './src/**/*.js',
-  '!./test/fixtures/**/*.js'
-]
 
 module.exports = {
   command: 'dependency-check',
@@ -21,17 +17,9 @@ module.exports = {
       .epilog(EPILOG)
       .example('aegir dependency-check -- --unused', 'To check unused packages in your repo.')
   },
-  handler (argv) {
-    const input = argv._.slice(1)
-    const forwardOptions = argv['--'] ? argv['--'] : []
-    const defaults = input.length ? input : defaultInput
-
-    return execa('dependency-check', [
-      ...defaults,
-      ...forwardOptions
-    ], {
-      stdio: 'inherit',
-      localDir: path.join(__dirname, '..')
-    })
+  async handler (argv) {
+    const spinner = ora('Checking dependencies').start()
+    await depCheck(argv)
+    spinner.succeed()
   }
 }

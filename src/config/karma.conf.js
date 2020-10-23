@@ -5,38 +5,58 @@ const webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
 const { fromRoot, hasFile } = require('../utils')
 const userConfig = require('./user')()
-
-const isProduction = process.env.NODE_ENV === 'production'
-const isWebworker = process.env.AEGIR_WEBWORKER === 'true'
+const isTSEnable = process.env.AEGIR_TS === 'true'
+const isWebworker = process.env.AEGIR_RUNNER === 'webworker'
 
 // Env to pass in the bundle with DefinePlugin
 const env = {
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-  'process.env.IS_WEBPACK_BUILD': JSON.stringify(true),
+  TS_ENABLED: process.env.AEGIR_TS,
+  'process.env': JSON.stringify(process.env),
   TEST_DIR: JSON.stringify(fromRoot('test')),
-  TEST_BROWSER_JS: hasFile('test', 'browser.js')
-    ? JSON.stringify(fromRoot('test', 'browser.js'))
+  TEST_BROWSER_JS: hasFile('test', isTSEnable ? 'browser.ts' : 'browser.js')
+    ? JSON.stringify(fromRoot('test', isTSEnable ? 'browser.ts' : 'browser.js'))
     : JSON.stringify('')
 }
 
 // Webpack overrides for karma
-const karmaWebpackConfig = merge(webpackConfig({ production: isProduction }), {
+const karmaWebpackConfig = merge.strategy({ plugins: 'replace' })(webpackConfig(), {
   entry: '',
-  devtool: 'inline-source-map',
   output: {
     libraryTarget: 'var'
   },
   plugins: [
     new webpack.DefinePlugin(env)
-  ]
+  ],
+  module: {
+    rules: [
+      {
+        oneOf: [
+          {
+            test: /\.(js|ts)$/,
+            include: fromRoot('test'),
+            use: {
+              loader: require.resolve('babel-loader'),
+              options: {
+                presets: [require('./babelrc')()],
+                babelrc: false,
+                cacheDirectory: true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
 })
 
-const karmaConfig = (config, files, grep, progress, bail) => {
+const karmaConfig = (config, argv) => {
+  const files = argv.filesCustom
   const mocha = {
     reporter: 'spec',
-    timeout: 5000,
-    bail: bail,
-    grep
+    timeout: argv.timeout ? Number(argv.timeout) : 5000,
+    bail: argv.bail,
+    grep: argv.grep,
+    invert: argv.invert
   }
 
   const karmaEntry = `${__dirname}/karma-entry.js`
@@ -56,19 +76,21 @@ const karmaConfig = (config, files, grep, progress, bail) => {
     },
     frameworks: isWebworker ? ['mocha-webworker'] : ['mocha'],
     basePath: process.cwd(),
-    files: files.map(f => {
-      return {
-        pattern: f,
-        included: !isWebworker
-      }
-    }).concat([
-      {
-        pattern: 'test/fixtures/**/*',
-        watched: false,
-        served: true,
-        included: false
-      }
-    ]),
+    files: files
+      .map(f => {
+        return {
+          pattern: f,
+          included: !isWebworker
+        }
+      })
+      .concat([
+        {
+          pattern: 'test/fixtures/**/*',
+          watched: false,
+          served: true,
+          included: false
+        }
+      ]),
 
     preprocessors: files.reduce((acc, f) => {
       acc[f] = ['webpack', 'sourcemap']
@@ -93,9 +115,8 @@ const karmaConfig = (config, files, grep, progress, bail) => {
     },
 
     reporters: [
-      progress && 'progress',
-      !progress && 'mocha',
-      process.env.CI && 'junit'
+      argv.progress && 'progress',
+      !argv.progress && 'mocha'
     ].filter(Boolean),
 
     mochaReporter: {
@@ -103,17 +124,9 @@ const karmaConfig = (config, files, grep, progress, bail) => {
       showDiff: true
     },
 
-    junitReporter: {
-      outputDir: process.cwd(),
-      outputFile: isWebworker ? 'junit-report-webworker.xml' : 'junit-report-browser.xml',
-      useBrowserName: false
-    },
-
     plugins: [
       'karma-chrome-launcher',
-      'karma-edge-launcher',
       'karma-firefox-launcher',
-      'karma-junit-reporter',
       'karma-mocha',
       'karma-mocha-reporter',
       'karma-mocha-webworker',
@@ -129,6 +142,10 @@ const karmaConfig = (config, files, grep, progress, bail) => {
 }
 
 module.exports = (config) => {
-  var argv = require('yargs-parser')(process.argv.slice(2), { array: ['files-custom'], boolean: ['progress', 'bail'] })
-  config.set(merge(karmaConfig(config, argv.filesCustom, argv.grep, argv.progress, argv.bail), userConfig.karma))
+  var argv = require('yargs-parser')(process.argv.slice(2), {
+    array: ['files-custom'],
+    boolean: ['progress', 'bail'],
+    string: ['timeout']
+  })
+  config.set(merge(karmaConfig(config, argv), userConfig.karma))
 }

@@ -2,13 +2,20 @@
 
 const execa = require('execa')
 const path = require('path')
-const { fromAegir, hook } = require('../utils')
+const { hook, fromAegir } = require('../utils')
+const merge = require('merge-options')
 
 const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
-function testNode (ctx) {
+/** @typedef { import("execa").Options} ExecaOptions */
+
+function testNode (ctx, execaOptions) {
   let exec = 'mocha'
-  const env = { NODE_ENV: 'test' }
+  const env = {
+    NODE_ENV: 'test',
+    AEGIR_RUNNER: 'node',
+    AEGIR_TS: ctx.ts
+  }
   const timeout = ctx.timeout || DEFAULT_TIMEOUT
 
   let args = [
@@ -18,8 +25,8 @@ function testNode (ctx) {
   ].filter(Boolean)
 
   let files = [
-    'test/node.js',
-    'test/**/*.spec.js'
+    'test/node.{js,ts}',
+    'test/**/*.spec.{js,ts}'
   ]
 
   if (ctx.colors) {
@@ -30,6 +37,10 @@ function testNode (ctx) {
 
   if (ctx.grep) {
     args.push(`--grep=${ctx.grep}`)
+  }
+
+  if (ctx.invert) {
+    args.push('--invert')
   }
 
   if (ctx.files && ctx.files.length > 0) {
@@ -52,14 +63,12 @@ function testNode (ctx) {
     args.push('--bail')
   }
 
-  if (ctx.flow) {
-    args.push(...['--resolve', fromAegir('src/test/register.js')])
+  if (ctx.ts) {
+    args.push(...['--require', fromAegir('src/config/register.js')])
   }
 
   const postHook = hook('node', 'post')
   const preHook = hook('node', 'pre')
-
-  let err
 
   if (ctx['100']) {
     args = [
@@ -73,24 +82,25 @@ function testNode (ctx) {
     exec = 'nyc'
   }
 
-  return preHook(ctx).then(() => {
-    return execa(exec, args.concat(files.map((p) => path.normalize(p))), {
-      env: env,
-      cwd: process.cwd(),
-      preferLocal: true,
-      localDir: path.join(__dirname, '../..'),
-      stdin: process.stdin,
-      stdout: process.stdout,
-      stderr: process.stderr
-    }).catch((_err) => {
-      err = _err
+  return preHook(ctx)
+    .then((hook = {}) => {
+      return execa(exec,
+        args.concat(files.map((p) => path.normalize(p))),
+        merge(
+          {
+            env: {
+              ...env,
+              ...hook.env
+            },
+            preferLocal: true,
+            localDir: path.join(__dirname, '../..'),
+            stdio: 'inherit'
+          },
+          execaOptions
+        )
+      )
     })
-  }).then(() => postHook(ctx))
-    .then(() => {
-      if (err) {
-        throw err
-      }
-    })
+    .then(() => postHook(ctx))
 }
 
 module.exports = testNode

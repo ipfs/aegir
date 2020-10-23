@@ -4,11 +4,11 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const StatsPlugin = require('stats-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { fromRoot, pkg, paths, getLibraryName } = require('../utils')
 const userConfig = require('./user')()
 const isProduction = process.env.NODE_ENV === 'production'
+const isTSEnable = process.env.AEGIR_TS === 'true'
 
 const base = (env, argv) => {
   const filename = [
@@ -22,8 +22,7 @@ const base = (env, argv) => {
   return {
     bail: Boolean(isProduction),
     mode: isProduction ? 'production' : 'development',
-    devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
-    entry: [userConfig.entry],
+    entry: [isTSEnable ? fromRoot('src', 'index.ts') : fromRoot('src', 'index.js')],
     output: {
       path: fromRoot(paths.dist),
       filename: filename,
@@ -31,15 +30,14 @@ const base = (env, argv) => {
       library: getLibraryName(pkg.name),
       libraryTarget: 'umd',
       globalObject: 'self', // Use `self` as `window` doesn't not exist within a Service/Web Worker context
-      devtoolModuleFilenameTemplate: info =>
-        path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
+      devtoolModuleFilenameTemplate: info => 'file:' + encodeURI(info.absoluteResourcePath)
     },
     module: {
       rules: [
         {
           oneOf: [
             {
-              test: /\.js$/,
+              test: /\.(js|ts)$/,
               include: fromRoot(paths.src),
               use: {
                 loader: require.resolve('babel-loader'),
@@ -68,6 +66,7 @@ const base = (env, argv) => {
       ]
     },
     resolve: {
+      extensions: ['.wasm', '.mjs', '.js', '.json', '.ts', '.d.ts'],
       alias: {
         '@babel/runtime': path.dirname(
           require.resolve('@babel/runtime/package.json')
@@ -111,12 +110,42 @@ const base = (env, argv) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        'process.env.IS_WEBPACK_BUILD': JSON.stringify(true)
+        'process.env': JSON.stringify({
+          DEBUG: process.env.DEBUG,
+          NODE_ENV: process.env.NODE_ENV
+        })
       })
     ],
     target: 'web',
-    node: {
+    node: process.env.AEGIR_NODE === 'false' ? {
+      global: true,
+      __filename: 'mock',
+      __dirname: 'mock',
+      dgram: false,
+      fs: false,
+      net: false,
+      tls: false,
+      child_process: false,
+      console: false,
+      // TODO remove this once readable-stream is fixed probably on in v4
+      // https://github.com/nodejs/readable-stream/pull/435
+      process: true,
+      Buffer: false,
+      setImmediate: false,
+      os: false,
+      assert: false,
+      constants: false,
+      events: false,
+      http: false,
+      path: false,
+      querystring: false,
+      stream: false,
+      string_decoder: false,
+      timers: false,
+      url: false,
+      util: false,
+      crypto: false
+    } : {
       dgram: 'empty',
       fs: 'empty',
       net: 'empty',
@@ -133,7 +162,7 @@ const base = (env, argv) => {
     performance: {
       hints: false
     },
-    stats: 'minimal'
+    stats: 'errors-warnings'
   }
 }
 
@@ -141,53 +170,21 @@ module.exports = (env, argv) => {
   const external = typeof userConfig.webpack === 'function'
     ? userConfig.webpack(env, argv)
     : userConfig.webpack
-
-  if (process.env.AEGIR_BUILD_ANALYZE) {
+  if (process.env.AEGIR_BUILD_ANALYZE === 'true') {
     return merge(
       base(env, argv),
       {
         plugins: [
-          new BundleAnalyzerPlugin(),
-          new StatsPlugin('stats.json')
+          new BundleAnalyzerPlugin({ generateStatsFile: true, analyzerMode: 'static', logLevel: 'error', openAnalyzer: process.env.CI === undefined })
         ],
         profile: true
       },
       external
     )
   }
-  if (isProduction) {
-    return [
-      merge(
-        base(env, argv),
-        {
-          output: {
-            filename: 'index.js',
-            sourceMapFilename: 'index.js.map'
-          },
-          optimization: {
-            minimize: false
-          }
-        },
-        external
-      ),
-      merge(
-        base(env, argv),
-        external
-      )
-    ]
-  }
 
   return merge(
     base(env, argv),
-    {
-      output: {
-        filename: 'index.js',
-        sourceMapFilename: 'index.js.map'
-      },
-      optimization: {
-        minimize: false
-      }
-    },
     external
   )
 }

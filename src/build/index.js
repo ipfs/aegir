@@ -1,15 +1,17 @@
+/* eslint-disable no-console */
 'use strict'
 
 const path = require('path')
+const fs = require('fs')
+const bytes = require('bytes')
 const execa = require('execa')
 const rimraf = require('rimraf')
-const { fromAegir } = require('./../utils')
+const { fromAegir, gzipSize, pkg } = require('./../utils')
 const userConfig = require('../config/user')
 
 const config = userConfig()
 
-module.exports = (argv) => {
-  const analyze = Boolean(process.env.AEGIR_BUILD_ANALYZE || argv.analyze)
+module.exports = async (argv) => {
   const input = argv._.slice(1)
   const forwardOptions = argv['--'] ? argv['--'] : []
   const useBuiltinConfig = !forwardOptions.includes('--config')
@@ -22,7 +24,7 @@ module.exports = (argv) => {
   rimraf.sync(path.join(process.cwd(), 'dist'))
 
   // Run webpack
-  const webpack = execa('webpack-cli', [
+  const webpack = await execa('webpack-cli', [
     ...webpackConfig,
     ...progress,
     ...input,
@@ -30,20 +32,40 @@ module.exports = (argv) => {
   ], {
     env: {
       NODE_ENV: process.env.NODE_ENV || 'production',
-      AEGIR_BUILD_ANALYZE: analyze || ''
+      AEGIR_BUILD_ANALYZE: argv.bundlesize,
+      AEGIR_NODE: argv.node,
+      AEGIR_TS: argv.ts
     },
     localDir: path.join(__dirname, '../..'),
+    preferLocal: true,
     stdio: 'inherit'
   })
 
+  if (argv.ts) {
+    await execa('tsc', [
+      '--outDir', './dist/src',
+      '--declaration'
+    ], {
+      localDir: path.join(__dirname, '../..'),
+      preferLocal: true,
+      stdio: 'inherit'
+    })
+  }
+
   if (argv.bundlesize) {
-    return webpack
-      .then(r => {
-        return execa('bundlesize', ['-f', config.bundlesize.path, '-s', config.bundlesize.maxSize], {
-          localDir: path.join(__dirname, '..'),
-          stdio: 'inherit'
-        })
-      })
+    const stats = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'dist/stats.json')))
+    const gzip = await gzipSize(path.join(stats.outputPath, stats.assets[0].name))
+    const maxsize = bytes(config.bundlesize.maxSize)
+    const diff = gzip - maxsize
+
+    console.log('Use http://webpack.github.io/analyse/ to load "./dist/stats.json".')
+    console.log(`Check previous sizes in https://bundlephobia.com/result?p=${pkg.name}@${pkg.version}`)
+
+    if (diff > 0) {
+      throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxsize)})`)
+    } else {
+      console.log(`${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxsize)})`)
+    }
   }
   return webpack
 }

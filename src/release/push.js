@@ -1,13 +1,16 @@
 'use strict'
 
-const git = require('simple-git')(process.cwd())
-const pify = require('pify')
+const git = require('simple-git/promise')(process.cwd())
+const execa = require('execa')
 
-function push () {
-  const remote = 'origin'
-  return pify(git.push.bind(git))(
+async function push (opts) {
+  const remote = opts.remote || 'origin'
+  const branch = (await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'], {
+    cwd: process.cwd()
+  })).stdout
+  return git.push(
     remote,
-    'master',
+    branch,
     {
       // Linter and tests were already run by previous steps
       '--no-verify': true,

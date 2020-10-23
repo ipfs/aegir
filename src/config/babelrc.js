@@ -1,26 +1,13 @@
 'use strict'
 const { pkg, browserslist } = require('./../utils')
 
-const validateBoolOption = (name, value, defaultValue) => {
-  if (typeof value === 'undefined') {
-    value = defaultValue
-  }
-
-  if (typeof value !== 'boolean') {
-    throw new Error(`Preset aegir: '${name}' option must be a boolean.`)
-  }
-
-  return value
-}
-
 module.exports = function (opts = {}) {
   const env = process.env.BABEL_ENV || process.env.NODE_ENV
   const isEnvDevelopment = env === 'development'
   const isEnvProduction = env === 'production'
   const isEnvTest = env === 'test'
-  const isFlowEnabled = validateBoolOption('flow', opts.flow, true)
+  const isTSEnable = process.env.AEGIR_TS === 'true'
   const targets = { browsers: pkg.browserslist || browserslist }
-
   if (!isEnvDevelopment && !isEnvProduction && !isEnvTest) {
     throw new Error(
       'Using `babel-preset-env` requires that you specify `NODE_ENV` or ' +
@@ -39,12 +26,19 @@ module.exports = function (opts = {}) {
           corejs: 3,
           useBuiltIns: 'entry',
           modules: 'commonjs',
+          bugfixes: true,
           targets
+        }
+      ],
+      isTSEnable && [
+        '@babel/preset-typescript',
+        {
+          allowNamespaces: true
         }
       ]
     ].filter(Boolean),
     plugins: [
-      isFlowEnabled && [require('babel-plugin-transform-flow-comments')],
+      '@babel/plugin-proposal-class-properties',
       [
         require('@babel/plugin-transform-runtime').default,
         {

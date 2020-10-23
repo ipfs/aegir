@@ -7,14 +7,16 @@ const userConfig = require('./config/user')
 const formatter = CLIEngine.getFormatter()
 
 const FILES = [
-  '*.js',
+  '*.{js,ts}',
   'bin/**',
-  'config/**/*.js',
-  'test/**/*.js',
-  'src/**/*.js',
-  'tasks/**/*.js',
-  'benchmarks/**/*.js',
-  '!**/node_modules/**'
+  'config/**/*.{js,ts}',
+  'test/**/*.{js,ts}',
+  'src/**/*.{js,ts}',
+  'tasks/**/*.{js,ts}',
+  'benchmarks/**/*.{js,ts}',
+  'utils/**/*.{js,ts}',
+  '!**/node_modules/**',
+  '!**/*.d.ts'
 ]
 
 function checkDependencyVersions () {
@@ -81,7 +83,7 @@ function checkDependencyVersions () {
 function runLinter (opts = {}) {
   const cli = new CLIEngine({
     useEslintrc: true,
-    baseConfig: require('./config/eslintrc.js'),
+    baseConfig: { extends: 'ipfs' },
     fix: opts.fix
   })
 
@@ -93,7 +95,9 @@ function runLinter (opts = {}) {
       if (opts.fix) {
         CLIEngine.outputFixes(report)
       }
-      console.log(formatter(report.results)) // eslint-disable-line no-console
+      if (!opts.silent) {
+        console.log(formatter(report.results)) // eslint-disable-line no-console
+      }
 
       if (report.errorCount > 0) {
         throw new Error('Lint errors')

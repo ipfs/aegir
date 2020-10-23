@@ -13,13 +13,13 @@ module.exports = {
       .epilog(EPILOG)
       .example('aegir test -t webworker', 'Run tests in the browser with Karma inside a webworker.')
       .example('aegir test -t browser -- --browsers Firefox,Chrome,Safari', 'Tell Karma to run tests in several browsers at the same time.')
-      .example('aegir test -w -t browser -- --browser Chrome', 'Debug tests with watch mode and tell Karma to open Chrome in a non-headless mode.')
+      .example('aegir test -w -t browser -- --browsers Chrome', 'Debug tests with watch mode and tell Karma to open Chrome in a non-headless mode.')
       .example(
         'aegir test -t electron-renderer -- --interactive',
         'Debug electron renderer test with a persistent window.'
       )
       .options({
-        '100': {
+        100: {
           describe: 'Check coverage and validate 100% was covered.',
           type: 'boolean',
           default: false
@@ -32,7 +32,6 @@ module.exports = {
           default: ['node', 'browser', 'webworker']
         },
         verbose: {
-          alias: 'v',
           describe: 'Print verbose test output',
           type: 'boolean',
           default: false
@@ -78,11 +77,6 @@ module.exports = {
         bail: {
           alias: 'b',
           describe: 'Mocha should bail once a test fails',
-          type: 'boolean',
-          default: false
-        },
-        flow: {
-          describe: 'Run test with Flow support',
           type: 'boolean',
           default: false
         },

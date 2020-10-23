@@ -1,3 +1,580 @@
+## [28.0.2](https://github.com/ipfs/aegir/compare/v28.0.1...v28.0.2) (2020-10-20)
+
+
+### Bug Fixes
+
+* downgrade electron and electron-mocha ([#655](https://github.com/ipfs/aegir/issues/655)) ([caf4c8f](https://github.com/ipfs/aegir/commit/caf4c8f6555190c74704a5396d11525336a2d8d2))
+
+
+
+## [28.0.1](https://github.com/ipfs/aegir/compare/v28.0.0...v28.0.1) (2020-10-20)
+
+
+### Bug Fixes
+
+* remove which, revert to available mocha ([5b77754](https://github.com/ipfs/aegir/commit/5b77754baaa82a197ad5e741c6be8413fdb76f63))
+
+
+
+# [28.0.0](https://github.com/ipfs/aegir/compare/v27.0.0...v28.0.0) (2020-10-20)
+
+
+### Bug Fixes
+
+* remove --noUnhandledPromiseRejections option ([#653](https://github.com/ipfs/aegir/issues/653)) ([e478259](https://github.com/ipfs/aegir/commit/e47825947a19df31207c1819d36609207ec9d805))
+
+
+### Features
+
+* allow overriding runtime path for bundle size check ([#652](https://github.com/ipfs/aegir/issues/652)) ([f2ad1b9](https://github.com/ipfs/aegir/commit/f2ad1b9da5597ac54fc1d161c5b4a06195109b43))
+
+
+
+<a name="27.0.0"></a>
+# [27.0.0](https://github.com/ipfs/aegir/compare/v26.0.0...v27.0.0) (2020-10-06)
+
+
+### Features
+
+* factor eslint config to eslint-config-ipfs ([#638](https://github.com/ipfs/aegir/issues/638)) ([0fb42b9](https://github.com/ipfs/aegir/commit/0fb42b9))
+
+
+
+<a name="26.0.0"></a>
+# [26.0.0](https://github.com/ipfs/aegir/compare/v25.1.0...v26.0.0) (2020-08-14)
+
+
+### Features
+
+* Use file type based lint rules ([#621](https://github.com/ipfs/aegir/issues/621)) ([fdc002e](https://github.com/ipfs/aegir/commit/fdc002e))
+
+
+### BREAKING CHANGES
+
+* new linting file used for .ts files
+
+
+
+<a name="25.1.0"></a>
+# [25.1.0](https://github.com/ipfs/aegir/compare/v25.0.0...v25.1.0) (2020-08-11)
+
+
+### Bug Fixes
+
+* update bundlesize help command ([#617](https://github.com/ipfs/aegir/issues/617)) ([beedcdb](https://github.com/ipfs/aegir/commit/beedcdb))
+
+
+### Features
+
+* add support for the mocha --invert flag ([#622](https://github.com/ipfs/aegir/issues/622)) ([964d05f](https://github.com/ipfs/aegir/commit/964d05f))
+
+
+
+<a name="25.0.0"></a>
+# [25.0.0](https://github.com/ipfs/aegir/compare/v24.0.0...v25.0.0) (2020-06-20)
+
+
+### Bug Fixes
+
+* remove docsFormats from release cmd ([39e44b0](https://github.com/ipfs/aegir/commit/39e44b0))
+* use bugfixes: true in the babel config ([2fc9878](https://github.com/ipfs/aegir/commit/2fc9878))
+
+
+### Features
+
+* support ts([#584](https://github.com/ipfs/aegir/issues/584)) ([9dc23a3](https://github.com/ipfs/aegir/commit/9dc23a3))
+
+
+
+<a name="24.0.0"></a>
+# [24.0.0](https://github.com/ipfs/aegir/compare/v23.0.0...v24.0.0) (2020-06-16)
+
+
+### Features
+
+* default to not include node globals anf builtins ([#578](https://github.com/ipfs/aegir/issues/578)) ([fecb4ae](https://github.com/ipfs/aegir/commit/fecb4ae))
+
+
+### BREAKING CHANGES
+
+* browser code will NOT have node globals and builtins available.
+
+
+
+<a name="23.0.0"></a>
+# [23.0.0](https://github.com/ipfs/aegir/compare/v22.1.0...v23.0.0) (2020-06-12)
+
+
+### Bug Fixes
+
+* remove support for flow ([#579](https://github.com/ipfs/aegir/issues/579)) ([870c64d](https://github.com/ipfs/aegir/commit/870c64d))
+
+
+### Features
+
+* clean up deps, utils, release cmd and docs ([#581](https://github.com/ipfs/aegir/issues/581)) ([4b4ce35](https://github.com/ipfs/aegir/commit/4b4ce35))
+
+
+### BREAKING CHANGES
+
+* remove karma-edge and remove `docsFormats` from `docs` cmd
+* Flow support was removed
+
+
+
+<a name="22.1.0"></a>
+# [22.1.0](https://github.com/ipfs/aegir/compare/v22.0.0...v22.1.0) (2020-06-10)
+
+
+### Features
+
+* checks action and bundlesize check improvements ([#532](https://github.com/ipfs/aegir/issues/532)) ([435bb20](https://github.com/ipfs/aegir/commit/435bb20))
+
+
+
+<a name="22.0.0"></a>
+# [22.0.0](https://github.com/ipfs/aegir/compare/v21.10.2...v22.0.0) (2020-05-07)
+
+
+### Features
+
+* turn off sourcemaps for production builds ([#549](https://github.com/ipfs/aegir/issues/549)) ([19bb300](https://github.com/ipfs/aegir/commit/19bb300))
+
+
+### BREAKING CHANGES
+
+* no more sourcemaps and unminified bundle for productions builds
+
+
+
+<a name="21.10.2"></a>
+## [21.10.2](https://github.com/ipfs/aegir/compare/v21.10.1...v21.10.2) (2020-05-06)
+
+
+### Bug Fixes
+
+* fix process.env in karma tests ([#559](https://github.com/ipfs/aegir/issues/559)) ([09ba9c6](https://github.com/ipfs/aegir/commit/09ba9c6))
+
+
+
+<a name="21.10.1"></a>
+## [21.10.1](https://github.com/ipfs/aegir/compare/v21.10.0...v21.10.1) (2020-05-05)
+
+
+### Bug Fixes
+
+* whitelist process env keys ([#557](https://github.com/ipfs/aegir/issues/557)) ([e36e1de](https://github.com/ipfs/aegir/commit/e36e1de))
+
+
+
+<a name="21.10.0"></a>
+# [21.10.0](https://github.com/ipfs/aegir/compare/v21.9.2...v21.10.0) (2020-05-05)
+
+
+### Features
+
+* echo request headers ([#553](https://github.com/ipfs/aegir/issues/553)) ([8444136](https://github.com/ipfs/aegir/commit/8444136))
+
+
+
+<a name="21.9.2"></a>
+## [21.9.2](https://github.com/ipfs/aegir/compare/v21.9.1...v21.9.2) (2020-04-30)
+
+
+### Bug Fixes
+
+* bump deps ([5dd58e6](https://github.com/ipfs/aegir/commit/5dd58e6))
+
+
+
+<a name="21.9.1"></a>
+## [21.9.1](https://github.com/ipfs/aegir/compare/v21.9.0...v21.9.1) (2020-04-30)
+
+
+### Bug Fixes
+
+* better stack traces and add process to node: false ([1f2dab6](https://github.com/ipfs/aegir/commit/1f2dab6))
+
+
+
+<a name="21.9.0"></a>
+# [21.9.0](https://github.com/ipfs/aegir/compare/v21.8.1...v21.9.0) (2020-04-20)
+
+
+### Bug Fixes
+
+* add test to dependency check ([bf81ee2](https://github.com/ipfs/aegir/commit/bf81ee2))
+* bump electron to 8.2.2 ([cacb7af](https://github.com/ipfs/aegir/commit/cacb7af))
+* remove karma junit ([9a2ad2c](https://github.com/ipfs/aegir/commit/9a2ad2c))
+* remove unused util ([cefd014](https://github.com/ipfs/aegir/commit/cefd014))
+
+
+### Features
+
+* bump extract-zip to 2.0.0 ([b1f80fd](https://github.com/ipfs/aegir/commit/b1f80fd))
+* bump karma to 5.0.1 ([e229a66](https://github.com/ipfs/aegir/commit/e229a66))
+* improve errors and dep check cmd ([64f16db](https://github.com/ipfs/aegir/commit/64f16db)), closes [#428](https://github.com/ipfs/aegir/issues/428)
+
+
+
+<a name="21.8.1"></a>
+## [21.8.1](https://github.com/ipfs/aegir/compare/v21.8.0...v21.8.1) (2020-04-14)
+
+
+### Bug Fixes
+
+* fix undefined hook return ([1e90b5c](https://github.com/ipfs/aegir/commit/1e90b5c))
+
+
+
+<a name="21.8.0"></a>
+# [21.8.0](https://github.com/ipfs/aegir/compare/v21.7.0...v21.8.0) (2020-04-14)
+
+
+### Features
+
+* forward env to webpack ([ee90e20](https://github.com/ipfs/aegir/commit/ee90e20))
+
+
+
+<a name="21.7.0"></a>
+# [21.7.0](https://github.com/ipfs/aegir/compare/v21.6.0...v21.7.0) (2020-04-13)
+
+
+### Features
+
+* add download endpoint to echo server ([4fc3220](https://github.com/ipfs/aegir/commit/4fc3220))
+
+
+
+<a name="21.6.0"></a>
+# [21.6.0](https://github.com/ipfs/aegir/compare/v21.5.1...v21.6.0) (2020-04-13)
+
+
+### Features
+
+* export assert and chai itself ([dbe8145](https://github.com/ipfs/aegir/commit/dbe8145))
+
+
+
+<a name="21.5.1"></a>
+## [21.5.1](https://github.com/ipfs/aegir/compare/v21.5.0...v21.5.1) (2020-04-13)
+
+
+
+<a name="21.5.0"></a>
+# [21.5.0](https://github.com/ipfs/aegir/compare/v21.4.5...v21.5.0) (2020-04-13)
+
+
+### Bug Fixes
+
+* disable gpg sign in tests ([8714603](https://github.com/ipfs/aegir/commit/8714603))
+* fix path in the fixture test ([30e9331](https://github.com/ipfs/aegir/commit/30e9331))
+
+
+### Features
+
+* add testing helpers ([a9d0561](https://github.com/ipfs/aegir/commit/a9d0561))
+
+
+
+<a name="21.4.5"></a>
+## [21.4.5](https://github.com/ipfs/aegir/compare/v21.4.4...v21.4.5) (2020-03-25)
+
+
+### Bug Fixes
+
+* add buffer to fixtures ([775e986](https://github.com/ipfs/aegir/commit/775e986))
+
+
+
+<a name="21.4.4"></a>
+## [21.4.4](https://github.com/ipfs/aegir/compare/v21.4.3...v21.4.4) (2020-03-23)
+
+
+### Bug Fixes
+
+* fix release node flag and remove progress ([ac2baa7](https://github.com/ipfs/aegir/commit/ac2baa7))
+
+
+
+<a name="21.4.3"></a>
+## [21.4.3](https://github.com/ipfs/aegir/compare/v21.4.2...v21.4.3) (2020-03-20)
+
+
+### Bug Fixes
+
+* fix node flag ([17ec20b](https://github.com/ipfs/aegir/commit/17ec20b))
+
+
+
+<a name="21.4.2"></a>
+## [21.4.2](https://github.com/ipfs/aegir/compare/v21.4.1...v21.4.2) (2020-03-20)
+
+
+### Bug Fixes
+
+* fix browser tests node flag ([fbbd77a](https://github.com/ipfs/aegir/commit/fbbd77a))
+
+
+
+<a name="21.4.1"></a>
+## [21.4.1](https://github.com/ipfs/aegir/compare/v21.4.0...v21.4.1) (2020-03-20)
+
+
+### Bug Fixes
+
+* fix fixtures loading ([ec16728](https://github.com/ipfs/aegir/commit/ec16728)), closes [#533](https://github.com/ipfs/aegir/issues/533)
+* improve --node false ([d3a104f](https://github.com/ipfs/aegir/commit/d3a104f))
+
+
+
+<a name="21.4.0"></a>
+# [21.4.0](https://github.com/ipfs/aegir/compare/v21.3.3...v21.4.0) (2020-03-18)
+
+
+### Features
+
+* add node options to test and build ([a756945](https://github.com/ipfs/aegir/commit/a756945))
+
+
+
+<a name="21.3.3"></a>
+## [21.3.3](https://github.com/ipfs/aegir/compare/v21.3.2...v21.3.3) (2020-03-18)
+
+
+### Bug Fixes
+
+* fix karma fixture loading ([d2fa1ce](https://github.com/ipfs/aegir/commit/d2fa1ce))
+
+
+
+<a name="21.3.2"></a>
+## [21.3.2](https://github.com/ipfs/aegir/compare/v21.3.1...v21.3.2) (2020-03-16)
+
+
+### Bug Fixes
+
+* use execa for dirty check ([682cd11](https://github.com/ipfs/aegir/commit/682cd11))
+
+
+
+<a name="21.3.1"></a>
+## [21.3.1](https://github.com/ipfs/aegir/compare/v21.3.0...v21.3.1) (2020-03-16)
+
+
+### Bug Fixes
+
+* fix webpack warn, make electron lazy ([#521](https://github.com/ipfs/aegir/issues/521)) ([68fc177](https://github.com/ipfs/aegir/commit/68fc177))
+* pass --full-trace option to electron-mocha ([#519](https://github.com/ipfs/aegir/issues/519)) ([a100c87](https://github.com/ipfs/aegir/commit/a100c87)), closes [/github.com/jprichardson/electron-mocha/blob/master/lib/run.js#L166](https://github.com//github.com/jprichardson/electron-mocha/blob/master/lib/run.js/issues/L166)
+* run tests with progress ([e27eded](https://github.com/ipfs/aegir/commit/e27eded))
+
+
+
+<a name="21.3.0"></a>
+# [21.3.0](https://github.com/ipfs/aegir/compare/v21.2.0...v21.3.0) (2020-02-20)
+
+
+### Bug Fixes
+
+* update deps ([ad0bcc3](https://github.com/ipfs/aegir/commit/ad0bcc3))
+
+
+
+<a name="21.2.0"></a>
+# [21.2.0](https://github.com/ipfs/aegir/compare/v21.1.0...v21.2.0) (2020-02-20)
+
+
+### Features
+
+* allow enabling/disabling each part of the release process ([#526](https://github.com/ipfs/aegir/issues/526)) ([9c44626](https://github.com/ipfs/aegir/commit/9c44626))
+
+
+
+<a name="21.1.0"></a>
+# [21.1.0](https://github.com/ipfs/aegir/compare/v21.0.2...v21.1.0) (2020-02-19)
+
+
+### Features
+
+* test dependants ([#525](https://github.com/ipfs/aegir/issues/525)) ([4f42860](https://github.com/ipfs/aegir/commit/4f42860))
+
+
+
+<a name="21.0.2"></a>
+## [21.0.2](https://github.com/ipfs/aegir/compare/v21.0.1...v21.0.2) (2020-02-14)
+
+
+### Bug Fixes
+
+* fix electron detection ([#520](https://github.com/ipfs/aegir/issues/520)) ([0b911ec](https://github.com/ipfs/aegir/commit/0b911ec))
+
+
+
+<a name="21.0.1"></a>
+## [21.0.1](https://github.com/ipfs/aegir/compare/v21.0.0...v21.0.1) (2020-02-14)
+
+
+### Bug Fixes
+
+* better default for userconfig ([4a7f21d](https://github.com/ipfs/aegir/commit/4a7f21d))
+
+
+
+<a name="21.0.0"></a>
+# [21.0.0](https://github.com/ipfs/aegir/compare/v20.6.1...v21.0.0) (2020-02-14)
+
+
+### Bug Fixes
+
+* cleanup, update deps, remove deps ([#512](https://github.com/ipfs/aegir/issues/512)) ([6d4d25a](https://github.com/ipfs/aegir/commit/6d4d25a))
+
+
+### BREAKING CHANGES
+
+* hooks no longer support callbacks, eslint packages were updated so errors maybe appear and contributors list feature will change a bit.
+
+
+
+<a name="20.6.1"></a>
+## [20.6.1](https://github.com/ipfs/aegir/compare/v20.6.0...v20.6.1) (2020-02-14)
+
+
+### Bug Fixes
+
+* remove package-lock before generating npm-shrinkwrap file ([#518](https://github.com/ipfs/aegir/issues/518)) ([02fc308](https://github.com/ipfs/aegir/commit/02fc308)), closes [#516](https://github.com/ipfs/aegir/issues/516)
+
+
+
+<a name="20.6.0"></a>
+# [20.6.0](https://github.com/ipfs/aegir/compare/v20.5.1...v20.6.0) (2020-02-04)
+
+
+### Features
+
+* make unhandled promise rejections fail tests ([#507](https://github.com/ipfs/aegir/issues/507)) ([b634474](https://github.com/ipfs/aegir/commit/b634474)), closes [#505](https://github.com/ipfs/aegir/issues/505)
+
+
+
+<a name="20.5.1"></a>
+## [20.5.1](https://github.com/ipfs/aegir/compare/v20.5.0...v20.5.1) (2020-01-16)
+
+
+### Bug Fixes
+
+* fix typo in aegir test --help examples ([082cc58](https://github.com/ipfs/aegir/commit/082cc58))
+
+
+
+<a name="20.5.0"></a>
+# [20.5.0](https://github.com/ipfs/aegir/compare/v20.4.1...v20.5.0) (2019-12-11)
+
+
+### Bug Fixes
+
+* specify remote for branch to checkout ([#465](https://github.com/ipfs/aegir/issues/465)) ([cb94e01](https://github.com/ipfs/aegir/commit/cb94e01))
+
+
+### Features
+
+* support lockfiles during text-external ([#450](https://github.com/ipfs/aegir/issues/450)) ([7ee3d14](https://github.com/ipfs/aegir/commit/7ee3d14))
+* update deps should be non breaking ([c74a430](https://github.com/ipfs/aegir/commit/c74a430))
+
+
+
+<a name="20.4.1"></a>
+## [20.4.1](https://github.com/ipfs/aegir/compare/v20.4.0...v20.4.1) (2019-10-11)
+
+
+### Bug Fixes
+
+* force --verbose for verbose mode ([#447](https://github.com/ipfs/aegir/issues/447)) ([5ed2fbe](https://github.com/ipfs/aegir/commit/5ed2fbe))
+
+
+
+<a name="20.4.0"></a>
+# [20.4.0](https://github.com/ipfs/aegir/compare/v20.3.2...v20.4.0) (2019-10-10)
+
+
+### Features
+
+* allow testing branches of third party repos ([#438](https://github.com/ipfs/aegir/issues/438)) ([39ed250](https://github.com/ipfs/aegir/commit/39ed250))
+
+
+
+<a name="20.3.2"></a>
+## [20.3.2](https://github.com/ipfs/aegir/compare/v20.3.1...v20.3.2) (2019-10-10)
+
+
+### Bug Fixes
+
+* remove electron from the defaults target ([9ff4633](https://github.com/ipfs/aegir/commit/9ff4633))
+* remove manual push after rc publish ([#432](https://github.com/ipfs/aegir/issues/432)) ([dfc5bb5](https://github.com/ipfs/aegir/commit/dfc5bb5)), closes [#426](https://github.com/ipfs/aegir/issues/426)
+
+
+### Features
+
+* prefix rc with release ([#431](https://github.com/ipfs/aegir/issues/431)) ([8b1cf8a](https://github.com/ipfs/aegir/commit/8b1cf8a))
+
+
+
+<a name="20.3.1"></a>
+## [20.3.1](https://github.com/ipfs/aegir/compare/v20.3.0...v20.3.1) (2019-09-19)
+
+
+### Bug Fixes
+
+* fix karma timeout ([a413878](https://github.com/ipfs/aegir/commit/a413878))
+
+
+
+<a name="20.3.0"></a>
+# [20.3.0](https://github.com/ipfs/aegir/compare/v20.2.0...v20.3.0) (2019-09-19)
+
+
+### Bug Fixes
+
+* push to the current branch ([#426](https://github.com/ipfs/aegir/issues/426)) ([d82815a](https://github.com/ipfs/aegir/commit/d82815a))
+
+
+### Features
+
+* add AEGIR_RUNNER env var and support timeout in the browser and electron test runners. ([61cc413](https://github.com/ipfs/aegir/commit/61cc413))
+* add test-external command ([#425](https://github.com/ipfs/aegir/issues/425)) ([92236ba](https://github.com/ipfs/aegir/commit/92236ba))
+
+
+
+<a name="20.2.0"></a>
+# [20.2.0](https://github.com/ipfs/aegir/compare/v20.1.0...v20.2.0) (2019-09-16)
+
+
+### Bug Fixes
+
+* fix linter ([903bd03](https://github.com/ipfs/aegir/commit/903bd03))
+
+
+### Features
+
+* adds command to update release candidates ([#421](https://github.com/ipfs/aegir/issues/421)) ([36de3ff](https://github.com/ipfs/aegir/commit/36de3ff))
+* update deps ([#423](https://github.com/ipfs/aegir/issues/423)) ([24ba24b](https://github.com/ipfs/aegir/commit/24ba24b))
+
+
+### BREAKING CHANGES
+
+* linter upgrade you may need to fix linting problems
+
+
+
+<a name="20.1.0"></a>
+# [20.1.0](https://github.com/ipfs/aegir/compare/v20.0.0...v20.1.0) (2019-09-10)
+
+
+### Features
+
+* add commands for publishing rc ([#419](https://github.com/ipfs/aegir/issues/419)) ([d1cc8d5](https://github.com/ipfs/aegir/commit/d1cc8d5))
+
+
+
 <a name="20.0.0"></a>
 # [20.0.0](https://github.com/ipfs/aegir/compare/v19.0.5...v20.0.0) (2019-07-12)
 

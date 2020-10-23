@@ -3,6 +3,7 @@
 
 const loadFixture = require('../fixtures')
 const expect = require('chai').expect
+const globalThis = require('ipfs-utils/src/globalthis')
 
 describe('browser', () => {
   it('fixtures', () => {
@@ -13,5 +14,11 @@ describe('browser', () => {
   it('non existing fixtures', () => {
     expect(() => loadFixture('/test/fixtures/asdalkdjaskldjatest.txt'))
       .to.throw()
+  })
+
+  it('can access context object', () => {
+    const context = require('./fixtures/tests/context-access')
+
+    expect(context).to.equal(globalThis.Uint8Array)
   })
 })

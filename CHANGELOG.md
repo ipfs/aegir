@@ -1,3 +1,12 @@
+# [28.1.0](https://github.com/ipfs/aegir/compare/v28.0.2...v28.1.0) (2020-10-26)
+
+
+### Bug Fixes
+
+* allow bundle to be used in web workers ([#408](https://github.com/ipfs/aegir/issues/408)) ([3f72e50](https://github.com/ipfs/aegir/commit/3f72e5074145a8f2ec03143db4230514af664f95))
+
+
+
 ## [28.0.2](https://github.com/ipfs/aegir/compare/v28.0.1...v28.0.2) (2020-10-20)
 
 

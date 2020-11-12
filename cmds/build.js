@@ -1,6 +1,6 @@
 'use strict'
 const EPILOG = `
-This command outputs two bundles, one in development mode (index.js) and another in production mode (index.min.js) plus respective source-maps, files are written to ./dist folder.
+This command bundles js code and builds TS type declaration to ./dist folder.
 Supports options forwarding with '--' for more info check https://webpack.js.org/api/cli/
 `
 module.exports = {

@@ -6,8 +6,9 @@ const fs = require('fs')
 const bytes = require('bytes')
 const execa = require('execa')
 const rimraf = require('rimraf')
-const { fromAegir, gzipSize, pkg } = require('./../utils')
+const { fromAegir, gzipSize, pkg, hasTsconfig } = require('./../utils')
 const userConfig = require('../config/user')
+const tsCmd = require('../ts')
 
 const config = userConfig()
 
@@ -41,15 +42,8 @@ module.exports = async (argv) => {
     stdio: 'inherit'
   })
 
-  if (argv.ts) {
-    await execa('tsc', [
-      '--outDir', './dist/src',
-      '--declaration'
-    ], {
-      localDir: path.join(__dirname, '../..'),
-      preferLocal: true,
-      stdio: 'inherit'
-    })
+  if (hasTsconfig) {
+    await tsCmd({ preset: 'types' })
   }
 
   if (argv.bundlesize) {

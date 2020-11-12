@@ -8,6 +8,8 @@ const { constants, createBrotliCompress, createGzip } = require('zlib')
 const os = require('os')
 const ora = require('ora')
 const extract = require('extract-zip')
+const stripComments = require('strip-json-comments')
+const stripBom = require('strip-bom')
 const { download } = require('@electron/get')
 const path = require('path')
 const findUp = require('findup-sync')
@@ -15,6 +17,10 @@ const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
 const execa = require('execa')
 const pascalcase = require('pascalcase')
+const ghPages = require('gh-pages')
+const { promisify } = require('util')
+
+const publishPages = promisify(ghPages.publish)
 
 const { packageJson: pkg, path: pkgPath } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
@@ -30,11 +36,36 @@ exports.paths = {
 exports.pkg = pkg
 // TODO: get this from aegir package.json
 exports.browserslist = '>1% or node >=10 and not ie 11 and not dead'
-
 exports.repoDirectory = path.dirname(pkgPath)
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
 exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
+exports.hasTsconfig = exports.hasFile('tsconfig.json')
+
+exports.parseJson = (contents) => {
+  const data = stripComments(stripBom(contents))
+
+  // A tsconfig.json file is permitted to be completely empty.
+  if (/^\s*$/.test(data)) {
+    return {}
+  }
+
+  return JSON.parse(data)
+}
+
+exports.readJson = (filePath) => {
+  return exports.parseJson(fs.readFileSync(filePath, { encoding: 'utf-8' }))
+}
+
+exports.publishDocs = () => {
+  return publishPages(
+    'docs',
+    {
+      dotfiles: true,
+      message: 'chore: update documentation'
+    }
+  )
+}
 
 /**
  * Get package version

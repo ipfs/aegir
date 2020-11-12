@@ -93,7 +93,7 @@ const types = async (forwardOptions) => {
           noEmit: false,
           emitDeclarationOnly: true
         },
-        include: ['src/**/*']
+        include: ['src/**/*', 'package.json']
       })
     )
     await execa('tsc', [
@@ -121,7 +121,7 @@ const docs = async (forwardOptions) => {
           emitDeclarationOnly: true,
           outDir: 'types'
         },
-        include: ['src/**/*']
+        include: ['src/**/*', 'package.json']
       })
     )
 

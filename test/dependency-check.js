@@ -7,20 +7,49 @@ const path = require('path')
 
 describe('dependency check', () => {
   it('should fail for missing deps', async () => {
-    await expect(check(undefined, {
+    await expect(check(undefined, [], {
       cwd: path.join(__dirname, 'fixtures/dependency-check/fail')
-    })).to.eventually.rejectedWith('execa')
+    })).to.eventually.be.rejectedWith('execa')
   })
 
-  it('should pass when theres no missing deps', async () => {
-    await expect(check(undefined, {
+  it('should pass when there are no missing deps', async () => {
+    await expect(check(undefined, [], {
       cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
-    })).to.eventually.fulfilled()
+    })).to.eventually.be.fulfilled()
   })
 
   it('should forward options', async () => {
-    await expect(check({ _: [], '--': ['--unused'] }, {
+    await expect(check({ _: [], '--': ['--unused'], input: [] }, [], {
       cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
-    })).to.eventually.rejectedWith('Modules in package.json not used in code: pico')
+    })).to.eventually.be.rejectedWith('Modules in package.json not used in code: pico')
+  })
+
+  it('should fail for missing production deps', async () => {
+    await expect(check({ productionOnly: true, input: [] }, [], {
+      cwd: path.join(__dirname, 'fixtures/dependency-check/fail-prod')
+    })).to.eventually.be.rejectedWith('execa')
+  })
+
+  it('should pass for passed files', async () => {
+    await expect(check({
+      input: [
+        'derp/foo.js'
+      ]
+    }, [], {
+      cwd: path.join(__dirname, 'fixtures/dependency-check/pass-certain-files')
+    })).to.eventually.be.fulfilled()
+  })
+
+  it('should pass for passed production files', async () => {
+    await expect(check({
+      productionOnly: true,
+      input: [
+        'derp/foo.js'
+      ]
+    }, [
+      'node', 'aegir', 'dependency-check', 'derp/foo.js'
+    ], {
+      cwd: path.join(__dirname, 'fixtures/dependency-check/pass-certain-files')
+    })).to.eventually.be.fulfilled()
   })
 })

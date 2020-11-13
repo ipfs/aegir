@@ -47,10 +47,10 @@ describe('dependency check', () => {
   it('should pass for passed files', async () => {
     await expect(check(yargsv({
       input: [
-        path.join('derp', 'foo.js')
+        'derp/foo.js'
       ]
     }), [
-      'node', 'aegir', 'dependency-check', path.join('derp', 'foo.js')
+      'node', 'aegir', 'dependency-check', 'derp/foo.js'
     ], {
       cwd: path.join(__dirname, 'fixtures/dependency-check/pass-certain-files')
     })).to.eventually.be.fulfilled()
@@ -60,10 +60,10 @@ describe('dependency check', () => {
     await expect(check(yargsv({
       productionOnly: true,
       input: [
-        path.join('derp', 'foo.js')
+        'derp/foo.js'
       ]
     }), [
-      'node', 'aegir', 'dependency-check', path.join('derp', 'foo.js')
+      'node', 'aegir', 'dependency-check', 'derp/çfoo.js'
     ], {
       cwd: path.join(__dirname, 'fixtures/dependency-check/pass-certain-files')
     })).to.eventually.be.fulfilled()

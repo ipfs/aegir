@@ -9,6 +9,7 @@ const merge = require('merge-options')
 
 const defaultInput = [
   'package.json',
+  '.aegir.js',
   './test/**/*.js',
   './src/**/*.js',
   '!./test/fixtures/**/*.js'

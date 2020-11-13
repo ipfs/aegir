@@ -21,31 +21,20 @@ const commandNames = ['dependency-check', 'dep-check', 'dep']
  * Returns true if the user invoked the command with non-flag or
  * optional args
  *
- * @param {Array} args - process.argv or similar
+ * @param {Array} input - input files maybe passed by the user, maybe defaults
+ * @param {Array} processArgs - process.argv or similar
  * @returns {boolean}
  */
-const hasPassedFileArgs = (args) => {
-  let foundCommand = false
-
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i]
-
-    if (arg === '--') {
-      // reached forward args
-      break
-    }
-
-    if (foundCommand && !arg.startsWith('-')) {
-      // was not a flag (e.g. -f) or option (e.g. --foo)
-      return true
-    }
-
-    if (commandNames.includes(arg)) {
-      foundCommand = true
+const hasPassedFileArgs = (input, processArgs) => {
+  // if any of the passed paths are not in the process.argv used to invoke
+  // this command, we have been passed defaults and not user input
+  for (const path of input) {
+    if (!processArgs.includes(path)) {
+      return false
     }
   }
 
-  return false
+  return true
 }
 
 /**
@@ -62,7 +51,7 @@ const check = (argv = { _: [], input: [], ignore: [] }, processArgs = [], execaO
   const ignore = argv.ignore
 
   if (argv.productionOnly) {
-    if (!hasPassedFileArgs(processArgs)) {
+    if (!hasPassedFileArgs(input, processArgs)) {
       input = [
         'package.json',
         './src/**/*.js'

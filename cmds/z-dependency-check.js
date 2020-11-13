@@ -18,6 +18,7 @@ module.exports = {
     yargs
       .epilog(EPILOG)
       .example('aegir dependency-check -- --unused', 'To check unused packages in your repo.')
+      .example('aegir dependency-check -- --unused --ignore typescript', 'To check unused packages in your repo, ignoring typescript.')
       .positional('input', {
         describe: 'Files to check',
         type: 'array',
@@ -28,6 +29,12 @@ module.exports = {
         describe: 'Check production dependencies and paths only',
         type: 'boolean',
         default: false
+      })
+      .option('i', {
+        alias: 'ignore',
+        describe: 'Ignore these dependencies when considering which are used and which are not',
+        type: 'array',
+        default: []
       })
   },
   async handler (argv) {

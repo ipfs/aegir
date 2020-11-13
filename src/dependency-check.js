@@ -22,7 +22,7 @@ const commandNames = ['dependency-check', 'dep-check', 'dep']
  * optional args
  *
  * @param {Array} args - process.argv or similar
- * @returns {boolean} - true if the user passed files as positional arguments
+ * @returns {boolean}
  */
 const hasPassedFileArgs = (args) => {
   let foundCommand = false
@@ -56,9 +56,10 @@ const hasPassedFileArgs = (args) => {
  * @param {ExecaOptions} execaOptions - execa options.
  * @returns {ExecaChildProcess} - Child process that does dependency check.
  */
-const check = (argv = { _: [], input: [] }, processArgs = [], execaOptions) => {
+const check = (argv = { _: [], input: [], ignore: [] }, processArgs = [], execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   let input = argv.input
+  const ignore = argv.ignore
 
   if (argv.productionOnly) {
     if (!hasPassedFileArgs(processArgs)) {
@@ -71,8 +72,20 @@ const check = (argv = { _: [], input: [] }, processArgs = [], execaOptions) => {
     forwardOptions.push('--no-dev')
   }
 
-  if (input.length === 0) {
-    input = defaultInput
+  if (ignore.length) {
+    // this allows us to specify ignores on a per-module basis while also orchestrating the command across multiple modules.
+    //
+    // e.g. npm script in package.json:
+    // "dependency-check": "aegir dependency-check -i cross-env",
+    //
+    // .travis.yml:
+    // lerna run dependency-check -- -p -- --unused
+    //
+    // results in the following being run in the package:
+    // aegir dependency-check -i cross-env -p -- --unused
+    ignore.forEach(i => {
+      forwardOptions.push('-i', i)
+    })
   }
 
   return execa('dependency-check',

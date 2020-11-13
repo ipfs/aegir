@@ -63,7 +63,7 @@ describe('dependency check', () => {
         'derp/foo.js'
       ]
     }), [
-      'node', 'aegir', 'dependency-check', 'derp/çfoo.js'
+      'node', 'aegir', 'dependency-check', 'derp/foo.js'
     ], {
       cwd: path.join(__dirname, 'fixtures/dependency-check/pass-certain-files')
     })).to.eventually.be.fulfilled()

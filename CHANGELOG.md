@@ -1,3 +1,12 @@
+# [28.2.0](https://github.com/ipfs/aegir/compare/v28.1.0...v28.2.0) (2020-11-16)
+
+
+### Features
+
+* add -p flag to dependency-check to only check prod deps ([#672](https://github.com/ipfs/aegir/issues/672)) ([44d12ab](https://github.com/ipfs/aegir/commit/44d12ab45eb5204d1997c1d33317ad564fc701cc))
+
+
+
 # [28.1.0](https://github.com/ipfs/aegir/compare/v28.0.2...v28.1.0) (2020-10-26)
 
 

@@ -1,15 +1,38 @@
-# AEgir
+# AEgir <!-- omit in toc -->
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ipfs/aegir/ci/master?style=flat-square)
-[![Dependency Status](https://david-dm.org/ipfs/aegir.svg?style=flat-square)](https://david-dm.org/ipfs/aegir)
 
 > Automated JavaScript project management.
 
-## Lead Maintainer
+## Lead Maintainer <!-- omit in toc -->
 
 [Hugo Dias](https://github.com/hugomrdias)
 
+## ToC <!-- omit in toc -->
+- [Project Structure](#project-structure)
+- [CI](#ci)
+  - [Travis Setup](#travis-setup)
+  - [Github Action Setup](#github-action-setup)
+- [Stack Requirements](#stack-requirements)
+- [Testing helpers](#testing-helpers)
+    - [Fixtures](#fixtures)
+    - [Echo Server](#echo-server)
+    - [Get Port](#get-port)
+- [Tasks](#tasks)
+  - [Linting](#linting)
+  - [Testing](#testing)
+  - [Coverage](#coverage)
+    - [Node](#node)
+    - [Browser](#browser)
+  - [Building](#building)
+    - [Generating Webpack stats.json](#generating-webpack-statsjson)
+  - [Typescript](#typescript)
+    - [JSDoc Typescript support](#jsdoc-typescript-support)
+  - [Releasing](#releasing)
+    - [Scoped Github Token](#scoped-github-token)
+  - [Documentation](#documentation)
+- [License](#license)
 
 ## Project Structure
 
@@ -39,10 +62,12 @@ Your `package.json` should have the following entries and should pass `aegir lin
   "test:browser": "aegir test --target browser"
 }
 ```
-## Travis Setup
+
+## CI 
+### Travis Setup
 Check this tutorial https://github.com/ipfs/aegir/wiki/Travis-Setup
 
-## Github Action Setup
+### Github Action Setup
 Check this tutorial https://github.com/ipfs/aegir/wiki/Github-Actions-Setup
 
 ## Stack Requirements
@@ -200,18 +225,15 @@ after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codeco
 ```
 
 ### Building
-
-
-You can run it using
+The build command builds a browser bundle and TS type declarations from the `src` folder.
 
 ```bash
-$ aegir build
+$ aegir build --help
 ```
 This will build a browser ready version into `dist`, so after publishing the results will be available under
 
 ```
 https://unpkg.com/<module-name>/dist/index.js
-https://unpkg.com/<module-name>/dist/index.min.js
 ```
 
 **Specifying a custom entry file for Webpack**
@@ -235,6 +257,16 @@ Pass the `--analyze` option to have Webpack generate a `stats.json` file for the
 ```bash
 aegir build --analyze
 ```
+### Typescript
+
+#### JSDoc Typescript support
+```bash
+aegir ts --help
+```
+The `ts` command adds support for JSDoc types in native javascript code.
+
+> Check [ts-jsdoc](./md/ts-jsdoc.md) for more documentation.
+
 
 ### Releasing
 
@@ -290,12 +322,12 @@ Be aware that by storing it in `~/.profile` or similar you will make it availabl
 
 ### Documentation
 
-You can use `aegir docs` to generate documentation. This uses [documentation.js](http://documentation.js.org/) with the theme [clean-documentation-theme](https://github.com/dignifiedquire/clean-documentation-theme).
+You can use `aegir docs` to generate documentation, this command uses `aegir ts --preset docs` internally.
 
 To publish the documentation automatically to the `gh-pages` branch you can run
 
 ```bash
-$ aegir docs --publish
+$ aegir docs --help
 ```
 
 ## License

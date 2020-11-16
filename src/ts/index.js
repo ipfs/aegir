@@ -137,11 +137,11 @@ const docs = async (forwardOptions) => {
 
     // run typedoc
     await execa('typedoc', [
-      '--inputfiles', fromRoot('types'),
+      '--inputfiles', fromRoot('types', 'src'),
       '--mode', 'modules',
       '--out', 'docs',
       '--excludeExternals',
-      '--excludeNotDocumented',
+      // '--excludeNotDocumented',
       '--excludeNotExported',
       '--excludePrivate',
       '--excludeProtected',

@@ -6,12 +6,12 @@ Typescript config file is required to generated docs. Try \`aegir ts --preset co
 
 module.exports = {
   command: 'docs',
-  desc: 'Generate documentation from JSDoc comments.',
+  desc: 'Generate documentation from TS type declarations.',
   builder: yargs => {
     yargs
       .epilog(EPILOG)
-      .example('aegir docs', 'Build markdown documentation.')
-      .example('aegir docs -p', 'Build markdown documentation and publish to Github Pages.')
+      .example('aegir docs', 'Build HTML documentation.')
+      .example('aegir docs -p', 'Build HTML documentation and publish to Github Pages.')
       .options(
         {
           publish: {

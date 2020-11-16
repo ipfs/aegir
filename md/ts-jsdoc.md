@@ -34,7 +34,7 @@ Presets:
 
 ## Adding types with JSDoc
 
-Typescript can infered lots of types without any help, but you can improve your code types by using just JSDoc for that follow the official TS documentation https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html. 
+Typescript can infere lots of the types without any help, but you can improve your code types by using just JSDoc for that follow the official TS documentation https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html. 
 
 ### Rules for optimal type declarations and documentation
 

@@ -324,8 +324,6 @@ Be aware that by storing it in `~/.profile` or similar you will make it availabl
 
 You can use `aegir docs` to generate documentation, this command uses `aegir ts --preset docs` internally.
 
-To publish the documentation automatically to the `gh-pages` branch you can run
-
 ```bash
 $ aegir docs --help
 ```

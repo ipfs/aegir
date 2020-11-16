@@ -2,7 +2,7 @@
 
 const EPILOG = `
 Presets:
-\`check\`       Runs the type checker with your local config and doesn't not emit output. 
+\`check\`       Runs the type checker with your local config and does not emit output. 
 \`types\`       Emits type declarations for \`['src/**/*', 'package.json']\` to \`dist\` folder.
 \`docs\`        Generates documentation based on type declarations to the \`docs\` folder.
 \`config\`      Prints base config to stdout.

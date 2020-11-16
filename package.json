@@ -41,6 +41,7 @@
     "release-major": "node cli.js release --no-build --no-test --type major"
   },
   "dependencies": {
+    "@achingbrain/dependency-check": "^4.1.0",
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/plugin-transform-regenerator": "^7.10.1",
@@ -70,7 +71,6 @@
     "conventional-github-releaser": "^3.1.3",
     "cors": "^2.8.5",
     "cosmiconfig": "^7.0.0",
-    "dependency-check": "achingbrain/dependency-check#fix/run-on-windows",
     "dirty-chai": "^2.0.1",
     "documentation": "^13.0.1",
     "electron-mocha": "^8.2.0",

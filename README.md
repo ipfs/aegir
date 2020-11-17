@@ -263,9 +263,7 @@ aegir build --analyze
 ```bash
 aegir ts --help
 ```
-The `ts` command adds support for JSDoc types in native javascript code.
-
-> Check [ts-jsdoc](./md/ts-jsdoc.md) for more documentation.
+The `ts` command provides type checking (via typescript) in javascript files with [JSDoc](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) annotations.
 
 
 ### Releasing

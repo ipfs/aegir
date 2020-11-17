@@ -2,13 +2,13 @@
 
 const EPILOG = `
 Presets:
-\`check\`       Runs the type checker with your local config and does not emit output. 
+\`check\`       Runs the type checker with your local config (without writing any files). . 
 \`types\`       Emits type declarations for \`['src/**/*', 'package.json']\` to \`dist\` folder.
 \`docs\`        Generates documentation based on type declarations to the \`docs\` folder.
 \`config\`      Prints base config to stdout.
 
 Note: 
-To enable types declarations to be used add this to your package.json:
+To provide users types declarations with 0-configuration add following to package.json:
 
 \`\`\`json
 "types": "./dist/src/index.d.ts",

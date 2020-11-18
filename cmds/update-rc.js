@@ -27,7 +27,6 @@ module.exports = {
   },
   handler (argv) {
     const cmd = require('../src/update-rc')
-    const onError = require('../src/error-handler')
-    cmd(argv).catch(onError)
+    return cmd(argv)
   }
 }

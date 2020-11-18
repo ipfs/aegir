@@ -37,7 +37,6 @@ module.exports = {
   },
   handler (argv) {
     const cmd = require('../src/test-dependant')
-    const onError = require('../src/error-handler')
-    cmd(argv).catch(onError)
+    return cmd(argv)
   }
 }

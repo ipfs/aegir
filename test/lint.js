@@ -5,7 +5,7 @@ const lint = require('../src/lint')
 const { expect } = require('../utils/chai')
 const path = require('path')
 const fs = require('fs')
-const rimraf = require('rimraf')
+const { premove: del } = require('premove/sync')
 
 const TEMP_FOLDER = path.join(__dirname, '../node_modules/.temp-test')
 
@@ -67,7 +67,7 @@ describe('lint', () => {
 
   after(() => {
     process.chdir(cwd)
-    rimraf.sync(TEMP_FOLDER)
+    del(TEMP_FOLDER)
   })
 
   it('lint itself (aegir)', function () {

@@ -5,7 +5,7 @@ const path = require('path')
 const fs = require('fs')
 const bytes = require('bytes')
 const execa = require('execa')
-const rimraf = require('rimraf')
+const { premove: del } = require('premove')
 const { fromAegir, gzipSize, pkg, hasTsconfig } = require('./../utils')
 const userConfig = require('../config/user')
 const tsCmd = require('../ts')
@@ -22,7 +22,7 @@ module.exports = async (argv) => {
     : []
 
   // Clean dist
-  rimraf.sync(path.join(process.cwd(), 'dist'))
+  await del(path.join(process.cwd(), 'dist'))
 
   // Run webpack
   const webpack = await execa('webpack-cli', [

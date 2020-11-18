@@ -13,7 +13,6 @@ module.exports = {
   },
   handler (argv) {
     const lint = require('../src/lint')
-    const onError = require('../src/error-handler')
-    lint(argv).catch(onError)
+    return lint(argv)
   }
 }

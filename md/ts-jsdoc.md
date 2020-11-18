@@ -9,9 +9,8 @@ aegir ts -p config > tsconfig.json
 
 Add types configuration to your package.json:
 ```json
-"types": "./dist/src/index.d.ts",
 "typesVersions": {
-  "*": { "src/*": ["dist/src/*"] }
+  "*": { "src/*": ["dist/src/*", "dist/src/*/index"] }
 },
 ```
 `types` will tell `tsc` where to look for the entry point type declarations and `typeVersions` for every other files inside the `src` folder.

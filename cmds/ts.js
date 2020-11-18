@@ -11,9 +11,8 @@ Note:
 To provide users types declarations with 0-configuration add following to package.json:
 
 \`\`\`json
-"types": "./dist/src/index.d.ts",
 "typesVersions": {
-  "*": { "src/*": ["dist/src/*"] }
+  "*": { "src/*": ["dist/src/*", "dist/src/*/index"] }
 },
 \`\`\`
 

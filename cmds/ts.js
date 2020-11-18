@@ -32,6 +32,11 @@ module.exports = {
           choices: ['config', 'check', 'types', 'docs'],
           describe: 'Preset to run',
           alias: 'p'
+        },
+        include: {
+          type: 'array',
+          describe: 'Values are merged into the local TS config include property.',
+          default: []
         }
       })
   },

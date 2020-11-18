@@ -1,16 +1,17 @@
 'use strict'
 
 const EPILOG = `
-Supports options forwarding with '--' for more info check https://github.com/documentationjs/documentation/blob/master/docs/USAGE.md
+Typescript config file is required to generated docs. Try \`aegir ts --preset config > tsconfig.json\`
 `
 
 module.exports = {
   command: 'docs',
-  desc: 'Generate documentation from JSDoc.',
+  desc: 'Generate documentation from TS type declarations.',
   builder: yargs => {
     yargs
       .epilog(EPILOG)
-      .example('aegir docs -- --format md -o docs.md', 'Build markdown documentation.')
+      .example('aegir docs', 'Build HTML documentation.')
+      .example('aegir docs -p', 'Build HTML documentation and publish to Github Pages.')
       .options(
         {
           publish: {
@@ -24,7 +25,6 @@ module.exports = {
   },
   handler (argv) {
     const docs = require('../src/docs')
-    const onError = require('../src/error-handler')
-    docs.run(argv).catch(onError)
+    return docs.run(argv)
   }
 }

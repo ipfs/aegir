@@ -1,11 +1,11 @@
 'use strict'
 const EPILOG = `
-This command outputs two bundles, one in development mode (index.js) and another in production mode (index.min.js) plus respective source-maps, files are written to ./dist folder.
+Output files will go into a "./dist" folder.
 Supports options forwarding with '--' for more info check https://webpack.js.org/api/cli/
 `
 module.exports = {
   command: 'build',
-  desc: 'Builds browser bundles with Webpack.',
+  desc: 'Builds a browser bundle and TS type declarations from the `src` folder.',
   builder: (yargs) => {
     yargs
       .epilog(EPILOG)

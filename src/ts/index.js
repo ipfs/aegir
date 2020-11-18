@@ -11,7 +11,7 @@ let userConfig = null
 
 module.exports = async (argv) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
-  const extraInclude = await globby(argv.include)
+  const extraInclude = (argv.include && argv.include.length > 0) ? await globby(argv.include) : []
 
   if (argv.preset === 'config') {
     const extendsConfig = `{
@@ -144,7 +144,7 @@ const docs = async (forwardOptions, extraInclude) => {
         'docs',
         '--excludeExternals',
         // '--excludeNotDocumented',
-        '--excludeNotExported',
+        // '--excludeNotExported',
         '--excludePrivate',
         '--excludeProtected',
         '--includeDeclarations',

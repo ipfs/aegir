@@ -129,7 +129,7 @@
     "yargs-parser": "^20.2.3"
   },
   "devDependencies": {
-    "electron": "^9.0.4",
+    "electron": "^11.0.1",
     "iso-url": "^0.4.7",
     "mock-require": "^3.0.2",
     "sinon": "^9.0.2"

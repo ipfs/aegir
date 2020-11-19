@@ -33119,7 +33119,7 @@ const aegirExec = pkg.name === 'aegir' ? './cli.js' : 'aegir'
  * @param {string} baseDir
  */
 const sizeCheck = async (octokit, context, baseDir) => {
-  let check = null
+  let check
   baseDir = fs.realpathSync(baseDir)
 
   const { packageJson } = readPkgUp.sync({
@@ -33195,10 +33195,8 @@ const createCheck = async (octokit, context, name) => {
       status: 'in_progress'
     })
   } catch (err) {
-    core.error(`Failed to create check with ${err}`)
+    core.warning(`Failed to create check with ${err}`)
   }
-
-  return null
 }
 
 module.exports = {

@@ -31,7 +31,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
   const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` : 'size'
 
   try {
-    check = createCheck(octokit, context, checkName)
+    check = await createCheck(octokit, context, checkName)
 
     const out = await execa(aegirExec, ['build', '-b'], {
       cwd: baseDir,
@@ -68,7 +68,8 @@ const sizeCheck = async (octokit, context, baseDir) => {
       }
     )
   } catch (err) {
-    core.error('err', err)
+    console.log('err', err)
+
     if (check) {
       await octokit.checks.update(
         {

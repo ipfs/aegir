@@ -9,6 +9,7 @@ aegir ts -p config > tsconfig.json
 
 Add types configuration to your package.json:
 ```json
+"types": "dist/src/index.d.ts",
 "typesVersions": {
   "*": { "src/*": ["dist/src/*", "dist/src/*/index"] }
 },

@@ -33108,7 +33108,6 @@ const { pkg } = __webpack_require__(1590)
 
 const aegirExec = pkg.name === 'aegir' ? './cli.js' : 'aegir'
 
-/** @typedef {import("@actions/github").GitHub } Github */
 /** @typedef {import("@actions/github").context } Context */
 
 /**
@@ -33129,7 +33128,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
   const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` : 'size'
 
   try {
-    check = await createCheck(octokit, context, checkName)
+    check = await checkCreate(octokit, context, checkName)
 
     const out = await execa(aegirExec, ['build', '-b'], {
       cwd: baseDir,
@@ -33186,7 +33185,13 @@ const sizeCheck = async (octokit, context, baseDir) => {
   }
 }
 
-const createCheck = async (octokit, context, name) => {
+/**
+ *
+ * @param {Github} octokit
+ * @param {Context} context
+ * @param {string} name
+ */
+const checkCreate = async (octokit, context, name) => {
   try {
     return await octokit.checks.create({
       owner: context.repo.owner,

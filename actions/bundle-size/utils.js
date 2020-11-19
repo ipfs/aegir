@@ -103,7 +103,7 @@ const checkCreate = async (octokit, context, name) => {
       status: 'in_progress'
     })
   } catch (err) {
-    core.warning(`Failed to create check with ${err}`)
+    core.warning(`Failed to create Github check with the error, ${err}, you can normally ignore this message when there is no PR associated with this commit or when the commit comes from a Fork PR. `)
   }
 }
 

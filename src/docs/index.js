@@ -2,7 +2,7 @@
 
 const Listr = require('listr')
 const chalk = require('chalk')
-const { premove: remove } = require('premove')
+const { premove: del } = require('premove')
 const { getListrConfig, publishDocs, hasTsconfig } = require('../utils')
 const tsCmd = require('../ts')
 
@@ -10,7 +10,7 @@ const TASKS = new Listr(
   [
     {
       title: 'Clean ./docs',
-      task: () => remove('docs')
+      task: () => del('docs')
     },
     {
       title: 'Generating documentation',

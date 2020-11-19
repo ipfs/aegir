@@ -21,7 +21,6 @@ module.exports = {
   },
   handler (argv) {
     const cmd = require('../src/update-release-branch-lockfiles')
-    const onError = require('../src/error-handler')
-    cmd(argv).catch(onError)
+    return cmd(argv)
   }
 }

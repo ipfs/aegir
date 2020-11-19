@@ -104,7 +104,6 @@ module.exports = {
   },
   handler (argv) {
     const release = require('../src/release')
-    const onError = require('../src/error-handler')
-    release(argv).catch(onError)
+    return release(argv)
   }
 }

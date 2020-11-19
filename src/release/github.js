@@ -1,10 +1,10 @@
 'use strict'
 
 const conventionalGithubReleaser = require('conventional-github-releaser')
-const pify = require('pify')
+const { promisify } = require('util')
 
 function github (opts) {
-  return pify(conventionalGithubReleaser)({
+  return promisify(conventionalGithubReleaser)({
     type: 'oauth',
     token: opts.ghtoken,
     url: 'https://api.github.com/'

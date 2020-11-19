@@ -27,7 +27,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
     cwd: baseDir
   })
   const pkgName = packageJson.name
-  const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` :  'size'
+  const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` : 'size'
 
   try {
     check = await octokit.checks.create({
@@ -37,6 +37,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
       head_sha: context.sha,
       status: 'in_progress'
     })
+    console.log('check', check)
 
     const out = await execa(aegirExec, ['build', '-b'], {
       cwd: baseDir,

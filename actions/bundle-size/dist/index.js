@@ -993,6 +993,7 @@ const { sizeCheck } = __webpack_require__(1278)
 
 const run = async () => {
   const octokit = new GitHub(core.getInput('github_token'))
+  console.log("core.getInput('github_token')", core.getInput('github_token'))
 
   try {
     console.log('Running sizeeeeeeeeeeeee')

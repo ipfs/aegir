@@ -72,6 +72,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
     //   }
     // )
   } catch (err) {
+    console.log('err', err)
     // await octokit.checks.update(
     //   {
     //     owner: context.repo.owner,

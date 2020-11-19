@@ -2,6 +2,7 @@
 'use strict'
 const artifact = require('@actions/artifact')
 const execa = require('execa')
+const core = require('@actions/core')
 const globby = require('globby')
 const readPkgUp = require('read-pkg-up')
 const fs = require('fs')
@@ -30,14 +31,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
   const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` : 'size'
 
   try {
-    check = await octokit.checks.create({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      name: checkName,
-      head_sha: context.sha,
-      status: 'in_progress'
-    })
-    console.log('check', check)
+    check = createCheck(octokit, context, checkName)
 
     const out = await execa(aegirExec, ['build', '-b'], {
       cwd: baseDir,
@@ -48,45 +42,65 @@ const sizeCheck = async (octokit, context, baseDir) => {
     console.log('Size check for:', pkgName)
     console.log(out.stdout)
 
-    // const parts = out.stdout.split('\n')
-    // const title = parts[2]
-    // await octokit.checks.update(
-    //   {
-    //     owner: context.repo.owner,
-    //     repo: context.repo.repo,
-    //     check_run_id: check.data.id,
-    //     conclusion: 'success',
-    //     output: {
-    //       title: title,
-    //       summary: [parts[0], parts[1]].join('\n')
-    //     }
-    //   }
-    // )
+    if (check) {
+      const parts = out.stdout.split('\n')
+      const title = parts[2]
+      await octokit.checks.update(
+        {
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          check_run_id: check.data.id,
+          conclusion: 'success',
+          output: {
+            title: title,
+            summary: [parts[0], parts[1]].join('\n')
+          }
+        }
+      )
+    }
 
-    // await artifact.create().uploadArtifact(
-    //   `${pkgName}-size`,
-    //   await globby(['dist/*'], { cwd: baseDir, absolute: true }),
-    //   baseDir,
-    //   {
-    //     continueOnError: true
-    //   }
-    // )
+    await artifact.create().uploadArtifact(
+      `${pkgName}-size`,
+      await globby(['dist/*'], { cwd: baseDir, absolute: true }),
+      baseDir,
+      {
+        continueOnError: true
+      }
+    )
   } catch (err) {
-    console.log('err', err)
-    // await octokit.checks.update(
-    //   {
-    //     owner: context.repo.owner,
-    //     repo: context.repo.repo,
-    //     check_run_id: check.data.id,
-    //     conclusion: 'failure',
-    //     output: {
-    //       title: err.stderr ? err.stderr : 'Error',
-    //       summary: err.stdout ? err.stdout : err.message
-    //     }
-    //   }
-    // )
+    core.error('err', err)
+    if (check) {
+      await octokit.checks.update(
+        {
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          check_run_id: check.data.id,
+          conclusion: 'failure',
+          output: {
+            title: err.stderr ? err.stderr : 'Error',
+            summary: err.stdout ? err.stdout : err.message
+          }
+        }
+      )
+    }
     throw err
   }
+}
+
+const createCheck = async (octokit, context, name) => {
+  try {
+    return await octokit.checks.create({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      name,
+      head_sha: context.sha,
+      status: 'in_progress'
+    })
+  } catch (err) {
+    core.error(`Failed to create check with ${err}`)
+  }
+
+  return null
 }
 
 module.exports = {

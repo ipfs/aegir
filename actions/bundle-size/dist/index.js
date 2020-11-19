@@ -15,10 +15,8 @@ const { sizeCheck } = __webpack_require__(31252)
 
 const run = async () => {
   try {
-    const octokit = getOctokit(core.getInput('github_token', { required: true }))
-    console.log("core.getInput('github_token')", core.getInput('github_token') === '')
-    console.log('Running sizeeeeeeeeeeeee')
-    // await sizeCheck(octokit, context, core.getInput('project') || process.cwd())
+    const octokit = getOctokit(core.getInput('github_token'))
+    await sizeCheck(octokit, context, core.getInput('project') || process.cwd())
   } catch (err) {
     core.setFailed(err)
   }
@@ -33102,6 +33100,7 @@ function wrappy (fn, cb) {
 
 const artifact = __webpack_require__(52605)
 const execa = __webpack_require__(55447)
+const core = __webpack_require__(42186)
 const globby = __webpack_require__(43398)
 const readPkgUp = __webpack_require__(75767)
 const fs = __webpack_require__(35747)
@@ -33130,14 +33129,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
   const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` : 'size'
 
   try {
-    check = await octokit.checks.create({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      name: checkName,
-      head_sha: context.sha,
-      status: 'in_progress'
-    })
-    console.log('check', check)
+    check = createCheck(octokit, context, checkName)
 
     const out = await execa(aegirExec, ['build', '-b'], {
       cwd: baseDir,
@@ -33148,45 +33140,65 @@ const sizeCheck = async (octokit, context, baseDir) => {
     console.log('Size check for:', pkgName)
     console.log(out.stdout)
 
-    // const parts = out.stdout.split('\n')
-    // const title = parts[2]
-    // await octokit.checks.update(
-    //   {
-    //     owner: context.repo.owner,
-    //     repo: context.repo.repo,
-    //     check_run_id: check.data.id,
-    //     conclusion: 'success',
-    //     output: {
-    //       title: title,
-    //       summary: [parts[0], parts[1]].join('\n')
-    //     }
-    //   }
-    // )
+    if (check) {
+      const parts = out.stdout.split('\n')
+      const title = parts[2]
+      await octokit.checks.update(
+        {
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          check_run_id: check.data.id,
+          conclusion: 'success',
+          output: {
+            title: title,
+            summary: [parts[0], parts[1]].join('\n')
+          }
+        }
+      )
+    }
 
-    // await artifact.create().uploadArtifact(
-    //   `${pkgName}-size`,
-    //   await globby(['dist/*'], { cwd: baseDir, absolute: true }),
-    //   baseDir,
-    //   {
-    //     continueOnError: true
-    //   }
-    // )
+    await artifact.create().uploadArtifact(
+      `${pkgName}-size`,
+      await globby(['dist/*'], { cwd: baseDir, absolute: true }),
+      baseDir,
+      {
+        continueOnError: true
+      }
+    )
   } catch (err) {
-    console.log('err', err)
-    // await octokit.checks.update(
-    //   {
-    //     owner: context.repo.owner,
-    //     repo: context.repo.repo,
-    //     check_run_id: check.data.id,
-    //     conclusion: 'failure',
-    //     output: {
-    //       title: err.stderr ? err.stderr : 'Error',
-    //       summary: err.stdout ? err.stdout : err.message
-    //     }
-    //   }
-    // )
+    core.error('err', err)
+    if (check) {
+      await octokit.checks.update(
+        {
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          check_run_id: check.data.id,
+          conclusion: 'failure',
+          output: {
+            title: err.stderr ? err.stderr : 'Error',
+            summary: err.stdout ? err.stdout : err.message
+          }
+        }
+      )
+    }
     throw err
   }
+}
+
+const createCheck = async (octokit, context, name) => {
+  try {
+    return await octokit.checks.create({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      name,
+      head_sha: context.sha,
+      status: 'in_progress'
+    })
+  } catch (err) {
+    core.error(`Failed to create check with ${err}`)
+  }
+
+  return null
 }
 
 module.exports = {

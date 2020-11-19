@@ -992,11 +992,11 @@ const { context, GitHub } = __webpack_require__(1469)
 const { sizeCheck } = __webpack_require__(1278)
 
 const run = async () => {
-  const octokit = new GitHub(core.getInput('github_token', { required: true }))
-  console.log("core.getInput('github_token')", core.getInput('github_token') === '')
   try {
+    const octokit = new GitHub(core.getInput('github_token', { required: true }))
+    console.log("core.getInput('github_token')", core.getInput('github_token') === '')
     console.log('Running sizeeeeeeeeeeeee')
-    await sizeCheck(octokit, context, core.getInput('project') || process.cwd())
+    // await sizeCheck(octokit, context, core.getInput('project') || process.cwd())
   } catch (err) {
     core.setFailed(err)
   }

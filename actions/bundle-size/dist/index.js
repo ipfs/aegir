@@ -10,12 +10,12 @@ module.exports =
 
 
 const core = __webpack_require__(42186)
-const { context, GitHub } = __webpack_require__(95438)
+const { context, getOctokit } = __webpack_require__(95438)
 const { sizeCheck } = __webpack_require__(31252)
 
 const run = async () => {
   try {
-    const octokit = new GitHub(core.getInput('github_token', { required: true }))
+    const octokit = getOctokit(core.getInput('github_token', { required: true }))
     console.log("core.getInput('github_token')", core.getInput('github_token') === '')
     console.log('Running sizeeeeeeeeeeeee')
     // await sizeCheck(octokit, context, core.getInput('project') || process.cwd())

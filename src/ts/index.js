@@ -107,6 +107,7 @@ const types = async (forwardOptions, extraInclude) => {
     })
   } finally {
     fs.removeSync(configPath)
+    fs.removeSync(fromRoot('dist', 'tsconfig-types.aegir.tsbuildinfo'))
   }
 }
 

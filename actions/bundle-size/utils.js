@@ -67,8 +67,6 @@ const sizeCheck = async (octokit, context, baseDir) => {
       }
     )
   } catch (err) {
-    console.log('err', err)
-
     if (check) {
       await octokit.checks.update(
         {

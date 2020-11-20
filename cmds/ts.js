@@ -8,13 +8,7 @@ Presets:
 \`config\`      Prints base config to stdout.
 
 Note: 
-To provide users types declarations with 0-configuration add following to package.json:
-
-\`\`\`json
-"typesVersions": {
-  "*": { "src/*": ["dist/src/*", "dist/src/*/index"] }
-},
-\`\`\`
+Check out the documentation for JSDoc based TS types here: https://github.com/ipfs/aegir/blob/master/md/ts-jsdoc.md
 
 Supports options forwarding with '--' for more info check https://www.typescriptlang.org/docs/handbook/compiler-options.html
 `

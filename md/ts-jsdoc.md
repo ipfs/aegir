@@ -9,6 +9,7 @@ aegir ts -p config > tsconfig.json
 
 Add types configuration to your package.json:
 ```json
+"types": "dist/src/index.d.ts",
 "typesVersions": {
   "*": { "src/*": ["dist/src/*", "dist/src/*/index"] }
 },
@@ -29,7 +30,9 @@ Presets:
 `docs`        Generates documentation based on type declarations to the `docs` folder.
 `config`      Prints base config to stdout.
 ```
+## Github Action
 
+To run the typechecker in the CI you can use this action https://github.com/Gozala/typescript-error-reporter-action and you will get the errors reported inline with the code. 
 
 ## Adding types with JSDoc
 
@@ -91,7 +94,7 @@ exports.IPFS = IPFS
 ```
 
 #### 3. Use a `types.ts` file
-When writing types sometimes JSDoc can be cumbersome, impossible, it can output weird type declarations or even broken documentation. Most of these problems can be solved by defining some complex types in typescript in a `types.ts` file.
+When writing types JSDoc can sometimes be cumbersome, impossible, it can output weird type declarations or even broken documentation. Most of these problems can be solved by defining some complex types in typescript in a `types.ts` file.
 
 ```ts
 // types.ts
@@ -102,4 +105,35 @@ export type IntersectionType = Type1 & Type2
 // index.js
 /** @type { import('./types').IntersectionType } */
 const list
+```
+
+#### 4. JSDoc comments bad parsing
+Some TS tooling may have problems parsing comments if they are not very well divided.
+
+```ts
+
+// BAD - the base typedef can be parsed as a comment for Square
+
+/** @typedef {import('./index') Base} Base */
+
+class Square {}
+
+
+// GOOD 
+/** @typedef {import('./index') Base} Base */
+
+/**
+ * Cool Square class
+ * @class
+ */
+class Square {}
+
+// GOOD
+
+class Square {}
+
+module.export = Square
+
+/** @typedef {import('./index') Base} Base */
+
 ```

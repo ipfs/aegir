@@ -1,3 +1,24 @@
+# [29.0.0](https://github.com/ipfs/aegir/compare/v28.2.0...v29.0.0) (2020-11-20)
+
+
+### Bug Fixes
+
+* clean deps and more ([#677](https://github.com/ipfs/aegir/issues/677)) ([ac2a3f7](https://github.com/ipfs/aegir/commit/ac2a3f76f3da82c98b69a71a3f823f1d663bc2b4))
+* fix bundle size action in direct pushes and fork PRs ([#679](https://github.com/ipfs/aegir/issues/679)) ([e3d3d34](https://github.com/ipfs/aegir/commit/e3d3d34b7e4b638e8a9a89158001e54c6b9e4759))
+* more ts docs and include private and protected in docs ([#678](https://github.com/ipfs/aegir/issues/678)) ([a4793cf](https://github.com/ipfs/aegir/commit/a4793cfd2ef1aac4f3f28b448e9e7f19e4ae9117))
+
+
+### Features
+
+* add ts cmd ([#671](https://github.com/ipfs/aegir/issues/671)) ([f332803](https://github.com/ipfs/aegir/commit/f332803b5203e3c3cddc4494ee90c0d9f595c43c))
+
+
+### BREAKING CHANGES
+
+* Update all the deps except webpack. 
+
+
+
 # [28.2.0](https://github.com/ipfs/aegir/compare/v28.1.0...v28.2.0) (2020-11-16)
 
 

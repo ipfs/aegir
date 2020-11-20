@@ -1,3 +1,12 @@
+## [29.0.1](https://github.com/ipfs/aegir/compare/v29.0.0...v29.0.1) (2020-11-20)
+
+
+### Bug Fixes
+
+* remove tsbuildinfo files when building types ([acea763](https://github.com/ipfs/aegir/commit/acea7639d0314c4025d811f7f56cd5316b05eebc))
+
+
+
 # [29.0.0](https://github.com/ipfs/aegir/compare/v28.2.0...v29.0.0) (2020-11-20)
 
 

@@ -1,3 +1,12 @@
+# [29.1.0](https://github.com/ipfs/aegir/compare/v29.0.1...v29.1.0) (2020-11-26)
+
+
+### Bug Fixes
+
+* update ts lib config ([#680](https://github.com/ipfs/aegir/issues/680)) ([aeca210](https://github.com/ipfs/aegir/commit/aeca21005a391a7fe9d09ed73305471c8a8e36ac))
+
+
+
 ## [29.0.1](https://github.com/ipfs/aegir/compare/v29.0.0...v29.0.1) (2020-11-20)
 
 

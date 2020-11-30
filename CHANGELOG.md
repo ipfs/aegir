@@ -1,3 +1,12 @@
+# [29.2.0](https://github.com/ipfs/aegir/compare/v29.1.0...v29.2.0) (2020-11-30)
+
+
+### Bug Fixes
+
+* pin ts to 4.0.x ([#683](https://github.com/ipfs/aegir/issues/683)) ([70b85fc](https://github.com/ipfs/aegir/commit/70b85fc5bfb43f7e38ea09ae26e367afe8145ed2))
+
+
+
 # [29.1.0](https://github.com/ipfs/aegir/compare/v29.0.1...v29.1.0) (2020-11-26)
 
 

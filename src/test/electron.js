@@ -13,7 +13,7 @@ module.exports = (argv) => {
   const invert = argv.invert ? ['--invert'] : []
   const progress = argv.progress ? ['--reporter=progress'] : []
   const bail = argv.bail ? ['--bail', argv.bail] : []
-  const timeout = argv.timeout ? ['--timeout', argv.bail] : []
+  const timeout = argv.timeout ? ['--timeout', argv.timeout] : []
   const renderer = argv.renderer ? ['--renderer'] : []
   const ts = argv.ts ? ['--require', fromAegir('src/config/register.js')] : []
 

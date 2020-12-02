@@ -1,3 +1,12 @@
+## [29.2.1](https://github.com/ipfs/aegir/compare/v29.2.0...v29.2.1) (2020-12-02)
+
+
+### Bug Fixes
+
+* fix electron timeout and renderer console.assert ([#685](https://github.com/ipfs/aegir/issues/685)) ([b14a9da](https://github.com/ipfs/aegir/commit/b14a9daa2f68bffc4ff7cb2aee74047fee51b7df))
+
+
+
 # [29.2.0](https://github.com/ipfs/aegir/compare/v29.1.0...v29.2.0) (2020-11-30)
 
 

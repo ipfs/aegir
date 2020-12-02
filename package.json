@@ -74,7 +74,7 @@
     "cors": "^2.8.5",
     "cosmiconfig": "^7.0.0",
     "dirty-chai": "^2.0.1",
-    "electron-mocha": "^9.3.2",
+    "electron-mocha": "9.3.1",
     "eslint": "^7.11.0",
     "eslint-config-ipfs": "^0.1.0",
     "execa": "^4.1.0",

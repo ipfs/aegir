@@ -34,6 +34,15 @@ Presets:
 
 To run the typechecker in the CI you can use this action https://github.com/Gozala/typescript-error-reporter-action and you will get the errors reported inline with the code. 
 
+## Installing package from a git url 
+When installing a dependency from a git url (ie. PRs depending on other PRs) the types won't be packed in. To fix this you need to add a npm script called `prepare` to run `aegir build`.
+
+```json
+"scripts": {
+    "build": "aegir build"
+},
+```
+
 ## Adding types with JSDoc
 
 Typescript can infere lots of the types without any help, but you can improve your code types by using just JSDoc for that follow the official TS documentation https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html. 
@@ -113,8 +122,10 @@ Some TS tooling may have problems parsing comments if they are not very well div
 ```ts
 
 // BAD - the base typedef can be parsed as a comment for Square
-
-/** @typedef {import('./index') Base} Base */
+/**
+ *  
+ * @typedef {import('./index') Base} Base 
+ */
 
 class Square {}
 
@@ -127,13 +138,25 @@ class Square {}
  * @class
  */
 class Square {}
+```
 
-// GOOD
+#### 5. Always put your `@typedef` at the top of file
+**Keep in mind rule nº 4 above**
 
-class Square {}
+Check https://github.com/ipfs/community/pull/474
 
-module.export = Square
+```js
+'use strict'
 
-/** @typedef {import('./index') Base} Base */
+const { Adapter, utils } = require('interface-datastore')
+const fs = require('fs')
 
+/**
+ * @typedef {import('interface-datastore/src/types').Datastore} Datastore
+ * @typedef {import("interface-datastore/src/types").Options} Options
+ * @typedef {import("interface-datastore/src/types").Batch} Batch
+ * @typedef {import('interface-datastore/src/key')} Key
+ * @typedef {import('interface-datastore/src/adapter').Query} Query
+ * @typedef {import('./types').KeyTransform} KeyTransform
+ */
 ```

@@ -39,7 +39,7 @@ When installing a dependency from a git url (ie. PRs depending on other PRs) the
 
 ```json
 "scripts": {
-    "prepare": "aegir build"
+    "prepare": "aegir ts -p types"
 },
 ```
 > `yarn` needs a .npmignore file to properly install dependencies with `prepare` scripts that create extra files that need to be packed in.

@@ -42,10 +42,6 @@ module.exports = async (argv) => {
     stdio: 'inherit'
   })
 
-  if (hasTsconfig) {
-    await tsCmd({ preset: 'types' })
-  }
-
   if (argv.bundlesize) {
     const stats = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'dist/stats.json')))
     const gzip = await gzipSize(path.join(stats.outputPath, stats.assets[0].name))
@@ -60,6 +56,10 @@ module.exports = async (argv) => {
     } else {
       console.log(`${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxsize)})`)
     }
+  }
+
+  if (hasTsconfig) {
+    await tsCmd({ preset: 'types' })
   }
   return webpack
 }

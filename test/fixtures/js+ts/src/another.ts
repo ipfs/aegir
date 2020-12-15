@@ -1,5 +1,5 @@
 import { hello } from './typed'
 
-export const main = ():void => {
+export const main = (): void => {
   hello('world')
 }

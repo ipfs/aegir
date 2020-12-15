@@ -2,6 +2,7 @@
 
 const merge = require('webpack-merge')
 const webpack = require('webpack')
+const path = require('path')
 const webpackConfig = require('./webpack.config')
 const { fromRoot, hasFile } = require('../utils')
 const userConfig = require('./user')()
@@ -56,7 +57,7 @@ const karmaConfig = (config, argv) => {
     invert: argv.invert
   }
 
-  const karmaEntry = `${__dirname}/karma-entry.js`
+  const karmaEntry = path.join(__dirname, 'karma-entry.js')
 
   if (!files.length) {
     // only try to load *.spec.js if we aren't specifying custom files
@@ -139,7 +140,7 @@ const karmaConfig = (config, argv) => {
 }
 
 module.exports = (config) => {
-  var argv = require('yargs-parser')(process.argv.slice(2), {
+  const argv = require('yargs-parser')(process.argv.slice(2), {
     array: ['files-custom'],
     boolean: ['progress', 'bail'],
     string: ['timeout']

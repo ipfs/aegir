@@ -2,9 +2,11 @@
     "compilerOptions": {
         "allowJs": true,
         "checkJs": true,
+        "isolatedModules": true,
+        "importsNotUsedAsValues": "error",
         "forceConsistentCasingInFileNames": true,
         "noImplicitReturns": false,
-        "noImplicitAny": false, 
+        "noImplicitAny": true, 
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
         "noUnusedLocals": true,

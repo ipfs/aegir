@@ -48,6 +48,14 @@ When installing a dependency from a git url (ie. PRs depending on other PRs) the
 
 Typescript can infere lots of the types without any help, but you can improve your code types by using just JSDoc for that follow the official TS documentation https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html. 
 
+## Must read references
+[10 Insights from Adopting TypeScript at Scale](https://www.techatbloomberg.com/blog/10-insights-adopting-typescript-at-scale/)  
+[Typescript official performance notes](https://github.com/microsoft/TypeScript/wiki/Performance)  
+[TypeScript: Don’t Export const enums](https://ncjamieson.com/dont-export-const-enums/)  
+[TypeScript: Prefer Interfaces](https://ncjamieson.com/prefer-interfaces/)
+
+
+
 ### Rules for optimal type declarations and documentation
 
 This list is a WIP, more rules will be added as we identify them.

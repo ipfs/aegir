@@ -6,15 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: yarn
-    - name: lint
-      run: yarn lint
+    - run: npm install
+    - run: npm run lint
     - name: dependencies
       run: ./cli.js dep-check -- -i aegir
-    - uses: ./actions/bundle-size
-      name: size
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
   test-node:
     needs: check
     runs-on: ${{ matrix.os }}

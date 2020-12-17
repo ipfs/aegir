@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "30.0.0",
+  "version": "30.0.1",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -36,9 +36,9 @@
     "test": "npm run test:node && npm run test:browser",
     "coverage": "node cli.js coverage -t node",
     "watch": "node cli.js test -t node --watch",
-    "release": "node cli.js release --no-test --no-build",
-    "release-minor": "node cli.js release --no-build --no-test --type minor",
-    "release-major": "node cli.js release --no-build --no-test --type major"
+    "release": "node cli.js release --no-docs --no-test --no-build",
+    "release-minor": "node cli.js release --no-docs --no-build --no-test --type minor",
+    "release-major": "node cli.js release --no-docs --no-build --no-test --type major"
   },
   "dependencies": {
     "@achingbrain/dependency-check": "^4.1.0",

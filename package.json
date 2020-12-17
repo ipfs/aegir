@@ -13,7 +13,7 @@
   "license": "MIT",
   "leadMaintainer": "Hugo Dias <hugomrdias@gmail.com>",
   "files": [
-    "dist",
+    "dist/utils",
     "cmds",
     "utils",
     "src",
@@ -37,7 +37,7 @@
   },
   "repository": "github:ipfs/aegir",
   "scripts": {
-    "prepare": "tsc",
+    "prepare": "tsc -p tsconfig-types.json",
     "lint": "node cli.js lint",
     "test:node": "node cli.js test -t node",
     "test:browser": "node cli.js test -t browser webworker",

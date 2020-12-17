@@ -1,9 +1,12 @@
 {
     "extends": "./src/config/tsconfig.aegir.json",
     "compilerOptions": {
-        "outDir": "dist"
+        "outDir": "dist",
+        "noEmit": false,
+        "emitDeclarationOnly": true,
+        "tsBuildInfoFile": "node_modules/.cache/.tsbuildinfo"
     },
     "include": [
-      "src", "test"
+      "utils"
     ]
 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use strict'
 
 const send = require('@polka/send-type')
@@ -8,6 +9,13 @@ const { Buffer } = require('buffer')
 const getPort = require('./get-port')
 
 class EchoServer {
+  /**
+   *
+   * @param {Object} options - server options
+   * @param {number} [options.port] - server port
+   * @param {string} [options.host] - server host
+   * @param {boolean} [options.findPort] - flag to check for ports
+   */
   constructor (options = {}) {
     this.options = options
     this.port = options.port || 3000
@@ -42,7 +50,7 @@ class EchoServer {
       const listen = new Promise((resolve, reject) => {
         this.server.once('error', reject)
         this.polka.listen({ host: this.host, port: this.port }, () => {
-          resolve()
+          resolve(true)
         })
       })
       await listen
@@ -56,7 +64,7 @@ class EchoServer {
       const stop = new Promise((resolve, reject) => {
         this.server.once('error', reject)
         this.server.close((err) => {
-          err ? reject(err) : resolve()
+          err ? reject(err) : resolve(true)
         })
       })
       await stop

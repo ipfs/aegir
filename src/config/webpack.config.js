@@ -117,48 +117,50 @@ const base = (env, argv) => {
       })
     ],
     target: 'web',
-    node: process.env.AEGIR_NODE === 'false' ? {
-      global: true,
-      __filename: 'mock',
-      __dirname: 'mock',
-      dgram: false,
-      fs: false,
-      net: false,
-      tls: false,
-      child_process: false,
-      console: false,
-      // TODO remove this once readable-stream is fixed probably on in v4
-      // https://github.com/nodejs/readable-stream/pull/435
-      process: true,
-      Buffer: false,
-      setImmediate: false,
-      os: false,
-      assert: false,
-      constants: false,
-      events: false,
-      http: false,
-      path: false,
-      querystring: false,
-      stream: false,
-      string_decoder: false,
-      timers: false,
-      url: false,
-      util: false,
-      crypto: false
-    } : {
-      dgram: 'empty',
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty',
-      child_process: 'empty',
-      console: false,
-      global: true,
-      process: true,
-      __filename: 'mock',
-      __dirname: 'mock',
-      Buffer: true,
-      setImmediate: true
-    },
+    node: process.env.AEGIR_NODE === 'false'
+      ? {
+          global: true,
+          __filename: 'mock',
+          __dirname: 'mock',
+          dgram: false,
+          fs: false,
+          net: false,
+          tls: false,
+          child_process: false,
+          console: false,
+          // TODO remove this once readable-stream is fixed probably on in v4
+          // https://github.com/nodejs/readable-stream/pull/435
+          process: true,
+          Buffer: false,
+          setImmediate: false,
+          os: false,
+          assert: false,
+          constants: false,
+          events: false,
+          http: false,
+          path: false,
+          querystring: false,
+          stream: false,
+          string_decoder: false,
+          timers: false,
+          url: false,
+          util: false,
+          crypto: false
+        }
+      : {
+          dgram: 'empty',
+          fs: 'empty',
+          net: 'empty',
+          tls: 'empty',
+          child_process: 'empty',
+          console: false,
+          global: true,
+          process: true,
+          __filename: 'mock',
+          __dirname: 'mock',
+          Buffer: true,
+          setImmediate: true
+        },
     performance: {
       hints: false
     },

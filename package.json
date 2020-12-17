@@ -76,7 +76,7 @@
     "dirty-chai": "^2.0.1",
     "electron-mocha": "^10.0.0",
     "eslint": "^7.15.0",
-    "eslint-config-ipfs": "^0.1.0",
+    "eslint-config-ipfs": "^1.0.0",
     "execa": "^5.0.0",
     "extract-zip": "^2.0.1",
     "findup-sync": "^4.0.0",

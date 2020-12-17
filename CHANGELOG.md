@@ -1,3 +1,26 @@
+# [30.0.0](https://github.com/ipfs/aegir/compare/v29.2.2...v30.0.0) (2020-12-17)
+
+
+### Bug Fixes
+
+* build types after bundle size ([#695](https://github.com/ipfs/aegir/issues/695)) ([077bbe6](https://github.com/ipfs/aegir/commit/077bbe6c45b5a1d40e519d0ffd3442f88656fe64))
+* update deps ([#696](https://github.com/ipfs/aegir/issues/696)) ([f421dd0](https://github.com/ipfs/aegir/commit/f421dd06a5a4f0475a3a06b8ed6b8a01af0b3ef6))
+
+
+### Features
+
+* update package.json linter config ([#694](https://github.com/ipfs/aegir/issues/694)) ([605cd2a](https://github.com/ipfs/aegir/commit/605cd2a893e615e84d241d47c79f592d126f35db))
+* update ts config and new linter ([#697](https://github.com/ipfs/aegir/issues/697)) ([e11b8fe](https://github.com/ipfs/aegir/commit/e11b8fe72db74ad376524fe004b6527293822290))
+* upgrade ts to 4.1.x ([#689](https://github.com/ipfs/aegir/issues/689)) ([5f55cba](https://github.com/ipfs/aegir/commit/5f55cbaebc7fab33d4f1f6561714a122ca7ff661))
+
+
+### BREAKING CHANGES
+
+* at least js-ipfs monorepo fails with ts 4.1
+* tsconfig changed and linter has new rules for ts files.
+
+
+
 ## [29.2.2](https://github.com/ipfs/aegir/compare/v29.2.1...v29.2.2) (2020-12-03)
 
 

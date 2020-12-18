@@ -1,3 +1,12 @@
+# [30.1.0](https://github.com/ipfs/aegir/compare/v30.0.0...v30.1.0) (2020-12-18)
+
+
+### Features
+
+* add utils types ([#701](https://github.com/ipfs/aegir/issues/701)) ([9d8a508](https://github.com/ipfs/aegir/commit/9d8a5080a4634efc507c584042515a895613455b))
+
+
+
 # [30.0.0](https://github.com/ipfs/aegir/compare/v29.2.2...v30.0.0) (2020-12-17)
 
 

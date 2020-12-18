@@ -13,6 +13,7 @@
   "license": "MIT",
   "leadMaintainer": "Hugo Dias <hugomrdias@gmail.com>",
   "files": [
+    "dist/utils",
     "cmds",
     "utils",
     "src",
@@ -27,8 +28,16 @@
   "bin": {
     "aegir": "cli.js"
   },
+  "typesVersions": {
+    "*": {
+      "utils/*": [
+        "dist/utils/*"
+      ]
+    }
+  },
   "repository": "github:ipfs/aegir",
   "scripts": {
+    "prepare": "tsc -p tsconfig-types.json",
     "lint": "node cli.js lint",
     "test:node": "node cli.js test -t node",
     "test:browser": "node cli.js test -t browser webworker",
@@ -58,6 +67,10 @@
     "@commitlint/travis-cli": "^11.0.0",
     "@electron/get": "^1.10.0",
     "@polka/send-type": "^0.5.2",
+    "@types/chai": "^4.2.14",
+    "@types/chai-as-promised": "^7.1.3",
+    "@types/chai-subset": "^1.3.3",
+    "@types/dirty-chai": "^2.0.2",
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.13",
     "aegir-typedoc-theme": "^0.1.0",
@@ -125,6 +138,7 @@
     "yargs-parser": "^20.2.3"
   },
   "devDependencies": {
+    "@types/polka": "^0.5.1",
     "electron": "^11.1.0",
     "iso-url": "^1.0.0",
     "mock-require": "^3.0.2",

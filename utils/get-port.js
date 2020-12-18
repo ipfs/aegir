@@ -2,10 +2,18 @@
 
 const { createServer } = require('net')
 
+/**
+ * Get a free port
+ *
+ * @param {number} port
+ * @param {string} host
+ * @returns {Promise<number>}
+ */
 function getPort (port = 3000, host = '127.0.0.1') {
   const server = createServer()
   return new Promise((resolve, reject) => {
     server.on('error', (err) => {
+      // @ts-ignore
       if (err.code === 'EADDRINUSE' || err.code === 'EACCES') {
         server.listen(0, host)
       } else {
@@ -13,6 +21,7 @@ function getPort (port = 3000, host = '127.0.0.1') {
       }
     })
     server.on('listening', () => {
+      // @ts-ignore
       const { port } = server.address()
       server.close(() => resolve(port))
     })

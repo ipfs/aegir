@@ -15,10 +15,7 @@ module.exports = async (argv) => {
 
   if (argv.preset === 'config') {
     const extendsConfig = `{
-    "extends": "./${path.relative(
-        process.cwd(),
-        require.resolve('aegir/src/config/tsconfig.aegir.json')
-    )}",
+    "extends": "aegir/src/config/tsconfig.aegir.json",
     "compilerOptions": {
         "outDir": "dist"
     },

@@ -1,3 +1,12 @@
+# [30.2.0](https://github.com/ipfs/aegir/compare/v30.1.0...v30.2.0) (2020-12-20)
+
+
+### Bug Fixes
+
+* prepare scripts when aegir gets hoisted ([#702](https://github.com/ipfs/aegir/issues/702)) ([843baef](https://github.com/ipfs/aegir/commit/843baef566d5785e1958061508974dff102d187b))
+
+
+
 # [30.1.0](https://github.com/ipfs/aegir/compare/v30.0.0...v30.1.0) (2020-12-18)
 
 

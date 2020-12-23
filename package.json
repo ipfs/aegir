@@ -138,7 +138,9 @@
     "yargs-parser": "^20.2.3"
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.5",
     "@types/polka": "^0.5.1",
+    "@types/yargs": "^15.0.12",
     "electron": "^11.1.0",
     "iso-url": "^1.0.0",
     "mock-require": "^3.0.2",

@@ -23,12 +23,16 @@ module.exports = function (PluginHost) {
         // reflection.kind = 2
       }
 
-      if (pkgJson && reflection.name.includes('types/src/index.d.ts')) {
+      if (pkgJson && reflection.name.includes('dist/src/index.d.ts')) {
         reflection.name = '\u0000' + pkgJson.name.charAt(0) + pkgJson.name.slice(1)
       }
 
       if (pkgJson && reflection.name.includes('.d.ts')) {
         reflection.name = reflection.name.replace('.d.ts', '.js')
+      }
+
+      if (pkgJson && reflection.name.includes('dist/')) {
+        reflection.name = reflection.name.replace('dist/', '')
       }
     }
   })

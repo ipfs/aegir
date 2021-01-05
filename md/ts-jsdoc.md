@@ -26,7 +26,7 @@ Run `aegir ts --help` and check the help text. There's presets for common TS use
 ```md
 Presets:
 `check`       Runs the type checker with your local config and doesn't not emit output.
-`types`       Emits type declarations for `['src/**/*', 'package.json']` to `dist` folder.
+`types`       Emits type declarations to `dist` folder.
 `docs`        Generates documentation based on type declarations to the `docs` folder.
 `config`      Prints base config to stdout.
 ```
@@ -44,16 +44,47 @@ When installing a dependency from a git url (ie. PRs depending on other PRs) the
 ```
 > `yarn` needs a .npmignore file to properly install dependencies with `prepare` scripts that create extra files that need to be packed in.
 
-## Adding types with JSDoc
-
-Typescript can infere lots of the types without any help, but you can improve your code types by using just JSDoc for that follow the official TS documentation https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html. 
-
 ## Must read references
 [10 Insights from Adopting TypeScript at Scale](https://www.techatbloomberg.com/blog/10-insights-adopting-typescript-at-scale/)  
 [Typescript official performance notes](https://github.com/microsoft/TypeScript/wiki/Performance)  
 [TypeScript: Don’t Export const enums](https://ncjamieson.com/dont-export-const-enums/)  
 [TypeScript: Prefer Interfaces](https://ncjamieson.com/prefer-interfaces/)
 
+
+## Adding types with JSDoc
+
+Typescript can infere lots of the types without any help, but you can improve your code types by using just JSDoc for that follow the official TS documentation https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html. 
+
+## Manage dependencies types
+When dependencies don't publish types you have two options.
+
+### NPM from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)
+```bash
+npm install @types/tape
+```
+
+### Vendor type declarations
+Create a `types` folder at the root of your project to keep all your vendored types. Inside create one folder per dependency using the dependency name as the folder name and inside a create `index.d.ts` file with the types. 
+
+Tell TS where to look for types when a package doesn't publish them.
+```json
+"compilerOptions": {
+  "baseUrl": "./",
+  "paths": {
+    "*": ["./types/*"]
+  }
+}
+"include": [
+  ...
+  "types"
+]
+```
+
+> Scoped packages folder name need to use `__` instead of `/`, ie. the folder for `@pre-bundle/tape` would be `pre-bundle__tape`. 
+
+Aegir will copy the types folder to the `dist` folder (ie. `dist/types`) when you build or run the types typescript preset. This way all your types, vendored and from source, will be published without broken imports. 
+
+Reference: https://github.com/voxpelli/types-in-js/discussions/7#discussion-58634
 
 
 ### Rules for optimal type declarations and documentation
@@ -112,7 +143,7 @@ exports.IPFS = IPFS
 ```
 
 #### 3. Use a `types.ts` file
-When writing types JSDoc can sometimes be cumbersome, impossible, it can output weird type declarations or even broken documentation. Most of these problems can be solved by defining some complex types in typescript in a `types.ts` file.
+When writing types JSDoc can sometimes be cumbersome, impossible, it can output weird type declarations or even broken documentation. Most of these problems can be solved by defining some complex types in typescript in a `types.ts` file. 
 
 ```ts
 // types.ts
@@ -124,6 +155,16 @@ export type IntersectionType = Type1 & Type2
 /** @type { import('./types').IntersectionType } */
 const list
 ```
+You can also organise your source types in the same way as [vendored types](#vendor-type-declarations). 
+
+Create a folder inside the `types` folder called `self` or the package name. Then you can import like you would a third party type.
+
+```js
+/**
+ * @typedef {import('self').CustomOptions} CustomOptions
+ * /
+```
+
 
 #### 4. JSDoc comments bad parsing
 Some TS tooling may have problems parsing comments if they are not very well divided.

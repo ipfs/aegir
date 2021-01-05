@@ -8,8 +8,8 @@ const merge = require('merge-options')
 const { fromRoot, fromAegir, hasFile, readJson } = require('../utils')
 const hasConfig = hasFile('tsconfig.json')
 /**
- * @typedef {import("yargs").Argv}Argv
- * @typedef {import("yargs").Arguments}Arguments
+ * @typedef {import("yargs").Argv} Argv
+ * @typedef {import("yargs").Arguments} Arguments
  */
 
 /**

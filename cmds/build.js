@@ -1,8 +1,8 @@
 'use strict'
 
 /**
- * @typedef {import("yargs").Argv}Argv
- * @typedef {import("yargs").Arguments}Arguments
+ * @typedef {import("yargs").Argv} Argv
+ * @typedef {import("yargs").Arguments} Arguments
  */
 const EPILOG = `
 Output files will go into a "./dist" folder.

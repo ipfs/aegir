@@ -1,3 +1,12 @@
+# [30.3.0](https://github.com/ipfs/aegir/compare/v30.2.0...v30.3.0) (2021-01-05)
+
+
+### Features
+
+* support vendored types and improvements to build and ts cmds ([#705](https://github.com/ipfs/aegir/issues/705)) ([659598b](https://github.com/ipfs/aegir/commit/659598beb5687e80f2aa766c610de66c8592cee7))
+
+
+
 # [30.2.0](https://github.com/ipfs/aegir/compare/v30.1.0...v30.2.0) (2020-12-20)
 
 

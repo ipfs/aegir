@@ -26,7 +26,7 @@ Run `aegir ts --help` and check the help text. There's presets for common TS use
 ```md
 Presets:
 `check`       Runs the type checker with your local config and doesn't not emit output.
-`types`       Emits type declarations for `['src/**/*', 'package.json']` to `dist` folder.
+`types`       Emits type declarations to `dist` folder.
 `docs`        Generates documentation based on type declarations to the `docs` folder.
 `config`      Prints base config to stdout.
 ```

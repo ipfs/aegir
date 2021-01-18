@@ -98,7 +98,7 @@
     "git-authors-cli": "^1.0.32",
     "git-validate": "^2.2.4",
     "globby": "^11.0.1",
-    "ipfs-utils": "^5.0.1",
+    "ipfs-utils": "^6.0.0",
     "it-glob": "~0.0.10",
     "json-loader": "~0.5.7",
     "karma": "^5.2.3",

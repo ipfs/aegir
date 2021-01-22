@@ -30,10 +30,6 @@ module.exports = function (PluginHost) {
       if (pkgJson && reflection.name.includes('.d.ts')) {
         reflection.name = reflection.name.replace('.d.ts', '.js')
       }
-
-      if (pkgJson && reflection.name.includes('dist/')) {
-        reflection.name = reflection.name.replace('dist/', '')
-      }
     }
   })
 }

@@ -1,5 +1,5 @@
 'use strict'
-
+const { userConfig } = require('../src/config/user')
 module.exports = {
   command: 'lint',
   desc: 'Lint all project files',
@@ -8,7 +8,7 @@ module.exports = {
       alias: 'f',
       type: 'boolean',
       describe: 'Automatically fix errors if possible',
-      default: false
+      default: userConfig.lint.fix
     }
   },
   handler (argv) {

@@ -4,7 +4,6 @@ const EPILOG = `
 Presets:
 \`check\`       Runs the type checker with your local config (without writing any files). . 
 \`types\`       Emits type declarations to \`dist\` folder.
-\`docs\`        Generates documentation based on type declarations to the \`docs\` folder.
 \`config\`      Prints base config to stdout.
 
 Note: 
@@ -22,7 +21,7 @@ module.exports = {
       .options({
         preset: {
           type: 'string',
-          choices: ['config', 'check', 'types', 'docs'],
+          choices: ['config', 'check', 'types'],
           describe: 'Preset to run',
           alias: 'p'
         },

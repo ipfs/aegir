@@ -3,7 +3,7 @@
 const path = require('path')
 const globby = require('globby')
 const { CLIEngine } = require('eslint')
-const userConfig = require('./config/user')
+const { userConfig } = require('./config/user')
 const formatter = CLIEngine.getFormatter()
 
 const FILES = [
@@ -87,7 +87,7 @@ function runLinter (opts = {}) {
     fix: opts.fix
   })
 
-  const config = userConfig()
+  const config = userConfig
   const patterns = (config.lint && config.lint.files) || FILES
   return globby(patterns)
     .then(files => {

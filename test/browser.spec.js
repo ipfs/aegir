@@ -3,7 +3,6 @@
 
 const loadFixture = require('../fixtures')
 const expect = require('chai').expect
-const globalThis = require('ipfs-utils/src/globalthis')
 
 describe('browser', () => {
   it('fixtures', () => {

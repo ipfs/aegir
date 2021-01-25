@@ -61,6 +61,6 @@ module.exports = async (argv) => {
   }
 
   if (argv.types && hasTsconfig) {
-    await tsCmd({ preset: 'types' })
+    await tsCmd({ ...argv, preset: 'types' })
   }
 }

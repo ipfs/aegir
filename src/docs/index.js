@@ -14,14 +14,15 @@ const TASKS = new Listr(
     },
     {
       title: 'Generating documentation',
-      task: () => {
+      task: (ctx) => {
+        console.log('🚀 ~ file: index.js ~ line 18 ~ ctx', ctx)
         if (!hasTsconfig) {
           // eslint-disable-next-line no-console
           console.error(chalk.yellow('Documentation requires typescript config.\nTry running `aegir ts --preset config > tsconfig.json`'))
           return
         }
 
-        return tsCmd({ preset: 'docs' })
+        return tsCmd({ ...ctx, preset: 'docs' })
       }
     },
     {

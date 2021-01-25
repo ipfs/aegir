@@ -29,16 +29,17 @@ function normalizeHooks (hooks = {}) {
   return merge(result, hooks)
 }
 
-const config = () => {
+const config = (searchFrom) => {
   let userConfig
   try {
     const configExplorer = lilconfigSync('aegir', {
+
       searchPlaces: [
         'package.json',
         '.aegir.js'
       ]
     })
-    const lilconfig = configExplorer.search()
+    const lilconfig = configExplorer.search(searchFrom)
     if (lilconfig) {
       userConfig = lilconfig.config
     } else {
@@ -71,7 +72,20 @@ const config = () => {
       },
       // linter cmd options
       lint: {
-        fix: false
+        silent: false,
+        fix: false,
+        files: [
+          '*.{js,ts}',
+          'bin/**',
+          'config/**/*.{js,ts}',
+          'test/**/*.{js,ts}',
+          'src/**/*.{js,ts}',
+          'tasks/**/*.{js,ts}',
+          'benchmarks/**/*.{js,ts}',
+          'utils/**/*.{js,ts}',
+          '!**/node_modules/**',
+          '!**/*.d.ts'
+        ]
       },
       // docs cmd options
       docs: {
@@ -89,5 +103,6 @@ const config = () => {
 }
 
 module.exports = {
-  userConfig: config()
+  userConfig: config(),
+  config
 }

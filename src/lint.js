@@ -3,21 +3,7 @@
 const path = require('path')
 const globby = require('globby')
 const { CLIEngine } = require('eslint')
-const { userConfig } = require('./config/user')
 const formatter = CLIEngine.getFormatter()
-
-const FILES = [
-  '*.{js,ts}',
-  'bin/**',
-  'config/**/*.{js,ts}',
-  'test/**/*.{js,ts}',
-  'src/**/*.{js,ts}',
-  'tasks/**/*.{js,ts}',
-  'benchmarks/**/*.{js,ts}',
-  'utils/**/*.{js,ts}',
-  '!**/node_modules/**',
-  '!**/*.d.ts'
-]
 
 function checkDependencyVersions () {
   const checkVersions = (type, pkg, key) => {
@@ -87,9 +73,7 @@ function runLinter (opts = {}) {
     fix: opts.fix
   })
 
-  const config = userConfig
-  const patterns = (config.lint && config.lint.files) || FILES
-  return globby(patterns)
+  return globby(opts.files)
     .then(files => {
       const report = cli.executeOnFiles(files)
       if (opts.fix) {

@@ -12,7 +12,6 @@ const stripComments = require('strip-json-comments')
 const stripBom = require('strip-bom')
 const { download } = require('@electron/get')
 const path = require('path')
-const findUp = require('findup-sync')
 const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
 const execa = require('execa')
@@ -94,24 +93,6 @@ exports.getPathToPkg = () => {
 
 exports.getPathToDist = () => {
   return path.join(exports.getBasePath(), DIST_FOLDER)
-}
-
-exports.getUserConfigPath = () => {
-  return findUp('.aegir.js')
-}
-
-exports.getUserConfig = () => {
-  let conf = {}
-  try {
-    const path = exports.getUserConfigPath()
-    if (!path) {
-      return {}
-    }
-    conf = require(path)
-  } catch (err) {
-    console.error(err) // eslint-disable-line no-console
-  }
-  return conf
 }
 
 /**

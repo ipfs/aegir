@@ -2,16 +2,19 @@
 'use strict'
 
 const path = require('path')
-const fs = require('fs')
+const { readJsonSync } = require('fs-extra')
 const bytes = require('bytes')
 const execa = require('execa')
 const { premove: del } = require('premove')
 const { fromAegir, gzipSize, pkg, hasTsconfig } = require('./../utils')
-const userConfig = require('../config/user')
 const tsCmd = require('../ts')
+const { userConfig } = require('../config/user')
 
-const config = userConfig()
-
+/**
+ * Build command
+ *
+ * @param {any} argv
+ */
 module.exports = async (argv) => {
   const input = argv._.slice(1)
   const forwardOptions = argv['--'] ? argv['--'] : []
@@ -44,9 +47,9 @@ module.exports = async (argv) => {
     })
 
     if (argv.bundlesize) {
-      const stats = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'dist/stats.json')))
+      const stats = readJsonSync(path.join(process.cwd(), 'dist/stats.json'))
       const gzip = await gzipSize(path.join(stats.outputPath, stats.assets[0].name))
-      const maxsize = bytes(config.bundlesize.maxSize)
+      const maxsize = bytes(/** @type {string} */(userConfig.bundlesize.maxSize))
       const diff = gzip - maxsize
 
       console.log('Use http://webpack.github.io/analyse/ to load "./dist/stats.json".')
@@ -61,6 +64,6 @@ module.exports = async (argv) => {
   }
 
   if (argv.types && hasTsconfig) {
-    await tsCmd({ preset: 'types' })
+    await tsCmd({ ...argv, preset: 'types' })
   }
 }

@@ -23,16 +23,6 @@ describe('utils', () => {
     expect(utils.getPathToDist()).to.match(/dist$/)
   })
 
-  it('getUserConfigPath', () => {
-    expect(utils.getUserConfigPath()).to.match(/.aegir.js$/)
-  })
-
-  it('getUserConfig', () => {
-    sinon.stub(utils, 'getUserConfigPath').returns(path.join(__dirname, 'fixtures/.aegir.js'))
-    expect(utils.getUserConfig()).to.eql({ config: 'mine' })
-    sinon.restore()
-  })
-
   it('getLibraryName', () => {
     const cases = [
       ['hello world', 'HelloWorld'],

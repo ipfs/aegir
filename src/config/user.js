@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 'use strict'
 
-const { cosmiconfigSync } = require('cosmiconfig')
+const { lilconfigSync } = require('lilconfig')
 const merge = require('merge-options')
 const utils = require('../utils')
 
@@ -28,11 +29,33 @@ function normalizeHooks (hooks = {}) {
   return merge(result, hooks)
 }
 
-function userConfig () {
-  const userConfig = utils.getUserConfig()
+const config = (searchFrom) => {
+  let userConfig
+  try {
+    const configExplorer = lilconfigSync('aegir', {
 
-  const user = merge(
+      searchPlaces: [
+        'package.json',
+        '.aegir.js'
+      ]
+    })
+    const lilconfig = configExplorer.search(searchFrom)
+    if (lilconfig) {
+      userConfig = lilconfig.config
+    } else {
+      userConfig = {}
+    }
+  } catch (err) {
+    console.error(err)
+    throw new Error('Error finding your config file.')
+  }
+  const conf = merge(
     {
+      // global options
+      debug: false,
+      node: false,
+      ts: false,
+      // old options
       webpack: {},
       karma: {},
       hooks: {},
@@ -40,41 +63,46 @@ function userConfig () {
       bundlesize: {
         path: './dist/index.min.js',
         maxSize: '100kB'
+      },
+      // build cmd options
+      build: {
+        bundle: true,
+        bundlesize: false,
+        types: true
+      },
+      // linter cmd options
+      lint: {
+        silent: false,
+        fix: false,
+        files: [
+          '*.{js,ts}',
+          'bin/**',
+          'config/**/*.{js,ts}',
+          'test/**/*.{js,ts}',
+          'src/**/*.{js,ts}',
+          'tasks/**/*.{js,ts}',
+          'benchmarks/**/*.{js,ts}',
+          'utils/**/*.{js,ts}',
+          '!**/node_modules/**',
+          '!**/*.d.ts'
+        ]
+      },
+      // docs cmd options
+      docs: {
+        publish: false,
+        entryPoint: 'src/index.js'
       }
     },
-    userConfig
-  )
-
-  user.hooks = normalizeHooks(user.hooks)
-
-  return user
-}
-
-const config = () => {
-  let cosmiconfig
-  try {
-    const configExplorer = cosmiconfigSync('aegir', {
-      searchPlaces: ['package.json', '.aegir.js']
-    })
-    const { config } = configExplorer.search()
-    cosmiconfig = config || {}
-  } catch (err) {
-    cosmiconfig = {}
-  }
-  const conf = merge({
-    webpack: {},
-    karma: {},
-    hooks: {},
-    entry: utils.fromRoot('src', 'index.js'),
-    bundlesize: {
-      path: './dist/index.min.js',
-      maxSize: '100kB'
+    userConfig,
+    {
+      hooks: normalizeHooks(userConfig.hooks)
     }
-  },
-  cosmiconfig)
+  )
 
   return conf
 }
 
-module.exports = userConfig
-userConfig.config = config
+module.exports = {
+  userConfig: config(),
+  config
+}

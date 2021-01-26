@@ -6,6 +6,7 @@ const { expect } = require('../utils/chai')
 const path = require('path')
 const fs = require('fs')
 const { premove: del } = require('premove/sync')
+const { userConfig } = require('../src/config/user')
 
 const TEMP_FOLDER = path.join(__dirname, '../node_modules/.temp-test')
 
@@ -27,12 +28,12 @@ const setupProjectWithDeps = deps => setupProject({
 
 const dependenciesShouldPassLinting = (deps) => {
   return setupProjectWithDeps(deps)
-    .then(() => lint())
+    .then(() => lint(userConfig.lint))
 }
 
 const dependenciesShouldFailLinting = (deps) => {
   return setupProjectWithDeps(deps)
-    .then(() => lint())
+    .then(() => lint(userConfig.lint))
     .then(() => {
       throw new Error('Should have failed!')
     })
@@ -43,14 +44,14 @@ const dependenciesShouldFailLinting = (deps) => {
 
 const projectShouldPassLint = async (project) => {
   await setupProject(project)
-  await lint()
+  await lint(userConfig.lint)
 }
 
 const projectShouldFailLint = async (project) => {
   await setupProject(project)
   let failed = false
   try {
-    await lint({ silent: true })
+    await lint(userConfig.lint)
   } catch (error) {
     failed = true
     expect(error.message).to.contain('Lint errors')
@@ -72,7 +73,7 @@ describe('lint', () => {
 
   it('lint itself (aegir)', function () {
     this.timeout(20 * 1000) // slow ci is slow
-    return lint({ fix: false, silent: true })
+    return lint({ fix: false, silent: true, files: userConfig.lint.files })
   })
 
   it('succeeds when package.json contains dependencies with good versions', function () {
@@ -158,39 +159,35 @@ describe('lint', () => {
   })
 
   it('should pass in user defined path globs', () => {
+    const dir = `test-${Date.now()}`
     return setupProjectWithDeps([])
       .then(() => {
         // Directory not included in the default globs
-        const dir = `test-${Date.now()}`
 
         fs.mkdirSync(dir)
         fs.writeFileSync(`${dir}/test-pass.js`, '\'use strict\'\n\nmodule.exports = {}\n')
-        fs.writeFileSync(
-          '.aegir.js',
-          `module.exports = { lint: { files: ['${dir}/*.js'] } }`
-        )
       })
-      .then(() => lint({ silent: true }))
+      .then(() => lint({ silent: true, files: [`${dir}/*.js`] }))
   })
 
   it('should fail in user defined path globs', async () => {
+    const dir = `test-${Date.now()}`
     await setupProjectWithDeps([])
     // Directory not included in the default globs
-    const dir = `test-${Date.now()}`
 
     fs.mkdirSync(dir)
     fs.writeFileSync(`${dir}/test-fail.js`, '() .> {')
-    fs.writeFileSync(
-      '.aegir.js',
-          `module.exports = { lint: { files: ['${dir}/*.js'] } }`
-    )
 
-    await expect(lint({ silent: true })).to.eventually.be.rejectedWith('Lint errors')
+    await expect(lint({
+      silent: true,
+      files: [`${dir}/*.js`]
+    }))
+      .to.eventually.be.rejectedWith('Lint errors')
   })
 
   it('should lint ts and js with different parsers rules', async () => {
     process.chdir(path.join(__dirname, './fixtures/js+ts/'))
-    await lint()
+    await lint(userConfig.lint)
   })
 
   it('should pass if no .eslintrc found and does not follows ipfs eslint rules', async () => {

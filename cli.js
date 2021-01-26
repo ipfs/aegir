@@ -17,7 +17,7 @@ updateNotifier({
 }).notify()
 
 const cli = require('yargs')
-const { config } = require('./src/config/user')
+const { userConfig } = require('./src/config/user')
 cli
   .scriptName('aegir')
   .env('AEGIR')
@@ -28,7 +28,7 @@ cli
   .example('npm test -- -- --browsers Firefox', 'If `npm test` translates to `aegir test -t browser` and you want to forward options you need to use `-- --` instead.')
   .epilog('Use `$0 <command> --help` to learn more about each command.')
   .middleware((yargs) => {
-    yargs.config = config()
+    yargs.config = userConfig
   })
   .commandDir('cmds')
   .help()
@@ -37,19 +37,19 @@ cli
   .option('debug', {
     desc: 'Show debug output.',
     type: 'boolean',
-    default: false,
-    alias: 'd'
+    alias: 'd',
+    default: userConfig.debug
   })
   // TODO remove after webpack 5 upgrade
   .options('node', {
     type: 'boolean',
     describe: 'Flag to control if bundler should inject node globals or built-ins.',
-    default: false
+    default: userConfig.node
   })
   .options('ts', {
     type: 'boolean',
     describe: 'Enable support for Typescript',
-    default: false
+    default: userConfig.ts // needs to be changed to another name to not conflict with the ts cmd options
   })
   .group(['help', 'version', 'debug', 'node', 'ts'], 'Global Options:')
   .demandCommand(1, 'You need at least one command.')

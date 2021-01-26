@@ -10,6 +10,10 @@ const hasConfig = hasFile('tsconfig.json')
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
+ * @typedef {Object} Options
+ * @property {"config" | "check" | "types" | "docs"} preset
+ * @property {string[]} forwardOptions - Extra options to forward to the backend
+ * @property {string[]} extraInclude - Extra include files for the TS Config
  */
 
 /**
@@ -18,8 +22,12 @@ const hasConfig = hasFile('tsconfig.json')
  * @param {any} argv
  */
 module.exports = async (argv) => {
-  const forwardOptions = argv['--'] ? argv['--'] : []
-  const extraInclude = (argv.include && argv.include.length > 0) ? await globby(argv.include) : []
+  /** @type {Options} */
+  const opts = {
+    forwardOptions: argv['--'] ? argv['--'] : [],
+    extraInclude: (argv.include && argv.include.length > 0) ? await globby(argv.include) : [],
+    preset: argv.preset
+  }
 
   if (argv.preset === 'config') {
     const extendsConfig = `{
@@ -48,16 +56,16 @@ module.exports = async (argv) => {
       'TS config not found. Try running `aegir ts --preset config > tsconfig.json`'
     )
   }
-  const userConfig = readJson(fromRoot('tsconfig.json'))
+  const userTSConfig = readJson(fromRoot('tsconfig.json'))
   switch (argv.preset) {
     case 'check':
-      return check(userConfig, forwardOptions, extraInclude)
+      return check(userTSConfig, opts)
     case 'types':
-      return types(userConfig, forwardOptions, extraInclude)
+      return types(userTSConfig, opts)
     case 'docs':
-      return docs(userConfig, forwardOptions, extraInclude)
+      return docs(userTSConfig, opts)
     default:
-      return execa('tsc', ['--build', ...forwardOptions], {
+      return execa('tsc', ['--build', ...opts.forwardOptions], {
         localDir: path.join(__dirname, '../..'),
         preferLocal: true,
         stdio: 'inherit'
@@ -68,17 +76,16 @@ module.exports = async (argv) => {
 /**
  * Check preset
  *
- * @param {any} userConfig
- * @param {any} forwardOptions
- * @param {string[]} extraInclude
+ * @param {any} userTSConfig
+ * @param {Options} opts
  */
-const check = async (userConfig, forwardOptions, extraInclude) => {
+const check = async (userTSConfig, { extraInclude, forwardOptions }) => {
   const configPath = fromRoot('tsconfig-check.aegir.json')
   try {
     fs.writeJsonSync(
       configPath,
       merge.apply({ concatArrays: true }, [
-        userConfig,
+        userTSConfig,
         {
           compilerOptions: {
             noEmit: true,
@@ -101,17 +108,16 @@ const check = async (userConfig, forwardOptions, extraInclude) => {
 /**
  * Types preset
  *
- * @param {any} userConfig
- * @param {any} forwardOptions
- * @param {string[]} extraInclude
+ * @param {any} userTSConfig
+ * @param {Options} opts
  */
-const types = async (userConfig, forwardOptions, extraInclude) => {
+const types = async (userTSConfig, { extraInclude, forwardOptions }) => {
   const configPath = fromRoot('tsconfig-types.aegir.json')
   try {
     fs.writeJsonSync(
       configPath,
       merge.apply({ concatArrays: true }, [
-        userConfig,
+        userTSConfig,
         {
           compilerOptions: {
             noEmit: false,
@@ -141,40 +147,20 @@ const types = async (userConfig, forwardOptions, extraInclude) => {
 /**
  * Docs preset
  *
- * @param {any} userConfig
- * @param {any} forwardOptions
- * @param {string[]} extraInclude
+ * @param {any} userTSConfig
+ * @param {Options} opts
  */
-const docs = async (userConfig, forwardOptions, extraInclude) => {
-  await types(userConfig, forwardOptions, extraInclude)
-
+const docs = async (userTSConfig, opts) => {
   // run typedoc
   await execa(
     'typedoc',
     [
-      '--inputfiles',
-      fromRoot('dist'),
-      '--mode',
-      'modules',
-      '--out',
-      'docs',
-      '--excludeExternals',
-      // '--excludeNotDocumented',
-      // '--excludeNotExported',
-      // '--excludePrivate',
-      // '--excludeProtected',
-      '--includeDeclarations',
+      fromRoot('src/index.js'),
+      '--out', 'docs',
       '--hideGenerator',
       '--includeVersion',
-      '--gitRevision',
-      'master',
-      '--disableSources',
-      '--plugin',
-      fromAegir('src/ts/typedoc-plugin.js'),
-      '--theme',
-      fromAegir(
-        './../../node_modules/aegir-typedoc-theme/bin/default'
-      )
+      '--gitRevision', 'master',
+      '--plugin', fromAegir('src/ts/typedoc-plugin.js')
     ],
     {
       localDir: path.join(__dirname, '..'),

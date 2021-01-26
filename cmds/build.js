@@ -1,5 +1,5 @@
 'use strict'
-
+const { userConfig } = require('../src/config/user')
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
@@ -21,18 +21,18 @@ module.exports = {
         bundle: {
           type: 'boolean',
           describe: 'Build the JS standalone bundle.',
-          default: true
+          default: userConfig.build.bundle
         },
         bundlesize: {
           alias: 'b',
           type: 'boolean',
           describe: 'Analyse bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize.maxSize`.',
-          default: false
+          default: userConfig.build.bundlesize
         },
         types: {
           type: 'boolean',
           describe: 'Build the Typescripts type declarations.',
-          default: true
+          default: userConfig.build.types
         }
       })
   },

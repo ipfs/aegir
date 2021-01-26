@@ -31,7 +31,7 @@ const TASKS = [
 
 module.exports = {
   run (opts, execaOptions) {
-    const userConfig = require('../config/user')()
+    const { userConfig } = require('../config/user')
     const pmap = require('p-map')
 
     // TODO remove hooks and just use opts.userConfig

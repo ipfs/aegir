@@ -5,7 +5,7 @@ const webpack = require('webpack')
 const path = require('path')
 const webpackConfig = require('./webpack.config')
 const { fromRoot, hasFile } = require('../utils')
-const userConfig = require('./user')()
+const { userConfig } = require('./user')
 const isTSEnable = process.env.AEGIR_TS === 'true'
 const isWebworker = process.env.AEGIR_RUNNER === 'webworker'
 

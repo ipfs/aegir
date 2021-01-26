@@ -41,7 +41,7 @@ module.exports = (argv, execaOptions) => {
               NODE_ENV: process.env.NODE_ENV || 'test',
               AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser',
               AEGIR_NODE: argv.node,
-              AEGIR_TS: argv.ts,
+              AEGIR_TS: argv.tsRepo,
               IS_WEBPACK_BUILD: true,
               ...hook.env
             },

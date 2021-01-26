@@ -46,12 +46,12 @@ cli
     describe: 'Flag to control if bundler should inject node globals or built-ins.',
     default: userConfig.node
   })
-  .options('ts', {
+  .options('ts-repo', {
     type: 'boolean',
-    describe: 'Enable support for Typescript',
-    default: userConfig.ts // needs to be changed to another name to not conflict with the ts cmd options
+    describe: 'Enable support for Typescript repos.',
+    default: userConfig.tsRepo
   })
-  .group(['help', 'version', 'debug', 'node', 'ts'], 'Global Options:')
+  .group(['help', 'version', 'debug', 'node', 'ts-repo'], 'Global Options:')
   .demandCommand(1, 'You need at least one command.')
   .wrap(cli.terminalWidth())
   .parserConfiguration({ 'populate--': true })

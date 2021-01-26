@@ -9,17 +9,17 @@ const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
 
 /** @typedef { import("execa").Options} ExecaOptions */
 
-function testNode (ctx, execaOptions) {
+function testNode (argv, execaOptions) {
   let exec = 'mocha'
   const env = {
     NODE_ENV: 'test',
     AEGIR_RUNNER: 'node',
-    AEGIR_TS: ctx.ts
+    AEGIR_TS: argv.tsRepo
   }
-  const timeout = ctx.timeout || DEFAULT_TIMEOUT
+  const timeout = argv.timeout || DEFAULT_TIMEOUT
 
   let args = [
-    ctx.progress && '--reporter=progress',
+    argv.progress && '--reporter=progress',
     '--ui', 'bdd',
     '--timeout', timeout
   ].filter(Boolean)
@@ -29,48 +29,48 @@ function testNode (ctx, execaOptions) {
     'test/**/*.spec.{js,ts}'
   ]
 
-  if (ctx.colors) {
+  if (argv.colors) {
     args.push('--colors')
   } else {
     args.push('--no-colors')
   }
 
-  if (ctx.grep) {
-    args.push(`--grep=${ctx.grep}`)
+  if (argv.grep) {
+    args.push(`--grep=${argv.grep}`)
   }
 
-  if (ctx.invert) {
+  if (argv.invert) {
     args.push('--invert')
   }
 
-  if (ctx.files && ctx.files.length > 0) {
-    files = ctx.files
+  if (argv.files && argv.files.length > 0) {
+    files = argv.files
   }
 
-  if (ctx.verbose) {
+  if (argv.verbose) {
     args.push('--verbose')
   }
 
-  if (ctx.watch) {
+  if (argv.watch) {
     args.push('--watch')
   }
 
-  if (ctx.exit) {
+  if (argv.exit) {
     args.push('--exit')
   }
 
-  if (ctx.bail) {
+  if (argv.bail) {
     args.push('--bail')
   }
 
-  if (ctx.ts) {
+  if (argv.tsRepo) {
     args.push(...['--require', fromAegir('src/config/register.js')])
   }
 
   const postHook = hook('node', 'post')
   const preHook = hook('node', 'pre')
 
-  if (ctx['100']) {
+  if (argv['100']) {
     args = [
       '--check-coverage',
       '--branches=100',
@@ -82,7 +82,7 @@ function testNode (ctx, execaOptions) {
     exec = 'nyc'
   }
 
-  return preHook(ctx)
+  return preHook(argv)
     .then((hook = {}) => {
       return execa(exec,
         args.concat(files.map((p) => path.normalize(p))),
@@ -100,7 +100,7 @@ function testNode (ctx, execaOptions) {
         )
       )
     })
-    .then(() => postHook(ctx))
+    .then(() => postHook(argv))
 }
 
 module.exports = testNode

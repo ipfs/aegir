@@ -54,7 +54,7 @@ const config = (searchFrom) => {
       // global options
       debug: false,
       node: false,
-      ts: false,
+      tsRepo: false,
       // old options
       webpack: {},
       karma: {},

@@ -15,7 +15,7 @@ module.exports = (argv) => {
   const bail = argv.bail ? ['--bail', argv.bail] : []
   const timeout = argv.timeout ? ['--timeout', argv.timeout] : []
   const renderer = argv.renderer ? ['--renderer'] : []
-  const ts = argv.ts ? ['--require', fromAegir('src/config/register.js')] : []
+  const ts = argv.tsRepo ? ['--require', fromAegir('src/config/register.js')] : []
 
   return hook('browser', 'pre')(argv.userConfig)
     .then((hook = {}) => Promise.all([hook, getElectron()]))
@@ -43,7 +43,7 @@ module.exports = (argv) => {
           NODE_ENV: process.env.NODE_ENV || 'test',
           AEGIR_RUNNER: argv.renderer ? 'electron-renderer' : 'electron-main',
           ELECTRON_PATH: electronPath,
-          AEGIR_TS: argv.ts,
+          AEGIR_TS: argv.tsRepo,
           ...hook.env
         }
       })

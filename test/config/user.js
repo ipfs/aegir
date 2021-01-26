@@ -22,17 +22,11 @@ describe('config - user', () => {
       expect(res).to.eql('pre')
     })
   })
-})
-
-describe('config - user with async hooks', () => {
   it('supports async hooks', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-user-async-hooks'))
     expect(await conf.hooks.browser.pre()).to.eql('pre done async')
     expect(await conf.hooks.browser.post()).to.eql('post done async')
   })
-})
-
-describe('config - aegir prop in package.json', () => {
   it('supports async hooks', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-config-package-json'))
     expect(await conf.custom).to.ok()

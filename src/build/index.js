@@ -39,7 +39,7 @@ module.exports = async (argv) => {
         NODE_ENV: process.env.NODE_ENV || 'production',
         AEGIR_BUILD_ANALYZE: argv.bundlesize,
         AEGIR_NODE: argv.node,
-        AEGIR_TS: argv.ts
+        AEGIR_TS: argv.tsRepo
       },
       localDir: path.join(__dirname, '../..'),
       preferLocal: true,

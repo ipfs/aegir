@@ -10,13 +10,8 @@ module.exports = (argv, execaOptions) => {
   const input = argv._.slice(1)
   const forwardOptions = argv['--'] ? argv['--'] : []
   const watch = argv.watch ? ['--auto-watch', '--no-single-run'] : []
-  const files = argv.files ? ['--files-custom', ...argv.files] : []
   const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
-  const grep = argv.grep ? ['--grep', argv.grep] : []
-  const invert = argv.invert ? ['--invert'] : []
-  const progress = argv.progress ? ['--progress', argv.progress] : []
-  const bail = argv.bail ? ['--bail', argv.bail] : []
-  const timeout = argv.timeout ? ['--timeout', argv.timeout] : []
+  const colors = argv.colors ? ['--colors'] : []
 
   return hook('browser', 'pre')(argv.userConfig)
     .then((hook = {}) => {
@@ -24,15 +19,10 @@ module.exports = (argv, execaOptions) => {
         [
           'start',
           fromAegir('src/config/karma.conf.js'),
+          ...colors,
           ...watch,
-          ...files,
           ...verbose,
-          ...grep,
-          ...invert,
-          ...progress,
           ...input,
-          ...bail,
-          ...timeout,
           ...forwardOptions
         ],
         merge(
@@ -42,6 +32,11 @@ module.exports = (argv, execaOptions) => {
               AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser',
               AEGIR_NODE: argv.node,
               AEGIR_TS: argv.tsRepo,
+              AEGIR_MOCHA_TIMEOUT: argv.timeout ? `${argv.timeout}` : '5000',
+              AEGIR_MOCHA_GREP: argv.grep,
+              AEGIR_MOCHA_BAIL: argv.bail ? 'true' : 'false',
+              AEGIR_PROGRESS: argv.progress ? 'true' : 'false',
+              AEGIR_FILES: JSON.stringify(argv.files),
               IS_WEBPACK_BUILD: true,
               ...hook.env
             },

@@ -5,6 +5,14 @@ const { lilconfigSync } = require('lilconfig')
 const merge = require('merge-options')
 const utils = require('../utils')
 
+/**
+ * @typedef {import("./../types").Options} Options
+ */
+
+/**
+ *
+ * @param {*} hooks
+ */
 function normalizeHooks (hooks = {}) {
   const result = {
     browser: {
@@ -29,6 +37,12 @@ function normalizeHooks (hooks = {}) {
   return merge(result, hooks)
 }
 
+/**
+ * Search for local user config
+ *
+ * @param {string | undefined} [searchFrom]
+ * @returns {Options}
+ */
 const config = (searchFrom) => {
   let userConfig
   try {
@@ -49,6 +63,8 @@ const config = (searchFrom) => {
     console.error(err)
     throw new Error('Error finding your config file.')
   }
+
+  /** @type {Options} */
   const conf = merge(
     {
       // global options
@@ -60,14 +76,11 @@ const config = (searchFrom) => {
       karma: {},
       hooks: {},
       entry: utils.fromRoot('src', 'index.js'),
-      bundlesize: {
-        path: './dist/index.min.js',
-        maxSize: '100kB'
-      },
       // build cmd options
       build: {
         bundle: true,
         bundlesize: false,
+        bundlesizeMax: '100kB',
         types: true
       },
       // linter cmd options
@@ -91,6 +104,10 @@ const config = (searchFrom) => {
       docs: {
         publish: false,
         entryPoint: 'src/index.js'
+      },
+      ts: {
+        preset: undefined,
+        include: []
       }
     },
     userConfig,

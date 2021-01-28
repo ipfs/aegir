@@ -11,9 +11,14 @@ const tsCmd = require('../ts')
 const { userConfig } = require('../config/user')
 
 /**
+ * @typedef {import("../types").GlobalOptions} GlobalOptions
+ * @typedef {import("../types").BuildOptions} BuildOptions
+ */
+
+/**
  * Build command
  *
- * @param {any} argv
+ * @param {GlobalOptions & BuildOptions} argv
  */
 module.exports = async (argv) => {
   const input = argv._.slice(1)
@@ -37,9 +42,9 @@ module.exports = async (argv) => {
     ], {
       env: {
         NODE_ENV: process.env.NODE_ENV || 'production',
-        AEGIR_BUILD_ANALYZE: argv.bundlesize,
-        AEGIR_NODE: argv.node,
-        AEGIR_TS: argv.tsRepo
+        AEGIR_BUILD_ANALYZE: argv.bundlesize ? 'true' : 'false',
+        AEGIR_NODE: argv.node ? 'true' : 'false',
+        AEGIR_TS: argv.tsRepo ? 'true' : 'false'
       },
       localDir: path.join(__dirname, '../..'),
       preferLocal: true,
@@ -47,9 +52,13 @@ module.exports = async (argv) => {
     })
 
     if (argv.bundlesize) {
+      // @ts-ignore
+      if (userConfig.bundlesize?.maxSize) {
+        throw new Error('Config property `bundlesize.maxSize` is deprecated, use `build.bundlesizeMax`!')
+      }
       const stats = readJsonSync(path.join(process.cwd(), 'dist/stats.json'))
       const gzip = await gzipSize(path.join(stats.outputPath, stats.assets[0].name))
-      const maxsize = bytes(/** @type {string} */(userConfig.bundlesize.maxSize))
+      const maxsize = bytes(userConfig.build.bundlesizeMax)
       const diff = gzip - maxsize
 
       console.log('Use http://webpack.github.io/analyse/ to load "./dist/stats.json".')
@@ -64,6 +73,10 @@ module.exports = async (argv) => {
   }
 
   if (argv.types && hasTsconfig) {
-    await tsCmd({ ...argv, preset: 'types' })
+    await tsCmd({
+      ...argv,
+      preset: 'types',
+      include: userConfig.ts.include
+    })
   }
 }

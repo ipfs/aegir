@@ -1,4 +1,5 @@
 'use strict'
+const { userConfig } = require('../src/config/user')
 
 const EPILOG = `
 Presets:
@@ -23,12 +24,13 @@ module.exports = {
           type: 'string',
           choices: ['config', 'check', 'types'],
           describe: 'Preset to run',
-          alias: 'p'
+          alias: 'p',
+          default: userConfig.ts.preset
         },
         include: {
           type: 'array',
           describe: 'Values are merged into the local TS config include property.',
-          default: []
+          default: userConfig.ts.include
         }
       })
   },

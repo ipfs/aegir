@@ -26,22 +26,6 @@ const setupProjectWithDeps = deps => setupProject({
   })
 })
 
-const dependenciesShouldPassLinting = (deps) => {
-  return setupProjectWithDeps(deps)
-    .then(() => lint(userConfig.lint))
-}
-
-const dependenciesShouldFailLinting = (deps) => {
-  return setupProjectWithDeps(deps)
-    .then(() => lint(userConfig.lint))
-    .then(() => {
-      throw new Error('Should have failed!')
-    })
-    .catch(error => {
-      expect(error.message).to.contain('Dependency version errors')
-    })
-}
-
 const projectShouldPassLint = async (project) => {
   await setupProject(project)
   await lint(userConfig.lint)
@@ -76,88 +60,6 @@ describe('lint', () => {
     return lint({ fix: false, silent: true, files: userConfig.lint.files })
   })
 
-  it('succeeds when package.json contains dependencies with good versions', function () {
-    return dependenciesShouldPassLinting({
-      'some-unstable-dep': '~0.0.1',
-      'some-dev-dep': '^0.1.0',
-      'some-other-dev-dep': '~0.1.0',
-      'some-stable-dep': '^1.0.0',
-      'some-pinned-dep': '1.0.0'
-    })
-  })
-
-  it('fails when package.json contains dependencies with carets for unstable deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '^0.0.1'
-    })
-  })
-
-  it('fails when package.json contains dependencies with <= for unstable deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '<=0.0.1'
-    })
-  })
-
-  it('fails when package.json contains dependencies with > for unstable deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '>0.0.1'
-    })
-  })
-
-  it('fails when package.json contains dependencies with < for unstable deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '<0.0.1'
-    })
-  })
-
-  it('fails when package.json contains dependencies with >= for unstable deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '>=0.0.1'
-    })
-  })
-
-  it('fails when package.json contains dependencies with <= for development deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '<=0.1.0'
-    })
-  })
-
-  it('fails when package.json contains dependencies with > for development deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '>0.1.0'
-    })
-  })
-
-  it('fails when package.json contains dependencies with < for development deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '<0.1.0'
-    })
-  })
-
-  it('fails when package.json contains dependencies with >= for development deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '>=0.1.0'
-    })
-  })
-
-  it('fails when package.json contains dependencies with tildes for stable deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '~1.0.0'
-    })
-  })
-
-  it('fails when package.json contains dependencies with > for stable deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '>1.0.0'
-    })
-  })
-
-  it('fails when package.json contains dependencies with < for stable deps', function () {
-    return dependenciesShouldFailLinting({
-      'some-dep': '<1.0.0'
-    })
-  })
-
   it('should pass in user defined path globs', () => {
     const dir = `test-${Date.now()}`
     return setupProjectWithDeps([])
@@ -167,7 +69,11 @@ describe('lint', () => {
         fs.mkdirSync(dir)
         fs.writeFileSync(`${dir}/test-pass.js`, '\'use strict\'\n\nmodule.exports = {}\n')
       })
-      .then(() => lint({ silent: true, files: [`${dir}/*.js`] }))
+      .then(() => lint({
+        fix: false,
+        silent: true,
+        files: [`${dir}/*.js`]
+      }))
   })
 
   it('should fail in user defined path globs', async () => {
@@ -179,6 +85,7 @@ describe('lint', () => {
     fs.writeFileSync(`${dir}/test-fail.js`, '() .> {')
 
     await expect(lint({
+      fix: false,
       silent: true,
       files: [`${dir}/*.js`]
     }))

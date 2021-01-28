@@ -7,14 +7,20 @@ const fs = require('fs-extra')
 const path = require('path')
 const { premove: del } = require('premove')
 const {
-  getListrConfig,
-  publishDocs,
   hasTsconfig,
   fromAegir,
   fromRoot
 } = require('../utils')
+const ghPages = require('gh-pages')
+const { promisify } = require('util')
+
+const publishPages = promisify(ghPages.publish)
 
 /**
+ * @typedef {import("../types").GlobalOptions} GlobalOptions
+ * @typedef {import("../types").DocsOptions} DocsOptions
+ * @typedef {import("listr").ListrTaskWrapper} Task
+ *
  * @typedef {Object} Options
  * @property {string} entryPoint - Entry point for typedoc (defaults: 'src/index.js')
  * @property {string[]} forwardOptions - Extra options to forward to the backend
@@ -23,9 +29,10 @@ const {
 /**
  * Docs command
  *
- * @param {any} ctx
+ * @param {GlobalOptions & DocsOptions} ctx
+ * @param {Task} task
  */
-const docs = async (ctx) => {
+const docs = async (ctx, task) => {
   /** @type {Options} */
   const opts = {
     forwardOptions: ctx['--'] ? ctx['--'] : [],
@@ -37,7 +44,7 @@ const docs = async (ctx) => {
     return
   }
   // run typedoc
-  await execa(
+  const proc = execa(
     'typedoc',
     [
       fromRoot(opts.entryPoint),
@@ -50,13 +57,27 @@ const docs = async (ctx) => {
     ],
     {
       localDir: path.join(__dirname, '..'),
-      preferLocal: true,
-      stdio: 'inherit'
+      preferLocal: true
     }
   )
+  proc.stdout?.on('data', chunk => {
+    task.output = chunk.toString()
+  })
+  await proc
 
   // write .nojekyll file
   fs.writeFileSync('docs/.nojekyll', '')
+}
+
+const publishDocs = () => {
+  return publishPages(
+    'docs',
+    // @ts-ignore - promisify returns wrong type
+    {
+      dotfiles: true,
+      message: 'chore: update documentation'
+    }
+  )
 }
 
 const TASKS = new Listr(
@@ -75,7 +96,9 @@ const TASKS = new Listr(
       enabled: (ctx) => ctx.publish && hasTsconfig
     }
   ],
-  getListrConfig()
+  {
+    renderer: 'default'
+  }
 )
 
 module.exports = TASKS

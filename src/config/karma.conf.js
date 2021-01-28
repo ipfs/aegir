@@ -8,6 +8,7 @@ const { fromRoot, hasFile } = require('../utils')
 const { userConfig } = require('./user')
 const isTSEnable = process.env.AEGIR_TS === 'true'
 const isWebworker = process.env.AEGIR_RUNNER === 'webworker'
+const isProgressEnabled = process.env.AEGIR_PROGRESS === 'true'
 
 // Env to pass in the bundle with DefinePlugin
 const env = {
@@ -47,14 +48,13 @@ const karmaWebpackConfig = merge.strategy({ plugins: 'replace' })(webpackConfig(
   }
 })
 
-const karmaConfig = (config, argv) => {
-  const files = argv.filesCustom
+const karmaConfig = () => {
+  const files = JSON.parse(process.env.AEGIR_FILES)
   const mocha = {
     reporter: 'spec',
-    timeout: argv.timeout ? Number(argv.timeout) : 5000,
-    bail: argv.bail,
-    grep: argv.grep,
-    invert: argv.invert
+    timeout: Number(process.env.AEGIR_MOCHA_TIMEOUT),
+    bail: process.env.AEGIR_MOCHA_BAIL === 'true',
+    grep: process.env.AEGIR_MOCHA_GREP
   }
 
   const karmaEntry = path.join(__dirname, 'karma-entry.js')
@@ -113,8 +113,8 @@ const karmaConfig = (config, argv) => {
     },
 
     reporters: [
-      argv.progress && 'progress',
-      !argv.progress && 'mocha'
+      isProgressEnabled && 'progress',
+      !isProgressEnabled && 'mocha'
     ].filter(Boolean),
 
     mochaReporter: {
@@ -139,11 +139,9 @@ const karmaConfig = (config, argv) => {
   }
 }
 
+/**
+ * @param {any} config
+ */
 module.exports = (config) => {
-  const argv = require('yargs-parser')(process.argv.slice(2), {
-    array: ['files-custom'],
-    boolean: ['progress', 'bail'],
-    string: ['timeout']
-  })
-  config.set(merge(karmaConfig(config, argv), userConfig.karma))
+  config.set(merge(karmaConfig(), userConfig.karma))
 }

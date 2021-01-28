@@ -15,23 +15,17 @@ const path = require('path')
 const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
 const execa = require('execa')
-const pascalcase = require('pascalcase')
-const ghPages = require('gh-pages')
-const { promisify } = require('util')
 
-const publishPages = promisify(ghPages.publish)
-
-const { packageJson: pkg, path: pkgPath } = readPkgUp.sync({
+const {
+  packageJson: pkg,
+  path: pkgPath
+} = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
 })
-const PKG_FILE = 'package.json'
 const DIST_FOLDER = 'dist'
 const SRC_FOLDER = 'src'
+const TEST_FOLDER = 'test'
 
-exports.paths = {
-  dist: DIST_FOLDER,
-  src: SRC_FOLDER
-}
 exports.pkg = pkg
 // TODO: get this from aegir package.json
 exports.browserslist = '>1% or node >=10 and not ie 11 and not dead'
@@ -41,6 +35,18 @@ exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
 exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
 exports.hasTsconfig = exports.hasFile('tsconfig.json')
 
+exports.paths = {
+  dist: this.fromRoot(DIST_FOLDER),
+  src: this.fromRoot(SRC_FOLDER),
+  test: this.fromRoot(TEST_FOLDER),
+  package: pkgPath
+}
+
+/**
+ * Parse json with comments or empty
+ *
+ * @param {string} contents
+ */
 exports.parseJson = (contents) => {
   const data = stripComments(stripBom(contents))
 
@@ -52,64 +58,13 @@ exports.parseJson = (contents) => {
   return JSON.parse(data)
 }
 
+/**
+ * Read JSON file
+ *
+ * @param {string | number | Buffer | import("url").URL} filePath
+ */
 exports.readJson = (filePath) => {
   return exports.parseJson(fs.readFileSync(filePath, { encoding: 'utf-8' }))
-}
-
-exports.publishDocs = () => {
-  return publishPages(
-    'docs',
-    {
-      dotfiles: true,
-      message: 'chore: update documentation'
-    }
-  )
-}
-
-/**
- * Get package version
- *
- * @returns {string} - version
- */
-exports.pkgVersion = async () => {
-  const {
-    version
-  } = await fs.readJson(exports.getPathToPkg())
-  return version
-}
-
-/**
- * Gets the top level path of the project aegir is executed in.
- *
- * @returns {string} - base path
- */
-exports.getBasePath = () => {
-  return process.cwd()
-}
-
-exports.getPathToPkg = () => {
-  return path.join(exports.getBasePath(), PKG_FILE)
-}
-
-exports.getPathToDist = () => {
-  return path.join(exports.getBasePath(), DIST_FOLDER)
-}
-
-/**
- * Converts the given name from something like `peer-id` to `PeerId`.
- *
- * @param {string} name - lib name in kebab
- * @returns {string} - lib name in pascal
- */
-exports.getLibraryName = (name) => {
-  return pascalcase(name)
-}
-
-/**
- * Get the absolute path to `node_modules` for aegir itself
- */
-exports.getPathToNodeModules = () => {
-  return path.resolve(__dirname, '../node_modules')
 }
 
 /**
@@ -123,6 +78,7 @@ exports.getListrConfig = () => {
   }
 }
 
+// @ts-ignore
 exports.hook = (env, key) => (ctx) => {
   if (ctx && ctx.hooks) {
     if (ctx.hooks[env] && ctx.hooks[env][key]) {
@@ -136,14 +92,19 @@ exports.hook = (env, key) => (ctx) => {
   return Promise.resolve()
 }
 
+/**
+ * @param {string} command
+ * @param { string[] | undefined} args
+ * @param {any} options
+ */
 exports.exec = (command, args, options = {}) => {
   const result = execa(command, args, options)
 
   if (!options.quiet) {
-    result.stdout.pipe(process.stdout)
+    result.stdout?.pipe(process.stdout)
   }
 
-  result.stderr.pipe(process.stderr)
+  result.stderr?.pipe(process.stderr)
 
   return result
 }
@@ -180,6 +141,9 @@ exports.getElectron = async () => {
   return electronPath
 }
 
+/**
+ * @param {fs.PathLike} path
+ */
 exports.brotliSize = (path) => {
   return new Promise((resolve, reject) => {
     let size = 0
@@ -198,6 +162,9 @@ exports.brotliSize = (path) => {
   })
 }
 
+/**
+ * @param {fs.PathLike} path
+ */
 exports.gzipSize = (path) => {
   return new Promise((resolve, reject) => {
     let size = 0

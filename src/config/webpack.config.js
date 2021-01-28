@@ -1,11 +1,12 @@
 'use strict'
 
 const path = require('path')
+const pascalcase = require('pascalcase')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const TerserPlugin = require('terser-webpack-plugin')
-const { fromRoot, pkg, paths, getLibraryName } = require('../utils')
+const { fromRoot, pkg, paths } = require('../utils')
 const { userConfig } = require('./user')
 const isProduction = process.env.NODE_ENV === 'production'
 const isTSEnable = process.env.AEGIR_TS === 'true'
@@ -24,10 +25,10 @@ const base = (env, argv) => {
     mode: isProduction ? 'production' : 'development',
     entry: [isTSEnable ? fromRoot('src', 'index.ts') : fromRoot('src', 'index.js')],
     output: {
-      path: fromRoot(paths.dist),
+      path: paths.dist,
       filename: filename,
       sourceMapFilename: filename + '.map',
-      library: getLibraryName(pkg.name),
+      library: pascalcase(pkg.name),
       libraryTarget: 'umd',
       globalObject: 'self', // Use `self` as `window` doesn't not exist within a Service/Web Worker context
       devtoolModuleFilenameTemplate: info => 'file:' + encodeURI(info.absoluteResourcePath)
@@ -38,7 +39,7 @@ const base = (env, argv) => {
           oneOf: [
             {
               test: /\.(js|ts)$/,
-              include: fromRoot(paths.src),
+              include: paths.src,
               use: {
                 loader: require.resolve('babel-loader'),
                 options: {

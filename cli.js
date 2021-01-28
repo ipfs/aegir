@@ -69,7 +69,7 @@ const args = cli.fail((msg, err, yargs) => {
     if (args.debug) {
       console.error('\n', err)
     } else {
-      console.error(chalk.red(err.message))
+      console.error(err.message)
     }
   }
 

@@ -11,7 +11,7 @@ module.exports = (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   const watch = argv.watch ? ['--auto-watch', '--no-single-run'] : []
   const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
-  const color = argv.colors ? ['--color'] : []
+  const colors = argv.colors ? ['--colors'] : []
 
   return hook('browser', 'pre')(argv.userConfig)
     .then((hook = {}) => {
@@ -19,7 +19,7 @@ module.exports = (argv, execaOptions) => {
         [
           'start',
           fromAegir('src/config/karma.conf.js'),
-          ...color,
+          ...colors,
           ...watch,
           ...verbose,
           ...input,

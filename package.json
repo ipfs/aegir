@@ -142,7 +142,7 @@
     "@types/listr": "^0.14.2",
     "@types/polka": "^0.5.2",
     "@types/semver": "^7.3.4",
-    "@types/yargs": "^15.0.12",
+    "@types/yargs": "^16.0.0",
     "electron": "^11.2.0",
     "iso-url": "^1.0.0",
     "sinon": "^9.2.3"

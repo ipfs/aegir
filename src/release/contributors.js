@@ -2,7 +2,7 @@
 
 const git = require('simple-git/promise')(process.cwd())
 const execa = require('execa')
-const { getPathToPkg } = require('../utils')
+const { paths } = require('../utils')
 
 const contributors = async () => {
   await execa('git-authors-cli', ['--print', 'false'])
@@ -15,9 +15,9 @@ const contributors = async () => {
 
   await git.commit(
     'chore: update contributors',
-    getPathToPkg(),
+    paths.package,
     {
-      '--no-verify': true
+      '--no-verify': null
     }
   )
 }

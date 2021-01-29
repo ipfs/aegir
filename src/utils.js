@@ -94,7 +94,7 @@ exports.hook = (env, key) => (ctx) => {
 
 /**
  * @param {string} command
- * @param { string[] | undefined} args
+ * @param {string[] | undefined} args
  * @param {any} options
  */
 exports.exec = (command, args, options = {}) => {

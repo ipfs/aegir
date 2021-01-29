@@ -41,7 +41,7 @@ interface GlobalOptions {
   tsRepo: boolean
 
   /**
-   * Foward options to pass to the backend command populated by yargs parser
+   * Forward options to pass to the backend command populated by yargs parser
    */
   '--'?: string[]
 

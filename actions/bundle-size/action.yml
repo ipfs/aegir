@@ -8,5 +8,5 @@ inputs:
     description: A directory to run the bundle check in
     required: false
 runs:
-  using: 'node14'
+  using: 'node12'
   main: 'dist/index.js'

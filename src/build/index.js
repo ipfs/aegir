@@ -32,7 +32,7 @@ module.exports = async (argv) => {
 
     if (argv.bundlesize) {
       // @ts-ignore
-      if (userConfig.bundlesize?.maxSize) {
+      if (userConfig.bundlesize && userConfig.bundlesize.maxSize) {
         throw new Error('Config property `bundlesize.maxSize` is deprecated, use `build.bundlesizeMax`!')
       }
       const gzip = await gzipSize(outfile)

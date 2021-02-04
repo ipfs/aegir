@@ -101,10 +101,10 @@ exports.exec = (command, args, options = {}) => {
   const result = execa(command, args, options)
 
   if (!options.quiet) {
-    result.stdout?.pipe(process.stdout)
+    result.stdout.pipe(process.stdout)
   }
 
-  result.stderr?.pipe(process.stderr)
+  result.stderr.pipe(process.stderr)
 
   return result
 }

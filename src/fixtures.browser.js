@@ -5,7 +5,7 @@ const { Buffer } = require('buffer')
 // note: filePath needs to be relative to the module root
 module.exports = function loadFixtures (filePath, module) {
   if (module) {
-    filePath = 'node_modules/' + module + '/' + filePath
+    filePath = module + '/' + filePath
   }
   return syncXhr(filePath)
 }
@@ -13,7 +13,7 @@ module.exports = function loadFixtures (filePath, module) {
 // @dignifiedquire: I know this is considered bad practice (syncXhr), but it
 // makes testing life so much nicer!
 function syncXhr (filePath) {
-  const target = '/base/' + filePath
+  const target = filePath
 
   const request = new self.XMLHttpRequest()
   request.open('GET', target, false)

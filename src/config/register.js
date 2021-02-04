@@ -1,7 +1,21 @@
 'use strict'
-const { fromAegir } = require('./../utils')
 
 require('@babel/register')({
   extensions: ['.ts'],
-  presets: [fromAegir('src/config/babelrc.js')]
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        modules: 'commonjs',
+        bugfixes: true,
+        targets: { node: true }
+      }
+    ],
+    [
+      '@babel/preset-typescript',
+      {
+        allowNamespaces: true
+      }
+    ]
+  ]
 })

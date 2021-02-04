@@ -3,7 +3,6 @@
 
 const { lilconfigSync } = require('lilconfig')
 const merge = require('merge-options')
-const utils = require('../utils')
 
 /**
  * @typedef {import("./../types").Options} Options
@@ -71,17 +70,20 @@ const config = (searchFrom) => {
       debug: false,
       node: false,
       tsRepo: false,
-      // old options
-      webpack: {},
-      karma: {},
       hooks: {},
-      entry: utils.fromRoot('src', 'index.js'),
+      // test cmd options
+      test: {
+        browser: {
+          config: {}
+        }
+      },
       // build cmd options
       build: {
         bundle: true,
         bundlesize: false,
         bundlesizeMax: '100kB',
-        types: true
+        types: true,
+        config: {}
       },
       // linter cmd options
       lint: {

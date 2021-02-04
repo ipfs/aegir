@@ -7,37 +7,38 @@ const merge = require('merge-options')
 /** @typedef { import("execa").Options} ExecaOptions */
 
 module.exports = (argv, execaOptions) => {
-  const input = argv._.slice(1)
-  const forwardOptions = argv['--'] ? argv['--'] : []
-  const watch = argv.watch ? ['--auto-watch', '--no-single-run'] : []
-  const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
-  const colors = argv.colors ? ['--colors'] : []
+  const extra = argv['--'] ? argv['--'] : []
+  const forwardOptions = [
+    ...extra,
+    argv.timeout && `--timeout=${argv.timeout}`,
+    argv.grep && `--grep=${argv.grep}`,
+    argv.bail && '--bail'
+  ].filter(Boolean)
+  const watch = argv.watch ? ['--watch'] : []
+  const files = argv.files.length > 0
+    ? [
+        ...argv.files
+      ]
+    : [
+        '**/*.spec.{js,ts}',
+        'test/browser.{js,ts}'
+      ]
 
   return hook('browser', 'pre')(argv.userConfig)
     .then((hook = {}) => {
-      return execa('karma',
+      return execa('pw-test',
         [
-          'start',
-          fromAegir('src/config/karma.conf.js'),
-          ...colors,
+          ...files,
+          '--mode', argv.webworker ? 'worker' : 'main',
           ...watch,
-          ...verbose,
-          ...input,
+          '--config', fromAegir('src/config/pw-test.js'),
           ...forwardOptions
         ],
         merge(
           {
             env: {
+              AEGIR_RUNNER: argv.webworker ? 'worker' : 'main',
               NODE_ENV: process.env.NODE_ENV || 'test',
-              AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser',
-              AEGIR_NODE: argv.node,
-              AEGIR_TS: argv.tsRepo,
-              AEGIR_MOCHA_TIMEOUT: argv.timeout ? `${argv.timeout}` : '5000',
-              AEGIR_MOCHA_GREP: argv.grep,
-              AEGIR_MOCHA_BAIL: argv.bail ? 'true' : 'false',
-              AEGIR_PROGRESS: argv.progress ? 'true' : 'false',
-              AEGIR_FILES: JSON.stringify(argv.files),
-              IS_WEBPACK_BUILD: true,
               ...hook.env
             },
             preferLocal: true,

@@ -65,7 +65,7 @@ module.exports = {
           default: true
         },
         colors: {
-          describe: 'Enable colors on output (only available in node runs)',
+          describe: 'Enable colors on output',
           type: 'boolean',
           default: true
         },

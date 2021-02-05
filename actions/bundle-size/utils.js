@@ -31,7 +31,6 @@ const sizeCheck = async (octokit, context, baseDir) => {
 
   try {
     check = await checkCreate(octokit, context, checkName)
-    console.log('🚀 ~ file: utils.js ~ line 34 ~ sizeCheck ~ check', check)
 
     const out = await execa(aegirExec, ['build', '-b', '--no-types'], {
       cwd: baseDir,

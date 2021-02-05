@@ -8,15 +8,15 @@
     "build": "ncc build index.js"
   },
   "dependencies": {
-    "@actions/artifact": "^0.4.1",
+    "@actions/artifact": "^0.5.0",
     "@actions/core": "^1.2.6",
     "@actions/exec": "^1.0.3",
     "@actions/github": "^4.0.0",
-    "execa": "^4.1.0",
-    "globby": "^11.0.0",
+    "execa": "^5.0.0",
+    "globby": "^11.0.2",
     "read-pkg-up": "^7.0.1"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.25.1"
+    "@vercel/ncc": "^0.27.0"
   }
 }

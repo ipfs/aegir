@@ -144,6 +144,17 @@ const types = async (userTSConfig, opts) => {
     if (fs.existsSync(typesPath)) {
       fs.copySync(typesPath, fromRoot('dist', path.basename(typesPath)))
     }
+
+    await execa('copyup', [
+      'src/**/*.d.ts',
+      'dist/src',
+      ...opts.forwardOptions
+    ],
+    {
+      localDir: path.join(__dirname, '../..'),
+      preferLocal: true,
+      stdio: 'inherit'
+    })
   } finally {
     fs.removeSync(configPath)
     fs.removeSync(fromRoot('dist', 'tsconfig-types.aegir.tsbuildinfo'))

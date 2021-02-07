@@ -5,17 +5,14 @@
  *
  */
 interface Options extends GlobalOptions {
-
   /**
    * Options for the `build` command
    */
   build: BuildOptions
-
   /**
    * Options for the `ts` command
    */
   ts: TSOptions
-
   /**
    * Options for the `docs` command
    */
@@ -79,6 +76,14 @@ interface TSOptions {
    * Values are merged into the local TS config include property.
    */
   include: string[]
+  /**
+   * Copy .d.ts files from
+   */
+  copyFrom: string
+  /**
+   * Copy .d.ts files to
+   */
+  copyTo: string
 }
 
 interface DocsOptions {

@@ -107,7 +107,9 @@ const config = (searchFrom) => {
       },
       ts: {
         preset: undefined,
-        include: []
+        include: [],
+        copyFrom: 'src/**/*.d.ts',
+        copyTo: 'dist'
       }
     },
     userConfig,

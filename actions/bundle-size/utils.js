@@ -10,7 +10,10 @@ const { pkg } = require('../../src/utils')
 
 const aegirExec = pkg.name === 'aegir' ? './cli.js' : 'aegir'
 
-/** @typedef {import("@actions/github").context } Context */
+/**
+ * @typedef {import("@actions/github").context } Context
+ * @typedef {ReturnType<import("@actions/github")["getOctokit"]>} Github
+ */
 
 /**
  * Bundle Size Check

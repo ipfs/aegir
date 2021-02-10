@@ -13,7 +13,7 @@
 - [Rules for optimal type declarations and documentation](#rules-for-optimal-type-declarations-and-documentation)
   - [1. Commonjs default exports](#1-commonjs-default-exports)
   - [2. Commons js named exports](#2-commons-js-named-exports)
-  - [3. Use a `types.ts` file](#3-use-a-typests-file)
+  - [3. Use a `types.d.ts` file](#3-use-a-typesdts-file)
   - [4. JSDoc comments bad parsing](#4-jsdoc-comments-bad-parsing)
   - [5. Always put your `@typedef` at the top of file](#5-always-put-your-typedef-at-the-top-of-file)
 - [Must read references](#must-read-references)
@@ -172,11 +172,11 @@ exports.hash = hash() {}
 exports.IPFS = IPFS
 ```
 
-### 3. Use a `types.ts` file
-When writing types JSDoc can sometimes be cumbersome, impossible, it can output weird type declarations or even broken documentation. Most of these problems can be solved by defining some complex types in typescript in a `types.ts` file. 
+### 3. Use a `types.d.ts` file
+When writing types JSDoc can sometimes be cumbersome, impossible, it can output weird type declarations or even broken documentation. Most of these problems can be solved by defining some complex types in typescript in a `types.d.ts` file. 
 
 ```ts
-// types.ts
+// types.d.ts
 export type IntersectionType = Type1 & Type2
 ```
 

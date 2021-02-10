@@ -19,6 +19,8 @@ const hasConfig = hasFile('tsconfig.json')
  * @property {string[]} forwardOptions - Extra options to forward to the backend
  * @property {string[]} extraInclude - Extra include files for the TS Config
  * @property {boolean} tsRepo - Typescript repo support.
+ * @property {string} copyFrom - copy .d.ts from
+ * @property {string} copyTo - copy .d.ts to
  */
 
 /**
@@ -32,7 +34,9 @@ module.exports = async (argv) => {
     forwardOptions: argv['--'] ? argv['--'] : [],
     extraInclude: (argv.include && argv.include.length > 0) ? await globby(argv.include) : [],
     preset: argv.preset,
-    tsRepo: argv.tsRepo
+    tsRepo: argv.tsRepo,
+    copyFrom: argv.copyFrom,
+    copyTo: argv.copyTo
   }
 
   if (argv.preset === 'config') {
@@ -144,6 +148,16 @@ const types = async (userTSConfig, opts) => {
     if (fs.existsSync(typesPath)) {
       fs.copySync(typesPath, fromRoot('dist', path.basename(typesPath)))
     }
+
+    await execa('copyfiles', [
+      opts.copyFrom,
+      opts.copyTo
+    ],
+    {
+      localDir: path.join(__dirname, '../..'),
+      preferLocal: true,
+      stdio: 'inherit'
+    })
   } finally {
     fs.removeSync(configPath)
     fs.removeSync(fromRoot('dist', 'tsconfig-types.aegir.tsbuildinfo'))

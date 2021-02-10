@@ -31,6 +31,16 @@ module.exports = {
           type: 'array',
           describe: 'Values are merged into the local TS config include property.',
           default: userConfig.ts.include
+        },
+        copyFrom: {
+          type: 'string',
+          describe: 'Copy .d.ts files from',
+          default: userConfig.ts.copyFrom
+        },
+        copyTo: {
+          type: 'string',
+          describe: 'Copy .d.ts files to',
+          default: userConfig.ts.copyTo
         }
       })
   },

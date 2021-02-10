@@ -76,7 +76,9 @@ module.exports = async (argv) => {
     await tsCmd({
       ...argv,
       preset: 'types',
-      include: userConfig.ts.include
+      include: userConfig.ts.include,
+      copyTo: userConfig.ts.copyTo,
+      copyFrom: userConfig.ts.copyFrom
     })
   }
 }

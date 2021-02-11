@@ -33,7 +33,7 @@ module.exports = async (argv, execaOptions) => {
       ]
 
   // pre hook
-  const pre = await hook('browser', 'pre')(argv.config.hooks)
+  const pre = await hook('browser', 'pre')(argv.config)
   const preEnv = pre && pre.env ? pre.env : {}
 
   // run pw-test
@@ -62,5 +62,5 @@ module.exports = async (argv, execaOptions) => {
   )
 
   // post hook
-  await hook('browser', 'pre')(argv.config.hooks)
+  await hook('browser', 'pre')(argv.config)
 }

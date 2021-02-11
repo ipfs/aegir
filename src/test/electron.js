@@ -24,7 +24,7 @@ module.exports = async (argv) => {
   const ts = argv.tsRepo ? ['--require', require.resolve('esbuild-register')] : []
 
   // pre hook
-  const pre = await hook('browser', 'pre')(argv.config.hooks)
+  const pre = await hook('browser', 'pre')(argv.config)
   const preEnv = pre && pre.env ? pre.env : {}
   const electronPath = await getElectron()
 
@@ -52,5 +52,5 @@ module.exports = async (argv) => {
     }
   })
   // post hook
-  await hook('browser', 'pre')(argv.config.hooks)
+  await hook('browser', 'pre')(argv.config)
 }

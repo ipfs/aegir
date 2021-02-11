@@ -21,6 +21,11 @@ interface Options extends GlobalOptions {
    * Options for the `lint` command
    */
   lint: LintOptions
+  /**
+   * Options for the `test` command
+   */
+  test: TestOptions
+
 }
 
 interface GlobalOptions {
@@ -28,10 +33,6 @@ interface GlobalOptions {
    * Show debug output.
    */
   debug: boolean
-  /**
-   * Flag to control if bundler should inject node globals or built-ins.
-   */
-  node: boolean
   /**
    * Enable support for Typescript repos.
    */
@@ -41,11 +42,18 @@ interface GlobalOptions {
    * Forward options to pass to the backend command populated by yargs parser
    */
   '--'?: string[]
-
   /**
    * CLI Input
    */
   '_'?: string
+  /**
+   * Hooks
+   */
+  hooks: any
+  /**
+   * Full config from configuration file
+   */
+  config: Options
 }
 
 interface BuildOptions {
@@ -112,11 +120,60 @@ interface LintOptions {
   silent: boolean
 }
 
+interface TestOptions {
+  /**
+   * In which target environment to execute the tests
+   */
+  target: Array<'node' | 'browser' | 'webworker' | 'electron-main' | 'electron-renderer'>
+  /**
+   * Watch files for changes and rerun tests
+   */
+  watch: boolean
+  /**
+   * Custom globs for files to test
+   */
+  files: string[]
+  /**
+   * The default time a single test has to run
+   */
+  timeout: number
+  /**
+   * Limit tests to those whose names match given pattern
+   */
+  grep: string
+  /**
+   * Bail once a test fails
+   */
+  bail: boolean
+  /**
+   * Use progress reporters
+   */
+  progress: boolean
+  /**
+   * Enable coverage output
+   */
+  cov: boolean
+  /**
+   * Runner enviroment
+   */
+  runner: 'node' | 'browser' | 'webworker' | 'electron-main' | 'electron-renderer'
+  /**
+   * Browser options
+   */
+  browser: {
+    /**
+     * playwright-test config
+     */
+    config: any
+  }
+}
+
 export type {
   Options,
   GlobalOptions,
   BuildOptions,
   TSOptions,
   DocsOptions,
-  LintOptions
+  LintOptions,
+  TestOptions
 }

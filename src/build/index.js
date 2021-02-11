@@ -67,29 +67,8 @@ module.exports = async (argv) => {
  * @param {GlobalOptions & BuildOptions} argv
  */
 const build = async (argv) => {
-  const outfile = path.join(paths.dist, 'index.js')
-  // const nodeBuiltIns = {
-  //   util: [],
-  //   sys: [],
-  //   events: [],
-  //   stream: [],
-  //   path: [],
-  //   querystring: [],
-  //   punycode: [],
-  //   url: [],
-  //   string_decoder: [],
-  //   http: [],
-  //   https: [],
-  //   os: [],
-  //   assert: [],
-  //   constants: [],
-  //   timers: [],
-  //   vm: [],
-  //   zlib: [],
-  //   tty: [],
-  //   domain: []
+  const outfile = path.join(paths.dist, 'index.min.js')
 
-  // }
   await esbuild.build(merge(
     {
       entryPoints: [fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')],
@@ -101,27 +80,12 @@ const build = async (argv) => {
       globalName: pascalcase(pkg.name),
       metafile: argv.bundlesize ? path.join(paths.dist, 'stats.json') : undefined,
       outfile,
-      // plugins: [
-      //   {
-      //     name: 'node built ins',
-      //     setup (build) {
-      //       const keys = Object.keys(nodeBuiltIns)
-      //       for (const k of keys) {
-      //         build.onResolve({ filter: new RegExp(`^${k}$`) }, (args) => {
-      //           nodeBuiltIns[k].push(args.importer)
-      //           return null
-      //         })
-      //       }
-      //     }
-      //   }
-      // ],
       define: {
         'process.env.NODE_ENV': '"production"'
       }
     },
     userConfig.build.config
   ))
-  // console.log('🚀 ~ file: index.js ~ line 75 ~ build ~ nodeBuiltIns', nodeBuiltIns)
 
   return outfile
 }

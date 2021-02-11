@@ -1,6 +1,9 @@
 'use strict'
 const { userConfig } = require('../src/config/user')
-
+/**
+ * @typedef {import("yargs").Argv} Argv
+ * @typedef {import("yargs").Arguments} Arguments
+ */
 const EPILOG = `
 Typescript config file is required to generated docs. Try \`aegir ts --preset config > tsconfig.json\`
 `
@@ -8,6 +11,9 @@ Typescript config file is required to generated docs. Try \`aegir ts --preset co
 module.exports = {
   command: 'docs',
   desc: 'Generate documentation from TS type declarations.',
+  /**
+   * @param {Argv} yargs
+   */
   builder: yargs => {
     yargs
       .epilog(EPILOG)

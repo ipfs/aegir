@@ -8,7 +8,7 @@ process.on('unhandledRejection', (err) => {
 })
 
 const updateNotifier = require('update-notifier')
-const chalk = require('chalk')
+const kleur = require('kleur')
 const pkg = require('./package.json')
 
 updateNotifier({
@@ -40,18 +40,12 @@ cli
     alias: 'd',
     default: userConfig.debug
   })
-  // TODO remove after webpack 5 upgrade
-  .options('node', {
-    type: 'boolean',
-    describe: 'Flag to control if bundler should inject node globals or built-ins.',
-    default: userConfig.node
-  })
   .options('ts-repo', {
     type: 'boolean',
     describe: 'Enable support for Typescript repos.',
     default: userConfig.tsRepo
   })
-  .group(['help', 'version', 'debug', 'node', 'ts-repo'], 'Global Options:')
+  .group(['help', 'version', 'debug', 'ts-repo'], 'Global Options:')
   .demandCommand(1, 'You need at least one command.')
   .wrap(cli.terminalWidth())
   .parserConfiguration({ 'populate--': true })
@@ -62,7 +56,7 @@ cli
 const args = cli.fail((msg, err, yargs) => {
   if (msg) {
     yargs.showHelp()
-    console.error(chalk.red(msg))
+    console.error(kleur.red(msg))
   }
 
   if (err) {

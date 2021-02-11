@@ -1,7 +1,7 @@
 'use strict'
 
 const Listr = require('listr')
-const chalk = require('chalk')
+const kleur = require('kleur')
 const execa = require('execa')
 const fs = require('fs-extra')
 const path = require('path')
@@ -40,7 +40,7 @@ const docs = async (ctx, task) => {
   }
   if (!hasTsconfig) {
     // eslint-disable-next-line no-console
-    console.error(chalk.yellow('Documentation requires typescript config.\nTry running `aegir ts --preset config > tsconfig.json`'))
+    console.error(kleur.yellow('Documentation requires typescript config.\nTry running `aegir ts --preset config > tsconfig.json`'))
     return
   }
   // run typedoc

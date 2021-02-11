@@ -1,73 +1,68 @@
 'use strict'
+const { userConfig } = require('../src/config/user')
+/**
+ * @typedef {import("yargs").Argv} Argv
+ * @typedef {import("yargs").Arguments} Arguments
+ */
 
 const EPILOG = `
 By default browser tests run in Chrome headless.
-Browser testing with Karma supports options forwarding with '--' for more info check https://karma-runner.github.io/3.0/config/configuration-file.html
+Browser testing with playwright-test supports options forwarding with '--' for more info check https://github.com/hugomrdias/playwright-test#options
 `
 
 module.exports = {
   command: 'test',
   desc: 'Test your code in different environments',
+  /**
+   * @param {Argv} yargs
+   */
   builder: (yargs) => {
     yargs
       .epilog(EPILOG)
-      .example('aegir test -t webworker', 'Run tests in the browser with Karma inside a webworker.')
-      .example('aegir test -t browser -- --browsers Firefox,Chrome,Safari', 'Tell Karma to run tests in several browsers at the same time.')
-      .example('aegir test -w -t browser -- --browsers Chrome', 'Debug tests with watch mode and tell Karma to open Chrome in a non-headless mode.')
+      .example(
+        'aegir test -t webworker',
+        'Run tests in the browser inside a webworker.'
+      )
+      .example(
+        'aegir test -t browser -- --browser firefox',
+        'Tell `playwright-test` to run tests in firefox.'
+      )
+      .example(
+        'aegir test -w -t browser -- --browser webkit --debug',
+        'Debug tests with watch mode and tell `playwright-test` to open webkit in a non-headless mode.'
+      )
       .example(
         'aegir test -t electron-renderer -- --interactive',
         'Debug electron renderer test with a persistent window.'
       )
+      .example(
+        'aegir test -t node --cov && npx nyc report',
+        'Run test with coverage enabled and report to the terminal.'
+      )
       .options({
-        100: {
-          describe: 'Check coverage and validate 100% was covered.',
-          type: 'boolean',
-          default: false
-        },
         target: {
           alias: 't',
           describe: 'In which target environment to execute the tests',
           type: 'array',
           choices: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer'],
-          default: ['node', 'browser', 'webworker']
-        },
-        verbose: {
-          describe: 'Print verbose test output',
-          type: 'boolean',
-          default: false
+          default: userConfig.test.target
         },
         watch: {
           alias: 'w',
           describe: 'Watch files for changes and rerun tests',
           type: 'boolean',
-          default: false
+          default: userConfig.test.watch
         },
         files: {
           alias: 'f',
           describe: 'Custom globs for files to test',
           type: 'array',
-          default: []
-        },
-        parallel: {
-          alias: 'p',
-          describe: 'Run tests in parallel (only available in node)',
-          type: 'boolean',
-          default: true
+          default: userConfig.test.files
         },
         timeout: {
           describe: 'The default time a single test has to run',
           type: 'number',
-          default: 5000
-        },
-        exit: {
-          describe: 'Force shutdown of the event loop after test run: mocha will call process.exit',
-          type: 'boolean',
-          default: true
-        },
-        colors: {
-          describe: 'Enable colors on output',
-          type: 'boolean',
-          default: true
+          default: userConfig.test.timeout
         },
         grep: {
           alias: 'g',
@@ -78,12 +73,17 @@ module.exports = {
           alias: 'b',
           describe: 'Mocha should bail once a test fails',
           type: 'boolean',
-          default: false
+          default: userConfig.test.bail
         },
         progress: {
           describe: 'Use progress reporters on mocha and karma',
           type: 'boolean',
-          default: false
+          default: userConfig.test.progress
+        },
+        cov: {
+          describe: 'Enable coverage output. Output is already in Istanbul JSON format and can be uploaded directly to codecov.',
+          type: 'boolean',
+          default: userConfig.test.cov
         }
       })
   },

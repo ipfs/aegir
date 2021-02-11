@@ -2,61 +2,52 @@
 
 const execa = require('execa')
 const path = require('path')
-const { hook, fromAegir } = require('../utils')
+const { hook } = require('../utils')
 const merge = require('merge-options')
 
-const DEFAULT_TIMEOUT = global.DEFAULT_TIMEOUT || 5 * 1000
+/**
+ * @typedef {import("execa").Options} ExecaOptions
+ * @typedef {import('./../types').TestOptions} TestOptions
+ * @typedef {import('./../types').GlobalOptions} GlobalOptions
+ */
 
-/** @typedef { import("execa").Options} ExecaOptions */
+/**
+ *
+ * @param {TestOptions & GlobalOptions} argv
+ * @param {ExecaOptions} execaOptions
+ */
+async function testNode (argv, execaOptions) {
+  const exec = argv.cov ? 'c8' : 'mocha'
+  const progress = argv.progress ? ['--reporter=progress'] : []
+  const covArgs = argv.cov
+    ? [
+        '--reporter', 'json',
+        '--report-dir', '.nyc_output',
+        '--clean',
+        'mocha'
+      ]
+    : []
+  const files = argv.files.length > 0
+    ? argv.files
+    : [
+        'test/node.{js,ts}',
+        'test/**/*.spec.{js,ts}'
+      ]
 
-function testNode (argv, execaOptions) {
-  let exec = 'mocha'
-  const env = {
-    NODE_ENV: 'test',
-    AEGIR_RUNNER: 'node',
-    AEGIR_TS: argv.tsRepo
-  }
-  const timeout = argv.timeout || DEFAULT_TIMEOUT
-
-  let args = [
-    argv.progress && '--reporter=progress',
+  const args = [
+    ...covArgs,
+    ...files,
+    ...progress,
     '--ui', 'bdd',
-    '--timeout', timeout
-  ].filter(Boolean)
-
-  let files = [
-    'test/node.{js,ts}',
-    'test/**/*.spec.{js,ts}'
+    `--timeout=${argv.timeout}`
   ]
-
-  if (argv.colors) {
-    args.push('--colors')
-  } else {
-    args.push('--no-colors')
-  }
 
   if (argv.grep) {
     args.push(`--grep=${argv.grep}`)
   }
 
-  if (argv.invert) {
-    args.push('--invert')
-  }
-
-  if (argv.files && argv.files.length > 0) {
-    files = argv.files
-  }
-
-  if (argv.verbose) {
-    args.push('--verbose')
-  }
-
   if (argv.watch) {
     args.push('--watch')
-  }
-
-  if (argv.exit) {
-    args.push('--exit')
   }
 
   if (argv.bail) {
@@ -64,43 +55,31 @@ function testNode (argv, execaOptions) {
   }
 
   if (argv.tsRepo) {
-    args.push(...['--require', fromAegir('src/config/register.js')])
+    args.push(...['--require', require.resolve('esbuild-register')])
   }
 
-  const postHook = hook('node', 'post')
-  const preHook = hook('node', 'pre')
+  // pre hook
+  const pre = await hook('node', 'pre')(argv.config.hooks)
+  const preEnv = pre && pre.env ? pre.env : {}
 
-  if (argv['100']) {
-    args = [
-      '--check-coverage',
-      '--branches=100',
-      '--functions=100',
-      '--lines=100',
-      '--statements=100',
-      exec
-    ].concat(args)
-    exec = 'nyc'
-  }
-
-  return preHook(argv)
-    .then((hook = {}) => {
-      return execa(exec,
-        args.concat(files.map((p) => path.normalize(p))),
-        merge(
-          {
-            env: {
-              ...env,
-              ...hook.env
-            },
-            preferLocal: true,
-            localDir: path.join(__dirname, '../..'),
-            stdio: 'inherit'
-          },
-          execaOptions
-        )
-      )
-    })
-    .then(() => postHook(argv))
+  // run mocha
+  await execa(exec, args,
+    merge(
+      {
+        env: {
+          AEGIR_RUNNER: 'node',
+          NODE_ENV: process.env.NODE_ENV || 'test',
+          ...preEnv
+        },
+        preferLocal: true,
+        localDir: path.join(__dirname, '../..'),
+        stdio: 'inherit'
+      },
+      execaOptions
+    )
+  )
+  // post hook
+  await hook('node', 'post')(argv.config.hooks)
 }
 
 module.exports = testNode

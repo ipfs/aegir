@@ -73,6 +73,15 @@ const config = (searchFrom) => {
       hooks: {},
       // test cmd options
       test: {
+        runner: 'node',
+        target: ['node', 'browser', 'webworker'],
+        watch: false,
+        files: [],
+        timeout: 5000,
+        grep: '',
+        bail: false,
+        progress: false,
+        cov: false,
         browser: {
           config: {}
         }

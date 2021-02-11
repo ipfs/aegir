@@ -15,7 +15,8 @@ const path = require('path')
 const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
 const execa = require('execa')
-
+const envPaths = require('env-paths')('aegir', { suffix: '' })
+const lockfile = require('proper-lockfile')
 const {
   packageJson: pkg,
   path: pkgPath
@@ -27,8 +28,6 @@ const SRC_FOLDER = 'src'
 const TEST_FOLDER = 'test'
 
 exports.pkg = pkg
-// TODO: get this from aegir package.json
-exports.browserslist = '>1% or node >=10 and not ie 11 and not dead'
 exports.repoDirectory = path.dirname(pkgPath)
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
@@ -129,6 +128,23 @@ function getPlatformPath () {
 
 exports.getElectron = async () => {
   const pkg = require('./../package.json')
+
+  const lockfilePath = path.join(envPaths.cache, '__electron-lock')
+  fs.mkdirpSync(envPaths.cache)
+  const releaseLock = await lockfile.lock(envPaths.cache, {
+    retries: {
+      retries: 10,
+      // Retry 20 times during 10 minutes with
+      // exponential back-off.
+      // See documentation at: https://www.npmjs.com/package/retry#retrytimeoutsoptions
+      factor: 1.27579
+    },
+    onCompromised: (err) => {
+      throw new Error(`${err.message} Path: ${lockfilePath}`)
+    },
+    lockfilePath
+  })
+
   const version = pkg.devDependencies.electron.slice(1)
   const spinner = ora(`Downloading electron: ${version}`).start()
   const zipPath = await download(version)
@@ -137,7 +153,8 @@ exports.getElectron = async () => {
     spinner.text = 'Extracting electron to system cache'
     await extract(zipPath, { dir: path.dirname(zipPath) })
   }
-  spinner.succeed('Electron ready to use')
+  spinner.stop()
+  await releaseLock()
   return electronPath
 }
 

@@ -62,5 +62,5 @@ module.exports = async (argv, execaOptions) => {
   )
 
   // post hook
-  await hook('browser', 'pre')(argv.config)
+  await hook('browser', 'post')(argv.config)
 }

@@ -68,7 +68,7 @@ module.exports = async (argv) => {
  */
 const build = async (argv) => {
   const outfile = path.join(paths.dist, 'index.min.js')
-
+  const globalName = pascalcase(pkg.name)
   await esbuild.build(merge(
     {
       entryPoints: [fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')],
@@ -77,10 +77,12 @@ const build = async (argv) => {
       mainFields: ['browser', 'module', 'main'],
       sourcemap: argv.bundlesize,
       minify: true,
-      globalName: pascalcase(pkg.name),
+      globalName,
+      footer: `globalThis.${globalName} = ${globalName}`,
       metafile: argv.bundlesize ? path.join(paths.dist, 'stats.json') : undefined,
       outfile,
       define: {
+        global: 'globalThis',
         'process.env.NODE_ENV': '"production"'
       }
     },

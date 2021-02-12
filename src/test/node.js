@@ -58,6 +58,10 @@ async function testNode (argv, execaOptions) {
     args.push(...['--require', require.resolve('esbuild-register')])
   }
 
+  if (argv['--']) {
+    args.push(...argv['--'])
+  }
+
   // pre hook
   const pre = await hook('node', 'pre')(argv.config)
   const preEnv = pre && pre.env ? pre.env : {}

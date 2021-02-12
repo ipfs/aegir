@@ -2,6 +2,7 @@
 
 const execa = require('execa')
 const path = require('path')
+const tempy = require('tempy')
 const { hook } = require('../utils')
 const merge = require('merge-options')
 
@@ -23,6 +24,7 @@ async function testNode (argv, execaOptions) {
     ? [
         '--reporter', 'json',
         '--report-dir', '.nyc_output',
+        '--temp-directory', tempy.directory(),
         '--clean',
         'mocha'
       ]

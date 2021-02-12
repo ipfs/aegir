@@ -33256,7 +33256,10 @@ const { pkg } = __nccwpck_require__(1590)
 
 const aegirExec = pkg.name === 'aegir' ? './cli.js' : 'aegir'
 
-/** @typedef {import("@actions/github").context } Context */
+/**
+ * @typedef {import("@actions/github").context } Context
+ * @typedef {ReturnType<import("@actions/github")["getOctokit"]>} Github
+ */
 
 /**
  * Bundle Size Check
@@ -35806,10 +35809,10 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const debug_1 = __nccwpck_require__(30787);
 const env_paths_1 = __nccwpck_require__(47727);
-const filenamify = __nccwpck_require__(25686);
 const fs = __nccwpck_require__(93070);
 const path = __nccwpck_require__(85622);
 const url = __nccwpck_require__(78835);
+const crypto = __nccwpck_require__(76417);
 const d = debug_1.default('@electron/get:cache');
 const defaultCacheRoot = env_paths_1.default('electron', {
     suffix: '',
@@ -35818,11 +35821,18 @@ class Cache {
     constructor(cacheRoot = defaultCacheRoot) {
         this.cacheRoot = cacheRoot;
     }
+    static getCacheDirectory(downloadUrl) {
+        const parsedDownloadUrl = url.parse(downloadUrl);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { search, hash, pathname } = parsedDownloadUrl, rest = __rest(parsedDownloadUrl, ["search", "hash", "pathname"]);
+        const strippedUrl = url.format(Object.assign(Object.assign({}, rest), { pathname: path.dirname(pathname || 'electron') }));
+        return crypto
+            .createHash('sha256')
+            .update(strippedUrl)
+            .digest('hex');
+    }
     getCachePath(downloadUrl, fileName) {
-        const _a = url.parse(downloadUrl), { search, hash } = _a, rest = __rest(_a, ["search", "hash"]);
-        const strippedUrl = url.format(rest);
-        const sanitizedUrl = filenamify(strippedUrl, { maxLength: 255, replacement: '' });
-        return path.resolve(this.cacheRoot, sanitizedUrl, fileName);
+        return path.resolve(this.cacheRoot, Cache.getCacheDirectory(downloadUrl), fileName);
     }
     async getPathForFileInCache(url, fileName) {
         const cachePath = this.getCachePath(url, fileName);
@@ -35890,6 +35900,7 @@ class GotDownloader {
                         total: 100,
                     });
                     // https://github.com/visionmedia/node-progress/issues/159
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     bar.start = start;
                 }
             }, PROGRESS_BAR_DELAY_IN_SECONDS * 1000);
@@ -36035,16 +36046,6 @@ if (process.env.ELECTRON_GET_USE_PROXY) {
     proxy_1.initializeProxy();
 }
 /**
- * Downloads a specific version of Electron and returns an absolute path to a
- * ZIP file.
- *
- * @param version - The version of Electron you want to download
- */
-function download(version, options) {
-    return downloadArtifact(Object.assign(Object.assign({}, options), { version, platform: process.platform, arch: process.arch, artifactName: 'electron' }));
-}
-exports.download = download;
-/**
  * Downloads an artifact from an Electron release and returns an absolute path
  * to the downloaded file.
  *
@@ -36126,6 +36127,16 @@ async function downloadArtifact(_artifactDetails) {
     });
 }
 exports.downloadArtifact = downloadArtifact;
+/**
+ * Downloads a specific version of Electron and returns an absolute path to a
+ * ZIP file.
+ *
+ * @param version - The version of Electron you want to download
+ */
+function download(version, options) {
+    return downloadArtifact(Object.assign(Object.assign({}, options), { version, platform: process.platform, arch: process.arch, artifactName: 'electron' }));
+}
+exports.download = download;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -36212,18 +36223,11 @@ function uname() {
 exports.uname = uname;
 /**
  * Generates an architecture name that would be used in an Electron or Node.js
- * download file name, from the `process` module information.
- */
-function getHostArch() {
-    return getNodeArch(process.arch);
-}
-exports.getHostArch = getHostArch;
-/**
- * Generates an architecture name that would be used in an Electron or Node.js
  * download file name.
  */
 function getNodeArch(arch) {
     if (arch === 'arm') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         switch (process.config.variables.arm_version) {
             case '6':
                 return uname();
@@ -36235,6 +36239,14 @@ function getNodeArch(arch) {
     return arch;
 }
 exports.getNodeArch = getNodeArch;
+/**
+ * Generates an architecture name that would be used in an Electron or Node.js
+ * download file name, from the `process` module information.
+ */
+function getHostArch() {
+    return getNodeArch(process.arch);
+}
+exports.getHostArch = getHostArch;
 function ensureIsTruthyString(obj, key) {
     if (!obj[key] || typeof obj[key] !== 'string') {
         throw new Error(`Expected property "${key}" to be provided as a string but it was not`);
@@ -41095,7 +41107,7 @@ BufferList.prototype._match = function (offset, search) {
           return this.slice(offset, offset + byteLength)[m](0, byteLength)
         }
       } else {
-        BufferList.prototype[m] = function (offset) {
+        BufferList.prototype[m] = function (offset = 0) {
           return this.slice(offset, offset + methods[m])[m](0)
         }
       }
@@ -47171,99 +47183,6 @@ function createFromFd(fd, options) {
 
 /***/ }),
 
-/***/ 66521:
-/***/ ((module) => {
-
-"use strict";
-
-/* eslint-disable no-control-regex */
-// TODO: remove parens when Node.js 6 is targeted. Node.js 4 barfs at it.
-module.exports = () => (/[<>:"\/\\|?*\x00-\x1F]/g);
-module.exports.windowsNames = () => (/^(con|prn|aux|nul|com[0-9]|lpt[0-9])$/i);
-
-
-/***/ }),
-
-/***/ 47915:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const path = __nccwpck_require__(85622);
-const filenamify = __nccwpck_require__(91631);
-
-const filenamifyPath = (filePath, options) => {
-	filePath = path.resolve(filePath);
-	return path.join(path.dirname(filePath), filenamify(path.basename(filePath), options));
-};
-
-module.exports = filenamifyPath;
-
-
-/***/ }),
-
-/***/ 91631:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const trimRepeated = __nccwpck_require__(33533);
-const filenameReservedRegex = __nccwpck_require__(66521);
-const stripOuter = __nccwpck_require__(77901);
-
-// Doesn't make sense to have longer filenames
-const MAX_FILENAME_LENGTH = 100;
-
-const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g; // eslint-disable-line no-control-regex
-const reRelativePath = /^\.+/;
-
-const filenamify = (string, options = {}) => {
-	if (typeof string !== 'string') {
-		throw new TypeError('Expected a string');
-	}
-
-	const replacement = options.replacement === undefined ? '!' : options.replacement;
-
-	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacement)) {
-		throw new Error('Replacement string cannot contain reserved filename characters');
-	}
-
-	string = string.replace(filenameReservedRegex(), replacement);
-	string = string.replace(reControlChars, replacement);
-	string = string.replace(reRelativePath, replacement);
-
-	if (replacement.length > 0) {
-		string = trimRepeated(string, replacement);
-		string = string.length > 1 ? stripOuter(string, replacement) : string;
-	}
-
-	string = filenameReservedRegex.windowsNames().test(string) ? string + replacement : string;
-	string = string.slice(0, typeof options.maxLength === 'number' ? options.maxLength : MAX_FILENAME_LENGTH);
-
-	return string;
-};
-
-module.exports = filenamify;
-
-
-/***/ }),
-
-/***/ 25686:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const filenamify = __nccwpck_require__(91631);
-const filenamifyPath = __nccwpck_require__(47915);
-
-const filenamifyCombined = filenamify;
-filenamifyCombined.path = filenamifyPath;
-
-module.exports = filenamify;
-
-
-/***/ }),
-
 /***/ 2885:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -52800,12 +52719,16 @@ module.exports = url => {
 
 module.exports = clone
 
+var getPrototypeOf = Object.getPrototypeOf || function (obj) {
+  return obj.__proto__
+}
+
 function clone (obj) {
   if (obj === null || typeof obj !== 'object')
     return obj
 
   if (obj instanceof Object)
-    var copy = { __proto__: obj.__proto__ }
+    var copy = { __proto__: getPrototypeOf(obj) }
   else
     var copy = Object.create(null)
 
@@ -52992,6 +52915,25 @@ function patch (fs) {
         }
       })
     }
+  }
+
+  var fs$copyFile = fs.copyFile
+  if (fs$copyFile)
+    fs.copyFile = copyFile
+  function copyFile (src, dest, flags, cb) {
+    if (typeof flags === 'function') {
+      cb = flags
+      flags = 0
+    }
+    return fs$copyFile(src, dest, flags, function (err) {
+      if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
+        enqueue([fs$copyFile, [src, dest, flags, cb]])
+      else {
+        if (typeof cb === 'function')
+          cb.apply(this, arguments)
+        retry()
+      }
+    })
   }
 
   var fs$readdir = fs.readdir
@@ -53324,10 +53266,14 @@ try {
   process.cwd()
 } catch (er) {}
 
-var chdir = process.chdir
-process.chdir = function(d) {
-  cwd = null
-  chdir.call(process, d)
+// This check is needed until node.js 12 is required
+if (typeof process.chdir === 'function') {
+  var chdir = process.chdir
+  process.chdir = function (d) {
+    cwd = null
+    chdir.call(process, d)
+  }
+  if (Object.setPrototypeOf) Object.setPrototypeOf(process.chdir, chdir)
 }
 
 module.exports = patch
@@ -53442,7 +53388,7 @@ function patch (fs) {
     }
 
     // This ensures `util.promisify` works as it does for native `fs.read`.
-    read.__proto__ = fs$read
+    if (Object.setPrototypeOf) Object.setPrototypeOf(read, fs$read)
     return read
   })(fs.read)
 
@@ -69253,6 +69199,560 @@ ProgressBar.prototype.terminate = function () {
 
 /***/ }),
 
+/***/ 92123:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const lockfile = __nccwpck_require__(40156);
+const { toPromise, toSync, toSyncOptions } = __nccwpck_require__(77950);
+
+async function lock(file, options) {
+    const release = await toPromise(lockfile.lock)(file, options);
+
+    return toPromise(release);
+}
+
+function lockSync(file, options) {
+    const release = toSync(lockfile.lock)(file, toSyncOptions(options));
+
+    return toSync(release);
+}
+
+function unlock(file, options) {
+    return toPromise(lockfile.unlock)(file, options);
+}
+
+function unlockSync(file, options) {
+    return toSync(lockfile.unlock)(file, toSyncOptions(options));
+}
+
+function check(file, options) {
+    return toPromise(lockfile.check)(file, options);
+}
+
+function checkSync(file, options) {
+    return toSync(lockfile.check)(file, toSyncOptions(options));
+}
+
+module.exports = lock;
+module.exports.lock = lock;
+module.exports.unlock = unlock;
+module.exports.lockSync = lockSync;
+module.exports.unlockSync = unlockSync;
+module.exports.check = check;
+module.exports.checkSync = checkSync;
+
+
+/***/ }),
+
+/***/ 77950:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const fs = __nccwpck_require__(82161);
+
+function createSyncFs(fs) {
+    const methods = ['mkdir', 'realpath', 'stat', 'rmdir', 'utimes'];
+    const newFs = { ...fs };
+
+    methods.forEach((method) => {
+        newFs[method] = (...args) => {
+            const callback = args.pop();
+            let ret;
+
+            try {
+                ret = fs[`${method}Sync`](...args);
+            } catch (err) {
+                return callback(err);
+            }
+
+            callback(null, ret);
+        };
+    });
+
+    return newFs;
+}
+
+// ----------------------------------------------------------
+
+function toPromise(method) {
+    return (...args) => new Promise((resolve, reject) => {
+        args.push((err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+
+        method(...args);
+    });
+}
+
+function toSync(method) {
+    return (...args) => {
+        let err;
+        let result;
+
+        args.push((_err, _result) => {
+            err = _err;
+            result = _result;
+        });
+
+        method(...args);
+
+        if (err) {
+            throw err;
+        }
+
+        return result;
+    };
+}
+
+function toSyncOptions(options) {
+    // Shallow clone options because we are oging to mutate them
+    options = { ...options };
+
+    // Transform fs to use the sync methods instead
+    options.fs = createSyncFs(options.fs || fs);
+
+    // Retries are not allowed because it requires the flow to be sync
+    if (
+        (typeof options.retries === 'number' && options.retries > 0) ||
+        (options.retries && typeof options.retries.retries === 'number' && options.retries.retries > 0)
+    ) {
+        throw Object.assign(new Error('Cannot use retries with the sync api'), { code: 'ESYNC' });
+    }
+
+    return options;
+}
+
+module.exports = {
+    toPromise,
+    toSync,
+    toSyncOptions,
+};
+
+
+/***/ }),
+
+/***/ 40156:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const path = __nccwpck_require__(85622);
+const fs = __nccwpck_require__(82161);
+const retry = __nccwpck_require__(59454);
+const onExit = __nccwpck_require__(22317);
+const mtimePrecision = __nccwpck_require__(79200);
+
+const locks = {};
+
+function getLockFile(file, options) {
+    return options.lockfilePath || `${file}.lock`;
+}
+
+function resolveCanonicalPath(file, options, callback) {
+    if (!options.realpath) {
+        return callback(null, path.resolve(file));
+    }
+
+    // Use realpath to resolve symlinks
+    // It also resolves relative paths
+    options.fs.realpath(file, callback);
+}
+
+function acquireLock(file, options, callback) {
+    const lockfilePath = getLockFile(file, options);
+
+    // Use mkdir to create the lockfile (atomic operation)
+    options.fs.mkdir(lockfilePath, (err) => {
+        if (!err) {
+            // At this point, we acquired the lock!
+            // Probe the mtime precision
+            return mtimePrecision.probe(lockfilePath, options.fs, (err, mtime, mtimePrecision) => {
+                // If it failed, try to remove the lock..
+                /* istanbul ignore if */
+                if (err) {
+                    options.fs.rmdir(lockfilePath, () => {});
+
+                    return callback(err);
+                }
+
+                callback(null, mtime, mtimePrecision);
+            });
+        }
+
+        // If error is not EEXIST then some other error occurred while locking
+        if (err.code !== 'EEXIST') {
+            return callback(err);
+        }
+
+        // Otherwise, check if lock is stale by analyzing the file mtime
+        if (options.stale <= 0) {
+            return callback(Object.assign(new Error('Lock file is already being held'), { code: 'ELOCKED', file }));
+        }
+
+        options.fs.stat(lockfilePath, (err, stat) => {
+            if (err) {
+                // Retry if the lockfile has been removed (meanwhile)
+                // Skip stale check to avoid recursiveness
+                if (err.code === 'ENOENT') {
+                    return acquireLock(file, { ...options, stale: 0 }, callback);
+                }
+
+                return callback(err);
+            }
+
+            if (!isLockStale(stat, options)) {
+                return callback(Object.assign(new Error('Lock file is already being held'), { code: 'ELOCKED', file }));
+            }
+
+            // If it's stale, remove it and try again!
+            // Skip stale check to avoid recursiveness
+            removeLock(file, options, (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                acquireLock(file, { ...options, stale: 0 }, callback);
+            });
+        });
+    });
+}
+
+function isLockStale(stat, options) {
+    return stat.mtime.getTime() < Date.now() - options.stale;
+}
+
+function removeLock(file, options, callback) {
+    // Remove lockfile, ignoring ENOENT errors
+    options.fs.rmdir(getLockFile(file, options), (err) => {
+        if (err && err.code !== 'ENOENT') {
+            return callback(err);
+        }
+
+        callback();
+    });
+}
+
+function updateLock(file, options) {
+    const lock = locks[file];
+
+    // Just for safety, should never happen
+    /* istanbul ignore if */
+    if (lock.updateTimeout) {
+        return;
+    }
+
+    lock.updateDelay = lock.updateDelay || options.update;
+    lock.updateTimeout = setTimeout(() => {
+        lock.updateTimeout = null;
+
+        // Stat the file to check if mtime is still ours
+        // If it is, we can still recover from a system sleep or a busy event loop
+        options.fs.stat(lock.lockfilePath, (err, stat) => {
+            const isOverThreshold = lock.lastUpdate + options.stale < Date.now();
+
+            // If it failed to update the lockfile, keep trying unless
+            // the lockfile was deleted or we are over the threshold
+            if (err) {
+                if (err.code === 'ENOENT' || isOverThreshold) {
+                    return setLockAsCompromised(file, lock, Object.assign(err, { code: 'ECOMPROMISED' }));
+                }
+
+                lock.updateDelay = 1000;
+
+                return updateLock(file, options);
+            }
+
+            const isMtimeOurs = lock.mtime.getTime() === stat.mtime.getTime();
+
+            if (!isMtimeOurs) {
+                return setLockAsCompromised(
+                    file,
+                    lock,
+                    Object.assign(
+                        new Error('Unable to update lock within the stale threshold'),
+                        { code: 'ECOMPROMISED' }
+                    ));
+            }
+
+            const mtime = mtimePrecision.getMtime(lock.mtimePrecision);
+
+            options.fs.utimes(lock.lockfilePath, mtime, mtime, (err) => {
+                const isOverThreshold = lock.lastUpdate + options.stale < Date.now();
+
+                // Ignore if the lock was released
+                if (lock.released) {
+                    return;
+                }
+
+                // If it failed to update the lockfile, keep trying unless
+                // the lockfile was deleted or we are over the threshold
+                if (err) {
+                    if (err.code === 'ENOENT' || isOverThreshold) {
+                        return setLockAsCompromised(file, lock, Object.assign(err, { code: 'ECOMPROMISED' }));
+                    }
+
+                    lock.updateDelay = 1000;
+
+                    return updateLock(file, options);
+                }
+
+                // All ok, keep updating..
+                lock.mtime = mtime;
+                lock.lastUpdate = Date.now();
+                lock.updateDelay = null;
+                updateLock(file, options);
+            });
+        });
+    }, lock.updateDelay);
+
+    // Unref the timer so that the nodejs process can exit freely
+    // This is safe because all acquired locks will be automatically released
+    // on process exit
+
+    // We first check that `lock.updateTimeout.unref` exists because some users
+    // may be using this module outside of NodeJS (e.g., in an electron app),
+    // and in those cases `setTimeout` return an integer.
+    /* istanbul ignore else */
+    if (lock.updateTimeout.unref) {
+        lock.updateTimeout.unref();
+    }
+}
+
+function setLockAsCompromised(file, lock, err) {
+    // Signal the lock has been released
+    lock.released = true;
+
+    // Cancel lock mtime update
+    // Just for safety, at this point updateTimeout should be null
+    /* istanbul ignore if */
+    if (lock.updateTimeout) {
+        clearTimeout(lock.updateTimeout);
+    }
+
+    if (locks[file] === lock) {
+        delete locks[file];
+    }
+
+    lock.options.onCompromised(err);
+}
+
+// ----------------------------------------------------------
+
+function lock(file, options, callback) {
+    /* istanbul ignore next */
+    options = {
+        stale: 10000,
+        update: null,
+        realpath: true,
+        retries: 0,
+        fs,
+        onCompromised: (err) => { throw err; },
+        ...options,
+    };
+
+    options.retries = options.retries || 0;
+    options.retries = typeof options.retries === 'number' ? { retries: options.retries } : options.retries;
+    options.stale = Math.max(options.stale || 0, 2000);
+    options.update = options.update == null ? options.stale / 2 : options.update || 0;
+    options.update = Math.max(Math.min(options.update, options.stale / 2), 1000);
+
+    // Resolve to a canonical file path
+    resolveCanonicalPath(file, options, (err, file) => {
+        if (err) {
+            return callback(err);
+        }
+
+        // Attempt to acquire the lock
+        const operation = retry.operation(options.retries);
+
+        operation.attempt(() => {
+            acquireLock(file, options, (err, mtime, mtimePrecision) => {
+                if (operation.retry(err)) {
+                    return;
+                }
+
+                if (err) {
+                    return callback(operation.mainError());
+                }
+
+                // We now own the lock
+                const lock = locks[file] = {
+                    lockfilePath: getLockFile(file, options),
+                    mtime,
+                    mtimePrecision,
+                    options,
+                    lastUpdate: Date.now(),
+                };
+
+                // We must keep the lock fresh to avoid staleness
+                updateLock(file, options);
+
+                callback(null, (releasedCallback) => {
+                    if (lock.released) {
+                        return releasedCallback &&
+                            releasedCallback(Object.assign(new Error('Lock is already released'), { code: 'ERELEASED' }));
+                    }
+
+                    // Not necessary to use realpath twice when unlocking
+                    unlock(file, { ...options, realpath: false }, releasedCallback);
+                });
+            });
+        });
+    });
+}
+
+function unlock(file, options, callback) {
+    options = {
+        fs,
+        realpath: true,
+        ...options,
+    };
+
+    // Resolve to a canonical file path
+    resolveCanonicalPath(file, options, (err, file) => {
+        if (err) {
+            return callback(err);
+        }
+
+        // Skip if the lock is not acquired
+        const lock = locks[file];
+
+        if (!lock) {
+            return callback(Object.assign(new Error('Lock is not acquired/owned by you'), { code: 'ENOTACQUIRED' }));
+        }
+
+        lock.updateTimeout && clearTimeout(lock.updateTimeout); // Cancel lock mtime update
+        lock.released = true; // Signal the lock has been released
+        delete locks[file]; // Delete from locks
+
+        removeLock(file, options, callback);
+    });
+}
+
+function check(file, options, callback) {
+    options = {
+        stale: 10000,
+        realpath: true,
+        fs,
+        ...options,
+    };
+
+    options.stale = Math.max(options.stale || 0, 2000);
+
+    // Resolve to a canonical file path
+    resolveCanonicalPath(file, options, (err, file) => {
+        if (err) {
+            return callback(err);
+        }
+
+        // Check if lockfile exists
+        options.fs.stat(getLockFile(file, options), (err, stat) => {
+            if (err) {
+                // If does not exist, file is not locked. Otherwise, callback with error
+                return err.code === 'ENOENT' ? callback(null, false) : callback(err);
+            }
+
+            // Otherwise, check if lock is stale by analyzing the file mtime
+            return callback(null, !isLockStale(stat, options));
+        });
+    });
+}
+
+function getLocks() {
+    return locks;
+}
+
+// Remove acquired locks on exit
+/* istanbul ignore next */
+onExit(() => {
+    for (const file in locks) {
+        const options = locks[file].options;
+
+        try { options.fs.rmdirSync(getLockFile(file, options)); } catch (e) { /* Empty */ }
+    }
+});
+
+module.exports.lock = lock;
+module.exports.unlock = unlock;
+module.exports.check = check;
+module.exports.getLocks = getLocks;
+
+
+/***/ }),
+
+/***/ 79200:
+/***/ ((module) => {
+
+"use strict";
+
+
+const cacheSymbol = Symbol();
+
+function probe(file, fs, callback) {
+    const cachedPrecision = fs[cacheSymbol];
+
+    if (cachedPrecision) {
+        return fs.stat(file, (err, stat) => {
+            /* istanbul ignore if */
+            if (err) {
+                return callback(err);
+            }
+
+            callback(null, stat.mtime, cachedPrecision);
+        });
+    }
+
+    // Set mtime by ceiling Date.now() to seconds + 5ms so that it's "not on the second"
+    const mtime = new Date((Math.ceil(Date.now() / 1000) * 1000) + 5);
+
+    fs.utimes(file, mtime, mtime, (err) => {
+        /* istanbul ignore if */
+        if (err) {
+            return callback(err);
+        }
+
+        fs.stat(file, (err, stat) => {
+            /* istanbul ignore if */
+            if (err) {
+                return callback(err);
+            }
+
+            const precision = stat.mtime.getTime() % 1000 === 0 ? 's' : 'ms';
+
+            // Cache the precision in a non-enumerable way
+            Object.defineProperty(fs, cacheSymbol, { value: precision });
+
+            callback(null, stat.mtime, precision);
+        });
+    });
+}
+
+function getMtime(precision) {
+    let now = Date.now();
+
+    if (precision === 's') {
+        now = Math.ceil(now / 1000) * 1000;
+    }
+
+    return new Date(now);
+}
+
+module.exports.probe = probe;
+module.exports.getMtime = getMtime;
+
+
+/***/ }),
+
 /***/ 98051:
 /***/ ((module) => {
 
@@ -73486,6 +73986,285 @@ class Response extends Readable {
 }
 
 module.exports = Response;
+
+
+/***/ }),
+
+/***/ 59454:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = __nccwpck_require__(1839);
+
+/***/ }),
+
+/***/ 1839:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+var RetryOperation = __nccwpck_require__(8730);
+
+exports.operation = function(options) {
+  var timeouts = exports.timeouts(options);
+  return new RetryOperation(timeouts, {
+      forever: options && options.forever,
+      unref: options && options.unref,
+      maxRetryTime: options && options.maxRetryTime
+  });
+};
+
+exports.timeouts = function(options) {
+  if (options instanceof Array) {
+    return [].concat(options);
+  }
+
+  var opts = {
+    retries: 10,
+    factor: 2,
+    minTimeout: 1 * 1000,
+    maxTimeout: Infinity,
+    randomize: false
+  };
+  for (var key in options) {
+    opts[key] = options[key];
+  }
+
+  if (opts.minTimeout > opts.maxTimeout) {
+    throw new Error('minTimeout is greater than maxTimeout');
+  }
+
+  var timeouts = [];
+  for (var i = 0; i < opts.retries; i++) {
+    timeouts.push(this.createTimeout(i, opts));
+  }
+
+  if (options && options.forever && !timeouts.length) {
+    timeouts.push(this.createTimeout(i, opts));
+  }
+
+  // sort the array numerically ascending
+  timeouts.sort(function(a,b) {
+    return a - b;
+  });
+
+  return timeouts;
+};
+
+exports.createTimeout = function(attempt, opts) {
+  var random = (opts.randomize)
+    ? (Math.random() + 1)
+    : 1;
+
+  var timeout = Math.round(random * opts.minTimeout * Math.pow(opts.factor, attempt));
+  timeout = Math.min(timeout, opts.maxTimeout);
+
+  return timeout;
+};
+
+exports.wrap = function(obj, options, methods) {
+  if (options instanceof Array) {
+    methods = options;
+    options = null;
+  }
+
+  if (!methods) {
+    methods = [];
+    for (var key in obj) {
+      if (typeof obj[key] === 'function') {
+        methods.push(key);
+      }
+    }
+  }
+
+  for (var i = 0; i < methods.length; i++) {
+    var method   = methods[i];
+    var original = obj[method];
+
+    obj[method] = function retryWrapper(original) {
+      var op       = exports.operation(options);
+      var args     = Array.prototype.slice.call(arguments, 1);
+      var callback = args.pop();
+
+      args.push(function(err) {
+        if (op.retry(err)) {
+          return;
+        }
+        if (err) {
+          arguments[0] = op.mainError();
+        }
+        callback.apply(this, arguments);
+      });
+
+      op.attempt(function() {
+        original.apply(obj, args);
+      });
+    }.bind(obj, original);
+    obj[method].options = options;
+  }
+};
+
+
+/***/ }),
+
+/***/ 8730:
+/***/ ((module) => {
+
+function RetryOperation(timeouts, options) {
+  // Compatibility for the old (timeouts, retryForever) signature
+  if (typeof options === 'boolean') {
+    options = { forever: options };
+  }
+
+  this._originalTimeouts = JSON.parse(JSON.stringify(timeouts));
+  this._timeouts = timeouts;
+  this._options = options || {};
+  this._maxRetryTime = options && options.maxRetryTime || Infinity;
+  this._fn = null;
+  this._errors = [];
+  this._attempts = 1;
+  this._operationTimeout = null;
+  this._operationTimeoutCb = null;
+  this._timeout = null;
+  this._operationStart = null;
+
+  if (this._options.forever) {
+    this._cachedTimeouts = this._timeouts.slice(0);
+  }
+}
+module.exports = RetryOperation;
+
+RetryOperation.prototype.reset = function() {
+  this._attempts = 1;
+  this._timeouts = this._originalTimeouts;
+}
+
+RetryOperation.prototype.stop = function() {
+  if (this._timeout) {
+    clearTimeout(this._timeout);
+  }
+
+  this._timeouts       = [];
+  this._cachedTimeouts = null;
+};
+
+RetryOperation.prototype.retry = function(err) {
+  if (this._timeout) {
+    clearTimeout(this._timeout);
+  }
+
+  if (!err) {
+    return false;
+  }
+  var currentTime = new Date().getTime();
+  if (err && currentTime - this._operationStart >= this._maxRetryTime) {
+    this._errors.unshift(new Error('RetryOperation timeout occurred'));
+    return false;
+  }
+
+  this._errors.push(err);
+
+  var timeout = this._timeouts.shift();
+  if (timeout === undefined) {
+    if (this._cachedTimeouts) {
+      // retry forever, only keep last error
+      this._errors.splice(this._errors.length - 1, this._errors.length);
+      this._timeouts = this._cachedTimeouts.slice(0);
+      timeout = this._timeouts.shift();
+    } else {
+      return false;
+    }
+  }
+
+  var self = this;
+  var timer = setTimeout(function() {
+    self._attempts++;
+
+    if (self._operationTimeoutCb) {
+      self._timeout = setTimeout(function() {
+        self._operationTimeoutCb(self._attempts);
+      }, self._operationTimeout);
+
+      if (self._options.unref) {
+          self._timeout.unref();
+      }
+    }
+
+    self._fn(self._attempts);
+  }, timeout);
+
+  if (this._options.unref) {
+      timer.unref();
+  }
+
+  return true;
+};
+
+RetryOperation.prototype.attempt = function(fn, timeoutOps) {
+  this._fn = fn;
+
+  if (timeoutOps) {
+    if (timeoutOps.timeout) {
+      this._operationTimeout = timeoutOps.timeout;
+    }
+    if (timeoutOps.cb) {
+      this._operationTimeoutCb = timeoutOps.cb;
+    }
+  }
+
+  var self = this;
+  if (this._operationTimeoutCb) {
+    this._timeout = setTimeout(function() {
+      self._operationTimeoutCb();
+    }, self._operationTimeout);
+  }
+
+  this._operationStart = new Date().getTime();
+
+  this._fn(this._attempts);
+};
+
+RetryOperation.prototype.try = function(fn) {
+  console.log('Using RetryOperation.try() is deprecated');
+  this.attempt(fn);
+};
+
+RetryOperation.prototype.start = function(fn) {
+  console.log('Using RetryOperation.start() is deprecated');
+  this.attempt(fn);
+};
+
+RetryOperation.prototype.start = RetryOperation.prototype.try;
+
+RetryOperation.prototype.errors = function() {
+  return this._errors;
+};
+
+RetryOperation.prototype.attempts = function() {
+  return this._attempts;
+};
+
+RetryOperation.prototype.mainError = function() {
+  if (this._errors.length === 0) {
+    return null;
+  }
+
+  var counts = {};
+  var mainError = null;
+  var mainErrorCount = 0;
+
+  for (var i = 0; i < this._errors.length; i++) {
+    var error = this._errors[i];
+    var message = error.message;
+    var count = (counts[message] || 0) + 1;
+
+    counts[message] = count;
+
+    if (count >= mainErrorCount) {
+      mainError = error;
+      mainErrorCount = count;
+    }
+  }
+
+  return mainError;
+};
 
 
 /***/ }),
@@ -78079,25 +78858,6 @@ module.exports = (jsonString, options = {}) => {
 
 /***/ }),
 
-/***/ 77901:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-var escapeStringRegexp = __nccwpck_require__(5813);
-
-module.exports = function (str, sub) {
-	if (typeof str !== 'string' || typeof sub !== 'string') {
-		throw new TypeError();
-	}
-
-	sub = escapeStringRegexp(sub);
-	return str.replace(new RegExp('^' + sub + '|' + sub + '$', 'g'), '');
-};
-
-
-/***/ }),
-
 /***/ 85076:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -78418,24 +79178,6 @@ module.exports = input => (
 		}
 	})
 );
-
-
-/***/ }),
-
-/***/ 33533:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-var escapeStringRegexp = __nccwpck_require__(5813);
-
-module.exports = function (str, target) {
-	if (typeof str !== 'string' || typeof target !== 'string') {
-		throw new TypeError('Expected a string');
-	}
-
-	return str.replace(new RegExp('(?:' + escapeStringRegexp(target) + '){2,}', 'g'), target);
-};
 
 
 /***/ }),
@@ -80488,7 +81230,8 @@ const path = __nccwpck_require__(85622)
 const readPkgUp = __nccwpck_require__(45730)
 const fs = __nccwpck_require__(66272)
 const execa = __nccwpck_require__(51737)
-
+const envPaths = __nccwpck_require__(47727)('aegir', { suffix: '' })
+const lockfile = __nccwpck_require__(92123)
 const {
   packageJson: pkg,
   path: pkgPath
@@ -80500,8 +81243,6 @@ const SRC_FOLDER = 'src'
 const TEST_FOLDER = 'test'
 
 exports.pkg = pkg
-// TODO: get this from aegir package.json
-exports.browserslist = '>1% or node >=10 and not ie 11 and not dead'
 exports.repoDirectory = path.dirname(pkgPath)
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
@@ -80602,6 +81343,23 @@ function getPlatformPath () {
 
 exports.getElectron = async () => {
   const pkg = __nccwpck_require__(28524)
+
+  const lockfilePath = path.join(envPaths.cache, '__electron-lock')
+  fs.mkdirpSync(envPaths.cache)
+  const releaseLock = await lockfile.lock(envPaths.cache, {
+    retries: {
+      retries: 10,
+      // Retry 20 times during 10 minutes with
+      // exponential back-off.
+      // See documentation at: https://www.npmjs.com/package/retry#retrytimeoutsoptions
+      factor: 1.27579
+    },
+    onCompromised: (err) => {
+      throw new Error(`${err.message} Path: ${lockfilePath}`)
+    },
+    lockfilePath
+  })
+
   const version = pkg.devDependencies.electron.slice(1)
   const spinner = ora(`Downloading electron: ${version}`).start()
   const zipPath = await download(version)
@@ -80610,7 +81368,8 @@ exports.getElectron = async () => {
     spinner.text = 'Extracting electron to system cache'
     await extract(zipPath, { dir: path.dirname(zipPath) })
   }
-  spinner.succeed('Electron ready to use')
+  spinner.stop()
+  await releaseLock()
   return electronPath
 }
 
@@ -80859,7 +81618,7 @@ module.exports = JSON.parse("[\"0BSD\",\"AAL\",\"ADSL\",\"AFL-1.1\",\"AFL-1.2\",
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"name\":\"aegir\",\"version\":\"30.3.0\",\"description\":\"JavaScript project management\",\"keywords\":[\"webpack\",\"standard\",\"lint\",\"build\"],\"homepage\":\"https://github.com/ipfs/aegir\",\"bugs\":\"https://github.com/ipfs/aegir/issues\",\"license\":\"MIT\",\"leadMaintainer\":\"Hugo Dias <hugomrdias@gmail.com>\",\"files\":[\"dist/utils\",\"cmds\",\"utils\",\"src\",\"cli.js\",\"fixtures.js\"],\"main\":\"cli.js\",\"browser\":{\"fs\":false,\"./src/fixtures.js\":\"./src/fixtures.browser.js\"},\"bin\":{\"aegir\":\"cli.js\"},\"typesVersions\":{\"*\":{\"utils/*\":[\"dist/utils/*\"]}},\"repository\":\"github:ipfs/aegir\",\"scripts\":{\"prepare\":\"tsc -p tsconfig-types.json\",\"lint\":\"node cli.js lint\",\"test:node\":\"node cli.js test -t node\",\"test:browser\":\"node cli.js test -t browser webworker\",\"test:acceptance\":\"./test/acceptance.sh\",\"test\":\"npm run test:node && npm run test:browser\",\"coverage\":\"node cli.js coverage -t node\",\"watch\":\"node cli.js test -t node --watch\",\"release\":\"node cli.js release --no-docs --no-test --no-build\",\"release-minor\":\"node cli.js release --no-docs --no-build --no-test --type minor\",\"release-major\":\"node cli.js release --no-docs --no-build --no-test --type major\"},\"dependencies\":{\"@achingbrain/dependency-check\":\"^4.1.0\",\"@babel/core\":\"^7.12.13\",\"@babel/preset-env\":\"^7.12.13\",\"@babel/preset-typescript\":\"^7.12.7\",\"@babel/register\":\"^7.12.10\",\"@commitlint/cli\":\"^11.0.0\",\"@commitlint/config-conventional\":\"^11.0.0\",\"@commitlint/lint\":\"^11.0.0\",\"@commitlint/load\":\"^11.0.0\",\"@commitlint/read\":\"^11.0.0\",\"@commitlint/travis-cli\":\"^11.0.0\",\"@electron/get\":\"^1.12.3\",\"@polka/send-type\":\"^0.5.2\",\"@types/chai\":\"^4.2.14\",\"@types/chai-as-promised\":\"^7.1.3\",\"@types/chai-subset\":\"^1.3.3\",\"@types/dirty-chai\":\"^2.0.2\",\"@types/mocha\":\"^8.2.0\",\"@types/node\":\"^14.14.22\",\"@types/sinon\":\"^9.0.10\",\"buffer\":\"^6.0.3\",\"bytes\":\"^3.1.0\",\"camelcase\":\"^6.2.0\",\"chai\":\"^4.2.0\",\"chai-as-promised\":\"^7.1.1\",\"chai-subset\":\"^1.6.0\",\"chalk\":\"^4.1.0\",\"conventional-changelog\":\"^3.1.24\",\"conventional-github-releaser\":\"^3.1.5\",\"cors\":\"^2.8.5\",\"dirty-chai\":\"^2.0.1\",\"electron-mocha\":\"^10.0.0\",\"esbuild\":\"^0.8.39\",\"eslint\":\"^7.18.0\",\"eslint-config-ipfs\":\"^2.0.0\",\"execa\":\"^5.0.0\",\"extract-zip\":\"^2.0.1\",\"fs-extra\":\"^9.1.0\",\"gh-pages\":\"^3.1.0\",\"git-authors-cli\":\"^1.0.33\",\"git-validate\":\"^2.2.4\",\"globby\":\"^11.0.2\",\"ipfs-utils\":\"^6.0.0\",\"it-glob\":\"~0.0.10\",\"lilconfig\":\"^2.0.2\",\"listr\":\"~0.14.2\",\"merge-options\":\"^3.0.4\",\"mocha\":\"^8.2.1\",\"npm-package-json-lint\":\"^5.1.0\",\"nyc\":\"^15.1.0\",\"ora\":\"^5.3.0\",\"p-map\":\"^4.0.0\",\"pascalcase\":\"^1.0.0\",\"playwright-test\":\"hugomrdias/playwright-test#feat/esbuild\",\"polka\":\"^0.5.2\",\"premove\":\"^3.0.1\",\"prompt-promise\":\"^1.0.3\",\"read-pkg-up\":\"^7.0.1\",\"semver\":\"^7.3.4\",\"simple-git\":\"^2.28.0\",\"strip-bom\":\"^4.0.0\",\"strip-json-comments\":\"^3.1.1\",\"typedoc\":\"^0.20.17\",\"typescript\":\"4.1.x\",\"update-notifier\":\"^5.0.0\",\"yargs\":\"^16.2.0\",\"yargs-parser\":\"^20.2.3\"},\"devDependencies\":{\"@types/bytes\":\"^3.1.0\",\"@types/eslint\":\"^7.2.6\",\"@types/fs-extra\":\"^9.0.6\",\"@types/gh-pages\":\"^3.0.0\",\"@types/listr\":\"^0.14.2\",\"@types/polka\":\"^0.5.2\",\"@types/semver\":\"^7.3.4\",\"@types/yargs\":\"^16.0.0\",\"electron\":\"^11.2.0\",\"iso-url\":\"^1.0.0\",\"sinon\":\"^9.2.3\"},\"engines\":{\"node\":\">=12.0.0\",\"npm\":\">=6.0.0\"},\"browserslist\":[\">1%\",\"last 2 versions\",\"Firefox ESR\",\"not ie < 11\"],\"eslintConfig\":{\"extends\":\"ipfs\"},\"contributors\":[\"dignifiedquire <dignifiedquire@gmail.com>\",\"Hugo Dias <hugomrdias@gmail.com>\",\"victorbjelkholm <victorbjelkholm@gmail.com>\",\"David Dias <daviddias.p@gmail.com>\",\"Alex Potsides <alex@achingbrain.net>\",\"Volker Mische <volker.mische@gmail.com>\",\"Alan Shaw <alan.shaw@protocol.ai>\",\"Jacob Heun <jacobheun@gmail.com>\",\"Dmitriy Ryajov <dryajov@gmail.com>\",\"Irakli Gozalishvili <contact@gozala.io>\",\"ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>\",\"Henrique Dias <hacdias@gmail.com>\",\"Francis Yuen <fyuen@godaddy.com>\",\"Maciej Krüger <mkg20001@gmail.com>\",\"Adam Uhlíř <adam@uhlir.dev>\",\"Alberto Elias <hi@albertoelias.me>\",\"Diogo Silva <fsdiogo@gmail.com>\",\"Garren Smith <garren.smith@gmail.com>\",\"Hector Sanjuan <code@hector.link>\",\"JGAntunes <j.goncalo.antunes@gmail.com>\",\"Jakub Sztandera <kubuxu@protonmail.ch>\",\"Marcin Rataj <lidel@lidel.org>\",\"Michael Garvin <gar+gh@danger.computer>\",\"Mikeal Rogers <mikeal.rogers@gmail.com>\",\"Stephen Whitmore <stephen.whitmore@gmail.com>\",\"Vasco Santos <vasco.santos@ua.pt>\",\"0xflotus <0xflotus@gmail.com>\"]}");
+module.exports = JSON.parse("{\"name\":\"aegir\",\"version\":\"30.3.0\",\"description\":\"JavaScript project management\",\"keywords\":[\"webpack\",\"standard\",\"lint\",\"build\"],\"homepage\":\"https://github.com/ipfs/aegir\",\"bugs\":\"https://github.com/ipfs/aegir/issues\",\"license\":\"MIT\",\"leadMaintainer\":\"Hugo Dias <hugomrdias@gmail.com>\",\"files\":[\"dist/utils\",\"cmds\",\"utils\",\"src\",\"cli.js\",\"fixtures.js\"],\"main\":\"cli.js\",\"browser\":{\"fs\":false,\"./src/fixtures.js\":\"./src/fixtures.browser.js\"},\"bin\":{\"aegir\":\"cli.js\"},\"typesVersions\":{\"*\":{\"utils/*\":[\"dist/utils/*\"]}},\"repository\":\"github:ipfs/aegir\",\"scripts\":{\"prepare\":\"tsc -p tsconfig-types.json\",\"lint\":\"node cli.js lint\",\"test:node\":\"node cli.js test -t node\",\"test:browser\":\"node cli.js test -t browser webworker\",\"test:acceptance\":\"./test/acceptance.sh\",\"test\":\"npm run test:node && npm run test:browser\",\"coverage\":\"node cli.js coverage -t node\",\"watch\":\"node cli.js test -t node --watch\",\"release\":\"node cli.js release --no-docs --no-test --no-build\",\"release-minor\":\"node cli.js release --no-docs --no-build --no-test --type minor\",\"release-major\":\"node cli.js release --no-docs --no-build --no-test --type major\"},\"dependencies\":{\"@achingbrain/dependency-check\":\"^4.1.0\",\"@commitlint/cli\":\"^11.0.0\",\"@commitlint/config-conventional\":\"^11.0.0\",\"@commitlint/lint\":\"^11.0.0\",\"@commitlint/load\":\"^11.0.0\",\"@commitlint/read\":\"^11.0.0\",\"@commitlint/travis-cli\":\"^11.0.0\",\"@electron/get\":\"^1.12.3\",\"@polka/send-type\":\"^0.5.2\",\"@types/chai\":\"^4.2.15\",\"@types/chai-as-promised\":\"^7.1.3\",\"@types/chai-subset\":\"^1.3.3\",\"@types/dirty-chai\":\"^2.0.2\",\"@types/mocha\":\"^8.2.0\",\"@types/node\":\"^14.14.27\",\"@types/sinon\":\"^9.0.10\",\"buffer\":\"^6.0.3\",\"bytes\":\"^3.1.0\",\"c8\":\"^7.5.0\",\"camelcase\":\"^6.2.0\",\"chai\":\"^4.2.0\",\"chai-as-promised\":\"^7.1.1\",\"chai-subset\":\"^1.6.0\",\"conventional-changelog\":\"^3.1.24\",\"conventional-github-releaser\":\"^3.1.5\",\"copyfiles\":\"^2.4.1\",\"cors\":\"^2.8.5\",\"dirty-chai\":\"^2.0.1\",\"electron-mocha\":\"^10.0.0\",\"env-paths\":\"^2.2.0\",\"esbuild\":\"^0.8.44\",\"esbuild-register\":\"^2.0.0\",\"eslint\":\"^7.18.0\",\"eslint-config-ipfs\":\"^2.0.0\",\"execa\":\"^5.0.0\",\"extract-zip\":\"^2.0.1\",\"fs-extra\":\"^9.1.0\",\"gh-pages\":\"^3.1.0\",\"git-authors-cli\":\"^1.0.33\",\"git-validate\":\"^2.2.4\",\"globby\":\"^11.0.2\",\"ipfs-utils\":\"^6.0.0\",\"it-glob\":\"~0.0.10\",\"kleur\":\"^4.1.4\",\"lilconfig\":\"^2.0.2\",\"listr\":\"~0.14.2\",\"merge-options\":\"^3.0.4\",\"mocha\":\"^8.3.0\",\"npm-package-json-lint\":\"^5.1.0\",\"nyc\":\"^15.1.0\",\"ora\":\"^5.3.0\",\"p-map\":\"^4.0.0\",\"pascalcase\":\"^1.0.0\",\"playwright-test\":\"hugomrdias/playwright-test#feat/esbuild\",\"polka\":\"^0.5.2\",\"premove\":\"^3.0.1\",\"prompt-promise\":\"^1.0.3\",\"proper-lockfile\":\"^4.1.2\",\"read-pkg-up\":\"^7.0.1\",\"semver\":\"^7.3.4\",\"simple-git\":\"^2.28.0\",\"strip-bom\":\"^4.0.0\",\"strip-json-comments\":\"^3.1.1\",\"tempy\":\"^1.0.0\",\"typedoc\":\"^0.20.24\",\"typescript\":\"4.1.5\",\"update-notifier\":\"^5.0.0\",\"yargs\":\"^16.2.0\",\"yargs-parser\":\"^20.2.3\"},\"devDependencies\":{\"@types/bytes\":\"^3.1.0\",\"@types/eslint\":\"^7.2.6\",\"@types/fs-extra\":\"^9.0.7\",\"@types/gh-pages\":\"^3.0.0\",\"@types/listr\":\"^0.14.2\",\"@types/polka\":\"^0.5.2\",\"@types/proper-lockfile\":\"^4.1.1\",\"@types/semver\":\"^7.3.4\",\"@types/yargs\":\"^16.0.0\",\"electron\":\"^11.2.0\",\"iso-url\":\"^1.0.0\",\"sinon\":\"^9.2.3\"},\"engines\":{\"node\":\">=12.0.0\",\"npm\":\">=6.0.0\"},\"browserslist\":[\">1%\",\"last 2 versions\",\"Firefox ESR\",\"not ie < 11\"],\"eslintConfig\":{\"extends\":\"ipfs\"},\"contributors\":[\"dignifiedquire <dignifiedquire@gmail.com>\",\"Hugo Dias <hugomrdias@gmail.com>\",\"victorbjelkholm <victorbjelkholm@gmail.com>\",\"David Dias <daviddias.p@gmail.com>\",\"Alex Potsides <alex@achingbrain.net>\",\"Volker Mische <volker.mische@gmail.com>\",\"Alan Shaw <alan.shaw@protocol.ai>\",\"Jacob Heun <jacobheun@gmail.com>\",\"Dmitriy Ryajov <dryajov@gmail.com>\",\"Irakli Gozalishvili <contact@gozala.io>\",\"ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>\",\"Henrique Dias <hacdias@gmail.com>\",\"Francis Yuen <fyuen@godaddy.com>\",\"Maciej Krüger <mkg20001@gmail.com>\",\"Adam Uhlíř <adam@uhlir.dev>\",\"Alberto Elias <hi@albertoelias.me>\",\"Diogo Silva <fsdiogo@gmail.com>\",\"Garren Smith <garren.smith@gmail.com>\",\"Hector Sanjuan <code@hector.link>\",\"JGAntunes <j.goncalo.antunes@gmail.com>\",\"Jakub Sztandera <kubuxu@protonmail.ch>\",\"Marcin Rataj <lidel@lidel.org>\",\"Michael Garvin <gar+gh@danger.computer>\",\"Mikeal Rogers <mikeal.rogers@gmail.com>\",\"Stephen Whitmore <stephen.whitmore@gmail.com>\",\"Vasco Santos <vasco.santos@ua.pt>\",\"0xflotus <0xflotus@gmail.com>\"]}");
 
 /***/ }),
 

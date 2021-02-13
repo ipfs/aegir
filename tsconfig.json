@@ -5,6 +5,10 @@
     },
     "include": [
       "src",
-      "test"
+      "test",
+      "utils"
+    ],
+    "exclude": [
+      "test/fixtures"
     ]
 }

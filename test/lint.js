@@ -10,6 +10,9 @@ const { userConfig } = require('../src/config/user')
 
 const TEMP_FOLDER = path.join(__dirname, '../node_modules/.temp-test')
 
+/**
+ * @param {{ [s: string]: any; } | ArrayLike<any>} project
+ */
 const setupProject = async (project) => {
   const tmpDir = path.join(TEMP_FOLDER, `test-${Math.random()}`)
   await fs.promises.mkdir(tmpDir)
@@ -19,6 +22,9 @@ const setupProject = async (project) => {
   process.chdir(tmpDir)
 }
 
+/**
+ * @param {never[]} deps
+ */
 const setupProjectWithDeps = deps => setupProject({
   'package.json': JSON.stringify({
     name: 'my-project',
@@ -26,11 +32,17 @@ const setupProjectWithDeps = deps => setupProject({
   })
 })
 
+/**
+ * @param {{ [s: string]: any; } | ArrayLike<any>} project
+ */
 const projectShouldPassLint = async (project) => {
   await setupProject(project)
   await lint(userConfig.lint)
 }
 
+/**
+ * @param {{ [s: string]: any; } | ArrayLike<any>} project
+ */
 const projectShouldFailLint = async (project) => {
   await setupProject(project)
   let failed = false

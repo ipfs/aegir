@@ -2,7 +2,6 @@
 const { userConfig } = require('../src/config/user')
 /**
  * @typedef {import("yargs").Argv} Argv
- * @typedef {import("yargs").Arguments} Arguments
  */
 const EPILOG = `
 Typescript config file is required to generated docs. Try \`aegir ts --preset config > tsconfig.json\`

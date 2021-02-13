@@ -2,7 +2,6 @@
 const { userConfig } = require('../src/config/user')
 /**
  * @typedef {import("yargs").Argv} Argv
- * @typedef {import("yargs").Arguments} Arguments
  */
 
 const EPILOG = `

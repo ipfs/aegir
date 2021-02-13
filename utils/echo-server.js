@@ -1,6 +1,6 @@
-// @ts-nocheck
 'use strict'
 
+// @ts-ignore
 const send = require('@polka/send-type')
 const polka = require('polka')
 const cors = require('cors')
@@ -21,6 +21,8 @@ class EchoServer {
     this.port = options.port || 3000
     this.host = options.host || '127.0.0.1'
     this.started = false
+    this.server = http.createServer()
+    this.polka = polka({ server: this.server })
   }
 
   async start () {
@@ -28,24 +30,23 @@ class EchoServer {
       if (this.options.findPort !== false) {
         this.port = await getPort(this.port)
       }
-      this.server = http.createServer()
-      this.polka = polka({ server: this.server })
-        .use(cors())
-        .use('/redirect', (req, res) => {
-          send(res, 302, null, { Location: req.query.to })
-        })
-        .all('/echo/query', (req, res) => {
-          send(res, 200, req.query)
-        })
-        .all('/echo/headers', (req, res) => {
-          send(res, 200, req.headers)
-        })
-        .all('/echo', (req, res) => {
-          send(res, 200, req)
-        })
-        .all('/download', (req, res) => {
-          send(res, 200, Buffer.from(req.query.data || ''))
-        })
+      this.polka.use(cors())
+      this.polka.use('/redirect', (req, res) => {
+        send(res, 302, null, { Location: req.query.to })
+      })
+      this.polka.all('/echo/query', (req, res) => {
+        send(res, 200, req.query)
+      })
+      this.polka.all('/echo/headers', (req, res) => {
+        send(res, 200, req.headers)
+      })
+      this.polka.all('/echo', (req, res) => {
+        send(res, 200, req)
+      })
+      this.polka.all('/download', (req, res) => {
+        // @ts-ignore
+        send(res, 200, Buffer.from(req.query.data || ''))
+      })
 
       const listen = new Promise((resolve, reject) => {
         this.server.once('error', reject)

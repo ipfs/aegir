@@ -5,10 +5,12 @@ const http = require('ipfs-utils/src/http')
 const { Buffer } = require('buffer')
 const { expect } = require('../../utils/chai')
 const EchoServer = require('../../utils/echo-server')
+// @ts-ignore
 const { format } = require('iso-url')
 
 describe('echo server spec', () => {
   const echo = new EchoServer()
+  /** @type {string} */
   let url
 
   before(async () => {

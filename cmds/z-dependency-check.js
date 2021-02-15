@@ -2,17 +2,17 @@
 'use strict'
 
 const ora = require('ora')
-const depCheck = require('../src/dependency-check')
+const { check, commandNames, defaultInput } = require('../src/dependency-check')
 
 const EPILOG = `
 Supports options forwarding with '--' for more info check https://github.com/maxogden/dependency-check#cli-usage
 `
 
-const commandName = depCheck.commandNames[0]
+const commandName = commandNames[0]
 
 module.exports = {
   command: `${commandName} [input...]`,
-  aliases: depCheck.commandNames.filter(name => name !== commandName),
+  aliases: commandNames.filter(name => name !== commandName),
   desc: 'Run `dependency-check` cli with aegir defaults.',
   builder: (yargs) => {
     yargs
@@ -22,7 +22,7 @@ module.exports = {
       .positional('input', {
         describe: 'Files to check',
         type: 'array',
-        default: depCheck.defaultInput
+        default: defaultInput
       })
       .option('p', {
         alias: 'production-only',
@@ -41,7 +41,7 @@ module.exports = {
     const spinner = ora('Checking dependencies').start()
 
     try {
-      await depCheck(argv, process.argv)
+      await check(argv, process.argv)
       spinner.succeed()
     } catch (err) {
       spinner.fail()

@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 'use strict'
 
-const loadFixture = require('../fixtures')
+const loadFixture = require('../utils/fixtures')
 const expect = require('chai').expect
 
 describe('browser', () => {

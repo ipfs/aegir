@@ -1,5 +1,9 @@
 'use strict'
-const { userConfig } = require('../src/config/user')
+const { userConfig } = require('../config/user')
+/**
+ * @typedef {import("yargs").Argv} Argv
+ * @typedef {import("yargs").Arguments} Arguments
+ */
 
 const EPILOG = `
 Presets:
@@ -15,6 +19,9 @@ Supports options forwarding with '--' for more info check https://www.typescript
 module.exports = {
   command: 'ts',
   desc: 'Typescript command with presets for specific tasks.',
+  /**
+   * @param {Argv} yargs
+   */
   builder: (yargs) => {
     yargs
       .epilog(EPILOG)
@@ -44,8 +51,11 @@ module.exports = {
         }
       })
   },
+  /**
+   * @param {import("../types").GlobalOptions & import("../types").TSOptions} argv
+   */
   handler (argv) {
-    const ts = require('../src/ts')
+    const ts = require('../ts')
     return ts(argv)
   }
 }

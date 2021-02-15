@@ -1,5 +1,5 @@
 'use strict'
-const { userConfig } = require('../src/config/user')
+const { userConfig } = require('../config/user')
 module.exports = {
   command: 'lint',
   desc: 'Lint all project files',
@@ -21,8 +21,11 @@ module.exports = {
       default: userConfig.lint.silent
     }
   },
+  /**
+   * @param {(import("../types").GlobalOptions & import("../types").LintOptions) | undefined} argv
+   */
   handler (argv) {
-    const lint = require('../src/lint')
+    const lint = require('../lint')
     return lint.run(argv)
   }
 }

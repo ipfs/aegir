@@ -42,10 +42,10 @@ const hasPassedFileArgs = (input, processArgs) => {
  *
  * @param {*} argv - Command line arguments passed to the process.
  * @param {string[]} processArgs - Unparsed command line arguments used to start the process
- * @param {ExecaOptions} execaOptions - execa options.
+ * @param {ExecaOptions} [execaOptions] - execa options.
  * @returns {ExecaChildProcess} - Child process that does dependency check.
  */
-const check = (argv = { _: [], input: [], ignore: [] }, processArgs = [], execaOptions) => {
+const check = (argv = { _: [], input: [], ignore: [] }, processArgs = [], execaOptions = {}) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   let input = argv.input
   /** @type {string[]} */

@@ -6,9 +6,9 @@ const esbuild = require('esbuild')
 const fs = require('fs-extra')
 const findPkg = require('read-pkg-up')
 const kleur = require('kleur')
-const { userConfig } = require('../src/config/user')
+const { userConfig } = require('../config/user')
 const path = require('path')
-const { fromRoot, paths } = require('../src/utils')
+const { fromRoot, paths } = require('../utils')
 const merge = require('merge-options').bind({
   ignoreUndefined: true,
   concatArrays: true
@@ -17,14 +17,21 @@ module.exports = {
   command: 'check',
   desc: 'Check project',
   builder: {},
+  /**
+   * @param {any} argv
+   */
   handler (argv) {
     return checkBuiltins(argv)
   }
 }
 
+/**
+ * @param {{ tsRepo: any; }} argv
+ */
 const checkBuiltins = async (argv) => {
   const outfile = path.join(paths.dist, 'index.js')
   const metafile = path.join(paths.dist, 'stats.json')
+  /** @type {Record<string, string[]>} */
   const nodeBuiltIns = {
     util: [],
     sys: [],
@@ -48,6 +55,10 @@ const checkBuiltins = async (argv) => {
   }
   const nodePlugin = {
     name: 'node built ins',
+    /**
+     *
+     * @param {import('esbuild').PluginBuild} build
+     */
     setup (build) {
       for (const k of Object.keys(nodeBuiltIns)) {
         build.onResolve({ filter: new RegExp(`^${k}$`) }, (args) => {
@@ -85,8 +96,12 @@ const checkBuiltins = async (argv) => {
   findDuplicates(outputs['dist/index.js'].inputs)
 }
 
+/**
+ * @param {{}} inputs
+ */
 const findDuplicates = async (inputs) => {
   const files = Object.keys(inputs)
+  /** @type {Record<string,Set<string>>} */
   const packages = {}
   for (const file of files) {
     if (file.includes('node_modules') && !file.includes('empty:')) {
@@ -119,13 +134,19 @@ const findDuplicates = async (inputs) => {
       console.log(kleur.red(key))
       for (const file of imports) {
         const out = await findPkg({ cwd: file })
-        console.log(kleur.dim(file), kleur.blue(out.packageJson.version))
+        if (out) {
+          console.log(kleur.dim(file), kleur.blue(out.packageJson.version))
+        }
       }
     }
   }
 }
 
+/**
+ * @param {Record<string, string[]>} nodeBuiltIns
+ */
 const findBuiltins = async (nodeBuiltIns) => {
+  /** @type {Record<string, Set<string>>} */
   const packages = {}
   // eslint-disable-next-line guard-for-in
   for (const builtin in nodeBuiltIns) {

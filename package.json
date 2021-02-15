@@ -55,12 +55,6 @@
   },
   "dependencies": {
     "@achingbrain/dependency-check": "^4.1.0",
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
-    "@commitlint/lint": "^11.0.0",
-    "@commitlint/load": "^11.0.0",
-    "@commitlint/read": "^11.0.0",
-    "@commitlint/travis-cli": "^11.0.0",
     "@electron/get": "^1.12.3",
     "@polka/send-type": "^0.5.2",
     "@types/chai": "^4.2.15",

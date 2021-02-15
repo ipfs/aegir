@@ -1,5 +1,5 @@
 'use strict'
-const { userConfig } = require('../src/config/user')
+const { userConfig } = require('../config/user')
 /**
  * @typedef {import("yargs").Argv} Argv
  */
@@ -34,8 +34,11 @@ module.exports = {
         }
       )
   },
+  /**
+   * @param {(import("../types").GlobalOptions & import("../types").DocsOptions) | undefined} argv
+   */
   handler (argv) {
-    const docs = require('../src/docs')
+    const docs = require('../docs')
     return docs.run(argv)
   }
 }

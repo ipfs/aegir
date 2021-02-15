@@ -29,7 +29,7 @@ cli
   .middleware((yargs) => {
     yargs.fileConfig = userConfig
   })
-  .commandDir('cmds')
+  .commandDir('src/cmds')
   .help()
   .alias('help', 'h')
   .alias('version', 'v')

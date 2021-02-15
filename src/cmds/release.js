@@ -1,6 +1,6 @@
 'use strict'
 
-const { userConfig } = require('../src/config/user')
+const { userConfig } = require('../config/user')
 
 module.exports = {
   command: 'release',
@@ -93,8 +93,11 @@ module.exports = {
       default: userConfig.release.remote
     }
   },
+  /**
+   * @param {import("../types").GlobalOptions & import("../types").ReleaseOptions} argv
+   */
   handler (argv) {
-    const release = require('../src/release')
+    const release = require('../release')
     return release(argv)
   }
 }

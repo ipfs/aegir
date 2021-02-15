@@ -2,8 +2,10 @@
 'use strict'
 
 const ora = require('ora')
-const { check, commandNames, defaultInput } = require('../src/dependency-check')
-
+const { check, commandNames, defaultInput } = require('../dependency-check')
+/**
+ * @typedef {import("yargs").Argv} Argv
+ */
 const EPILOG = `
 Supports options forwarding with '--' for more info check https://github.com/maxogden/dependency-check#cli-usage
 `
@@ -14,6 +16,9 @@ module.exports = {
   command: `${commandName} [input...]`,
   aliases: commandNames.filter(name => name !== commandName),
   desc: 'Run `dependency-check` cli with aegir defaults.',
+  /**
+   * @param {Argv} yargs
+   */
   builder: (yargs) => {
     yargs
       .epilog(EPILOG)
@@ -21,6 +26,7 @@ module.exports = {
       .example('aegir dependency-check -- --unused --ignore typescript', 'To check unused packages in your repo, ignoring typescript.')
       .positional('input', {
         describe: 'Files to check',
+        // @ts-ignore
         type: 'array',
         default: defaultInput
       })
@@ -37,6 +43,9 @@ module.exports = {
         default: []
       })
   },
+  /**
+   * @param {any} argv
+   */
   async handler (argv) {
     const spinner = ora('Checking dependencies').start()
 

@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 'use strict'
 
-const loadFixture = require('../fixtures')
+const loadFixture = require('../utils/fixtures')
 const { expect } = require('../utils/chai')
 const path = require('path')
 

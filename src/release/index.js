@@ -4,10 +4,9 @@ const Listr = require('listr')
 
 const lint = require('../lint')
 const test = require('../test')
+const ts = require('../ts')
 const build = require('../build')
 const docs = require('../docs')
-const { userConfig } = require('./../config/user')
-
 const releaseChecks = require('./prerelease')
 const bump = require('./bump')
 const changelog = require('./changelog')
@@ -29,13 +28,35 @@ const push = require('./push')
  * @param {GlobalOptions & ReleaseOptions} opts
  */
 async function release (opts) {
-  const globalOptions = { debug: opts.debug, tsRepo: opts.tsRepo }
+  const globalOptions = {
+    debug: opts.debug,
+    tsRepo: opts.tsRepo,
+    fileConfig: opts.fileConfig
+  }
+
   const tasks = new Listr(
     [
       {
         title: 'Lint',
-        task: () => lint({ ...globalOptions, ...userConfig.lint, silent: true }),
-        enabled: (ctx) => ctx.lint
+        task: () => {
+          lint.setRenderer('silent')
+          return lint.run({
+            ...globalOptions,
+            ...opts.fileConfig.lint
+          })
+        },
+        enabled: () => opts.lint
+      },
+      {
+        title: 'Types',
+        task: () => {
+          return ts({
+            ...globalOptions,
+            ...opts.fileConfig.ts,
+            preset: 'check'
+          })
+        },
+        enabled: () => opts.lint
       },
       {
         title: 'Test',
@@ -43,7 +64,7 @@ async function release (opts) {
           test.run(
             {
               ...globalOptions,
-              ...userConfig.test
+              ...opts.fileConfig.test
             },
             {
               stdio: 'ignore'
@@ -59,11 +80,14 @@ async function release (opts) {
       },
       {
         title: 'Build',
-        task: () => build({
-          ...globalOptions,
-          ...userConfig.build
-        }),
-        enabled: (ctx) => ctx.build
+        enabled: (ctx) => ctx.build,
+        task: () => {
+          build.setRenderer('silent')
+          return build.run({
+            ...globalOptions,
+            ...opts.fileConfig.build
+          })
+        }
       },
       {
         title: 'Update Contributors',
@@ -96,9 +120,15 @@ async function release (opts) {
         enabled: (ctx) => ctx.ghrelease
       },
       {
-        title: 'Publish documentation',
-        task: () => docs,
-        enabled: (ctx) => ctx.docs
+        title: 'Documentation',
+        task: () => {
+          docs.setRenderer('silent')
+          return docs.run({
+            ...globalOptions,
+            ...opts.fileConfig.docs
+          })
+        },
+        enabled: () => opts.docs
       },
       {
         title: 'Publish to npm',

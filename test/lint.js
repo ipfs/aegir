@@ -37,7 +37,8 @@ const setupProjectWithDeps = deps => setupProject({
  */
 const projectShouldPassLint = async (project) => {
   await setupProject(project)
-  await lint({
+  await lint.run({
+    fileConfig: userConfig,
     debug: false,
     tsRepo: false,
     ...userConfig.lint
@@ -51,7 +52,8 @@ const projectShouldFailLint = async (project) => {
   await setupProject(project)
   let failed = false
   try {
-    await lint({
+    await lint.run({
+      fileConfig: userConfig,
       debug: false,
       tsRepo: false,
       ...userConfig.lint
@@ -77,7 +79,8 @@ describe('lint', () => {
 
   it('lint itself (aegir)', function () {
     this.timeout(20 * 1000) // slow ci is slow
-    return lint({
+    return lint.run({
+      fileConfig: userConfig,
       debug: false,
       tsRepo: false,
       fix: false,
@@ -95,7 +98,8 @@ describe('lint', () => {
         fs.mkdirSync(dir)
         fs.writeFileSync(`${dir}/test-pass.js`, '\'use strict\'\n\nmodule.exports = {}\n')
       })
-      .then(() => lint({
+      .then(() => lint.run({
+        fileConfig: userConfig,
         debug: false,
         tsRepo: false,
         fix: false,
@@ -112,7 +116,8 @@ describe('lint', () => {
     fs.mkdirSync(dir)
     fs.writeFileSync(`${dir}/test-fail.js`, '() .> {')
 
-    await expect(lint({
+    await expect(lint.run({
+      fileConfig: userConfig,
       debug: false,
       tsRepo: false,
       fix: false,
@@ -124,7 +129,8 @@ describe('lint', () => {
 
   it('should lint ts and js with different parsers rules', async () => {
     process.chdir(path.join(__dirname, './fixtures/js+ts/'))
-    await lint({
+    await lint.run({
+      fileConfig: userConfig,
       debug: false,
       tsRepo: false,
       ...userConfig.lint

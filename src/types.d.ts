@@ -56,7 +56,7 @@ interface GlobalOptions {
   /**
    * Full config from configuration file
    */
-  fileConfig?: Options
+  fileConfig: Options
 }
 
 interface BuildOptions {

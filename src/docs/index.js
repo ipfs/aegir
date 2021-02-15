@@ -60,8 +60,8 @@ const docs = async (ctx, task) => {
       preferLocal: true
     }
   )
-  proc.stdout?.on('data', chunk => {
-    task.output = chunk.toString()
+  proc.all?.on('data', chunk => {
+    task.output = chunk.toString().replace('\n', '')
   })
   await proc
 
@@ -80,7 +80,7 @@ const publishDocs = () => {
   )
 }
 
-const TASKS = new Listr(
+const tasks = new Listr(
   [
     {
       title: 'Clean ./docs',
@@ -88,7 +88,12 @@ const TASKS = new Listr(
     },
     {
       title: 'Generating documentation',
-      task: (ctx, task) => docs({ debug: ctx.debug, tsRepo: ctx.tsRepo, ...ctx.config.docs }, task)
+      /**
+       *
+       * @param {GlobalOptions & DocsOptions} ctx
+       * @param {Task} task
+       */
+      task: docs
     },
     {
       title: 'Publish to GitHub Pages',
@@ -101,4 +106,4 @@ const TASKS = new Listr(
   }
 )
 
-module.exports = TASKS
+module.exports = tasks

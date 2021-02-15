@@ -23,6 +23,6 @@ module.exports = {
   },
   handler (argv) {
     const lint = require('../src/lint')
-    return lint(argv)
+    return lint.run(argv)
   }
 }

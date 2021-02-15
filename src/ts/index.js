@@ -12,7 +12,6 @@ const hasConfig = hasFile('tsconfig.json')
  * @typedef {import("yargs").Arguments} Arguments
  * @typedef {import("../types").GlobalOptions} GlobalOptions
  * @typedef {import("../types").TSOptions} TSOptions
- * @typedef {import("../types").BuildOptions} BuildOptions
  *
  * @typedef {Object} Options
  * @property {"config" | "check" | "types"} preset
@@ -26,7 +25,7 @@ const hasConfig = hasFile('tsconfig.json')
 /**
  * Typescript command
  *
- * @param {GlobalOptions & TSOptions & BuildOptions} argv
+ * @param {GlobalOptions & TSOptions} argv
  */
 module.exports = async (argv) => {
   /** @type {Options} */

@@ -30,8 +30,8 @@ module.exports = {
           default: userConfig.build.bundlesize
         },
         bundlesizeMax: {
-          type: 'boolean',
-          describe: 'Max threshold for the bundle size. Default is 100kB.',
+          type: 'string',
+          describe: 'Max threshold for the bundle size.',
           default: userConfig.build.bundlesizeMax
         },
         types: {
@@ -47,6 +47,6 @@ module.exports = {
    */
   handler (argv) {
     const build = require('../src/build')
-    return build(argv)
+    return build.run(argv)
   }
 }

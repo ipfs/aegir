@@ -13,31 +13,38 @@
   "license": "MIT",
   "leadMaintainer": "Hugo Dias <hugomrdias@gmail.com>",
   "files": [
-    "dist/utils",
+    "dist",
     "cmds",
     "utils",
     "src",
-    "cli.js",
-    "fixtures.js"
+    "cli.js"
   ],
   "main": "cli.js",
   "browser": {
     "fs": false,
-    "./src/fixtures.js": "./src/fixtures.browser.js"
+    "./utils/fixtures.js": "./utils/fixtures.browser.js"
   },
   "bin": {
     "aegir": "cli.js"
   },
+  "types": "dist/src/index",
   "typesVersions": {
     "*": {
       "utils/*": [
         "dist/utils/*"
+      ],
+      "src/*": [
+        "dist/src/*", 
+        "dist/src/*/index"
+      ],
+      "src/": [
+        "dist/src/index"
       ]
     }
   },
   "repository": "github:ipfs/aegir",
   "scripts": {
-    "prepare": "tsc -p tsconfig-types.json",
+    "prepare": "node cli.js ts -p types",
     "lint": "node cli.js lint",
     "test:node": "node cli.js test -t node",
     "test:browser": "node cli.js test -t browser webworker",
@@ -86,7 +93,6 @@
     "fs-extra": "^9.1.0",
     "gh-pages": "^3.1.0",
     "git-authors-cli": "^1.0.33",
-    "git-validate": "^2.2.4",
     "globby": "^11.0.2",
     "ipfs-utils": "^6.0.0",
     "it-glob": "~0.0.10",

@@ -6,7 +6,6 @@
     "include": [
       "package.json",
       "cli.js",
-      "fixtures.js",
       "src",
       "test",
       "utils"

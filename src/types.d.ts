@@ -169,7 +169,7 @@ interface TestOptions {
    */
   browser: {
     /**
-     * playwright-test config
+     * playwright-test config @see https://github.com/hugomrdias/playwright-test
      */
     config: any
   }

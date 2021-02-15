@@ -1,14 +1,19 @@
 'use strict'
 
 const path = require('path')
+const fs = require('fs')
 
-// note: filePath needs to be relative to the module root
-module.exports = function loadFixtures (filePath, module) {
+/**
+ * note: filePath needs to be relative to the module root
+ *
+ * @param {string} filePath
+ * @param {string} [module]
+ */
+function loadFixtures (filePath, module = '') {
   if (module) {
     filePath = path.join(module, filePath)
   }
 
-  const fs = require('fs')
   const paths = [
     path.join(process.cwd(), filePath),
     path.join(process.cwd(), 'node_modules', filePath),
@@ -24,10 +29,15 @@ module.exports = function loadFixtures (filePath, module) {
   return fs.readFileSync(resourcePath)
 }
 
+/**
+ * @param {string} filePath
+ */
 function resolve (filePath) {
   try {
     return require.resolve(filePath)
   } catch (error) {
     // ignore error
+    return filePath
   }
 }
+module.exports = loadFixtures

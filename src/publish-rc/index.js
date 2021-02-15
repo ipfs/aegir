@@ -7,6 +7,9 @@ const path = require('path')
 const release = require('../release')
 const semver = require('semver')
 
+/**
+ * @param {{ branch: string; remote: string; type: 'major' | 'minor' | 'patch'; prefix: any; preId: any; distTag: any; ghtoken: any; }} opts
+ */
 async function publishRc (opts) {
   try {
     console.info(`Removing local copy of ${opts.branch}`) // eslint-disable-line no-console
@@ -35,6 +38,7 @@ async function publishRc (opts) {
   console.info('Found version number', pkg.version) // eslint-disable-line no-console
   const version = pkg.version
   const newVersion = semver.inc(version, opts.type)
+  // @ts-ignore
   const newVersionBranch = `${opts.prefix}v${newVersion.split('.').filter((sub, i) => {
     return i < 2
   }).join('.')}.x`
@@ -48,11 +52,13 @@ async function publishRc (opts) {
   if (version.includes('-')) {
     // already a pre${opts.type}, change from prepatch, preminor, etc to 'prerelease'
     // e.g. 0.38.0-pre.1 -> 0.38.0-rc.0
+    // @ts-ignore
     opts.type = 'release'
   }
 
   console.info('Creating', opts.preId) // eslint-disable-line no-console
   await release({
+    // @ts-ignore
     type: `pre${opts.type}`,
     preid: opts.preId,
     'dist-tag': opts.distTag,

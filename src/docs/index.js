@@ -88,7 +88,7 @@ const TASKS = new Listr(
     },
     {
       title: 'Generating documentation',
-      task: docs
+      task: (ctx, task) => docs({ debug: ctx.debug, tsRepo: ctx.tsRepo, ...ctx.config.docs }, task)
     },
     {
       title: 'Publish to GitHub Pages',
@@ -97,7 +97,7 @@ const TASKS = new Listr(
     }
   ],
   {
-    renderer: 'default'
+    renderer: 'verbose'
   }
 )
 

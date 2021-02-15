@@ -4,11 +4,22 @@ const conventionalChangelog = require('conventional-changelog')
 const fs = require('fs-extra')
 const path = require('path')
 
+/**
+ * @typedef {import('./../types').ReleaseOptions} ReleaseOptions
+ * @typedef {import('listr').ListrTaskWrapper} ListrTask
+ */
+
+/**
+ *
+ * @param {*} ctx
+ * @param {ListrTask} task
+ */
 function changelog (ctx, task) {
   const changelogPath = path.join(process.cwd(), 'CHANGELOG.md')
 
   const releaseCount = fs.existsSync(changelogPath) ? 1 : 0
 
+  /** @type {Buffer} */
   let current
 
   if (releaseCount === 0) {

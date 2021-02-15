@@ -2,6 +2,7 @@
 const path = require('path')
 const execa = require('execa')
 const { hook, getElectron } = require('../utils')
+const merge = require('merge-options')
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -11,8 +12,9 @@ const { hook, getElectron } = require('../utils')
 /**
  *
  * @param {TestOptions & GlobalOptions} argv
+ * @param {ExecaOptions} execaOptions
  */
-module.exports = async (argv) => {
+module.exports = async (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   const watch = argv.watch ? ['--watch'] : []
   const files = argv.files.length > 0 ? [...argv.files] : ['test/**/*.spec.{js,ts}']
@@ -24,33 +26,37 @@ module.exports = async (argv) => {
   const ts = argv.tsRepo ? ['--require', require.resolve('esbuild-register')] : []
 
   // pre hook
-  const pre = await hook('browser', 'pre')(argv.config)
+  const pre = await hook('browser', 'pre')(argv.fileConfig)
   const preEnv = pre && pre.env ? pre.env : {}
   const electronPath = await getElectron()
 
-  await execa('electron-mocha', [
-    ...files,
-    ...watch,
-    ...grep,
-    ...progress,
-    ...bail,
-    ...timeout,
-    ...ts,
-    '--colors',
-    '--full-trace',
-    ...renderer,
-    ...forwardOptions
-  ], {
-    localDir: path.join(__dirname, '../..'),
-    preferLocal: true,
-    stdio: 'inherit',
-    env: {
-      AEGIR_RUNNER: argv.runner,
-      NODE_ENV: process.env.NODE_ENV || 'test',
-      ELECTRON_PATH: electronPath,
-      ...preEnv
-    }
-  })
+  await execa('electron-mocha',
+    [
+      ...files,
+      ...watch,
+      ...grep,
+      ...progress,
+      ...bail,
+      ...timeout,
+      ...ts,
+      '--colors',
+      '--full-trace',
+      ...renderer,
+      ...forwardOptions
+    ],
+    merge({
+      localDir: path.join(__dirname, '../..'),
+      preferLocal: true,
+      stdio: 'inherit',
+      env: {
+        AEGIR_RUNNER: argv.runner,
+        NODE_ENV: process.env.NODE_ENV || 'test',
+        ELECTRON_PATH: electronPath,
+        ...preEnv
+      }
+    },
+    execaOptions)
+  )
   // post hook
-  await hook('browser', 'post')(argv.config)
+  await hook('browser', 'post')(argv.fileConfig)
 }

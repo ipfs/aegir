@@ -1,6 +1,7 @@
 'use strict'
 
 const execa = require('execa')
+// @ts-ignore
 const commitlint = require('@commitlint/cli')
 
 // Allow to override used bins for testing purposes
@@ -43,15 +44,24 @@ module.exports = async function main () {
     const [start, end] = RANGE.split('.').filter(Boolean)
     await lint(['--from', start, '--to', end])
   } else {
+    // @ts-ignore
     const input = await log(COMMIT)
     await lint([], { input })
   }
 }
 
+/**
+ * @param {any[] | readonly string[] | undefined} args
+ * @param {any} [options]
+ */
 function git (args, options) {
   return execa(GIT, args, Object.assign({}, { stdio: 'inherit' }, options))
 }
 
+/**
+ *
+ * @param {*} param0
+ */
 async function fetch ({ name, url }) {
   await git(['remote', 'add', name, url])
   await git(['fetch', name, '--quiet'])
@@ -64,6 +74,10 @@ async function isClean () {
   return !(result.stdout && result.stdout.trim())
 }
 
+/**
+ * @param {string[]} args
+ * @param {{ input: string; } | undefined} [options]
+ */
 function lint (args, options) {
   return execa(
     COMMITLINT || commitlint,
@@ -72,10 +86,14 @@ function lint (args, options) {
       '@commitlint/config-conventional',
       ...args
     ],
+    // @ts-ignore
     Object.assign({}, { stdio: ['pipe', 'inherit', 'inherit'] }, options)
   )
 }
 
+/**
+ * @param {string} hash
+ */
 async function log (hash) {
   const result = await execa('git', [
     'log',

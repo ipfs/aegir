@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict'
 
 const {
@@ -5,11 +6,14 @@ const {
 } = require('../utils')
 const release = require('../release')
 
+/**
+ * @param {{ branch: string; remote: any; preId: any; distTag: any; ghtoken: any; }} opts
+ */
 async function updateRc (opts) {
   await exec('git', ['checkout', 'master'])
 
   try {
-    console.info(`Removing local copy of ${opts.branch}`) // eslint-disable-line no-console
+    console.info(`Removing local copy of ${opts.branch}`)
     await exec('git', ['branch', '-D', opts.branch])
   } catch (err) {
     if (!err.message.includes(`branch '${opts.branch}' not found`)) {
@@ -17,32 +21,36 @@ async function updateRc (opts) {
     }
   }
 
-  console.info('Fetching repo history') // eslint-disable-line no-console
+  console.info('Fetching repo history')
   await exec('git', ['fetch'])
 
-  console.info(`Checking out branch ${opts.branch}`) // eslint-disable-line no-console
+  console.info(`Checking out branch ${opts.branch}`)
   await exec('git', ['checkout', '--track', `${opts.remote}/${opts.branch}`])
 
-  console.info('Removing dependencies') // eslint-disable-line no-console
+  console.info('Removing dependencies')
   await exec('rm', ['-rf', 'node_modules', 'package-lock.json'])
 
-  console.info('Installing dependencies') // eslint-disable-line no-console
+  console.info('Installing dependencies')
   await exec('npm', ['ci'])
 
-  console.info('Updating', opts.preId) // eslint-disable-line no-console
+  console.info('Updating', opts.preId)
   await release({
+    debug: false,
+    tsRepo: false,
     type: 'prerelease',
     preid: opts.preId,
-    'dist-tag': opts.distTag,
+    distTag: opts.distTag,
     build: false,
     test: false,
     lint: false,
-    docsFormats: ['html'],
     contributors: true,
     bump: true,
     changelog: true,
     publish: true,
     ghrelease: true,
+    commit: true,
+    tag: true,
+    push: true,
     docs: true,
     ghtoken: opts.ghtoken || process.env.AEGIR_GHTOKEN,
     remote: opts.remote

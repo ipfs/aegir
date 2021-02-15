@@ -41,10 +41,7 @@
     "lint": "node cli.js lint",
     "test:node": "node cli.js test -t node",
     "test:browser": "node cli.js test -t browser webworker",
-    "test:acceptance": "./test/acceptance.sh",
     "test": "npm run test:node && npm run test:browser",
-    "coverage": "node cli.js coverage -t node",
-    "watch": "node cli.js test -t node --watch",
     "release": "node cli.js release --no-docs --no-test --no-build",
     "release-minor": "node cli.js release --no-docs --no-build --no-test --type minor",
     "release-major": "node cli.js release --no-docs --no-build --no-test --type major"
@@ -103,10 +100,9 @@
     "ora": "^5.3.0",
     "p-map": "^4.0.0",
     "pascalcase": "^1.0.0",
-    "playwright-test": "hugomrdias/playwright-test#feat/esbuild",
+    "playwright-test": "^2.0.0",
     "polka": "^0.5.2",
     "premove": "^3.0.1",
-    "prompt-promise": "^1.0.3",
     "proper-lockfile": "^4.1.2",
     "read-pkg-up": "^7.0.1",
     "semver": "^7.3.4",
@@ -122,21 +118,24 @@
   },
   "devDependencies": {
     "@types/bytes": "^3.1.0",
+    "@types/conventional-changelog": "^3.1.0",
     "@types/cors": "^2.8.9",
     "@types/eslint": "^7.2.6",
     "@types/fs-extra": "^9.0.7",
     "@types/gh-pages": "^3.0.0",
     "@types/listr": "^0.14.2",
+    "@types/pascalcase": "^1.0.0",
     "@types/polka": "^0.5.2",
     "@types/proper-lockfile": "^4.1.1",
     "@types/semver": "^7.3.4",
+    "@types/update-notifier": "^5.0.0",
     "@types/yargs": "^16.0.0",
     "electron": "^11.2.0",
     "iso-url": "^1.0.0",
     "sinon": "^9.2.3"
   },
   "engines": {
-    "node": ">=12.0.0",
+    "node": ">=14.0.0",
     "npm": ">=6.0.0"
   },
   "browserslist": [

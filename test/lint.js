@@ -37,7 +37,11 @@ const setupProjectWithDeps = deps => setupProject({
  */
 const projectShouldPassLint = async (project) => {
   await setupProject(project)
-  await lint(userConfig.lint)
+  await lint({
+    debug: false,
+    tsRepo: false,
+    ...userConfig.lint
+  })
 }
 
 /**
@@ -47,7 +51,11 @@ const projectShouldFailLint = async (project) => {
   await setupProject(project)
   let failed = false
   try {
-    await lint(userConfig.lint)
+    await lint({
+      debug: false,
+      tsRepo: false,
+      ...userConfig.lint
+    })
   } catch (error) {
     failed = true
     expect(error.message).to.contain('Lint errors')
@@ -69,7 +77,13 @@ describe('lint', () => {
 
   it('lint itself (aegir)', function () {
     this.timeout(20 * 1000) // slow ci is slow
-    return lint({ fix: false, silent: true, files: userConfig.lint.files })
+    return lint({
+      debug: false,
+      tsRepo: false,
+      fix: false,
+      silent: true,
+      files: userConfig.lint.files
+    })
   })
 
   it('should pass in user defined path globs', () => {
@@ -82,6 +96,8 @@ describe('lint', () => {
         fs.writeFileSync(`${dir}/test-pass.js`, '\'use strict\'\n\nmodule.exports = {}\n')
       })
       .then(() => lint({
+        debug: false,
+        tsRepo: false,
         fix: false,
         silent: true,
         files: [`${dir}/*.js`]
@@ -97,6 +113,8 @@ describe('lint', () => {
     fs.writeFileSync(`${dir}/test-fail.js`, '() .> {')
 
     await expect(lint({
+      debug: false,
+      tsRepo: false,
       fix: false,
       silent: true,
       files: [`${dir}/*.js`]
@@ -106,7 +124,11 @@ describe('lint', () => {
 
   it('should lint ts and js with different parsers rules', async () => {
     process.chdir(path.join(__dirname, './fixtures/js+ts/'))
-    await lint(userConfig.lint)
+    await lint({
+      debug: false,
+      tsRepo: false,
+      ...userConfig.lint
+    })
   })
 
   it('should pass if no .eslintrc found and does not follows ipfs eslint rules', async () => {

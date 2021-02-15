@@ -8,6 +8,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: npm install
     - run: npm run lint
+    - run: ./cli.js ts -p check
     - name: dependencies
       run: ./cli.js dep-check -- -i aegir
   test-node:
@@ -24,7 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: yarn
-      - run: npx nyc --reporter=lcov npm run test:node -- --bail
+      - run: npm run test:node -- --bail --cov
       - uses: codecov/codecov-action@v1
   test-chrome:
     needs: check
@@ -39,4 +40,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: yarn
-      - run: npm run test:browser -- -- --browsers FirefoxHeadless
+      - run: npm run test:browser -- -- --browser firefox

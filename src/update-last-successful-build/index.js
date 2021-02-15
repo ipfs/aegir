@@ -10,12 +10,18 @@ async function findCurrentBranch () {
   return result.stdout.replace('ref: ', '').trim()
 }
 
+/**
+ * @param {{ message?: string; branch?: any; remote: any; }} opts
+ */
 async function findMasterCommit (opts) {
   const result = await exec('git', ['show-ref', '-s', `${opts.remote}/master`])
 
   return result.stdout.trim()
 }
 
+/**
+ * @param {{ message: string; branch: any; remote: string; }} opts
+ */
 async function isHeadOfMaster (opts) {
   const master = await findMasterCommit(opts)
   const branch = await findCurrentBranch()
@@ -24,6 +30,9 @@ async function isHeadOfMaster (opts) {
   return branch === 'refs/heads/master' || branch === master
 }
 
+/**
+ * @param {{ message: string; branch: any; remote: string; }} opts
+ */
 async function updateLastSuccessfulBuild (opts) {
   if (!isHeadOfMaster(opts)) {
     console.info('Will only run on the master branch') // eslint-disable-line no-console

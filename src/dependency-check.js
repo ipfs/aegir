@@ -4,8 +4,8 @@ const path = require('path')
 const execa = require('execa')
 const merge = require('merge-options')
 
-/** @typedef { import("execa").Options} ExecaOptions */
-/** @typedef { import("execa").ExecaChildProcess} ExecaChildProcess */
+/** @typedef {import("execa").Options} ExecaOptions */
+/** @typedef {import("execa").ExecaChildProcess} ExecaChildProcess */
 
 const defaultInput = [
   'package.json',
@@ -21,8 +21,8 @@ const commandNames = ['dependency-check', 'dep-check', 'dep']
  * Returns true if the user invoked the command with non-flag or
  * optional args
  *
- * @param {Array} input - input files maybe passed by the user, maybe defaults
- * @param {Array} processArgs - process.argv or similar
+ * @param {string[]} input - input files maybe passed by the user, maybe defaults
+ * @param {string[]} processArgs - process.argv or similar
  * @returns {boolean}
  */
 const hasPassedFileArgs = (input, processArgs) => {
@@ -40,14 +40,15 @@ const hasPassedFileArgs = (input, processArgs) => {
 /**
  * Check dependencies
  *
- * @param {object} argv - Command line arguments passed to the process.
- * @param {Array} processArgs - Unparsed command line arguments used to start the process
+ * @param {*} argv - Command line arguments passed to the process.
+ * @param {string[]} processArgs - Unparsed command line arguments used to start the process
  * @param {ExecaOptions} execaOptions - execa options.
  * @returns {ExecaChildProcess} - Child process that does dependency check.
  */
 const check = (argv = { _: [], input: [], ignore: [] }, processArgs = [], execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   let input = argv.input
+  /** @type {string[]} */
   const ignore = argv.ignore
 
   if (argv.productionOnly) {
@@ -93,6 +94,8 @@ const check = (argv = { _: [], input: [], ignore: [] }, processArgs = [], execaO
   )
 }
 
-module.exports = check
-module.exports.defaultInput = defaultInput
-module.exports.commandNames = commandNames
+module.exports = {
+  check,
+  defaultInput,
+  commandNames
+}

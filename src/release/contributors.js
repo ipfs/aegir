@@ -2,10 +2,13 @@
 
 const git = require('simple-git/promise')(process.cwd())
 const execa = require('execa')
-const { paths } = require('../utils')
+const { paths, fromAegir } = require('../utils')
 
 const contributors = async () => {
-  await execa('git-authors-cli', ['--print', 'false'])
+  await execa('git-authors-cli', ['--print', 'false'], {
+    localDir: fromAegir(),
+    preferLocal: true
+  })
 
   const res = await git.status()
 

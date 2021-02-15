@@ -48,8 +48,9 @@ const TASKS = [
     title: 'Test Electron Main',
     /**
      * @param {TestOptions & GlobalOptions} opts
+     * @param {ExecaOptions} execaOptions
      */
-    task: (opts) => electron({ ...opts, runner: 'electron-main' }),
+    task: (opts, execaOptions) => electron({ ...opts, runner: 'electron-main' }, execaOptions),
     /**
      * @param {TestOptions & GlobalOptions} ctx
      */
@@ -59,8 +60,9 @@ const TASKS = [
     title: 'Test Electron Renderer',
     /**
      * @param {TestOptions & GlobalOptions} opts
+     * @param {ExecaOptions} execaOptions
      */
-    task: (opts) => electron({ ...opts, runner: 'electron-renderer' }),
+    task: (opts, execaOptions) => electron({ ...opts, runner: 'electron-renderer' }, execaOptions),
     /**
      * @param {TestOptions & GlobalOptions} ctx
      */
@@ -75,13 +77,14 @@ module.exports = {
    * @param {TestOptions & GlobalOptions} opts
    * @param {ExecaOptions} execaOptions
    */
-  run (opts, execaOptions) {
+  run (opts, execaOptions = {}) {
     return pmap(TASKS, (task) => {
       if (!task.enabled(opts)) {
         return Promise.resolve()
       }
-
-      console.log(task.title) // eslint-disable-line no-console
+      if (execaOptions.stdio !== 'ignore') {
+        console.log(task.title) // eslint-disable-line no-console
+      }
       return task.task(opts, execaOptions)
     }, { concurrency: 1 })
   }

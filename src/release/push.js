@@ -3,18 +3,20 @@
 const git = require('simple-git/promise')(process.cwd())
 const execa = require('execa')
 
+/**
+ * @param {{ remote: string; }} opts
+ */
 async function push (opts) {
-  const remote = opts.remote || 'origin'
   const branch = (await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'], {
     cwd: process.cwd()
   })).stdout
   return git.push(
-    remote,
+    opts.remote,
     branch,
     {
       // Linter and tests were already run by previous steps
-      '--no-verify': true,
-      '--tags': true
+      '--no-verify': null,
+      '--tags': null
     }
   )
 }

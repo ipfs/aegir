@@ -2,8 +2,13 @@
 'use strict'
 
 const { Buffer } = require('buffer')
-// note: filePath needs to be relative to the module root
-module.exports = function loadFixtures (filePath, module) {
+/**
+ * note: filePath needs to be relative to the module root
+ *
+ * @param {string} filePath
+ * @param {string} module
+ */
+function loadFixtures (filePath, module) {
   if (module) {
     filePath = module + '/' + filePath
   }
@@ -12,6 +17,9 @@ module.exports = function loadFixtures (filePath, module) {
 
 // @dignifiedquire: I know this is considered bad practice (syncXhr), but it
 // makes testing life so much nicer!
+/**
+ * @param {string} filePath
+ */
 function syncXhr (filePath) {
   const target = filePath
 
@@ -33,3 +41,5 @@ function syncXhr (filePath) {
     throw new Error(`Could not get the Fixture: ${filePath}`)
   }
 }
+
+module.exports = loadFixtures

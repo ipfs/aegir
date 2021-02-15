@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 'use strict'
 
-const check = require('../src/dependency-check')
+const { check, defaultInput } = require('../src/dependency-check')
 const { expect } = require('../utils/chai')
 const path = require('path')
 const merge = require('merge-options')
@@ -12,13 +12,17 @@ const yargsv = (overrides = {}) => {
     _: [
       'dependency-check'
     ],
-    input: check.defaultInput,
+    input: defaultInput,
     ignore: []
   }
 
   return merge(argv, overrides)
 }
 
+/**
+ *
+ * @param {string[] | string} input
+ */
 const argv = (input = []) => {
   return [
     'node', 'aegir', 'dependency-check'

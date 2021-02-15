@@ -6,7 +6,7 @@ const { config } = require('../../src/config/user')
 const path = require('path')
 
 describe('config - user', () => {
-  it('custom config', () => {
+  it('custom config', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-config'))
     expect(conf).to.have.property('webpack').eql({
       devtool: 'eval'
@@ -18,9 +18,8 @@ describe('config - user', () => {
     expect(conf.hooks).to.have.nested.property('node.pre')
     expect(conf.hooks).to.have.nested.property('node.post')
 
-    return conf.hooks.browser.pre().then((res) => {
-      expect(res).to.eql('pre')
-    })
+    const res = await conf.hooks.browser.pre()
+    expect(res).to.eql('pre')
   })
   it('supports async hooks', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-user-async-hooks'))
@@ -29,6 +28,6 @@ describe('config - user', () => {
   })
   it('supports async hooks', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-config-package-json'))
-    expect(await conf.custom).to.ok()
+    expect(conf.debug).to.ok()
   })
 })

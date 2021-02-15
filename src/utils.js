@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Various utility methods used in AEgir.
  *
@@ -12,13 +13,16 @@ const stripComments = require('strip-json-comments')
 const stripBom = require('strip-bom')
 const { download } = require('@electron/get')
 const path = require('path')
+const readline = require('readline')
 const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
 const execa = require('execa')
 const envPaths = require('env-paths')('aegir', { suffix: '' })
 const lockfile = require('proper-lockfile')
 const {
+  // @ts-ignore
   packageJson: pkg,
+  // @ts-ignore
   path: pkgPath
 } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
@@ -29,8 +33,17 @@ const TEST_FOLDER = 'test'
 
 exports.pkg = pkg
 exports.repoDirectory = path.dirname(pkgPath)
+/**
+ * @param {string[]} p
+ */
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
+/**
+ * @param {string[]} p
+ */
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
+/**
+ * @param {string[]} p
+ */
 exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
 exports.hasTsconfig = exports.hasFile('tsconfig.json')
 
@@ -100,9 +113,11 @@ exports.exec = (command, args, options = {}) => {
   const result = execa(command, args, options)
 
   if (!options.quiet) {
+    // @ts-ignore
     result.stdout.pipe(process.stdout)
   }
 
+  // @ts-ignore
   result.stderr.pipe(process.stderr)
 
   return result
@@ -127,6 +142,7 @@ function getPlatformPath () {
 }
 
 exports.getElectron = async () => {
+  // @ts-ignore
   const pkg = require('./../package.json')
 
   const lockfilePath = path.join(envPaths.cache, '__electron-lock')
@@ -193,5 +209,31 @@ exports.gzipSize = (path) => {
     pipe.on('end', () => {
       resolve(size)
     })
+  })
+}
+
+exports.otp = () => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+  const otp = []
+  return new Promise((resolve, reject) => {
+    rl.question('OTP: ', answer => {
+      resolve(answer)
+      console.log('\n')
+      rl.close()
+    })
+    // @ts-ignore
+    rl._writeToOutput = function _writeToOutput (k) {
+      otp.push(k)
+      if (otp.length === 6) {
+        // @ts-ignore
+        rl.write(null, { name: 'enter' })
+      } else {
+        // @ts-ignore
+        rl.output.write('*')
+      }
+    }
   })
 }

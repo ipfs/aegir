@@ -15,7 +15,7 @@ describe('echo server spec', () => {
 
   before(async () => {
     await echo.start()
-    const { port, address } = echo.server.address()
+    const { port, address } = /** @type {import('node:net').AddressInfo} */(echo.server.address())
     url = format({ protocol: 'http:', hostname: address, port })
   })
 
@@ -27,13 +27,13 @@ describe('echo server spec', () => {
   })
 
   it('get with search params', async () => {
-    const req = await http.get('echo/query', { base: url, searchParams: { test: 1 } })
+    const req = await http.get('echo/query', { base: url, searchParams: new URLSearchParams({ test: '1' }) })
     const res = await req.text()
     expect(res).to.be.eq('{"test":"1"}')
   })
 
   it('get with redirect', async () => {
-    const req = await http.get('redirect', { base: url, searchParams: { to: `${url}/echo/query?test=1` } })
+    const req = await http.get('redirect', { base: url, searchParams: new URLSearchParams({ to: `${url}/echo/query?test=1` }) })
     const res = await req.text()
     expect(res).to.be.eq('{"test":"1"}')
   })
@@ -45,7 +45,7 @@ describe('echo server spec', () => {
   })
 
   it('download endpoint with text', async () => {
-    const req = await http.get('download', { base: url, searchParams: { data: 'hello world' } })
+    const req = await http.get('download', { base: url, searchParams: new URLSearchParams({ data: 'hello world' }) })
     const res = await req.text()
     expect(res).to.be.eq('hello world')
   })
@@ -56,7 +56,7 @@ describe('echo server spec', () => {
   })
 
   it('download endpoint with arraybuffer', async () => {
-    const req = await http.get('download', { base: url, searchParams: { data: 'hello world' } })
+    const req = await http.get('download', { base: url, searchParams: new URLSearchParams({ data: 'hello world' }) })
     const res = Buffer.from(await req.arrayBuffer())
     expect(res).to.be.deep.eq(Buffer.from('hello world'))
   })

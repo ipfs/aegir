@@ -63,12 +63,10 @@ const config = (searchFrom) => {
     throw new Error('Error finding your config file.')
   }
 
-  /** @type {Options} */
-  const conf = merge(
+  const conf = /** @type {Options} */(merge(
     {
       // global options
       debug: false,
-      node: false,
       tsRepo: false,
       hooks: {},
       // test cmd options
@@ -116,18 +114,39 @@ const config = (searchFrom) => {
         publish: false,
         entryPoint: 'src/index.js'
       },
+      // ts cmd options
       ts: {
         preset: undefined,
         include: [],
         copyFrom: 'src/**/*.d.ts',
         copyTo: 'dist'
+      },
+      // release cmd options
+      release: {
+        build: true,
+        test: true,
+        lint: true,
+        contributors: true,
+        bump: true,
+        changelog: true,
+        publish: true,
+        commit: true,
+        tag: true,
+        push: true,
+        ghrelease: true,
+        docs: true,
+        ghtoken: '',
+        type: 'patch',
+        preid: undefined,
+        distTag: 'latest',
+        remote: 'origin'
       }
     },
     userConfig,
     {
       hooks: normalizeHooks(userConfig.hooks)
     }
-  )
+  ))
 
   return conf
 }

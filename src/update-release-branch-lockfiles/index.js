@@ -4,6 +4,9 @@ const {
   exec
 } = require('../utils')
 
+/**
+ * @param {{ branch: string; remote: string; message: string; }} opts
+ */
 async function updateReleaseBranchLockfiles (opts) {
   // when (eventually) run on CI, deps should already be present so need to
   // remove the lines that remove the node_modules folder

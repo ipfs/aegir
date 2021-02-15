@@ -1,4 +1,4 @@
-
+import type esbuild from 'esbuild'
 /**
  * Options for CLI and local file config
  *
@@ -25,7 +25,10 @@ interface Options extends GlobalOptions {
    * Options for the `test` command
    */
   test: TestOptions
-
+  /**
+   * Options for the `release` command
+   */
+  release: ReleaseOptions
 }
 
 interface GlobalOptions {
@@ -49,11 +52,11 @@ interface GlobalOptions {
   /**
    * Hooks
    */
-  hooks: any
+  hooks?: any
   /**
    * Full config from configuration file
    */
-  config: Options
+  fileConfig?: Options
 }
 
 interface BuildOptions {
@@ -70,9 +73,13 @@ interface BuildOptions {
    */
   bundlesizeMax: string
   /**
-   * Build the Typescripts type declarations.
+   * Build the Typescript type declarations.
    */
   types: boolean
+  /**
+   * esbuild build options
+   */
+  config: esbuild.CommonOptions
 }
 
 interface TSOptions {
@@ -168,6 +175,47 @@ interface TestOptions {
   }
 }
 
+interface ReleaseOptions {
+  build: boolean
+  test: boolean
+  lint: boolean
+  contributors: boolean
+  bump: boolean
+  changelog: boolean
+  publish: boolean
+  commit: boolean
+  tag: boolean
+  push: boolean
+  /**
+   * Generate GitHub release
+   */
+  ghrelease: boolean
+  /**
+   * Generate and publish documentation
+   */
+  docs: boolean
+  /**
+   * Access token for generating GitHub releases
+   */
+  ghtoken: string
+  /**
+   * The type of version bump for this release
+   */
+  type: 'major' | 'minor' | 'patch' | 'prepatch' | 'preminor' | 'premajor' | 'prerelease'
+  /**
+   * Identifier to be used to prefix premajor, preminor, prepatch or prerelease version increments.
+   */
+  preid: string
+  /**
+   * The npm tag to publish to
+   */
+  distTag: string
+  /**
+   * Git remote
+   */
+  remote: string
+}
+
 export type {
   Options,
   GlobalOptions,
@@ -175,5 +223,6 @@ export type {
   TSOptions,
   DocsOptions,
   LintOptions,
-  TestOptions
+  TestOptions,
+  ReleaseOptions
 }

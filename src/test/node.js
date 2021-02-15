@@ -65,7 +65,7 @@ async function testNode (argv, execaOptions) {
   }
 
   // pre hook
-  const pre = await hook('node', 'pre')(argv.config)
+  const pre = await hook('node', 'pre')(argv.fileConfig)
   const preEnv = pre && pre.env ? pre.env : {}
 
   // run mocha
@@ -85,7 +85,7 @@ async function testNode (argv, execaOptions) {
     )
   )
   // post hook
-  await hook('node', 'post')(argv.config)
+  await hook('node', 'post')(argv.fileConfig)
 }
 
 module.exports = testNode

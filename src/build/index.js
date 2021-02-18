@@ -27,6 +27,19 @@ const merge = require('merge-options').bind({
 const build = async (argv) => {
   const outfile = path.join(paths.dist, 'index.min.js')
   const globalName = pascalcase(pkg.name)
+  const umdPre = `
+  (function (root, factory) {
+    if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        root.${globalName} = factory();
+  }
+}(typeof self !== 'undefined' ? self : this, function () {
+`
+  const umdPost = `
+return ${globalName};
+}));
+`
   await esbuild.build(merge(
     {
       entryPoints: [fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')],
@@ -36,7 +49,8 @@ const build = async (argv) => {
       sourcemap: argv.bundlesize,
       minify: true,
       globalName,
-      footer: `globalThis.${globalName} = ${globalName}`,
+      banner: umdPre,
+      footer: umdPost,
       metafile: argv.bundlesize ? path.join(paths.dist, 'stats.json') : undefined,
       outfile,
       define: {

@@ -46,9 +46,7 @@
   "scripts": {
     "prepare": "node cli.js ts -p types",
     "lint": "node cli.js lint",
-    "test:node": "node cli.js test -t node",
-    "test:browser": "node cli.js test -t browser webworker",
-    "test": "npm run test:node && npm run test:browser",
+    "test": "node cli.js ts -p check && node cli.js test",
     "release": "node cli.js release --no-docs --no-test --no-build",
     "release-minor": "node cli.js release --no-docs --no-build --no-test --type minor",
     "release-major": "node cli.js release --no-docs --no-build --no-test --type major"
@@ -113,8 +111,7 @@
     "typedoc": "^0.20.25",
     "typescript": "4.1.5",
     "update-notifier": "^5.0.0",
-    "yargs": "^16.2.0",
-    "yargs-parser": "^20.2.5"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "@types/bytes": "^3.1.0",

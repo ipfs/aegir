@@ -14,7 +14,7 @@ const hasConfig = hasFile('tsconfig.json')
  * @typedef {import("../types").TSOptions} TSOptions
  *
  * @typedef {Object} Options
- * @property {"config" | "check" | "types"} preset
+ * @property {"config" | "check" | "types" | undefined} preset
  * @property {string[]} forwardOptions - Extra options to forward to the backend
  * @property {string[]} extraInclude - Extra include files for the TS Config
  * @property {boolean} tsRepo - Typescript repo support.
@@ -133,7 +133,7 @@ const types = async (userTSConfig, opts) => {
             declarationMap: true
           },
           include: opts.extraInclude,
-          exclude: ['test']
+          exclude: ['test', '.aegir.js']
         }
       ])
     )

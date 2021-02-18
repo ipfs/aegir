@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const execa = require('execa')
-const { hook, getElectron } = require('../utils')
+const { getElectron } = require('../utils')
 const merge = require('merge-options')
 
 /**
@@ -25,9 +25,9 @@ module.exports = async (argv, execaOptions) => {
   const renderer = argv.runner === 'electron-renderer' ? ['--renderer'] : []
   const ts = argv.tsRepo ? ['--require', require.resolve('esbuild-register')] : []
 
-  // pre hook
-  const pre = await hook('browser', 'pre')(argv.fileConfig)
-  const preEnv = pre && pre.env ? pre.env : {}
+  // before hook
+  const before = await argv.fileConfig.test.before(argv)
+  const beforeEnv = before && before.env ? before.env : {}
   const electronPath = await getElectron()
 
   await execa('electron-mocha',
@@ -52,11 +52,11 @@ module.exports = async (argv, execaOptions) => {
         AEGIR_RUNNER: argv.runner,
         NODE_ENV: process.env.NODE_ENV || 'test',
         ELECTRON_PATH: electronPath,
-        ...preEnv
+        ...beforeEnv
       }
     },
     execaOptions)
   )
-  // post hook
-  await hook('browser', 'post')(argv.fileConfig)
+  // after hook
+  await argv.fileConfig.test.after(argv, before)
 }

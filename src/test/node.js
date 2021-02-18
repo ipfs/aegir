@@ -3,7 +3,6 @@
 const execa = require('execa')
 const path = require('path')
 const tempy = require('tempy')
-const { hook } = require('../utils')
 const merge = require('merge-options')
 
 /**
@@ -64,9 +63,9 @@ async function testNode (argv, execaOptions) {
     args.push(...argv['--'])
   }
 
-  // pre hook
-  const pre = await hook('node', 'pre')(argv.fileConfig)
-  const preEnv = pre && pre.env ? pre.env : {}
+  // before hook
+  const before = await argv.fileConfig.test.before(argv)
+  const beforeEnv = before && before.env ? before.env : {}
 
   // run mocha
   await execa(exec, args,
@@ -75,7 +74,7 @@ async function testNode (argv, execaOptions) {
         env: {
           AEGIR_RUNNER: 'node',
           NODE_ENV: process.env.NODE_ENV || 'test',
-          ...preEnv
+          ...beforeEnv
         },
         preferLocal: true,
         localDir: path.join(__dirname, '../..'),
@@ -84,8 +83,8 @@ async function testNode (argv, execaOptions) {
       execaOptions
     )
   )
-  // post hook
-  await hook('node', 'post')(argv.fileConfig)
+  // after hook
+  await argv.fileConfig.test.after(argv, before)
 }
 
 module.exports = testNode

@@ -1,8 +1,6 @@
 import type esbuild from 'esbuild'
 /**
  * Options for CLI and local file config
- *
- *
  */
 interface Options extends GlobalOptions {
   /**
@@ -31,6 +29,44 @@ interface Options extends GlobalOptions {
   release: ReleaseOptions
 }
 
+/**
+ * Partial options for local file config
+ */
+interface PartialOptions {
+  /**
+   * Show debug output.
+   */
+  debug?: boolean
+  /**
+   * Enable support for Typescript repos.
+   */
+  tsRepo?: boolean
+  /**
+   * Options for the `build` command
+   */
+  build?: Partial<BuildOptions>
+  /**
+   * Options for the `ts` command
+   */
+  ts?: Partial<TSOptions>
+  /**
+   * Options for the `docs` command
+   */
+  docs?: Partial<DocsOptions>
+  /**
+   * Options for the `lint` command
+   */
+  lint?: Partial<LintOptions>
+  /**
+   * Options for the `test` command
+   */
+  test?: Partial<TestOptions>
+  /**
+   * Options for the `release` command
+   */
+  release?: Partial<ReleaseOptions>
+}
+
 interface GlobalOptions {
   /**
    * Show debug output.
@@ -49,10 +85,6 @@ interface GlobalOptions {
    * CLI Input
    */
   '_'?: string
-  /**
-   * Hooks
-   */
-  hooks?: any
   /**
    * Full config from configuration file
    */
@@ -86,7 +118,7 @@ interface TSOptions {
   /**
    * Preset to run.
    */
-  preset: 'config' | 'check' | 'types'
+  preset: 'config' | 'check' | 'types' | undefined
   /**
    * Values are merged into the local TS config include property.
    */
@@ -173,6 +205,20 @@ interface TestOptions {
      */
     config: any
   }
+  /**
+   * Before tests hook
+   */
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  before: (options: GlobalOptions & TestOptions) => Promise<TestBeforeResult | void >
+  /**
+   * After tests hook
+   */
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  after: (options: GlobalOptions & TestOptions, beforeResult: TestBeforeResult | void) => Promise<void>
+}
+
+interface TestBeforeResult {
+  env?: NodeJS.ProcessEnv
 }
 
 interface ReleaseOptions {
@@ -205,7 +251,7 @@ interface ReleaseOptions {
   /**
    * Identifier to be used to prefix premajor, preminor, prepatch or prerelease version increments.
    */
-  preid: string
+  preid?: string
   /**
    * The npm tag to publish to
    */
@@ -217,6 +263,7 @@ interface ReleaseOptions {
 }
 
 export type {
+  PartialOptions,
   Options,
   GlobalOptions,
   BuildOptions,

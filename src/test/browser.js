@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const execa = require('execa')
-const { hook, fromAegir } = require('../utils')
+const { fromAegir } = require('../utils')
 const merge = require('merge-options')
 
 /**
@@ -32,9 +32,9 @@ module.exports = async (argv, execaOptions) => {
         'test/browser.{js,ts}'
       ]
 
-  // pre hook
-  const pre = await hook('browser', 'pre')(argv.fileConfig)
-  const preEnv = pre && pre.env ? pre.env : {}
+  // before hook
+  const before = await argv.fileConfig.test.before(argv)
+  const beforeEnv = before && before.env ? before.env : {}
 
   // run pw-test
   await execa('pw-test',
@@ -51,7 +51,7 @@ module.exports = async (argv, execaOptions) => {
         env: {
           AEGIR_RUNNER: argv.runner,
           NODE_ENV: process.env.NODE_ENV || 'test',
-          ...preEnv
+          ...beforeEnv
         },
         preferLocal: true,
         localDir: path.join(__dirname, '../..'),
@@ -61,6 +61,6 @@ module.exports = async (argv, execaOptions) => {
     )
   )
 
-  // post hook
-  await hook('browser', 'post')(argv.fileConfig)
+  // after hook
+  await argv.fileConfig.test.after(argv, before)
 }

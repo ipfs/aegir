@@ -1,15 +1,11 @@
 module.exports = {
-    webpack: {
-        devtool: 'eval'
-    },
-    entry: 'src/main.js',
-    hooks: {
-        async pre () {
+    test: {
+        async before () {
             await Promise.resolve()
 
             return 'pre done async'
         },
-        async post () {
+        async after () {
             await Promise.resolve()
 
             return 'post done async'

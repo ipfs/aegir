@@ -14,7 +14,11 @@ const electron = require('./electron')
 const TASKS = [
   {
     title: 'Test Node.js',
-    task: node,
+    /**
+     * @param {TestOptions & GlobalOptions} opts
+     * @param {ExecaOptions} execaOptions
+     */
+    task: (opts, execaOptions) => node({ ...opts, runner: 'node' }, execaOptions),
     /**
      * @param {TestOptions & GlobalOptions} ctx
      */

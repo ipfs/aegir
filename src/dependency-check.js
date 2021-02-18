@@ -20,12 +20,14 @@ const check = (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   const input = argv.productionOnly ? argv.productionInput : argv.input
   const noDev = argv.productionOnly ? ['--no-dev'] : []
+  const ignore = argv.ignore.reduce((acc, i) => acc.concat('-i', i), /** @type {string[]} */([]))
 
   return execa('dependency-check',
     [
       ...input,
       '--missing',
       ...noDev,
+      ...ignore,
       ...forwardOptions
     ],
     merge(

@@ -27,6 +27,10 @@ interface Options extends GlobalOptions {
    * Options for the `release` command
    */
   release: ReleaseOptions
+  /**
+   * Options for the `dependency-check` command
+   */
+  dependencyCheck: DependencyCheckOptions
 }
 
 /**
@@ -65,6 +69,10 @@ interface PartialOptions {
    * Options for the `release` command
    */
   release?: Partial<ReleaseOptions>
+  /**
+   * Options for the `dependency-check` command
+   */
+  dependencyCheck?: DependencyCheckOptions
 }
 
 interface GlobalOptions {
@@ -262,6 +270,25 @@ interface ReleaseOptions {
   remote: string
 }
 
+interface DependencyCheckOptions {
+  /**
+   * Files to check
+   */
+  input: string[]
+  /**
+   * Check production dependencies and paths only
+   */
+  productionOnly: boolean
+  /**
+   * Ignore these dependencies when considering which are used and which are not
+   */
+  ignore: string[]
+  /**
+   * Files to check when in production only mode
+   */
+  productionInput: string[]
+}
+
 export type {
   PartialOptions,
   Options,
@@ -271,5 +298,6 @@ export type {
   DocsOptions,
   LintOptions,
   TestOptions,
-  ReleaseOptions
+  ReleaseOptions,
+  DependencyCheckOptions
 }

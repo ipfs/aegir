@@ -86,6 +86,25 @@ const defaults = {
     preid: undefined,
     distTag: 'latest',
     remote: 'origin'
+  },
+  // dependency check cmd options
+  dependencyCheck: {
+    input: [
+      'package.json',
+      '.aegir.js',
+      'src/**/*.js',
+      'test/**/*.js',
+      'benchmarks/**/*.js',
+      'utils/**/*.js',
+      '!./test/fixtures/**/*.js'
+    ],
+    productionOnly: false,
+    productionInput: [
+      'package.json'
+    ],
+    ignore: [
+      '@types/*'
+    ]
   }
 }
 

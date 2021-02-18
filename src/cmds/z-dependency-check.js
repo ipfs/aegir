@@ -2,7 +2,8 @@
 'use strict'
 
 const ora = require('ora')
-const { check, commandNames, defaultInput } = require('../dependency-check')
+const { userConfig } = require('../config/user')
+const { check } = require('../dependency-check')
 /**
  * @typedef {import("yargs").Argv} Argv
  */
@@ -10,11 +11,9 @@ const EPILOG = `
 Supports options forwarding with '--' for more info check https://github.com/maxogden/dependency-check#cli-usage
 `
 
-const commandName = commandNames[0]
-
 module.exports = {
-  command: `${commandName} [input...]`,
-  aliases: commandNames.filter(name => name !== commandName),
+  command: 'dependency-check [input...]',
+  aliases: ['dep-check', 'dep'],
   desc: 'Run `dependency-check` cli with aegir defaults.',
   /**
    * @param {Argv} yargs
@@ -28,19 +27,19 @@ module.exports = {
         describe: 'Files to check',
         // @ts-ignore
         type: 'array',
-        default: defaultInput
+        default: userConfig.dependencyCheck.input
       })
       .option('p', {
         alias: 'production-only',
         describe: 'Check production dependencies and paths only',
         type: 'boolean',
-        default: false
+        default: userConfig.dependencyCheck.productionOnly
       })
       .option('i', {
         alias: 'ignore',
         describe: 'Ignore these dependencies when considering which are used and which are not',
         type: 'array',
-        default: []
+        default: userConfig.dependencyCheck.ignore
       })
   },
   /**
@@ -50,7 +49,7 @@ module.exports = {
     const spinner = ora('Checking dependencies').start()
 
     try {
-      await check(argv, process.argv)
+      await check(argv)
       spinner.succeed()
     } catch (err) {
       spinner.fail()

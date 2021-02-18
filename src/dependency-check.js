@@ -4,84 +4,28 @@ const path = require('path')
 const execa = require('execa')
 const merge = require('merge-options')
 
-/** @typedef {import("execa").Options} ExecaOptions */
-/** @typedef {import("execa").ExecaChildProcess} ExecaChildProcess */
-
-const defaultInput = [
-  'package.json',
-  '.aegir.js*',
-  './test/**/*.js',
-  './src/**/*.js',
-  '!./test/fixtures/**/*.js'
-]
-
-const commandNames = ['dependency-check', 'dep-check', 'dep']
-
 /**
- * Returns true if the user invoked the command with non-flag or
- * optional args
- *
- * @param {string[]} input - input files maybe passed by the user, maybe defaults
- * @param {string[]} processArgs - process.argv or similar
- * @returns {boolean}
+ * @typedef {import("execa").Options} ExecaOptions
+ * @typedef {import("./types").GlobalOptions} GlobalOptions
+ * @typedef {import("./types").DependencyCheckOptions} DependencyCheckOptions
  */
-const hasPassedFileArgs = (input, processArgs) => {
-  // if any of the passed paths are not in the process.argv used to invoke
-  // this command, we have been passed defaults and not user input
-  for (const path of input) {
-    if (!processArgs.includes(path)) {
-      return false
-    }
-  }
-
-  return true
-}
 
 /**
  * Check dependencies
  *
- * @param {*} argv - Command line arguments passed to the process.
- * @param {string[]} processArgs - Unparsed command line arguments used to start the process
+ * @param {GlobalOptions & DependencyCheckOptions} argv - Command line arguments passed to the process.
  * @param {ExecaOptions} [execaOptions] - execa options.
- * @returns {ExecaChildProcess} - Child process that does dependency check.
  */
-const check = (argv = { _: [], input: [], ignore: [] }, processArgs = [], execaOptions = {}) => {
+const check = (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
-  let input = argv.input
-  /** @type {string[]} */
-  const ignore = argv.ignore
-
-  if (argv.productionOnly) {
-    if (!hasPassedFileArgs(input, processArgs)) {
-      input = [
-        'package.json',
-        './src/**/*.js'
-      ]
-    }
-
-    forwardOptions.push('--no-dev')
-  }
-
-  if (ignore.length) {
-    // this allows us to specify ignores on a per-module basis while also orchestrating the command across multiple modules.
-    //
-    // e.g. npm script in package.json:
-    // "dependency-check": "aegir dependency-check -i cross-env",
-    //
-    // .travis.yml:
-    // lerna run dependency-check -- -p -- --unused
-    //
-    // results in the following being run in the package:
-    // aegir dependency-check -i cross-env -p -- --unused
-    ignore.forEach(i => {
-      forwardOptions.push('-i', i)
-    })
-  }
+  const input = argv.productionOnly ? argv.productionInput : argv.input
+  const noDev = argv.productionOnly ? ['--no-dev'] : []
 
   return execa('dependency-check',
     [
       ...input,
       '--missing',
+      ...noDev,
       ...forwardOptions
     ],
     merge(
@@ -95,7 +39,5 @@ const check = (argv = { _: [], input: [], ignore: [] }, processArgs = [], execaO
 }
 
 module.exports = {
-  check,
-  defaultInput,
-  commandNames
+  check
 }

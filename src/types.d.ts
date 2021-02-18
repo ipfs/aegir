@@ -111,7 +111,7 @@ interface BuildOptions {
   /**
    * esbuild build options
    */
-  config: esbuild.CommonOptions
+  config: esbuild.BuildOptions
 }
 
 interface TSOptions {

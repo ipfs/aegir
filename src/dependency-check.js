@@ -27,7 +27,7 @@ const check = (argv, execaOptions) => {
   const input =
         argv.productionOnly &&
         isDefaultInput(argv.fileConfig.dependencyCheck.input, argv.input)
-          ? argv.productionInput
+          ? argv.fileConfig.dependencyCheck.productionInput
           : argv.input
   const noDev = argv.productionOnly ? ['--no-dev'] : []
   const ignore = argv.ignore

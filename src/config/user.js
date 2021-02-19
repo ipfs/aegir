@@ -100,7 +100,8 @@ const defaults = {
     ],
     productionOnly: false,
     productionInput: [
-      'package.json'
+      'package.json',
+      'src/**/*.js'
     ],
     ignore: [
       '@types/*'

@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "30.3.0",
+  "version": "31.0.0-next0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",

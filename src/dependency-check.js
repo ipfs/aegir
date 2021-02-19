@@ -11,6 +11,12 @@ const merge = require('merge-options')
  */
 
 /**
+ * @param {any} arr1
+ * @param {any} arr2
+ */
+const isDefaultInput = (arr1, arr2) =>
+  JSON.stringify(arr1) === JSON.stringify(arr2)
+/**
  * Check dependencies
  *
  * @param {GlobalOptions & DependencyCheckOptions} argv - Command line arguments passed to the process.
@@ -18,20 +24,19 @@ const merge = require('merge-options')
  */
 const check = (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
-  const input = argv.productionOnly ? argv.productionInput : argv.input
+  const input =
+        argv.productionOnly &&
+        isDefaultInput(argv.fileConfig.dependencyCheck.input, argv.input)
+          ? argv.productionInput
+          : argv.input
   const noDev = argv.productionOnly ? ['--no-dev'] : []
   const ignore = argv.ignore
     .concat(argv.fileConfig.dependencyCheck.ignore)
-    .reduce((acc, i) => acc.concat('-i', i), /** @type {string[]} */([]))
+    .reduce((acc, i) => acc.concat('-i', i), /** @type {string[]} */ ([]))
 
-  return execa('dependency-check',
-    [
-      ...input,
-      '--missing',
-      ...noDev,
-      ...ignore,
-      ...forwardOptions
-    ],
+  return execa(
+    'dependency-check',
+    [...input, '--missing', ...noDev, ...ignore, ...forwardOptions],
     merge(
       {
         localDir: path.join(__dirname, '..'),

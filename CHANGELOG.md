@@ -1,3 +1,50 @@
+# [31.0.0](https://github.com/ipfs/aegir/compare/v30.3.0...v31.0.0) (2021-02-23)
+
+
+### Bug Fixes
+
+* fix docs paths and update deps ([#726](https://github.com/ipfs/aegir/issues/726)) ([9b7136a](https://github.com/ipfs/aegir/commit/9b7136aacd7637b406208558a4d47e19282fd4e6))
+* upgrade karma ([#733](https://github.com/ipfs/aegir/issues/733)) ([1212314](https://github.com/ipfs/aegir/commit/12123143b5d75934d54cbf3736db25f97767acf7))
+
+
+### Features
+
+* copy .d.ts. to dist ([#738](https://github.com/ipfs/aegir/issues/738)) ([4002b50](https://github.com/ipfs/aegir/commit/4002b5072c6f9e5dfe67e0e5e4f22930bc81d4a6))
+* rename --ts flag to --ts-repo and fix ts repo support ([#730](https://github.com/ipfs/aegir/issues/730)) ([3d54004](https://github.com/ipfs/aegir/commit/3d5400406db2c912292ddc10b98586b04a41bf5b))
+* ts, build, docs and lint improvements ([#732](https://github.com/ipfs/aegir/issues/732)) ([846bb25](https://github.com/ipfs/aegir/commit/846bb25818f753bea6572194362d7bbdd90d8433))
+* update typedoc and improvemnts to docs cmd ([#727](https://github.com/ipfs/aegir/issues/727)) ([1149281](https://github.com/ipfs/aegir/commit/11492815864cf352ed0bba22eaec5996361439c1))
+* upgrade linter to v2.0.0 ([9f67cb9](https://github.com/ipfs/aegir/commit/9f67cb99531eda4bc0aa4f0fee0b45ebd15264c1))
+
+
+### BREAKING CHANGES
+
+* Major linter upgrade may cause errors.
+* Config property `bundlesize.maxSize` is deprecated, use `build.bundlesizeMax`
+
+* fix: improve docs cmd
+
+- add more types
+- clean code and improve Listr setup
+
+* feat: big utils clean up
+
+- remove unnecessary methods
+- add some types
+- improve `paths` export, with full paths to dist, test, src and package.json folder/file
+
+* feat: clean lint cmd
+
+- remove old npm deps semver version checks
+- update to the new eslint api
+- use a new output formatter that actually gives us links we can click and go to the errors
+* old npm deps semver was removed
+
+* fix: add types for cmd options
+* `--ts` flag renamed to `--ts-repo`
+* aegir ts -p docs removed use aegir docs directly
+
+
+
 # [31.0.0-next.2](https://github.com/ipfs/aegir/compare/v31.0.0-next.1...v31.0.0-next.2) (2021-02-23)
 
 

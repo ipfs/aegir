@@ -12,12 +12,13 @@
 ## ToC <!-- omit in toc -->
 - [Project Structure](#project-structure)
 - [CLI](#cli)
+- [Configuration](#configuration)
 - [Continuous Integration](#continuous-integration)
 - [Testing helpers](#testing-helpers)
 - [Typescript](#typescript)
   - [JSDoc Typescript support](#jsdoc-typescript-support)
   - [Native Typescript support](#native-typescript-support)
-  - [Release steps](#release-steps)
+- [Release steps](#release-steps)
 - [License](#license)
 
 ## Project Structure
@@ -84,6 +85,43 @@ Examples:
 Use `aegir <command> --help` to learn more about each command.
 ```
 
+## Configuration
+Aegir can be fully configured using a config file named `.aegir.js` or the package.json using the property `aegir`.
+
+```js
+// file: .aegir.js
+
+'use strict'
+
+/** @type {import('aegir').PartialOptions} */
+module.exports = {
+  tsRepo: true,
+  release: {
+    build: false
+  }
+}
+```
+
+```json
+// file: package.json
+"main": "src/index.js",
+"files": [
+  "src",
+  "dist"
+],
+"scripts": {
+  "lint": "aegir lint",
+  "release": "aegir release",
+  "build": "aegir build",
+  "test": "aegir test",
+  "test:node": "aegir test --target node",
+  "test:browser": "aegir test --target browser"
+},
+"aegir" : {
+  "tsRepo": false
+}
+```
+You can find the complete default config [here](https://github.com/ipfs/aegir/blob/master/src/config/user.js#L12) and the types [here](https://github.com/ipfs/aegir/blob/master/src/types.d.ts).
 
 ## Continuous Integration
 Check this template for Github Actions https://github.com/ipfs/aegir/blob/master/md/github-actions.md
@@ -110,7 +148,7 @@ aegir build --ts-repo
 aegir test --ts-repo
 ```
 
-### Release steps
+## Release steps
 
 1. Run linting
 2. Run type check

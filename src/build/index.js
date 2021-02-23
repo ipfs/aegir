@@ -1,18 +1,22 @@
 /* eslint-disable no-console */
 'use strict'
-
+const Listr = require('listr')
+const esbuild = require('esbuild')
 const path = require('path')
-const { readJsonSync } = require('fs-extra')
+const pascalcase = require('pascalcase')
 const bytes = require('bytes')
-const execa = require('execa')
 const { premove: del } = require('premove')
-const { fromAegir, gzipSize, pkg, hasTsconfig } = require('./../utils')
+const { gzipSize, pkg, hasTsconfig, fromRoot, paths } = require('./../utils')
 const tsCmd = require('../ts')
-const { userConfig } = require('../config/user')
+const merge = require('merge-options').bind({
+  ignoreUndefined: true,
+  concatArrays: true
+})
 
 /**
  * @typedef {import("../types").GlobalOptions} GlobalOptions
  * @typedef {import("../types").BuildOptions} BuildOptions
+ * @typedef {import("listr").ListrTaskWrapper} Task
  */
 
 /**
@@ -20,65 +24,97 @@ const { userConfig } = require('../config/user')
  *
  * @param {GlobalOptions & BuildOptions} argv
  */
-module.exports = async (argv) => {
-  const input = argv._.slice(1)
-  const forwardOptions = argv['--'] ? argv['--'] : []
-  const useBuiltinConfig = !forwardOptions.includes('--config')
-  const progress = !forwardOptions.includes('--progress') && !process.env.CI ? ['--progress'] : []
-  const webpackConfig = useBuiltinConfig
-    ? ['--config', fromAegir('src/config/webpack.config.js')]
-    : []
-
-  // Clean dist
-  await del(path.join(process.cwd(), 'dist'))
-
-  if (argv.bundle) {
-    // Run webpack
-    await execa('webpack-cli', [
-      ...webpackConfig,
-      ...progress,
-      ...input,
-      ...forwardOptions
-    ], {
-      env: {
-        NODE_ENV: process.env.NODE_ENV || 'production',
-        AEGIR_BUILD_ANALYZE: argv.bundlesize ? 'true' : 'false',
-        AEGIR_NODE: argv.node ? 'true' : 'false',
-        AEGIR_TS: argv.tsRepo ? 'true' : 'false'
-      },
-      localDir: path.join(__dirname, '../..'),
-      preferLocal: true,
-      stdio: 'inherit'
-    })
-
-    if (argv.bundlesize) {
-      // @ts-ignore
-      if (userConfig.bundlesize?.maxSize) {
-        throw new Error('Config property `bundlesize.maxSize` is deprecated, use `build.bundlesizeMax`!')
+const build = async (argv) => {
+  const outfile = path.join(paths.dist, 'index.min.js')
+  const globalName = pascalcase(pkg.name)
+  const umdPre = `
+  (function (root, factory) {
+    if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        root.${globalName} = factory();
+  }
+}(typeof self !== 'undefined' ? self : this, function () {
+`
+  const umdPost = `
+return ${globalName};
+}));
+`
+  await esbuild.build(merge(
+    {
+      entryPoints: [fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')],
+      bundle: true,
+      format: 'iife',
+      mainFields: ['browser', 'module', 'main'],
+      sourcemap: argv.bundlesize,
+      minify: true,
+      globalName,
+      banner: umdPre,
+      footer: umdPost,
+      metafile: argv.bundlesize ? path.join(paths.dist, 'stats.json') : undefined,
+      outfile,
+      define: {
+        global: 'globalThis',
+        'process.env.NODE_ENV': '"production"'
       }
-      const stats = readJsonSync(path.join(process.cwd(), 'dist/stats.json'))
-      const gzip = await gzipSize(path.join(stats.outputPath, stats.assets[0].name))
-      const maxsize = bytes(userConfig.build.bundlesizeMax)
-      const diff = gzip - maxsize
+    },
+    argv.fileConfig.build.config
+  ))
 
-      console.log('Use http://webpack.github.io/analyse/ to load "./dist/stats.json".')
-      console.log(`Check previous sizes in https://bundlephobia.com/result?p=${pkg.name}@${pkg.version}`)
+  return outfile
+}
 
-      if (diff > 0) {
-        throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxsize)})`)
-      } else {
-        console.log(`${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxsize)})`)
+const tasks = new Listr([
+  {
+    title: 'Clean ./dist',
+    task: async () => del(path.join(process.cwd(), 'dist'))
+  },
+  {
+    title: 'Bundle',
+    enabled: ctx => ctx.bundle,
+    /**
+     *
+     * @param {GlobalOptions & BuildOptions} ctx
+     * @param {Task} task
+     */
+    task: async (ctx, task) => {
+      const outfile = await build(ctx)
+
+      if (ctx.bundlesize) {
+        const gzip = await gzipSize(outfile)
+        const maxsize = bytes(ctx.bundlesizeMax)
+        const diff = gzip - maxsize
+
+        task.output = 'Use https://www.bundle-buddy.com/ to load "./dist/stats.json".'
+        task.output = `Check previous sizes in https://bundlephobia.com/result?p=${pkg.name}@${pkg.version}`
+
+        if (diff > 0) {
+          throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxsize)})`)
+        } else {
+          task.output = `${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxsize)})`
+        }
       }
     }
+  },
+  {
+    title: 'Generate types',
+    enabled: ctx => ctx.types && hasTsconfig,
+    /**
+     * @param {GlobalOptions & BuildOptions} ctx
+     * @param {Task} task
+     */
+    task: async (ctx, task) => {
+      await tsCmd({
+        debug: ctx.debug,
+        tsRepo: ctx.tsRepo,
+        fileConfig: ctx.fileConfig,
+        preset: 'types',
+        include: ctx.fileConfig.ts.include,
+        copyTo: ctx.fileConfig.ts.copyTo,
+        copyFrom: ctx.fileConfig.ts.copyFrom
+      })
+    }
   }
+], { renderer: 'verbose' })
 
-  if (argv.types && hasTsconfig) {
-    await tsCmd({
-      ...argv,
-      preset: 'types',
-      include: userConfig.ts.include,
-      copyTo: userConfig.ts.copyTo,
-      copyFrom: userConfig.ts.copyFrom
-    })
-  }
-}
+module.exports = tasks

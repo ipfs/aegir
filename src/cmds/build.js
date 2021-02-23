@@ -1,12 +1,11 @@
 'use strict'
-const { userConfig } = require('../src/config/user')
+const { userConfig } = require('../config/user')
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
  */
 const EPILOG = `
 Output files will go into a "./dist" folder.
-Supports options forwarding with '--' for more info check https://webpack.js.org/api/cli/
 `
 module.exports = {
   command: 'build',
@@ -26,12 +25,11 @@ module.exports = {
         bundlesize: {
           alias: 'b',
           type: 'boolean',
-          describe: 'Analyse bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize.maxSize`.',
+          describe: 'Analyse bundle size.',
           default: userConfig.build.bundlesize
         },
         bundlesizeMax: {
-          alias: 'b',
-          type: 'boolean',
+          type: 'string',
           describe: 'Max threshold for the bundle size.',
           default: userConfig.build.bundlesizeMax
         },
@@ -43,11 +41,10 @@ module.exports = {
       })
   },
   /**
-   *
-   * @param {Arguments} argv
+   * @param {(import("../types").GlobalOptions & import("../types").BuildOptions) | undefined} argv
    */
   handler (argv) {
-    const build = require('../src/build')
-    return build(argv)
+    const build = require('../build')
+    return build.run(argv)
   }
 }

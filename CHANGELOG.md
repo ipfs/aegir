@@ -1,3 +1,96 @@
+# [31.0.0-next.2](https://github.com/ipfs/aegir/compare/v31.0.0-next.1...v31.0.0-next.2) (2021-02-23)
+
+
+### Bug Fixes
+
+* release ([a1f265e](https://github.com/ipfs/aegir/commit/a1f265e3d8755450f574a3de8152b59e52c32ac1))
+
+
+
+# [31.0.0-next.1](https://github.com/ipfs/aegir/compare/v31.0.0-next.0...v31.0.0-next.1) (2021-02-23)
+
+
+
+# [31.0.0-next.0](https://github.com/ipfs/aegir/compare/v30.3.0...v31.0.0-next.0) (2021-02-23)
+
+
+### Bug Fixes
+
+* action types ([3237ad6](https://github.com/ipfs/aegir/commit/3237ad6b40e5136a47eefd6bd50706653b5adaae))
+* add migration and fix dep-check ([6dedc09](https://github.com/ipfs/aegir/commit/6dedc098e91d86b5a4a39a32d25d8cfa9ffec55f))
+* add src to dep-check prod input ([ce16e7c](https://github.com/ipfs/aegir/commit/ce16e7c24a3d7d8fdc8072cb827cb6af332aba3c))
+* bundle size options ([e83ac97](https://github.com/ipfs/aegir/commit/e83ac97477e64b1df479bf07ee039a443a64c566))
+* check more types ([1001e00](https://github.com/ipfs/aegir/commit/1001e00070b4f6f0dc012347175a6056605c399a))
+* concat dep-check ignore defaults to input ([169edb1](https://github.com/ipfs/aegir/commit/169edb15f8d450c19f824c2281ab323e8d827edc))
+* dep check cmd ([4ef344f](https://github.com/ipfs/aegir/commit/4ef344f2512af2adc57a7cb742b9c840c41af7af))
+* dep-check ignore ([181abe5](https://github.com/ipfs/aegir/commit/181abe54d7fe6c407a13f377ebe7bf32460be08c))
+* dep-check prod input ([9bbb44e](https://github.com/ipfs/aegir/commit/9bbb44e8666e915f40dc619daaaabef598b2cde3))
+* dependency check ([5bc8f64](https://github.com/ipfs/aegir/commit/5bc8f64fbc32f93ea148256f36c84af75300f25e))
+* documentation ([838c165](https://github.com/ipfs/aegir/commit/838c165e1c444640976745b711d8926f3f84633b))
+* electron lock, esbuild-register, node cov with c8, check cmd ([19b7301](https://github.com/ipfs/aegir/commit/19b73019cc68d4bbe731b6cc856b0f536f06a1dc))
+* fix docs paths and update deps ([#726](https://github.com/ipfs/aegir/issues/726)) ([9b7136a](https://github.com/ipfs/aegir/commit/9b7136aacd7637b406208558a4d47e19282fd4e6))
+* fix hooks ([98bf44d](https://github.com/ipfs/aegir/commit/98bf44d2f0e84fd4b6e927d5e59d532de09bd529))
+* fix hooks ([21d5639](https://github.com/ipfs/aegir/commit/21d5639ec425d5b4a654d3e1609075e5eda25d9c))
+* foward options for mocha ([26c2647](https://github.com/ipfs/aegir/commit/26c26472fb7696ef6658fb75dc294f668d461fdd))
+* future node builtin check ([6917d5c](https://github.com/ipfs/aegir/commit/6917d5c67d63f5c4355c2c5f5b66d15375d9e5d3))
+* move cmds to src and remove commit-lint ([ce2bc87](https://github.com/ipfs/aegir/commit/ce2bc87bbc8e31cd9cb60a59e29a663a36056bcc))
+* move fixtures and export types ([b7b7ee4](https://github.com/ipfs/aegir/commit/b7b7ee4b57d0be796fb4df0ffeca2bf83818d8b6))
+* remove ? from utils ([fd5695c](https://github.com/ipfs/aegir/commit/fd5695c9534358c14e9ed522512ab9d9d364c76d))
+* remove another ? ([62cb87d](https://github.com/ipfs/aegir/commit/62cb87d051c358754a98b5cd44f7d6ec649f4947))
+* remove c8 tmp from nyc_output ([e8b4e9f](https://github.com/ipfs/aegir/commit/e8b4e9ff6d85b0ec4efa47729141138bbea75d8b))
+* remove userConfig usage ([ee4bca3](https://github.com/ipfs/aegir/commit/ee4bca3038cfbd837093970b899a9078466cfb4d))
+* scripts ([9000aba](https://github.com/ipfs/aegir/commit/9000abae849ff5a51ce7addf0e0b483dd4923a10))
+* types ([c842d82](https://github.com/ipfs/aegir/commit/c842d821dd6ad84f166a92331164d8403a8a3688))
+* types ([c91c715](https://github.com/ipfs/aegir/commit/c91c715f7586e9f2555d3e1457b36480f2548d02))
+* types and release cmd ([853ea86](https://github.com/ipfs/aegir/commit/853ea8691d46bb355293f7a7671c749e4f85a282))
+* umd and global ([add8ef4](https://github.com/ipfs/aegir/commit/add8ef4abe980f7f0d39ed1e9c67a463bf5bcd44))
+* umd bundle ([8f7f4ae](https://github.com/ipfs/aegir/commit/8f7f4ae2a74031ff990970ebc3e66434acdee29d))
+* update action ([453c80f](https://github.com/ipfs/aegir/commit/453c80f0d455b8c1a2603a227309c24e5fb14459))
+* update action ([3467aed](https://github.com/ipfs/aegir/commit/3467aed0f38b1b800b54b95f6ea82c2a39f08830))
+* update deps ([5260ccb](https://github.com/ipfs/aegir/commit/5260ccb236cdfee0e79238dd13b3a8535859d955))
+* upgrade karma ([#733](https://github.com/ipfs/aegir/issues/733)) ([1212314](https://github.com/ipfs/aegir/commit/12123143b5d75934d54cbf3736db25f97767acf7))
+
+
+### Features
+
+* copy .d.ts. to dist ([#738](https://github.com/ipfs/aegir/issues/738)) ([4002b50](https://github.com/ipfs/aegir/commit/4002b5072c6f9e5dfe67e0e5e4f22930bc81d4a6))
+* hooks ([3e09f88](https://github.com/ipfs/aegir/commit/3e09f88157e8eb5e4086904f726d1cc16e46d9f3))
+* rename --ts flag to --ts-repo and fix ts repo support ([#730](https://github.com/ipfs/aegir/issues/730)) ([3d54004](https://github.com/ipfs/aegir/commit/3d5400406db2c912292ddc10b98586b04a41bf5b))
+* ts, build, docs and lint improvements ([#732](https://github.com/ipfs/aegir/issues/732)) ([846bb25](https://github.com/ipfs/aegir/commit/846bb25818f753bea6572194362d7bbdd90d8433))
+* update typedoc and improvemnts to docs cmd ([#727](https://github.com/ipfs/aegir/issues/727)) ([1149281](https://github.com/ipfs/aegir/commit/11492815864cf352ed0bba22eaec5996361439c1))
+* upgrade linter to v2.0.0 ([9f67cb9](https://github.com/ipfs/aegir/commit/9f67cb99531eda4bc0aa4f0fee0b45ebd15264c1))
+* use esbuild and playwright-test ([9a03b99](https://github.com/ipfs/aegir/commit/9a03b991178f4281f26ac7b5d7953e3c3aa40e9c))
+
+
+### BREAKING CHANGES
+
+* Major linter upgrade may cause errors.
+* Config property `bundlesize.maxSize` is deprecated, use `build.bundlesizeMax`
+
+* fix: improve docs cmd
+
+- add more types
+- clean code and improve Listr setup
+
+* feat: big utils clean up
+
+- remove unnecessary methods
+- add some types
+- improve `paths` export, with full paths to dist, test, src and package.json folder/file
+
+* feat: clean lint cmd
+
+- remove old npm deps semver version checks
+- update to the new eslint api
+- use a new output formatter that actually gives us links we can click and go to the errors
+* old npm deps semver was removed
+
+* fix: add types for cmd options
+* `--ts` flag renamed to `--ts-repo`
+* aegir ts -p docs removed use aegir docs directly
+
+
+
 # [30.3.0](https://github.com/ipfs/aegir/compare/v30.2.0...v30.3.0) (2021-01-05)
 
 

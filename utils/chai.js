@@ -7,8 +7,11 @@ chai.use(require('chai-as-promised'))
 chai.use(require('dirty-chai'))
 chai.use(require('chai-subset'))
 
+const expect = chai.expect
+const assert = chai.assert
+
 module.exports = {
-  expect: chai.expect,
-  assert: chai.assert,
+  expect,
+  assert,
   chai
 }

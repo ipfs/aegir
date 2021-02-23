@@ -18,11 +18,16 @@ module.exports = {
     },
     deps: {
       describe: 'Other dependencies to override, e.g. --deps=foo@1.5.0,bar@2.4.1',
+      /**
+       *
+       * @param {string} val
+       */
       coerce: (val) => {
         if (typeof val !== 'string') {
           return {}
         }
 
+        /** @type {Record<string, string>} */
         const deps = {}
 
         for (const dep of val.split(',')) {
@@ -35,8 +40,11 @@ module.exports = {
       default: {}
     }
   },
+  /**
+   * @param {{ repo: string; branch: string; deps: any; }} argv
+   */
   handler (argv) {
-    const cmd = require('../src/test-dependant')
+    const cmd = require('../test-dependant')
     return cmd(argv)
   }
 }

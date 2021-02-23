@@ -3,9 +3,14 @@ const { Converter } = require('typedoc/dist/lib/converter')
 const path = require('path')
 const fs = require('fs')
 
-module.exports = function (PluginHost) {
+/**
+ *
+ * @param {import("typedoc/dist/lib/utils").PluginHost} PluginHost
+ */
+const plugin = function (PluginHost) {
   const app = PluginHost.owner
   const pkg = path.join(process.cwd(), 'package.json')
+  /** @type {any} */
   let pkgJson
 
   try {
@@ -22,6 +27,7 @@ module.exports = function (PluginHost) {
     if (pkgJson && reflection.name === 'export=') {
       let name
       if (node) {
+        // @ts-ignore
         name = node.symbol.escapedName
       }
       reflection.name = `${name || 'default'}`
@@ -29,3 +35,5 @@ module.exports = function (PluginHost) {
   }
   app.converter.on(Converter.EVENT_CREATE_DECLARATION, cb)
 }
+
+module.exports = plugin

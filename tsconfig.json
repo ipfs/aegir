@@ -4,7 +4,10 @@
         "outDir": "dist"
     },
     "include": [
+      "package.json",
+      "cli.js",
       "src",
-      "test"
+      "test",
+      "utils"
     ]
 }

@@ -10,7 +10,10 @@ const { pkg } = require('../../src/utils')
 
 const aegirExec = pkg.name === 'aegir' ? './cli.js' : 'aegir'
 
-/** @typedef {import("@actions/github").context } Context */
+/**
+ * @typedef {import("@actions/github").context } Context
+ * @typedef {ReturnType<import("@actions/github")["getOctokit"]>} Github
+ */
 
 /**
  * Bundle Size Check
@@ -32,7 +35,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
   try {
     check = await checkCreate(octokit, context, checkName)
 
-    const out = await execa(aegirExec, ['build', '-b'], {
+    const out = await execa(aegirExec, ['build', '-b', '--no-types'], {
       cwd: baseDir,
       localDir: '.',
       preferLocal: true,

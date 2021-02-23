@@ -1,7 +1,7 @@
 'use strict'
 
 const Listr = require('listr')
-const chalk = require('chalk')
+const kleur = require('kleur')
 const execa = require('execa')
 const fs = require('fs-extra')
 const path = require('path')
@@ -40,7 +40,7 @@ const docs = async (ctx, task) => {
   }
   if (!hasTsconfig) {
     // eslint-disable-next-line no-console
-    console.error(chalk.yellow('Documentation requires typescript config.\nTry running `aegir ts --preset config > tsconfig.json`'))
+    console.error(kleur.yellow('Documentation requires typescript config.\nTry running `aegir ts --preset config > tsconfig.json`'))
     return
   }
   // run typedoc
@@ -60,8 +60,8 @@ const docs = async (ctx, task) => {
       preferLocal: true
     }
   )
-  proc.stdout?.on('data', chunk => {
-    task.output = chunk.toString()
+  proc.all?.on('data', chunk => {
+    task.output = chunk.toString().replace('\n', '')
   })
   await proc
 
@@ -80,7 +80,7 @@ const publishDocs = () => {
   )
 }
 
-const TASKS = new Listr(
+const tasks = new Listr(
   [
     {
       title: 'Clean ./docs',
@@ -88,6 +88,11 @@ const TASKS = new Listr(
     },
     {
       title: 'Generating documentation',
+      /**
+       *
+       * @param {GlobalOptions & DocsOptions} ctx
+       * @param {Task} task
+       */
       task: docs
     },
     {
@@ -97,8 +102,8 @@ const TASKS = new Listr(
     }
   ],
   {
-    renderer: 'default'
+    renderer: 'verbose'
   }
 )
 
-module.exports = TASKS
+module.exports = tasks

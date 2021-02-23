@@ -3,38 +3,111 @@
 
 const { lilconfigSync } = require('lilconfig')
 const merge = require('merge-options')
-const utils = require('../utils')
 
 /**
  * @typedef {import("./../types").Options} Options
  */
 
-/**
- *
- * @param {*} hooks
- */
-function normalizeHooks (hooks = {}) {
-  const result = {
+/** @type {Omit<Options, "fileConfig">} */
+const defaults = {
+  // global options
+  debug: false,
+  tsRepo: false,
+  // test cmd options
+  test: {
+    runner: 'node',
+    target: ['node', 'browser', 'webworker'],
+    watch: false,
+    files: [],
+    timeout: 5000,
+    grep: '',
+    bail: false,
+    progress: false,
+    cov: false,
     browser: {
-      pre: () => Promise.resolve(),
-      post: () => Promise.resolve()
+      config: {}
     },
-    node: {
-      pre: () => Promise.resolve(),
-      post: () => Promise.resolve()
-    }
+    before: async () => { return undefined },
+    after: async () => {}
+  },
+  // build cmd options
+  build: {
+    bundle: true,
+    bundlesize: false,
+    bundlesizeMax: '100kB',
+    types: true,
+    config: {}
+  },
+  // linter cmd options
+  lint: {
+    silent: false,
+    fix: false,
+    files: [
+      '*.{js,ts}',
+      'bin/**',
+      'config/**/*.{js,ts}',
+      'test/**/*.{js,ts}',
+      'src/**/*.{js,ts}',
+      'tasks/**/*.{js,ts}',
+      'benchmarks/**/*.{js,ts}',
+      'utils/**/*.{js,ts}',
+      '!**/node_modules/**',
+      '!**/*.d.ts'
+    ]
+  },
+  // docs cmd options
+  docs: {
+    publish: false,
+    entryPoint: 'src/index.js'
+  },
+  // ts cmd options
+  ts: {
+    preset: undefined,
+    include: [],
+    copyFrom: 'src/**/*.d.ts',
+    copyTo: 'dist'
+  },
+  // release cmd options
+  release: {
+    build: true,
+    types: true,
+    test: true,
+    lint: true,
+    contributors: true,
+    bump: true,
+    changelog: true,
+    publish: true,
+    commit: true,
+    tag: true,
+    push: true,
+    ghrelease: true,
+    docs: true,
+    ghtoken: '',
+    type: 'patch',
+    preid: undefined,
+    distTag: 'latest',
+    remote: 'origin'
+  },
+  // dependency check cmd options
+  dependencyCheck: {
+    input: [
+      'package.json',
+      '.aegir.js',
+      'src/**/*.js',
+      'test/**/*.js',
+      'benchmarks/**/*.js',
+      'utils/**/*.js',
+      '!./test/fixtures/**/*.js'
+    ],
+    productionOnly: false,
+    productionInput: [
+      'package.json',
+      'src/**/*.js'
+    ],
+    ignore: [
+      '@types/*'
+    ]
   }
-
-  if (hooks.pre && hooks.post) {
-    result.browser.pre = hooks.pre
-    result.browser.post = hooks.post
-    result.node.pre = hooks.pre
-    result.node.post = hooks.post
-
-    return result
-  }
-
-  return merge(result, hooks)
 }
 
 /**
@@ -64,59 +137,10 @@ const config = (searchFrom) => {
     throw new Error('Error finding your config file.')
   }
 
-  /** @type {Options} */
-  const conf = merge(
-    {
-      // global options
-      debug: false,
-      node: false,
-      tsRepo: false,
-      // old options
-      webpack: {},
-      karma: {},
-      hooks: {},
-      entry: utils.fromRoot('src', 'index.js'),
-      // build cmd options
-      build: {
-        bundle: true,
-        bundlesize: false,
-        bundlesizeMax: '100kB',
-        types: true
-      },
-      // linter cmd options
-      lint: {
-        silent: false,
-        fix: false,
-        files: [
-          '*.{js,ts}',
-          'bin/**',
-          'config/**/*.{js,ts}',
-          'test/**/*.{js,ts}',
-          'src/**/*.{js,ts}',
-          'tasks/**/*.{js,ts}',
-          'benchmarks/**/*.{js,ts}',
-          'utils/**/*.{js,ts}',
-          '!**/node_modules/**',
-          '!**/*.d.ts'
-        ]
-      },
-      // docs cmd options
-      docs: {
-        publish: false,
-        entryPoint: 'src/index.js'
-      },
-      ts: {
-        preset: undefined,
-        include: [],
-        copyFrom: 'src/**/*.d.ts',
-        copyTo: 'dist'
-      }
-    },
-    userConfig,
-    {
-      hooks: normalizeHooks(userConfig.hooks)
-    }
-  )
+  const conf = /** @type {Options} */(merge(
+    defaults,
+    userConfig
+  ))
 
   return conf
 }

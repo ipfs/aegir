@@ -2,18 +2,22 @@
 'use strict'
 
 const ora = require('ora')
-const depCheck = require('../src/dependency-check')
-
+const { userConfig } = require('../config/user')
+const { check } = require('../dependency-check')
+/**
+ * @typedef {import("yargs").Argv} Argv
+ */
 const EPILOG = `
 Supports options forwarding with '--' for more info check https://github.com/maxogden/dependency-check#cli-usage
 `
 
-const commandName = depCheck.commandNames[0]
-
 module.exports = {
-  command: `${commandName} [input...]`,
-  aliases: depCheck.commandNames.filter(name => name !== commandName),
+  command: 'dependency-check [input...]',
+  aliases: ['dep-check', 'dep'],
   desc: 'Run `dependency-check` cli with aegir defaults.',
+  /**
+   * @param {Argv} yargs
+   */
   builder: (yargs) => {
     yargs
       .epilog(EPILOG)
@@ -21,27 +25,31 @@ module.exports = {
       .example('aegir dependency-check -- --unused --ignore typescript', 'To check unused packages in your repo, ignoring typescript.')
       .positional('input', {
         describe: 'Files to check',
+        // @ts-ignore
         type: 'array',
-        default: depCheck.defaultInput
+        default: userConfig.dependencyCheck.input
       })
       .option('p', {
         alias: 'production-only',
         describe: 'Check production dependencies and paths only',
         type: 'boolean',
-        default: false
+        default: userConfig.dependencyCheck.productionOnly
       })
       .option('i', {
         alias: 'ignore',
         describe: 'Ignore these dependencies when considering which are used and which are not',
         type: 'array',
-        default: []
+        default: userConfig.dependencyCheck.ignore
       })
   },
+  /**
+   * @param {any} argv
+   */
   async handler (argv) {
     const spinner = ora('Checking dependencies').start()
 
     try {
-      await depCheck(argv, process.argv)
+      await check(argv)
       spinner.succeed()
     } catch (err) {
       spinner.fail()

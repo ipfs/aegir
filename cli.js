@@ -8,12 +8,11 @@ process.on('unhandledRejection', (err) => {
 })
 
 const updateNotifier = require('update-notifier')
-const chalk = require('chalk')
+const kleur = require('kleur')
 const pkg = require('./package.json')
 
 updateNotifier({
-  pkg: pkg,
-  isGlobal: false
+  pkg: pkg
 }).notify()
 
 const cli = require('yargs')
@@ -24,13 +23,13 @@ cli
   .usage('Usage: $0 <command> [options]')
   .example('$0 build', 'Runs the build command to bundle JS code for the browser.')
   .example('npx $0 build', 'Can be used with `npx` to use a local version')
-  .example('$0 test -t webworker -- --browsers Firefox', 'If the command supports `--` can be used to forward options to the underlying tool.')
-  .example('npm test -- -- --browsers Firefox', 'If `npm test` translates to `aegir test -t browser` and you want to forward options you need to use `-- --` instead.')
+  .example('$0 test -t webworker -- --browser firefox', 'If the command supports `--` can be used to forward options to the underlying tool.')
+  .example('npm test -- -- --browser firefox', 'If `npm test` translates to `aegir test -t browser` and you want to forward options you need to use `-- --` instead.')
   .epilog('Use `$0 <command> --help` to learn more about each command.')
   .middleware((yargs) => {
-    yargs.config = userConfig
+    yargs.fileConfig = userConfig
   })
-  .commandDir('cmds')
+  .commandDir('src/cmds')
   .help()
   .alias('help', 'h')
   .alias('version', 'v')
@@ -40,18 +39,12 @@ cli
     alias: 'd',
     default: userConfig.debug
   })
-  // TODO remove after webpack 5 upgrade
-  .options('node', {
-    type: 'boolean',
-    describe: 'Flag to control if bundler should inject node globals or built-ins.',
-    default: userConfig.node
-  })
   .options('ts-repo', {
     type: 'boolean',
     describe: 'Enable support for Typescript repos.',
     default: userConfig.tsRepo
   })
-  .group(['help', 'version', 'debug', 'node', 'ts-repo'], 'Global Options:')
+  .group(['help', 'version', 'debug', 'ts-repo'], 'Global Options:')
   .demandCommand(1, 'You need at least one command.')
   .wrap(cli.terminalWidth())
   .parserConfiguration({ 'populate--': true })
@@ -62,7 +55,7 @@ cli
 const args = cli.fail((msg, err, yargs) => {
   if (msg) {
     yargs.showHelp()
-    console.error(chalk.red(msg))
+    console.error(kleur.red(msg))
   }
 
   if (err) {

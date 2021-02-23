@@ -1,52 +1,66 @@
 'use strict'
 const path = require('path')
 const execa = require('execa')
-const { hook, fromAegir } = require('../utils')
+const { fromAegir } = require('../utils')
 const merge = require('merge-options')
 
-/** @typedef { import("execa").Options} ExecaOptions */
+/**
+ * @typedef {import("execa").Options} ExecaOptions
+ * @typedef {import('./../types').TestOptions} TestOptions
+ * @typedef {import('./../types').GlobalOptions} GlobalOptions
+ */
 
-module.exports = (argv, execaOptions) => {
-  const input = argv._.slice(1)
-  const forwardOptions = argv['--'] ? argv['--'] : []
-  const watch = argv.watch ? ['--auto-watch', '--no-single-run'] : []
-  const verbose = argv.verbose ? ['--log-level', 'debug'] : ['--log-level', 'error']
-  const colors = argv.colors ? ['--colors'] : []
+/**
+ *
+ * @param {TestOptions & GlobalOptions} argv
+ * @param {ExecaOptions} execaOptions
+ */
+module.exports = async (argv, execaOptions) => {
+  const extra = argv['--'] ? argv['--'] : []
+  const forwardOptions = /** @type {string[]} */([
+    ...extra,
+    argv.timeout && `--timeout=${argv.timeout}`,
+    argv.grep && `--grep=${argv.grep}`,
+    argv.bail && '--bail'
+  ].filter(Boolean))
+  const watch = argv.watch ? ['--watch'] : []
+  const cov = argv.cov ? ['--cov'] : []
+  const files = argv.files.length > 0
+    ? argv.files
+    : [
+        '**/*.spec.{js,ts}',
+        'test/browser.{js,ts}'
+      ]
 
-  return hook('browser', 'pre')(argv.userConfig)
-    .then((hook = {}) => {
-      return execa('karma',
-        [
-          'start',
-          fromAegir('src/config/karma.conf.js'),
-          ...colors,
-          ...watch,
-          ...verbose,
-          ...input,
-          ...forwardOptions
-        ],
-        merge(
-          {
-            env: {
-              NODE_ENV: process.env.NODE_ENV || 'test',
-              AEGIR_RUNNER: argv.webworker ? 'webworker' : 'browser',
-              AEGIR_NODE: argv.node,
-              AEGIR_TS: argv.tsRepo,
-              AEGIR_MOCHA_TIMEOUT: argv.timeout ? `${argv.timeout}` : '5000',
-              AEGIR_MOCHA_GREP: argv.grep,
-              AEGIR_MOCHA_BAIL: argv.bail ? 'true' : 'false',
-              AEGIR_PROGRESS: argv.progress ? 'true' : 'false',
-              AEGIR_FILES: JSON.stringify(argv.files),
-              IS_WEBPACK_BUILD: true,
-              ...hook.env
-            },
-            preferLocal: true,
-            localDir: path.join(__dirname, '../..'),
-            stdio: 'inherit'
-          },
-          execaOptions
-        )
-      )
-    })
-    .then(() => hook('browser', 'post')(argv.userConfig))
+  // before hook
+  const before = await argv.fileConfig.test.before(argv)
+  const beforeEnv = before && before.env ? before.env : {}
+
+  // run pw-test
+  await execa('pw-test',
+    [
+      ...files,
+      '--mode', argv.runner === 'browser' ? 'main' : 'worker',
+      ...watch,
+      ...cov,
+      '--config', fromAegir('src/config/pw-test.js'),
+      ...forwardOptions
+    ],
+    merge(
+      {
+        env: {
+          AEGIR_RUNNER: argv.runner,
+          NODE_ENV: process.env.NODE_ENV || 'test',
+          ...beforeEnv
+        },
+        preferLocal: true,
+        localDir: path.join(__dirname, '../..'),
+        stdio: 'inherit'
+      },
+      execaOptions
+    )
+  )
+
+  // after hook
+  await argv.fileConfig.test.after(argv, before)
 }

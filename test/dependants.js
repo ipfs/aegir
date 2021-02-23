@@ -8,39 +8,53 @@ const path = require('path')
 const bin = require.resolve('../')
 const os = require('os')
 
+/** @type {any} */
 const dirs = {}
 
-const git = {
-  init: async (name) => {
-    const source = path.join(__dirname, 'fixtures', 'test-dependant', name)
-    dirs[name] = path.join(os.tmpdir(), `repo-${Math.random()}`)
+const git =
+ {
+   /**
+    * @param {string} name
+    */
+   init: async (name) => {
+     const source = path.join(__dirname, 'fixtures', 'test-dependant', name)
+     dirs[name] = path.join(os.tmpdir(), `repo-${Math.random()}`)
 
-    await fs.mkdir(dirs[name])
-    await fs.copy(source, dirs[name])
+     await fs.mkdir(dirs[name])
+     await fs.copy(source, dirs[name])
 
-    await execa('git', ['init'], {
-      cwd: dirs[name]
-    })
-    await execa('git', ['config', 'user.email', 'test@test.com'], {
-      cwd: dirs[name]
-    })
-    await execa('git', ['config', 'user.name', 'test'], {
-      cwd: dirs[name]
-    })
-    await git.add(name)
-    await git.commit(name, 'initial commit')
-  },
-  add: async (name) => {
-    await execa('git', ['add', '-A'], {
-      cwd: dirs[name]
-    })
-  },
-  commit: async (name, message) => {
-    await execa('git', ['commit', '-m', message, '--no-gpg-sign'], {
-      cwd: dirs[name]
-    })
-  }
-}
+     await execa('git', ['init'], {
+       cwd: dirs[name]
+     })
+     await execa('git', ['config', 'user.email', 'test@test.com'], {
+       cwd: dirs[name]
+     })
+     await execa('git', ['config', 'user.name', 'test'], {
+       cwd: dirs[name]
+     })
+     await git.add(name)
+     await git.commit(name, 'initial commit')
+   },
+   /**
+    *
+    * @param {string} name
+    */
+   add: async (name) => {
+     await execa('git', ['add', '-A'], {
+       cwd: dirs[name]
+     })
+   },
+   /**
+    *
+    * @param {string} name
+    * @param {string} message
+    */
+   commit: async (name, message) => {
+     await execa('git', ['commit', '-m', message, '--no-gpg-sign'], {
+       cwd: dirs[name]
+     })
+   }
+ }
 
 describe('dependants', function () {
   this.timeout(120000)

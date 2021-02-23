@@ -1,14 +1,14 @@
 /* eslint-env mocha */
 'use strict'
 
-const loadFixture = require('../fixtures')
+const loadFixture = require('../utils/fixtures')
 const { expect } = require('../utils/chai')
 const path = require('path')
 
 describe('fixtures', () => {
   it('should load fixtures from dependencies', () => {
     const myFixture = loadFixture('package.json', 'mocha')
-    expect(JSON.parse(myFixture).name).to.be.eql('mocha')
+    expect(JSON.parse(myFixture.toString()).name).to.be.eql('mocha')
   })
 
   it('should load local fixtures', () => {

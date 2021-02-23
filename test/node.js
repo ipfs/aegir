@@ -1,6 +1,5 @@
 'use strict'
 
-require('./utils')
 require('./lint')
 require('./fixtures')
 require('./dependants')

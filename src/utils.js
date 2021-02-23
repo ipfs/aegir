@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Various utility methods used in AEgir.
  *
@@ -12,12 +13,16 @@ const stripComments = require('strip-json-comments')
 const stripBom = require('strip-bom')
 const { download } = require('@electron/get')
 const path = require('path')
+const readline = require('readline')
 const readPkgUp = require('read-pkg-up')
 const fs = require('fs-extra')
 const execa = require('execa')
-
+const envPaths = require('env-paths')('aegir', { suffix: '' })
+const lockfile = require('proper-lockfile')
 const {
+  // @ts-ignore
   packageJson: pkg,
+  // @ts-ignore
   path: pkgPath
 } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
@@ -27,11 +32,18 @@ const SRC_FOLDER = 'src'
 const TEST_FOLDER = 'test'
 
 exports.pkg = pkg
-// TODO: get this from aegir package.json
-exports.browserslist = '>1% or node >=10 and not ie 11 and not dead'
 exports.repoDirectory = path.dirname(pkgPath)
+/**
+ * @param {string[]} p
+ */
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
+/**
+ * @param {string[]} p
+ */
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
+/**
+ * @param {string[]} p
+ */
 exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
 exports.hasTsconfig = exports.hasFile('tsconfig.json')
 
@@ -78,20 +90,6 @@ exports.getListrConfig = () => {
   }
 }
 
-// @ts-ignore
-exports.hook = (env, key) => (ctx) => {
-  if (ctx && ctx.hooks) {
-    if (ctx.hooks[env] && ctx.hooks[env][key]) {
-      return ctx.hooks[env][key]()
-    }
-    if (ctx.hooks[key]) {
-      return ctx.hooks[key]()
-    }
-  }
-
-  return Promise.resolve()
-}
-
 /**
  * @param {string} command
  * @param {string[] | undefined} args
@@ -101,10 +99,12 @@ exports.exec = (command, args, options = {}) => {
   const result = execa(command, args, options)
 
   if (!options.quiet) {
-    result.stdout?.pipe(process.stdout)
+    // @ts-ignore
+    result.stdout.pipe(process.stdout)
   }
 
-  result.stderr?.pipe(process.stderr)
+  // @ts-ignore
+  result.stderr.pipe(process.stderr)
 
   return result
 }
@@ -128,7 +128,25 @@ function getPlatformPath () {
 }
 
 exports.getElectron = async () => {
+  // @ts-ignore
   const pkg = require('./../package.json')
+
+  const lockfilePath = path.join(envPaths.cache, '__electron-lock')
+  fs.mkdirpSync(envPaths.cache)
+  const releaseLock = await lockfile.lock(envPaths.cache, {
+    retries: {
+      retries: 10,
+      // Retry 20 times during 10 minutes with
+      // exponential back-off.
+      // See documentation at: https://www.npmjs.com/package/retry#retrytimeoutsoptions
+      factor: 1.27579
+    },
+    onCompromised: (err) => {
+      throw new Error(`${err.message} Path: ${lockfilePath}`)
+    },
+    lockfilePath
+  })
+
   const version = pkg.devDependencies.electron.slice(1)
   const spinner = ora(`Downloading electron: ${version}`).start()
   const zipPath = await download(version)
@@ -137,7 +155,8 @@ exports.getElectron = async () => {
     spinner.text = 'Extracting electron to system cache'
     await extract(zipPath, { dir: path.dirname(zipPath) })
   }
-  spinner.succeed('Electron ready to use')
+  spinner.stop()
+  await releaseLock()
   return electronPath
 }
 
@@ -176,5 +195,31 @@ exports.gzipSize = (path) => {
     pipe.on('end', () => {
       resolve(size)
     })
+  })
+}
+
+exports.otp = () => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+  const otp = []
+  return new Promise((resolve, reject) => {
+    rl.question('OTP: ', answer => {
+      resolve(answer)
+      console.log('\n')
+      rl.close()
+    })
+    // @ts-ignore
+    rl._writeToOutput = function _writeToOutput (k) {
+      otp.push(k)
+      if (otp.length === 6) {
+        // @ts-ignore
+        rl.write(null, { name: 'enter' })
+      } else {
+        // @ts-ignore
+        rl.output.write('*')
+      }
+    }
   })
 }

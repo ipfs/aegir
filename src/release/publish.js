@@ -1,14 +1,22 @@
 'use strict'
 
 const execa = require('execa')
-const prompt = require('prompt-promise')
+const { otp } = require('../utils')
+/**
+ * @typedef {import('./../types').ReleaseOptions} ReleaseOptions
+ * @typedef {import('listr').ListrTaskWrapper} ListrTask
+ */
 
+/**
+ * @param {{ distTag: ReleaseOptions["distTag"], type: ReleaseOptions["type"] }} ctx
+ * @param {ListrTask} task
+ */
 function publish (ctx, task) {
   let publishArgs = ['publish']
-  let distTag = ctx['dist-tag']
+  let distTag = ctx.distTag
 
   // Prevent accidental publish of prerelease to "latest"
-  if (ctx.type.startsWith('pre') && !distTag) {
+  if (ctx.type.startsWith('pre') && distTag === 'latest') {
     distTag = 'next'
   }
 
@@ -18,10 +26,11 @@ function publish (ctx, task) {
   }
 
   return execa('npm', publishArgs)
-    .catch(error => {
+    .catch(async (error) => {
       if (error.toString().includes('provide a one-time password')) {
-        return prompt.password('Enter an npm OTP: ')
-          .then(otp => execa('npm', publishArgs.concat('--otp', otp.trim())))
+        const code = await otp()
+        task.title += '. Trying again with OTP.'
+        return await execa('npm', publishArgs.concat('--otp', code))
       }
 
       throw error

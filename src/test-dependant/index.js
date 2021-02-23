@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict'
 
 const path = require('path')
@@ -8,47 +9,78 @@ const {
 const fs = require('fs-extra')
 const glob = require('it-glob')
 
+/**
+ * @param {string} name
+ * @param {{ dependencies: any; }} pkg
+ */
 const isDep = (name, pkg) => {
   return Object.keys(pkg.dependencies || {}).filter(dep => dep === name).pop()
 }
 
+/**
+ * @param {string} name
+ * @param {{ devDependencies: any; }} pkg
+ */
 const isDevDep = (name, pkg) => {
   return Object.keys(pkg.devDependencies || {}).filter(dep => dep === name).pop()
 }
 
+/**
+ * @param {string} name
+ * @param {{ optionalDendencies: any; }} pkg
+ */
 const isOptionalDep = (name, pkg) => {
   return Object.keys(pkg.optionalDendencies || {}).filter(dep => dep === name).pop()
 }
 
+/**
+ * @param {string} name
+ * @param {any} pkg
+ */
 const dependsOn = (name, pkg) => {
   return isDep(name, pkg) || isDevDep(name, pkg) || isOptionalDep(name, pkg)
 }
 
+/**
+ * @param {string} targetDir
+ */
 const isMonoRepo = (targetDir) => {
   return fs.existsSync(path.join(targetDir, 'lerna.json'))
 }
 
+/**
+ * @param {string} targetDir
+ */
 const hasNpmLock = (targetDir) => {
   return fs.existsSync(path.join(targetDir, 'package-lock.json')) ||
     fs.existsSync(path.join(targetDir, 'npm-shrinkwrap.json'))
 }
 
+/**
+ * @param {string} targetDir
+ */
 const hasYarnLock = (targetDir) => {
   return fs.existsSync(path.join(targetDir, 'yarn.lock'))
 }
 
+/**
+ * @param {string} message
+ */
 const printFailureMessage = (message) => {
-  console.info('-------------------------------------------------------------------') // eslint-disable-line no-console
-  console.info('') // eslint-disable-line no-console
-  console.info(message) // eslint-disable-line no-console
-  console.info('') // eslint-disable-line no-console
-  console.info('Dependant project has not been tested with updated dependencies') // eslint-disable-line no-console
-  console.info('') // eslint-disable-line no-console
-  console.info('-------------------------------------------------------------------') // eslint-disable-line no-console
+  console.info('-------------------------------------------------------------------')
+  console.info('')
+  console.info(message)
+  console.info('')
+  console.info('Dependant project has not been tested with updated dependencies')
+  console.info('')
+  console.info('-------------------------------------------------------------------')
 }
 
+/**
+ * @param {string} targetDir
+ */
 const installDependencies = async (targetDir) => {
-  console.info('Installing dependencies') // eslint-disable-line no-console
+  console.info('Installing dependencies')
   if (hasYarnLock(targetDir)) {
     await exec('yarn', ['install'], {
       cwd: targetDir
@@ -64,6 +96,10 @@ const installDependencies = async (targetDir) => {
   }
 }
 
+/**
+ * @param {string} targetDir
+ * @param {{ [x: string]: any; }} deps
+ */
 const upgradeDependenciesInDir = async (targetDir, deps) => {
   const modulePkgPath = path.join(targetDir, 'package.json')
   const modulePkg = require(modulePkgPath)
@@ -73,11 +109,11 @@ const upgradeDependenciesInDir = async (targetDir, deps) => {
   modulePkg.optionalDependencies = modulePkg.optionalDependencies || {}
   modulePkg.devDependencies = modulePkg.devDependencies || {}
 
-  console.info('Upgrading deps') // eslint-disable-line no-console
+  console.info('Upgrading deps')
 
   for (const dep of Object.keys(deps)) {
     const existingVersion = modulePkg.dependencies[dep] || modulePkg.peerDependencies[dep] || modulePkg.optionalDependencies[dep] || modulePkg.devDependencies[dep]
-    console.info('Upgrading', dep, 'from version', existingVersion, 'to', deps[dep]) // eslint-disable-line no-console
+    console.info('Upgrading', dep, 'from version', existingVersion, 'to', deps[dep])
 
     if (modulePkg.dependencies[dep] || modulePkg.peerDependencies[dep] || modulePkg.optionalDependencies[dep]) {
       modulePkg.dependencies[dep] = deps[dep]
@@ -93,6 +129,10 @@ const upgradeDependenciesInDir = async (targetDir, deps) => {
   })
 }
 
+/**
+ * @param {string} targetDir
+ * @param {{}} deps
+ */
 const testModule = async (targetDir, deps) => {
   const pkgPath = path.join(targetDir, 'package.json')
 
@@ -124,7 +164,7 @@ const testModule = async (targetDir, deps) => {
       cwd: targetDir
     })
   } catch (err) {
-    printFailureMessage(`Failed to run the tests of ${modulePkg.name}, aborting`, err.message)
+    printFailureMessage(`Failed to run the tests of ${modulePkg.name}, aborting ${err.message}`)
 
     return
   }
@@ -138,11 +178,19 @@ const testModule = async (targetDir, deps) => {
   })
 }
 
+/**
+ * @param {string} targetDir
+ * @param {any} deps
+ */
 const testRepo = async (targetDir, deps) => {
   await installDependencies(targetDir)
   await testModule(targetDir, deps)
 }
 
+/**
+ * @param {string} targetDir
+ * @param {any} deps
+ */
 const testMonoRepo = async (targetDir, deps) => {
   await installDependencies(targetDir)
 
@@ -178,10 +226,13 @@ const testMonoRepo = async (targetDir, deps) => {
   }
 }
 
+/**
+ * @param {{ repo: string; branch: string; deps: any; }} opts
+ */
 async function testDependant (opts) {
   const targetDir = path.join(os.tmpdir(), `test-dependant-${Date.now()}`)
 
-  console.info(`Cloning ${opts.repo} into ${targetDir}`) // eslint-disable-line no-console
+  console.info(`Cloning ${opts.repo} into ${targetDir}`)
   await exec('git', ['clone', opts.repo, targetDir], {
     quiet: true
   })
@@ -198,7 +249,7 @@ async function testDependant (opts) {
     await testRepo(targetDir, opts.deps)
   }
 
-  console.info(`Removing ${targetDir}`) // eslint-disable-line no-console
+  console.info(`Removing ${targetDir}`)
   await fs.remove(targetDir)
 }
 

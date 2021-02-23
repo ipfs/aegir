@@ -6,29 +6,26 @@ const { config } = require('../../src/config/user')
 const path = require('path')
 
 describe('config - user', () => {
-  it('custom config', () => {
+  it('custom config', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-config'))
-    expect(conf).to.have.property('webpack').eql({
-      devtool: 'eval'
-    })
-    expect(conf).to.have.property('entry', 'src/main.js')
+    expect(conf).to.have.property('debug').eql(false)
+    expect(conf).to.have.property('tsRepo').eql(false)
+    expect(conf).to.have.nested.property('test.before')
+    expect(conf).to.have.nested.property('test.after')
 
-    expect(conf.hooks).to.have.nested.property('browser.pre')
-    expect(conf.hooks).to.have.nested.property('browser.post')
-    expect(conf.hooks).to.have.nested.property('node.pre')
-    expect(conf.hooks).to.have.nested.property('node.post')
-
-    return conf.hooks.browser.pre().then((res) => {
-      expect(res).to.eql('pre')
-    })
+    // @ts-ignore
+    const res = await conf.test.before()
+    expect(res).to.eql(undefined)
   })
   it('supports async hooks', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-user-async-hooks'))
-    expect(await conf.hooks.browser.pre()).to.eql('pre done async')
-    expect(await conf.hooks.browser.post()).to.eql('post done async')
+    // @ts-ignore
+    expect(await conf.test.before()).to.eql('pre done async')
+    // @ts-ignore
+    expect(await conf.test.after()).to.eql('post done async')
   })
-  it('supports async hooks', async () => {
+  it('supports package.json aegir property', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-config-package-json'))
-    expect(await conf.custom).to.ok()
+    expect(conf.debug).to.ok()
   })
 })

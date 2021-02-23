@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "31.0.0-next0",
+  "version": "31.0.0-next.0",
   "description": "JavaScript project management",
   "keywords": [
     "webpack",
@@ -34,7 +34,7 @@
         "dist/utils/*"
       ],
       "src/*": [
-        "dist/src/*", 
+        "dist/src/*",
         "dist/src/*/index"
       ],
       "src/": [

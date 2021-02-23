@@ -246,6 +246,9 @@ const fs = require('fs')
 [Typescript official performance notes](https://github.com/microsoft/TypeScript/wiki/Performance)  
 [TypeScript: Don’t Export const enums](https://ncjamieson.com/dont-export-const-enums/)  
 [TypeScript: Prefer Interfaces](https://ncjamieson.com/prefer-interfaces/)
+[Typescript Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
 
 ## Resources
-[TS with JSDoc Discussions](https://github.com/voxpelli/types-in-js)
+[TS with JSDoc Discussions](https://github.com/voxpelli/types-in-js)  
+[Tackling Typescript](https://exploringjs.com/tackling-ts/toc.html)  
+[Effective Typescript](https://effectivetypescript.com/)  

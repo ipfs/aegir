@@ -11,27 +11,13 @@
 
 ## ToC <!-- omit in toc -->
 - [Project Structure](#project-structure)
-- [CI](#ci)
-  - [Travis Setup](#travis-setup)
-  - [Github Action Setup](#github-action-setup)
-- [Stack Requirements](#stack-requirements)
+- [CLI](#cli)
+- [Continuous Integration](#continuous-integration)
 - [Testing helpers](#testing-helpers)
-    - [Fixtures](#fixtures)
-    - [Echo Server](#echo-server)
-    - [Get Port](#get-port)
-- [Tasks](#tasks)
-  - [Linting](#linting)
-  - [Testing](#testing)
-  - [Coverage](#coverage)
-    - [Node](#node)
-    - [Browser](#browser)
-  - [Building](#building)
-    - [Generating Webpack stats.json](#generating-webpack-statsjson)
-  - [Typescript](#typescript)
-    - [JSDoc Typescript support](#jsdoc-typescript-support)
-  - [Releasing](#releasing)
-    - [Scoped Github Token](#scoped-github-token)
-  - [Documentation](#documentation)
+- [Typescript](#typescript)
+  - [JSDoc Typescript support](#jsdoc-typescript-support)
+  - [Native Typescript support](#native-typescript-support)
+  - [Release steps](#release-steps)
 - [License](#license)
 
 ## Project Structure
@@ -42,7 +28,7 @@ replication and configuration overhead.
 All source code should be placed under `src`, with the main entry
 point being `src/index.js`.
 
-All test files should be placed under `test`. Individual test files should end in `.spec.js` and setup files for the node and the browser should be `test/node.js` and `test/browser.js` respectively.
+All test files should be placed under `test`. Individual test files should end in `.spec.js` and will be ran in all environments (node, browser, webworker, electron-main and electron-renderer). To run node specific tests a file named `test/node.js` should be used to require all node test files and the same thing for the other environments with a file named `test/browser.js`.
 
 Your `package.json` should have the following entries and should pass `aegir lint-package-json`.
 
@@ -63,267 +49,85 @@ Your `package.json` should have the following entries and should pass `aegir lin
 }
 ```
 
-## CI 
-### Travis Setup
-Check this tutorial https://github.com/ipfs/aegir/wiki/Travis-Setup
+## CLI
 
-### Github Action Setup
-Check this tutorial https://github.com/ipfs/aegir/wiki/Github-Actions-Setup
+Run `aegir --help`
 
-## Stack Requirements
+```bash
+Usage: aegir <command> [options]
 
-To bring you its many benefits, `aegir` requires
+Commands:
+  aegir build                        Builds a browser bundle and TS type declarations from the `src` folder.
+  aegir check                        Check project
+  aegir docs                         Generate documentation from TS type declarations.
+  aegir lint                         Lint all project files
+  aegir release                      Release your code onto the world
+  aegir test-dependant [repo]        Run the tests of an module that depends on this module to see if the current changes have caused a regression
+  aegir test                         Test your code in different environments
+  aegir ts                           Typescript command with presets for specific tasks.
+  aegir dependency-check [input...]  Run `dependency-check` cli with aegir defaults.                                                                                                                              [aliases: dep-check, dep]
+  aegir lint-package-json            Lint package.json with aegir defaults.                                                                                                                                    [aliases: lint-package, lpj]
+  aegir completion                   generate completion script
 
-- JS written in [Standard](https://github.com/feross/standard) style
-- Tests written in [Mocha](https://github.com/mochajs/mocha)
-- [Karma](https://github.com/karma-runner/karma) for browser tests
+Global Options:
+  -h, --help     Show help                                                                                                                                                                                                        [boolean]
+  -v, --version  Show version number                                                                                                                                                                                              [boolean]
+  -d, --debug    Show debug output.                                                                                                                                                                              [boolean] [default: false]
+      --ts-repo  Enable support for Typescript repos.                                                                                                                                                            [boolean] [default: false]
+
+Examples:
+  aegir build                                   Runs the build command to bundle JS code for the browser.
+  npx aegir build                               Can be used with `npx` to use a local version
+  aegir test -t webworker -- --browser firefox  If the command supports `--` can be used to forward options to the underlying tool.
+  npm test -- -- --browser firefox              If `npm test` translates to `aegir test -t browser` and you want to forward options you need to use `-- --` instead.
+
+Use `aegir <command> --help` to learn more about each command.
+```
+
+
+## Continuous Integration
+Check this template for Github Actions https://github.com/ipfs/aegir/blob/master/md/github-actions.md
 
 ## Testing helpers
 In addition to running the tests `aegir` also provides several helpers to be used by the tests.
 
-#### Fixtures
-
-Loading fixture files in node and the browser can be painful, that's why aegir provides
-a method to do this. For it to work you have to put your fixtures in the folder `test/fixtures`, and then
-
-```js
-// test/awesome.spec.js
-const loadFixture = require('aegir/fixtures')
-
-const myFixture = loadFixture('test/fixtures/largefixture')
-```
-
-The path to the fixture is relative to the module root.
-
-If you write a module like [interface-ipfs-core](https://github.com/ipfs/interface-ipfs-core)
-which is to be consumed by other modules tests you need to pass in a third parameter such that
-the server is able to serve the correct files.
-
-For example
-
-```js
-// awesome-tests module
-const loadFixture = require('aegir/fixtures')
-
-const myFixture = loadFixture('test/fixtures/coolfixture', 'awesome-tests')
-```
+Check the [documentation](https://ipfs.github.io/aegir/)
 
 
-```js
-// tests for module using the awesome-tests
-require('awesome-tests')
-```
+## Typescript
 
-```js
-// .aegir.js file in the module using the awesome-tests module
-'use strict'
+### JSDoc Typescript support
 
-module.exports = {
-  karma: {
-    files: [{
-      pattern: 'node_modules/awesome-tests/test/fixtures/**/*',
-      watched: false,
-      served: true,
-      included: false
-    }]
-  }
-}
-```
-
-#### Echo Server
-HTTP echo server for testing purposes.
-
-```js
-const EchoServer = require('aegir/utils/echo-server')
-const server = new EchoServer()
-await server.start()
-
-// search params echo endpoint
-const req = await fetch('http://127.0.0.1:3000/echo/query?test=one')
-console.log(await req.text())
-
-// body echo endpoint
-const req = await fetch('http://127.0.0.1:3000/echo', {
-  method: 'POST',
-  body: '{"key": "value"}'
-})
-console.log(await req.text())
-
-// redirect endpoint
-const req = await fetch('http://127.0.0.1:3000/redirect?to=http://127.0.0.1:3000/echo')
-console.log(await req.text())
-
-// download endpoint
-const req = await fetch('http://127.0.0.1:3000/download?data=helloWorld')
-console.log(await req.text())
-
-await server.stop()
-
-```
-
-#### Get Port
-Helper to find an available port to put a server listening on.
-```js
-const getPort = require('aegir/utils/get-port')
-const port = await getPort(3000, '127.0.0.1')
-// if 3000 is available returns 3000 if not returns a free port.
-
-```
-
-## Tasks
-
-### Linting
-
-Linting uses [eslint](http://eslint.org/) and [standard](https://github.com/feross/standard)
-with [some custom rules](https://github.com/ipfs/eslint-config-aegir) to enforce some more strictness.
-
-You can run it using
-
-```bash
-$ aegir lint
-$ aegir lint-package-json
-```
-
-### Testing
-
-You can run it using
-
-```bash
-$ aegir test
-```
-
-There are also browser and node specific tasks
-
-```bash
-$ aegir test --target node
-$ aegir test --target browser
-$ aegir test --target webworker
-```
-
-
-### Coverage
-
-#### Node
-You can run your tests with `nyc` using
-
-```bash
-$ npx nyc -s aegir test -t node
-# to check the report locally 
-$ npx nyc report --reporter=html && open coverage/index.html
-# or just for a text based reporter
-$ npx nyc report
-```
-#### Browser
-> Not available yet PR open.
-
-
-To auto publish coverage reports from Travis to Codecov add this to
-your `.travis.yml` file.
-
-```yml
-after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
-```
-
-### Building
-The build command builds a browser bundle and TS type declarations from the `src` folder.
-
-```bash
-$ aegir build --help
-```
-This will build a browser ready version into `dist`, so after publishing the results will be available under
-
-```
-https://unpkg.com/<module-name>/dist/index.js
-```
-
-**Specifying a custom entry file for Webpack**
-
-By default, `aegir` uses `src/index.js` as the entry file for Webpack. You can customize which file to use as the entry point by specifying `entry` field in your user configuration file. To do this, create `.aegir.js` file in your project's root directory and add point the `entry` field to the file Webpack should use as the entry:
-
-```javascript
-module.exports = {
-  entry: "src/browser-index.js",
-}
-```
-
-Webpack will use the specified file as the entry point and output it to `dist/<filename>`, eg. `dist/browser-index.js`.
-
-If `.aegir.js` file is not present in the project, webpack will use `src/index.js` as the default entry file.
-
-#### Generating Webpack stats.json
-
-Pass the `--analyze` option to have Webpack generate a `stats.json` file for the bundle and save it in the project root (see https://webpack.js.org/api/stats/). e.g.
-
-```bash
-aegir build --analyze
-```
-### Typescript
-
-#### JSDoc Typescript support
 ```bash
 aegir ts --help
 ```
-The `ts` command provides type checking (via typescript) in javascript files with [JSDoc](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) annotations.
+More documentation [here](https://github.com/ipfs/aegir/blob/master/md/ts-jsdoc.md)
 
-
-### Releasing
-
-1. Run linting
-2. Run tests
-3. Build everything
-4. Bump the version in `package.json`
-5. Generate a changelog based on the git log
-6. Commit the version change & `CHANGELOG.md`
-7. Create a git tag
-8. Run `git push` to `origin/master`
-9. Publish a release to Github releases
-10. Generate documentation and push to github
-11. Publish to npm
-
+### Native Typescript support
+For native typescript add `--ts-repo` to any command.
 ```bash
-# Major release
-$ aegir release --type major
-# Minor relase
-$ aegir release --type minor
-# Patch release
-$ aegir release
-
-# Major prerelease (1.0.0 -> 2.0.0-rc.0)
-$ aegir release --type premajor --preid rc --dist-tag next
-# Minor prerelease (1.0.0 -> 1.1.0-rc.0)
-$ aegir release --type preminor --preid rc --dist-tag next
-# Patch prerelease (1.0.0 -> 1.0.1-rc.0)
-$ aegir release --type prepatch --preid rc --dist-tag next
-
-# Increment prerelease (1.1.0-rc.0 -> 1.1.0-rc.1)
-$ aegir release --type prerelease --preid rc --dist-tag next
+aegir build --ts-repo
+aegir test --ts-repo
 ```
 
-> This requires `AEGIR_GHTOKEN` to be set.
+### Release steps
 
-You can also specify the same targets as for `test`.
-
-If no `CHANGELOG.md` is present, one is generated the first time a release is done.
-
-You can skip all changelog generation and the github release by passing
-in `--no-changelog`.
-
-If you want no documentation generation you can pass `--no-docs` to the release task to disable documentation builds.
-
-#### Scoped Github Token
-
-Performing a release involves creating new commits and tags and then pushing them back to the repository you are releasing from. In order to do this you should create a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and store it in the environmental variable `AEGIR_GHTOKEN`.   
-
-The only access scope it needs is `public_repo`.
-
-Be aware that by storing it in `~/.profile` or similar you will make it available to any program that runs on your computer.
-
-### Documentation
-
-You can use `aegir docs` to generate documentation, this command uses `aegir ts --preset docs` internally.
+1. Run linting
+2. Run type check
+3. Run tests
+4. Bump the version in `package.json`
+5. Build everything
+6. Update contributors based on the git history
+7. Generate a changelog based on the git log
+8. Commit the version change & `CHANGELOG.md`
+9. Create a git tag
+10. Run `git push` to `origin/master`
+11. Publish a release to Github releases
+12. Generate documentation and push to Github Pages
+13. Publish to npm
 
 ```bash
-$ aegir docs --help
+aegir release --help
 ```
 
 ## License

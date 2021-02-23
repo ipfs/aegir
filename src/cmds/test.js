@@ -5,8 +5,8 @@ const { userConfig } = require('../config/user')
  */
 
 const EPILOG = `
-By default browser tests run in Chrome headless.
-Browser testing with playwright-test supports options forwarding with '--' for more info check https://github.com/hugomrdias/playwright-test#options
+By default browser tests run in Chromium headless.
+Testing supports options forwarding with '--' for more info check https://github.com/hugomrdias/playwright-test#options, https://mochajs.org/#command-line-usage or https://github.com/jprichardson/electron-mocha#run-tests.
 `
 
 module.exports = {

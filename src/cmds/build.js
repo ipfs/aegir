@@ -6,7 +6,6 @@ const { userConfig } = require('../config/user')
  */
 const EPILOG = `
 Output files will go into a "./dist" folder.
-Supports options forwarding with '--' for more info check https://webpack.js.org/api/cli/
 `
 module.exports = {
   command: 'build',

@@ -49,9 +49,9 @@
     "test": "node cli.js ts -p check && node cli.js test",
     "test:node": "node cli.js test -t node",
     "test:browser": "node cli.js test -t browser -t webworker",
-    "release": "node cli.js release --no-docs --no-test --no-build",
-    "release-minor": "node cli.js release --no-docs --no-build --no-test --type minor",
-    "release-major": "node cli.js release --no-docs --no-build --no-test --type major"
+    "release": "node cli.js release",
+    "release-minor": "node cli.js release --type minor",
+    "release-major": "node cli.js release --type major"
   },
   "dependencies": {
     "@achingbrain/dependency-check": "^4.1.0",

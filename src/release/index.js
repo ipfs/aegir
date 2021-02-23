@@ -56,7 +56,7 @@ async function release (opts) {
             preset: 'check'
           })
         },
-        enabled: () => opts.lint
+        enabled: () => opts.types
       },
       {
         title: 'Test',

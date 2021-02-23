@@ -8,6 +8,37 @@ const http = require('http')
 const { Buffer } = require('buffer')
 const getPort = require('./get-port')
 
+/**
+ * HTTP echo server for testing purposes.
+ *
+ * @example
+ * ```js
+ * const EchoServer = require('aegir/utils/echo-server')
+ * const server = new EchoServer()
+ * await server.start()
+ *
+ * // search params echo endpoint
+ * const req = await fetch('http://127.0.0.1:3000/echo/query?test=one')
+ * console.log(await req.text())
+ *
+ * // body echo endpoint
+ * const req = await fetch('http://127.0.0.1:3000/echo', {
+ *   method: 'POST',
+ *   body: '{"key": "value"}'
+ * })
+ * console.log(await req.text())
+ *
+ * // redirect endpoint
+ * const req = await fetch('http://127.0.0.1:3000/redirect?to=http://127.0.0.1:3000/echo')
+ * console.log(await req.text())
+ *
+ * // download endpoint
+ * const req = await fetch('http://127.0.0.1:3000/download?data=helloWorld')
+ * console.log(await req.text())
+ *
+ * await server.stop()
+ * ```
+ */
 class EchoServer {
   /**
    *

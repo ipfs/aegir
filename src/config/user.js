@@ -70,6 +70,7 @@ const defaults = {
   // release cmd options
   release: {
     build: true,
+    types: true,
     test: true,
     lint: true,
     contributors: true,

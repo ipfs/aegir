@@ -231,6 +231,7 @@ interface TestBeforeResult {
 
 interface ReleaseOptions {
   build: boolean
+  types: boolean
   test: boolean
   lint: boolean
   contributors: boolean

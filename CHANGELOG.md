@@ -1,3 +1,12 @@
+# [31.0.0-next.2](https://github.com/ipfs/aegir/compare/v31.0.0-next.1...v31.0.0-next.2) (2021-02-23)
+
+
+### Bug Fixes
+
+* release ([a1f265e](https://github.com/ipfs/aegir/commit/a1f265e3d8755450f574a3de8152b59e52c32ac1))
+
+
+
 # [31.0.0-next.1](https://github.com/ipfs/aegir/compare/v31.0.0-next.0...v31.0.0-next.1) (2021-02-23)
 
 

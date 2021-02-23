@@ -125,7 +125,8 @@ async function release (opts) {
           docs.setRenderer('silent')
           return docs.run({
             ...globalOptions,
-            ...opts.fileConfig.docs
+            ...opts.fileConfig.docs,
+            publish: true
           })
         },
         enabled: () => opts.docs

@@ -2,8 +2,5 @@
 module.exports = {
     docs: {
         entryPoint: 'utils'
-    },
-    release: {
-        build: false
     }
 }

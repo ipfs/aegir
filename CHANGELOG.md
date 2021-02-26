@@ -1,3 +1,12 @@
+## [31.0.1](https://github.com/ipfs/aegir/compare/v31.0.0...v31.0.1) (2021-02-26)
+
+
+### Bug Fixes
+
+* dont concat array in the build cmd config merging ([87d4ec4](https://github.com/ipfs/aegir/commit/87d4ec4aabe6cacab66013134b751438f588fccd))
+
+
+
 # [31.0.0](https://github.com/ipfs/aegir/compare/v30.3.0...v31.0.0) (2021-02-23)
 
 

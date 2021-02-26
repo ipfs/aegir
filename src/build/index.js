@@ -9,8 +9,7 @@ const { premove: del } = require('premove')
 const { gzipSize, pkg, hasTsconfig, fromRoot, paths } = require('./../utils')
 const tsCmd = require('../ts')
 const merge = require('merge-options').bind({
-  ignoreUndefined: true,
-  concatArrays: true
+  ignoreUndefined: true
 })
 
 /**

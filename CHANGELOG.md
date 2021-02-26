@@ -1,3 +1,12 @@
+## [31.0.2](https://github.com/ipfs/aegir/compare/v31.0.1...v31.0.2) (2021-02-26)
+
+
+### Bug Fixes
+
+* minimize umd code in the build cmd ([6156e7c](https://github.com/ipfs/aegir/commit/6156e7c6451d2d6a3062a206a01419ba36c21720))
+
+
+
 ## [31.0.1](https://github.com/ipfs/aegir/compare/v31.0.0...v31.0.1) (2021-02-26)
 
 

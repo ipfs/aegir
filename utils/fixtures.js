@@ -9,7 +9,7 @@ const fs = require('fs')
  * @example
  * ```js
  * // test/awesome.spec.js
- * const loadFixture = require('aegir/fixtures')
+ * const loadFixture = require('aegir/utils/fixtures')
  *
  * const myFixture = loadFixture('test/fixtures/largefixture')
  * ```
@@ -21,7 +21,7 @@ const fs = require('fs')
  * @example
  * ```js
  * // awesome-tests module
- * const loadFixture = require('aegir/fixtures')
+ * const loadFixture = require('aegir/utils/fixtures')
  *
  * const myFixture = loadFixture('test/fixtures/coolfixture', 'awesome-tests')
  * ```

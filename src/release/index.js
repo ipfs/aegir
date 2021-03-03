@@ -16,6 +16,7 @@ const contributors = require('./contributors')
 const github = require('./github')
 const publish = require('./publish')
 const push = require('./push')
+const { hasTsconfig } = require('./../utils')
 
 /**
  * @typedef {import('./../types').ReleaseOptions} ReleaseOptions
@@ -56,7 +57,7 @@ async function release (opts) {
             preset: 'check'
           })
         },
-        enabled: () => opts.types
+        enabled: () => opts.types && hasTsconfig
       },
       {
         title: 'Test',

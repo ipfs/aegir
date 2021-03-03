@@ -1,3 +1,12 @@
+## [31.0.3](https://github.com/ipfs/aegir/compare/v31.0.2...v31.0.3) (2021-03-03)
+
+
+### Bug Fixes
+
+* skip types in the release cmd when no tsconfig ([4e4e927](https://github.com/ipfs/aegir/commit/4e4e927a60bac3ac2806191afa5db3a62141bfcb))
+
+
+
 ## [31.0.2](https://github.com/ipfs/aegir/compare/v31.0.1...v31.0.2) (2021-02-26)
 
 

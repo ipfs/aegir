@@ -1,3 +1,12 @@
+## [31.0.4](https://github.com/ipfs/aegir/compare/v31.0.3...v31.0.4) (2021-03-04)
+
+
+### Bug Fixes
+
+* fix issue with docs and build cmds ([75db962](https://github.com/ipfs/aegir/commit/75db962d461ffd243d4b2324c5bbc7c96b44ac69))
+
+
+
 ## [31.0.3](https://github.com/ipfs/aegir/compare/v31.0.2...v31.0.3) (2021-03-03)
 
 

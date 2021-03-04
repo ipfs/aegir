@@ -80,6 +80,18 @@ async function release (opts) {
         enabled: (ctx) => ctx.bump
       },
       {
+        title: 'Documentation',
+        task: () => {
+          docs.setRenderer('silent')
+          return docs.run({
+            ...globalOptions,
+            ...opts.fileConfig.docs,
+            publish: true
+          })
+        },
+        enabled: () => opts.docs
+      },
+      {
         title: 'Build',
         enabled: (ctx) => ctx.build,
         task: () => {
@@ -119,18 +131,6 @@ async function release (opts) {
         title: 'Generate GitHub Release',
         task: () => github({ ghtoken: opts.ghtoken }),
         enabled: (ctx) => ctx.ghrelease
-      },
-      {
-        title: 'Documentation',
-        task: () => {
-          docs.setRenderer('silent')
-          return docs.run({
-            ...globalOptions,
-            ...opts.fileConfig.docs,
-            publish: true
-          })
-        },
-        enabled: () => opts.docs
       },
       {
         title: 'Publish to npm',

@@ -5,7 +5,7 @@ const kleur = require('kleur')
 const execa = require('execa')
 const fs = require('fs-extra')
 const path = require('path')
-const { premove: del } = require('premove')
+const { premove: del } = require('premove/sync')
 const {
   hasTsconfig,
   fromAegir,
@@ -84,7 +84,10 @@ const tasks = new Listr(
   [
     {
       title: 'Clean ./docs',
-      task: async () => del('docs')
+      task: () => {
+        del('docs')
+        del('dist')
+      }
     },
     {
       title: 'Generating documentation',

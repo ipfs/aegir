@@ -1,3 +1,23 @@
+# [32.0.0](https://github.com/ipfs/aegir/compare/v31.0.4...v32.0.0) (2021-03-13)
+
+
+### Bug Fixes
+
+* fix esbuild banner and footer new syntax ([0c66cd2](https://github.com/ipfs/aegir/commit/0c66cd28b45486d2101a1b89aa13cc23b78e8266))
+* update pw-test ([a05eafd](https://github.com/ipfs/aegir/commit/a05eafde79e102e29fd1aa58c83a37f536a1ac22))
+
+
+### Features
+
+* update deps and pin esbuild to 0.9.2 ([70daba2](https://github.com/ipfs/aegir/commit/70daba244b0330e19b346db0e664830303109e38))
+
+
+### BREAKING CHANGES
+
+* Big update from esbuild 0.8.x to 0.9.x this should be fine, but please double check your bundles and refer to the latest migrations guide for more info
+
+
+
 ## [31.0.4](https://github.com/ipfs/aegir/compare/v31.0.3...v31.0.4) (2021-03-04)
 
 

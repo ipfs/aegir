@@ -37,8 +37,8 @@ const build = async (argv) => {
       sourcemap: argv.bundlesize,
       minify: true,
       globalName,
-      banner: umdPre,
-      footer: umdPost,
+      banner: { js: umdPre },
+      footer: { js: umdPost },
       metafile: argv.bundlesize ? path.join(paths.dist, 'stats.json') : undefined,
       outfile,
       define: {

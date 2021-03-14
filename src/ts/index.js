@@ -109,6 +109,7 @@ const check = async (userTSConfig, { extraInclude, forwardOptions }) => {
     })
   } finally {
     fs.removeSync(configPath)
+    fs.removeSync(fromRoot('dist', 'tsconfig-check.aegir.tsbuildinfo'))
   }
 }
 

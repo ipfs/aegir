@@ -39,7 +39,7 @@ const build = async (argv) => {
       globalName,
       banner: { js: umdPre },
       footer: { js: umdPost },
-      metafile: argv.bundlesize ? path.join(paths.dist, 'stats.json') : undefined,
+      metafile: argv.bundlesize,
       outfile,
       define: {
         global: 'globalThis',

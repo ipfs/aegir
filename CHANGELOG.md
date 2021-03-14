@@ -1,3 +1,13 @@
+## [32.0.2](https://github.com/ipfs/aegir/compare/v32.0.1...v32.0.2) (2021-03-14)
+
+
+### Bug Fixes
+
+* bundlesize ([5792e8c](https://github.com/ipfs/aegir/commit/5792e8ce3ee7413e997777feb1ccc4248c00d092)), closes [#755](https://github.com/ipfs/aegir/issues/755)
+* delete tsbuildinfo for check cmd ([5ecbb0f](https://github.com/ipfs/aegir/commit/5ecbb0fef8a28fccdcbc8bffcbda1072fe1e5366)), closes [#752](https://github.com/ipfs/aegir/issues/752)
+
+
+
 ## [32.0.1](https://github.com/ipfs/aegir/compare/v32.0.0...v32.0.1) (2021-03-14)
 
 

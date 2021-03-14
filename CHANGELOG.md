@@ -1,3 +1,12 @@
+## [32.0.1](https://github.com/ipfs/aegir/compare/v32.0.0...v32.0.1) (2021-03-14)
+
+
+### Bug Fixes
+
+* add conditions production to esbuild ([a8f79d2](https://github.com/ipfs/aegir/commit/a8f79d2dafca0b34ff7382f4beb75949646f865f))
+
+
+
 # [32.0.0](https://github.com/ipfs/aegir/compare/v31.0.4...v32.0.0) (2021-03-13)
 
 

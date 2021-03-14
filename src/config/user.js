@@ -25,7 +25,11 @@ const defaults = {
     progress: false,
     cov: false,
     browser: {
-      config: {}
+      config: {
+        buildConfig: {
+          conditions: ['production']
+        }
+      }
     },
     before: async () => { return undefined },
     after: async () => {}

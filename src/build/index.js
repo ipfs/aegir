@@ -33,7 +33,7 @@ const build = async (argv) => {
       entryPoints: [fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')],
       bundle: true,
       format: 'iife',
-      mainFields: ['browser', 'module', 'main'],
+      conditions: ['production'],
       sourcemap: argv.bundlesize,
       minify: true,
       globalName,

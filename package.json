@@ -39,6 +39,9 @@
       ],
       "src/": [
         "dist/src/index"
+      ],
+      "src/config/tsconfig.aegir.json": [
+        "src/config/tsconfig.aegir.json"
       ]
     }
   },

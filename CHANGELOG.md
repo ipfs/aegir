@@ -1,3 +1,13 @@
+# [32.1.0](https://github.com/ipfs/aegir/compare/v32.0.2...v32.1.0) (2021-03-17)
+
+
+### Bug Fixes
+
+* add tsconfig.aegir.json to typesVersions ([#756](https://github.com/ipfs/aegir/issues/756)) ([20bdd7a](https://github.com/ipfs/aegir/commit/20bdd7ad8b724f1334d1ab023cace8020e463e75))
+* update deps ([a419deb](https://github.com/ipfs/aegir/commit/a419deb6fb2d9719650f82d093034f81e2593c45))
+
+
+
 ## [32.0.2](https://github.com/ipfs/aegir/compare/v32.0.1...v32.0.2) (2021-03-14)
 
 

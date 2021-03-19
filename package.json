@@ -81,7 +81,7 @@
     "dirty-chai": "^2.0.1",
     "electron-mocha": "^10.0.0",
     "env-paths": "^2.2.1",
-    "esbuild": "0.9.3",
+    "esbuild": "0.9.4",
     "esbuild-register": "^2.3.0",
     "eslint": "^7.22.0",
     "eslint-config-ipfs": "^2.0.0",

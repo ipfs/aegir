@@ -1,25 +1,14 @@
-# AEgir <!-- omit in toc -->
-
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+# AEgir 
+[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](https://protocol.ai) 
+[![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.io/) 
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ipfs/aegir/ci/master?style=flat-square)
 
 > Automated JavaScript project management.
 
-## Lead Maintainer <!-- omit in toc -->
+## Lead Maintainer 
 
 [Hugo Dias](https://github.com/hugomrdias)
-
-## ToC <!-- omit in toc -->
-- [Project Structure](#project-structure)
-- [CLI](#cli)
-- [Configuration](#configuration)
-- [Continuous Integration](#continuous-integration)
-- [Testing helpers](#testing-helpers)
-- [Typescript](#typescript)
-  - [JSDoc Typescript support](#jsdoc-typescript-support)
-  - [Native Typescript support](#native-typescript-support)
-- [Release steps](#release-steps)
-- [License](#license)
 
 ## Project Structure
 

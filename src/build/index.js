@@ -3,6 +3,7 @@
 const Listr = require('listr')
 const esbuild = require('esbuild')
 const path = require('path')
+const fs = require('fs-extra')
 const pascalcase = require('pascalcase')
 const bytes = require('bytes')
 const { premove: del } = require('premove')
@@ -28,7 +29,7 @@ const build = async (argv) => {
   const globalName = pascalcase(pkg.name)
   const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
   const umdPost = `return ${globalName}}));`
-  await esbuild.build(merge(
+  const result = await esbuild.build(merge(
     {
       entryPoints: [fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')],
       bundle: true,
@@ -48,6 +49,9 @@ const build = async (argv) => {
     },
     argv.fileConfig.build.config
   ))
+  if (result.metafile) {
+    fs.writeJSONSync(path.join(paths.dist, 'stats.json'), result.metafile)
+  }
 
   return outfile
 }

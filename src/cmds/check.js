@@ -69,27 +69,26 @@ const checkBuiltins = async (argv) => {
     }
   }
 
-  await esbuild.build(
-    merge(
-      {
-        entryPoints: [
-          fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')
-        ],
-        bundle: true,
-        mainFields: ['browser', 'module', 'main'],
-        sourcemap: true,
-        minify: false,
-        metafile,
-        outfile,
-        plugins: [nodePlugin],
-        define: {
-          'process.env.NODE_ENV': '"production"'
-        }
-      },
-      userConfig.build.config
-    )
-  )
-
+  /** @type {import('esbuild').BuildOptions} */
+  const esbuildOptions = {
+    entryPoints: [
+      fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')
+    ],
+    bundle: true,
+    mainFields: ['browser', 'module', 'main'],
+    sourcemap: true,
+    minify: false,
+    metafile: true,
+    outfile,
+    plugins: [nodePlugin],
+    define: {
+      'process.env.NODE_ENV': '"production"'
+    }
+  }
+  const result = await esbuild.build(merge(esbuildOptions, userConfig.build.config))
+  if (result.metafile) {
+    fs.writeJSONSync(metafile, result.metafile)
+  }
   const { outputs } = fs.readJSONSync(metafile)
 
   await findBuiltins(nodeBuiltIns)

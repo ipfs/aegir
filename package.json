@@ -134,7 +134,7 @@
     "@types/yargs": "^16.0.0",
     "electron": "^11.2.0",
     "iso-url": "^1.1.5",
-    "sinon": "^9.2.3"
+    "sinon": "^10.0.0"
   },
   "engines": {
     "node": ">=14.0.0",

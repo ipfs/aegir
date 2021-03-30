@@ -1,3 +1,14 @@
+# [32.2.0](https://github.com/ipfs/aegir/compare/v32.1.0...v32.2.0) (2021-03-30)
+
+
+### Bug Fixes
+
+* output stats.json from build ([#771](https://github.com/ipfs/aegir/issues/771)) ([3fe7316](https://github.com/ipfs/aegir/commit/3fe7316e3781e11c19e0a128a9bb8c769ba43c7d)), closes [#770](https://github.com/ipfs/aegir/issues/770)
+* update deps and change ts lib to es2020 ([#761](https://github.com/ipfs/aegir/issues/761)) ([ed13f31](https://github.com/ipfs/aegir/commit/ed13f31e19b21b5260ea320737a7369637a9d7d5))
+* update deps and tweak readme ([e961acb](https://github.com/ipfs/aegir/commit/e961acb545043ca2797217b52a362e95c6f4f292))
+
+
+
 # [32.1.0](https://github.com/ipfs/aegir/compare/v32.0.2...v32.1.0) (2021-03-17)
 
 

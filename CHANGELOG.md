@@ -1,3 +1,12 @@
+# [33.0.0](https://github.com/ipfs/aegir/compare/v32.2.0...v33.0.0) (2021-04-06)
+
+
+### Features
+
+* update to ts 4.2, esbuild 0.11, pw-test 3.0.0 and electron 12 ([#772](https://github.com/ipfs/aegir/issues/772)) ([542d16b](https://github.com/ipfs/aegir/commit/542d16bb5cff8828107b2a9769af8ffaa6320850))
+
+
+
 # [32.2.0](https://github.com/ipfs/aegir/compare/v32.1.0...v32.2.0) (2021-03-30)
 
 

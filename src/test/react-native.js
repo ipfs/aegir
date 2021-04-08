@@ -92,7 +92,7 @@ async function checkAndroidEnv () {
 
   try {
     await execa('emulator', ['-help'])
-    await execa('sdkmanager')
+    // await execa('sdkmanager')
     await execa('avdmanager', ['list'])
   } catch (err) {
     throw new Error(`"Command ${err.path}" is not available, you need to properly setup your android environment.`)

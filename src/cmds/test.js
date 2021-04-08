@@ -43,7 +43,7 @@ module.exports = {
           alias: 't',
           describe: 'In which target environment to execute the tests',
           type: 'array',
-          choices: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer'],
+          choices: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer', 'react-native-android', 'react-native-ios'],
           default: userConfig.test.target
         },
         watch: {

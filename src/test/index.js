@@ -4,6 +4,7 @@ const pmap = require('p-map')
 const node = require('./node')
 const browser = require('./browser')
 const electron = require('./electron')
+const rn = require('./react-native')
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -71,8 +72,19 @@ const TASKS = [
      * @param {TestOptions & GlobalOptions} ctx
      */
     enabled: (ctx) => ctx.target.includes('electron-renderer')
+  },
+  {
+    title: 'Test React Native Android',
+    /**
+     * @param {TestOptions & GlobalOptions} opts
+     * @param {ExecaOptions} execaOptions
+     */
+    task: (opts, execaOptions) => rn({ ...opts, runner: 'react-native-android' }, execaOptions),
+    /**
+     * @param {TestOptions & GlobalOptions} ctx
+     */
+    enabled: (ctx) => ctx.target.includes('react-native-android')
   }
-
 ]
 
 module.exports = {

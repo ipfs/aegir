@@ -17,7 +17,7 @@ const merge = require('merge-options')
 module.exports = async (argv, execaOptions) => {
   const AVDName = 'aegir-android-29'
   const extra = argv['--'] ? argv['--'] : []
-  const emulator = process.env.CI ? ['--emulator', AVDName] : []
+  const emulator = process.env.CI ? [] : ['--emulator', AVDName]
   const forwardOptions = /** @type {string[]} */([
     ...extra,
     argv.timeout && `--timeout=${argv.timeout}`,

@@ -15,7 +15,9 @@ const merge = require('merge-options')
  * @param {ExecaOptions} execaOptions
  */
 module.exports = async (argv, execaOptions) => {
+  const AVDName = 'aegir-android-29'
   const extra = argv['--'] ? argv['--'] : []
+  const emulator = process.env.CI ? ['--emulator', AVDName] : []
   const forwardOptions = /** @type {string[]} */([
     ...extra,
     argv.timeout && `--timeout=${argv.timeout}`,
@@ -35,7 +37,6 @@ module.exports = async (argv, execaOptions) => {
 
   await checkAndroidEnv()
 
-  const AVDName = 'aegir-android-29'
   if (!await checkAvd(AVDName)) {
     await execa('avdmanager', [
       'create',
@@ -51,7 +52,7 @@ module.exports = async (argv, execaOptions) => {
     [
       ...files,
       '--platform', argv.runner === 'react-native-android' ? 'android' : 'ios',
-      '--emulator', AVDName,
+      ...emulator,
       '--reset-cache',
       ...forwardOptions
     ],

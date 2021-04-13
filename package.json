@@ -72,6 +72,8 @@
     "camelcase": "^6.2.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
+    "chai-bytes": "^0.1.2",
+    "chai-string": "^1.5.0",
     "chai-subset": "^1.6.0",
     "conventional-changelog": "^3.1.24",
     "conventional-github-releaser": "^3.1.5",
@@ -119,6 +121,7 @@
   },
   "devDependencies": {
     "@types/bytes": "^3.1.0",
+    "@types/chai-string": "^1.4.2",
     "@types/conventional-changelog": "^3.1.0",
     "@types/cors": "^2.8.10",
     "@types/eslint": "^7.2.8",

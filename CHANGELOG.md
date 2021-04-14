@@ -1,3 +1,12 @@
+# [33.1.0](https://github.com/ipfs/aegir/compare/v33.0.0...v33.1.0) (2021-04-14)
+
+
+### Features
+
+* add additional chai libraries ([#781](https://github.com/ipfs/aegir/issues/781)) ([665fb34](https://github.com/ipfs/aegir/commit/665fb344a89e77959f299d8ea64765fd3ccf3200))
+
+
+
 # [33.0.0](https://github.com/ipfs/aegir/compare/v32.2.0...v33.0.0) (2021-04-06)
 
 

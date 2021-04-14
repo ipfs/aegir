@@ -6,6 +6,8 @@ const chai = require('chai')
 chai.use(require('chai-as-promised'))
 chai.use(require('dirty-chai'))
 chai.use(require('chai-subset'))
+chai.use(require('chai-bytes'))
+chai.use(require('chai-string'))
 
 const expect = chai.expect
 const assert = chai.assert

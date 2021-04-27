@@ -1,3 +1,12 @@
+## [33.1.2](https://github.com/ipfs/aegir/compare/v33.1.1...v33.1.2) (2021-04-27)
+
+
+### Bug Fixes
+
+* export types for chai extensions ([#789](https://github.com/ipfs/aegir/issues/789)) ([a6f5ac9](https://github.com/ipfs/aegir/commit/a6f5ac943137606c14c0f2cee6762cb330083b73))
+
+
+
 ## [33.1.1](https://github.com/ipfs/aegir/compare/v33.1.0...v33.1.1) (2021-04-27)
 
 

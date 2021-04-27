@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-      - run: yarn
+      - run: npm install
       - run: npm run test:node -- --bail --cov
       - uses: codecov/codecov-action@v1
   test-chrome:
@@ -32,12 +32,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn
+      - run: npm install
       - run: npm run test:browser
   test-firefox:
     needs: check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn
+      - run: npm install
       - run: npm run test:browser -- -- --browser firefox

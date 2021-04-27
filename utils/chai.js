@@ -1,13 +1,18 @@
 'use strict'
 
 const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+const chaiParentheses = require('chai-parentheses')
+const chaiSubset = require('chai-subset')
+const chaiBytes = require('chai-bytes')
+const chaiString = require('chai-string')
 
 // Do not reorder these statements - https://github.com/chaijs/chai/issues/1298
-chai.use(require('chai-as-promised'))
-chai.use(require('chai-parentheses'))
-chai.use(require('chai-subset'))
-chai.use(require('chai-bytes'))
-chai.use(require('chai-string'))
+chai.use(chaiAsPromised)
+chai.use(chaiParentheses)
+chai.use(chaiSubset)
+chai.use(chaiBytes)
+chai.use(chaiString)
 
 const expect = chai.expect
 const assert = chai.assert
@@ -15,5 +20,18 @@ const assert = chai.assert
 module.exports = {
   expect,
   assert,
-  chai
+  chai,
+
+  // this is to ensure that we import the chai types in the generated .d.ts file
+  _: {
+    chaiAsPromised,
+    chaiParentheses,
+    chaiSubset,
+    chaiBytes,
+    chaiString
+  }
 }
+
+// we don't actually want to export these things so remove the property
+// @ts-ignore - the operand should be optional
+delete module.exports._

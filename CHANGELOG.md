@@ -1,3 +1,7 @@
+## [33.1.1](https://github.com/ipfs/aegir/compare/v33.1.0...v33.1.1) (2021-04-27)
+
+
+
 # [33.1.0](https://github.com/ipfs/aegir/compare/v33.0.0...v33.1.0) (2021-04-14)
 
 

@@ -8,7 +8,6 @@ process.on('unhandledRejection', (err) => {
 })
 
 const updateNotifier = require('update-notifier')
-const kleur = require('kleur')
 const pkg = require('./package.json')
 
 updateNotifier({
@@ -51,21 +50,19 @@ cli
   .recommendCommands()
   .completion()
   .strictCommands()
+  .fail(false)
 
-const args = cli.fail((msg, err, yargs) => {
-  if (msg) {
-    yargs.showHelp()
-    console.error(kleur.red(msg))
-  }
-
-  if (err) {
-    if (args.debug) {
+async function main () {
+  try {
+    await cli.parse()
+  } catch (err) {
+    if (cli.parsed && cli.parsed.argv.debug) {
       console.error('\n', err)
     } else {
       console.error(err.message)
     }
+    process.exit(1)
   }
+}
 
-  process.exit(1)
-})
-  .argv
+main()

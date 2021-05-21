@@ -19,7 +19,7 @@ Download `cmdline-tool` from [https://developer.android.com/studio#cmdline-tools
 ```bash
 
 ~/android-sdk/cmdline-tools/latest/bin/sdkmanager --update
-~/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-29" "build-tools;29.0.2" "add-ons;addon-google_apis-google-24" "system-images;android-29;default;x86_64"
+~/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-29" "build-tools;29.0.2" "system-images;android-29;default;x86_64"
 
 // in your .zshrc or similar add sdk to PATH
 PATH=$PATH:$ANDROID_SDK_ROOT/emulator

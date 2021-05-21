@@ -1,3 +1,12 @@
+# [33.2.0](https://github.com/ipfs/aegir/compare/v33.1.2...v33.2.0) (2021-05-21)
+
+
+### Features
+
+* react-native android support ([#777](https://github.com/ipfs/aegir/issues/777)) ([b4ae6be](https://github.com/ipfs/aegir/commit/b4ae6be580114dbd9258b7a10dafc1a9a8060520))
+
+
+
 ## [33.1.2](https://github.com/ipfs/aegir/compare/v33.1.1...v33.1.2) (2021-04-27)
 
 

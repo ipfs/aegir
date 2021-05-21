@@ -31,7 +31,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-        node: [12, 14]
+        node: [14, 16]
       fail-fast: true
     steps:
       - uses: actions/checkout@v2

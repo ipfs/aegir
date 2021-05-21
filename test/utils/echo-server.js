@@ -15,7 +15,7 @@ describe('echo server spec', () => {
 
   before(async () => {
     await echo.start()
-    const { port, address } = /** @type {import('node:net').AddressInfo} */(echo.server.address())
+    const { port, address } = /** @type {import('net').AddressInfo} */(echo.server.address())
     url = format({ protocol: 'http:', hostname: address, port })
   })
 

@@ -171,7 +171,7 @@ interface TestOptions {
   /**
    * In which target environment to execute the tests
    */
-  target: Array<'node' | 'browser' | 'webworker' | 'electron-main' | 'electron-renderer'>
+  target: Array<'node' | 'browser' | 'webworker' | 'electron-main' | 'electron-renderer' | 'react-native-android' | 'react-native-ios'>
   /**
    * Watch files for changes and rerun tests
    */
@@ -203,7 +203,7 @@ interface TestOptions {
   /**
    * Runner enviroment
    */
-  runner: 'node' | 'browser' | 'webworker' | 'electron-main' | 'electron-renderer'
+  runner: 'node' | 'browser' | 'webworker' | 'electron-main' | 'electron-renderer' | 'react-native-android' | 'react-native-ios'
   /**
    * Browser options
    */

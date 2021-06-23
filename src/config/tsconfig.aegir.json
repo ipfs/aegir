@@ -27,7 +27,7 @@
         // advanced
         "importsNotUsedAsValues": "error",
         "forceConsistentCasingInFileNames": true,
-        "skipLibCheck": true,
+        "skipLibCheck": false,
         "stripInternal": true,
         "resolveJsonModule": true
     },

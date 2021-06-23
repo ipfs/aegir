@@ -98,7 +98,7 @@
     "lilconfig": "^2.0.2",
     "listr": "~0.14.2",
     "merge-options": "^3.0.4",
-    "mocha": "^8.3.2",
+    "mocha": "^9.0.1",
     "npm-package-json-lint": "^5.1.0",
     "nyc": "^15.1.0",
     "ora": "^5.4.0",

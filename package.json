@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "33.2.3",
+  "version": "33.2.4",
   "description": "JavaScript project management",
   "keywords": [
     "standard",
@@ -148,8 +148,8 @@
   "contributors": [
     "dignifiedquire <dignifiedquire@gmail.com>",
     "Hugo Dias <hugomrdias@gmail.com>",
-    "victorbjelkholm <victorbjelkholm@gmail.com>",
     "Alex Potsides <alex@achingbrain.net>",
+    "victorbjelkholm <victorbjelkholm@gmail.com>",
     "David Dias <daviddias.p@gmail.com>",
     "Volker Mische <volker.mische@gmail.com>",
     "Alan Shaw <alan.shaw@protocol.ai>",

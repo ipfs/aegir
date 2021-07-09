@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "33.2.2",
+  "version": "34.0.0",
   "description": "JavaScript project management",
   "keywords": [
     "standard",
@@ -161,6 +161,7 @@
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
     "Vasco Santos <vasco.santos@moxy.studio>",
     "mkg20001 <mkg20001@gmail.com>",
+    "Lars Gierth <lgierth@users.noreply.github.com>",
     "Marcin Rataj <lidel@lidel.org>",
     "Michael Garvin <gar+gh@danger.computer>",
     "Mikeal Rogers <mikeal.rogers@gmail.com>",
@@ -169,8 +170,10 @@
     "JGAntunes <j.goncalo.antunes@gmail.com>",
     "Hector Sanjuan <code@hector.link>",
     "0xflotus <0xflotus@gmail.com>",
+    "Haad <haadcode@users.noreply.github.com>",
     "Garren Smith <garren.smith@gmail.com>",
     "Diogo Silva <fsdiogo@gmail.com>",
+    "kumavis <kumavis@users.noreply.github.com>",
     "Alberto Elias <hi@albertoelias.me>",
     "Adam Uhlíř <adam@uhlir.dev>"
   ]

@@ -19,7 +19,7 @@ const defaults = {
     target: ['node', 'browser', 'webworker'],
     watch: false,
     files: [],
-    timeout: 300000,
+    timeout: 60000,
     grep: '',
     bail: false,
     progress: false,

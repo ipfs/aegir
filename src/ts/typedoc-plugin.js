@@ -4,11 +4,10 @@ const path = require('path')
 const fs = require('fs')
 
 /**
- *
- * @param {import("typedoc/dist/lib/utils").PluginHost} PluginHost
+ * @param {import("typedoc/dist/lib/application").Application} Application
  */
-const plugin = function (PluginHost) {
-  const app = PluginHost.owner
+const plugin = function (Application) {
+  const app = Application.owner
   const pkg = path.join(process.cwd(), 'package.json')
   /** @type {any} */
   let pkgJson

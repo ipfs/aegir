@@ -1,3 +1,17 @@
+# [34.0.0](https://github.com/ipfs/aegir/compare/v33.2.2...v34.0.0) (2021-07-09)
+
+
+### Features
+
+* lint .d.ts files ([#850](https://github.com/ipfs/aegir/issues/850)) ([a99719c](https://github.com/ipfs/aegir/commit/a99719cc519e8b427c0645cd6d4cb492441f956a))
+
+
+### BREAKING CHANGES
+
+* what was not previously linted will now be linted so it may surface new errors
+
+
+
 ## [33.2.2](https://github.com/ipfs/aegir/compare/v33.2.1...v33.2.2) (2021-06-23)
 
 

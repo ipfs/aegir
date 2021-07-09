@@ -57,7 +57,7 @@ const git =
  }
 
 describe('dependants', function () {
-  this.timeout(120000)
+  this.timeout(300000)
 
   if (os.platform() === 'win32') {
     // TODO: travis windows builds can't clone git repos from the local

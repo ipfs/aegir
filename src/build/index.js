@@ -27,19 +27,26 @@ const merge = require('merge-options').bind({
 const build = async (argv) => {
   const outfile = path.join(paths.dist, 'index.min.js')
   const globalName = pascalcase(pkg.name)
-  const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
-  const umdPost = `return ${globalName}}));`
+
+  let banner = {}
+  let footer = {}
+  if (argv.bundleFormat === 'iife') {
+    const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
+    const umdPost = `return ${globalName}}));`
+    banner = { js: umdPre }
+    footer = { js: umdPost }
+  }
   const result = await esbuild.build(merge(
     {
       entryPoints: [fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')],
       bundle: true,
-      format: 'iife',
+      format: argv.bundleFormat,
       conditions: ['production'],
       sourcemap: argv.bundlesize,
       minify: true,
       globalName,
-      banner: { js: umdPre },
-      footer: { js: umdPost },
+      banner,
+      footer,
       metafile: argv.bundlesize,
       outfile,
       define: {

@@ -39,6 +39,7 @@ const defaults = {
     bundle: true,
     bundlesize: false,
     bundlesizeMax: '100kB',
+    bundleFormat: 'iife',
     types: true,
     config: {}
   },

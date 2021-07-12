@@ -37,6 +37,12 @@ module.exports = {
           type: 'boolean',
           describe: 'Build the Typescripts type declarations.',
           default: userConfig.build.types
+        },
+        bundleFormat: {
+          alias: 'f',
+          type: 'string',
+          describe: 'Bundle output format. Possible values: iife, cjs, esm. Default: iife.',
+          default: userConfig.build.bundleFormat
         }
       })
   },

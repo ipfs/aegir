@@ -113,6 +113,10 @@ interface BuildOptions {
    */
   bundlesizeMax: string
   /**
+   * Output format for JS bundle. Possible values: `iife`, `cjs`, `esm`. Default: `iife`.
+   */
+  bundleFormat: string
+  /**
    * Build the Typescript type declarations.
    */
   types: boolean

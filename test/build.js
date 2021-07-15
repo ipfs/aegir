@@ -15,7 +15,7 @@ describe('build', () => {
     before(async () => {
       projectDir = tempy.directory()
 
-      await copy(join(__dirname, 'fixtures/esm/an-esm-project'), projectDir)
+      await copy(join(__dirname, 'fixtures', 'esm', 'an-esm-project'), projectDir)
     })
 
     it('should build an esm project', async function () {
@@ -25,8 +25,8 @@ describe('build', () => {
         cwd: projectDir
       })
 
-      expect(existsSync(join(projectDir, 'dist/esm'))).to.be.true()
-      expect(existsSync(join(projectDir, 'dist/cjs'))).to.be.true()
+      expect(existsSync(join(projectDir, 'dist', 'esm'))).to.be.true()
+      expect(existsSync(join(projectDir, 'dist', 'cjs'))).to.be.true()
 
       const module = require(join(projectDir, 'dist'))
 

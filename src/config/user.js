@@ -40,7 +40,9 @@ const defaults = {
     bundlesize: false,
     bundlesizeMax: '100kB',
     types: true,
-    config: {}
+    config: {},
+    esmMain: true,
+    esmTests: false
   },
   // linter cmd options
   lint: {

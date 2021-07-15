@@ -145,10 +145,7 @@
     "npm": ">=6.0.0"
   },
   "eslintConfig": {
-    "extends": "ipfs",
-    "ignorePatterns": [
-      "test/fixtures/esm/*"
-    ]
+    "extends": "ipfs"
   },
   "contributors": [
     "dignifiedquire <dignifiedquire@gmail.com>",

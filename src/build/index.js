@@ -2,6 +2,7 @@
 'use strict'
 const Listr = require('listr')
 const esbuild = require('esbuild')
+const os = require('os')
 const path = require('path')
 const fs = require('fs-extra')
 const pascalcase = require('pascalcase')
@@ -56,10 +57,43 @@ const build = async (argv) => {
   return outfile
 }
 
+/**
+ * Build command
+ *
+ * @param {GlobalOptions & BuildOptions} argv
+ */
+const buildEsm = async (argv) => {
+  const dist = path.join(process.cwd(), 'dist')
+  // @ts-ignore no types
+  const ipjs = await import('ipjs')
+
+  await ipjs.default({
+    dist,
+    onConsole: (/** @type {any[]} */...args) => console.info.apply(console, args),
+    cwd: process.cwd(),
+    main: argv.esmMain,
+    tests: argv.esmTests
+  })
+}
+
 const tasks = new Listr([
   {
     title: 'Clean ./dist',
     task: async () => del(path.join(process.cwd(), 'dist'))
+  },
+  {
+    title: 'Build ESM',
+    enabled: ctx => {
+      return pkg.type === 'module'
+    },
+    /**
+     *
+     * @param {GlobalOptions & BuildOptions} ctx
+     * @param {Task} task
+     */
+    task: async (ctx, task) => {
+      await buildEsm(ctx)
+    }
   },
   {
     title: 'Bundle',
@@ -96,6 +130,7 @@ const tasks = new Listr([
      * @param {Task} task
      */
     task: async (ctx, task) => {
+      console.log('types')
       await tsCmd({
         debug: ctx.debug,
         tsRepo: ctx.tsRepo,
@@ -105,6 +140,22 @@ const tasks = new Listr([
         copyTo: ctx.fileConfig.ts.copyTo,
         copyFrom: ctx.fileConfig.ts.copyFrom
       })
+
+      // Remove dist from types path if existent
+      // Given with ESM build we will release dist content
+      if (pkg.type === 'module' && pkg.types) {
+        const distPkgPath = path.join(process.cwd(), 'dist', 'package.json')
+        const distPkg = await fs.readJson(distPkgPath)
+
+        const typesContent = distPkg.types
+        if (typesContent.includes('dist')) {
+          distPkg.types = typesContent.replace('dist/', '')
+          await fs.writeJSON(distPkgPath, distPkg, {
+            spaces: 2,
+            EOL: os.EOL
+          })
+        }
+      }
     }
   }
 ], { renderer: 'verbose' })

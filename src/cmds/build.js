@@ -37,6 +37,18 @@ module.exports = {
           type: 'boolean',
           describe: 'Build the Typescripts type declarations.',
           default: userConfig.build.types
+        },
+        esmMain: {
+          alias: 'esm-main',
+          type: 'boolean',
+          describe: 'Include a main field in a built esm project',
+          default: userConfig.build.esmMain
+        },
+        esmTests: {
+          alias: 'esm-tests',
+          type: 'boolean',
+          describe: 'Include tests in a built esm project',
+          default: userConfig.build.esmTests
         }
       })
   },

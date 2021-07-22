@@ -1,6 +1,7 @@
 package-lock.json
 yarn.lock
-node_modules
+/node_modules
+/actions/bundle-size/node_modules
 /coverage
 /dist
 /docs

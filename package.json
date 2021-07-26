@@ -102,7 +102,7 @@
     "npm-package-json-lint": "^5.1.0",
     "nyc": "^15.1.0",
     "ora": "^5.4.0",
-    "p-map": "4.0.0",
+    "p-map": "5.1.0",
     "pascalcase": "^1.0.0",
     "playwright-test": "^7.0.2",
     "polka": "^0.5.2",

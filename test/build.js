@@ -4,7 +4,7 @@
 const { expect } = require('../utils/chai')
 const execa = require('execa')
 const process = require('process')
-const { copy, existsSync, readJson } = require('fs-extra')
+const { copy, existsSync } = require('fs-extra')
 const { join } = require('path')
 const bin = require.resolve('../')
 const tempy = require('tempy')
@@ -34,11 +34,6 @@ describe('build', () => {
 
         expect(module).to.have.property('useHerp').that.is.a('function')
         expect(module).to.have.property('useDerp').that.is.a('function')
-
-        const distPkgPath = join(projectDir, 'dist', 'package.json')
-        const distPkg = await readJson(distPkgPath)
-
-        expect(distPkg.types.includes('dist')).to.be.false()
       })
     })
   }

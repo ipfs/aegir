@@ -2,7 +2,6 @@
 'use strict'
 const Listr = require('listr')
 const esbuild = require('esbuild')
-const os = require('os')
 const path = require('path')
 const fs = require('fs-extra')
 const pascalcase = require('pascalcase')
@@ -130,7 +129,6 @@ const tasks = new Listr([
      * @param {Task} task
      */
     task: async (ctx, task) => {
-      console.log('types')
       await tsCmd({
         debug: ctx.debug,
         tsRepo: ctx.tsRepo,
@@ -140,22 +138,6 @@ const tasks = new Listr([
         copyTo: ctx.fileConfig.ts.copyTo,
         copyFrom: ctx.fileConfig.ts.copyFrom
       })
-
-      // Remove dist from types path if existent
-      // Given with ESM build we will release dist content
-      if (pkg.type === 'module' && pkg.types) {
-        const distPkgPath = path.join(process.cwd(), 'dist', 'package.json')
-        const distPkg = await fs.readJson(distPkgPath)
-
-        const typesContent = distPkg.types
-        if (typesContent.includes('dist')) {
-          distPkg.types = typesContent.replace('dist/', '')
-          await fs.writeJSON(distPkgPath, distPkg, {
-            spaces: 2,
-            EOL: os.EOL
-          })
-        }
-      }
     }
   }
 ], { renderer: 'verbose' })

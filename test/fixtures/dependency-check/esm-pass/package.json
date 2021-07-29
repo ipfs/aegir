@@ -1,0 +1,15 @@
+{
+    "name": "esm-dep-check-pass",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "eslintConfig": {
+        "parserOptions": {
+            "sourceType": "module"
+        }
+    },
+    "dependencies": {
+        "execa": "1.0.0",
+        "pico": "1.0.0"
+    }
+}

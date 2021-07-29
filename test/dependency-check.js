@@ -1,46 +1,47 @@
 /* eslint-env mocha */
 'use strict'
 
-const { check } = require('../src/dependency-check')
 const { expect } = require('../utils/chai')
 const path = require('path')
-const merge = require('merge-options')
-const { userConfig } = require('../src/config/user')
-
-// returns an object that looks like the yargs input
-const yargsv = (overrides = {}) => {
-  const argv = {
-    _: ['dependency-check'],
-    input: userConfig.dependencyCheck.input,
-    productionOnly: false,
-    productionInput: userConfig.dependencyCheck.productionInput,
-    ignore: [],
-    fileConfig: userConfig
-  }
-
-  return merge(argv, overrides)
-}
+const bin = require.resolve('../')
+const execa = require('execa')
 
 describe('dependency check', () => {
   it('should fail for missing deps', async () => {
     await expect(
-      check(yargsv(), {
+      execa(bin, ['dependency-check'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/fail')
+      })
+    ).to.eventually.be.rejectedWith('execa')
+  })
+
+  it('should fail for missing deps in an esm project', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/esm-fail')
       })
     ).to.eventually.be.rejectedWith('execa')
   })
 
   it('should pass when there are no missing deps', async () => {
     await expect(
-      check(yargsv(), {
+      execa(bin, ['dependency-check'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
+      })
+    ).to.eventually.be.fulfilled()
+  })
+
+  it('should pass when there are no missing deps in an esm project', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/esm-pass')
       })
     ).to.eventually.be.fulfilled()
   })
 
   it('should forward options', async () => {
     await expect(
-      check(yargsv({ '--': ['--unused'] }), {
+      execa(bin, ['dependency-check', '--', '--unused'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
       })
     ).to.eventually.be.rejectedWith(
@@ -50,7 +51,7 @@ describe('dependency check', () => {
 
   it('should fail for missing production deps', async () => {
     await expect(
-      check(yargsv({ productionOnly: true }), {
+      execa(bin, ['dependency-check', '-p'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/fail-prod')
       })
     ).to.eventually.be.rejectedWith('execa')
@@ -60,16 +61,12 @@ describe('dependency check', () => {
     const file = 'derp/foo.js'
 
     await expect(
-      check(
-        yargsv({
-          input: [file]
-        }),
-        {
-          cwd: path.join(
-            __dirname,
-            'fixtures/dependency-check/pass-certain-files'
-          )
-        }
+      execa(bin, ['dependency-check', file], {
+        cwd: path.join(
+          __dirname,
+          'fixtures/dependency-check/pass-certain-files'
+        )
+      }
       )
     ).to.eventually.be.fulfilled()
   })
@@ -78,46 +75,33 @@ describe('dependency check', () => {
     const file = 'derp/foo.js'
 
     await expect(
-      check(
-        yargsv({
-          productionOnly: true,
-          input: [file]
-        }),
-        {
-          cwd: path.join(
-            __dirname,
-            'fixtures/dependency-check/pass-certain-files'
-          )
-        }
+      execa(bin, ['dependency-check', file, '-p'], {
+        cwd: path.join(
+          __dirname,
+          'fixtures/dependency-check/pass-certain-files'
+        )
+      }
       )
     ).to.eventually.be.fulfilled()
   })
 
   it('should pass for ignored modules', async () => {
     await expect(
-      check(
-        yargsv({
-          ignore: ['execa']
-        }),
-        {
-          cwd: path.join(__dirname, 'fixtures/dependency-check/fail')
-        }
+      execa(bin, ['dependency-check', '-i', 'execa'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/fail')
+      }
       )
     ).to.eventually.be.fulfilled()
   })
 
   it('should pass for modules used in .aegir.js', async () => {
     await expect(
-      check(
-        yargsv({
-          '--': ['--unused']
-        }),
-        {
-          cwd: path.join(
-            __dirname,
-            'fixtures/dependency-check/with-aegir-config'
-          )
-        }
+      execa(bin, ['dependency-check', '--', '--unused'], {
+        cwd: path.join(
+          __dirname,
+          'fixtures/dependency-check/with-aegir-config'
+        )
+      }
       )
     ).to.eventually.be.fulfilled()
   })

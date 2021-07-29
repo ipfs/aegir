@@ -94,7 +94,7 @@
     "git-authors-cli": "^1.0.33",
     "globby": "^11.0.3",
     "ipfs-utils": "^8.1.0",
-    "ipjs": "https://gitpkg.now.sh/vasco-santos/ipjs?fix/windows-build",
+    "ipjs": "^5.0.5",
     "it-glob": "~0.0.10",
     "kleur": "^4.1.4",
     "lilconfig": "^2.0.2",

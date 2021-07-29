@@ -3,7 +3,6 @@ yarn.lock
 /node_modules
 /actions/bundle-size/node_modules
 /coverage
-/dist
 /docs
 .nyc_output
 *.log

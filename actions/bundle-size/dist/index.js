@@ -1472,8 +1472,9 @@ function isRetryableStatusCode(statusCode) {
     }
     const retryableStatusCodes = [
         http_client_1.HttpCodes.BadGateway,
-        http_client_1.HttpCodes.ServiceUnavailable,
         http_client_1.HttpCodes.GatewayTimeout,
+        http_client_1.HttpCodes.InternalServerError,
+        http_client_1.HttpCodes.ServiceUnavailable,
         http_client_1.HttpCodes.TooManyRequests,
         413 // Payload Too Large
     ];
@@ -1713,14 +1714,27 @@ exports.sleep = sleep;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.issue = exports.issueCommand = void 0;
 const os = __importStar(__nccwpck_require__(12087));
 const utils_1 = __nccwpck_require__(5278);
 /**
@@ -1799,6 +1813,25 @@ function escapeProperty(s) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1808,14 +1841,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
 const command_1 = __nccwpck_require__(87351);
 const file_command_1 = __nccwpck_require__(717);
 const utils_1 = __nccwpck_require__(5278);
@@ -1882,7 +1909,9 @@ function addPath(inputPath) {
 }
 exports.addPath = addPath;
 /**
- * Gets the value of an input.  The value is also trimmed.
+ * Gets the value of an input.
+ * Unless trimWhitespace is set to false in InputOptions, the value is also trimmed.
+ * Returns an empty string if the value is not defined.
  *
  * @param     name     name of the input to get
  * @param     options  optional. See InputOptions.
@@ -1893,9 +1922,49 @@ function getInput(name, options) {
     if (options && options.required && !val) {
         throw new Error(`Input required and not supplied: ${name}`);
     }
+    if (options && options.trimWhitespace === false) {
+        return val;
+    }
     return val.trim();
 }
 exports.getInput = getInput;
+/**
+ * Gets the values of an multiline input.  Each value is also trimmed.
+ *
+ * @param     name     name of the input to get
+ * @param     options  optional. See InputOptions.
+ * @returns   string[]
+ *
+ */
+function getMultilineInput(name, options) {
+    const inputs = getInput(name, options)
+        .split('\n')
+        .filter(x => x !== '');
+    return inputs;
+}
+exports.getMultilineInput = getMultilineInput;
+/**
+ * Gets the input value of the boolean type in the YAML 1.2 "core schema" specification.
+ * Support boolean input list: `true | True | TRUE | false | False | FALSE` .
+ * The return value is also in boolean type.
+ * ref: https://yaml.org/spec/1.2/spec.html#id2804923
+ *
+ * @param     name     name of the input to get
+ * @param     options  optional. See InputOptions.
+ * @returns   boolean
+ */
+function getBooleanInput(name, options) {
+    const trueValue = ['true', 'True', 'TRUE'];
+    const falseValue = ['false', 'False', 'FALSE'];
+    const val = getInput(name, options);
+    if (trueValue.includes(val))
+        return true;
+    if (falseValue.includes(val))
+        return false;
+    throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}\n` +
+        `Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
+}
+exports.getBooleanInput = getBooleanInput;
 /**
  * Sets the value of an output.
  *
@@ -1904,6 +1973,7 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
@@ -2045,14 +2115,27 @@ exports.getState = getState;
 "use strict";
 
 // For internal use, subject to change.
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.issueCommand = void 0;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(35747));
@@ -2083,6 +2166,7 @@ exports.issueCommand = issueCommand;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.toCommandValue = void 0;
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -2811,7 +2895,9 @@ class HttpClient {
                 maxSockets: maxSockets,
                 keepAlive: this._keepAlive,
                 proxy: {
-                    proxyAuth: `${proxyUrl.username}:${proxyUrl.password}`,
+                    ...((proxyUrl.username || proxyUrl.password) && {
+                        proxyAuth: `${proxyUrl.username}:${proxyUrl.password}`
+                    }),
                     host: proxyUrl.hostname,
                     port: proxyUrl.port
                 }
@@ -2998,11 +3084,7 @@ Object.defineProperty(exports, "__esModule", ({
 exports.codeFrameColumns = codeFrameColumns;
 exports.default = _default;
 
-var _highlight = _interopRequireWildcard(__nccwpck_require__(36860));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _highlight = __nccwpck_require__(36860);
 
 let deprecationWarningShown = false;
 
@@ -3021,7 +3103,7 @@ function getMarkerLines(loc, source, opts) {
     column: 0,
     line: -1
   }, loc.start);
-  const endLoc = Object.assign(Object.assign({}, startLoc), loc.end);
+  const endLoc = Object.assign({}, startLoc, loc.end);
   const {
     linesAbove = 2,
     linesBelow = 3
@@ -3100,7 +3182,7 @@ function codeFrameColumns(rawLines, loc, opts = {}) {
   let frame = highlightedLines.split(NEWLINE).slice(start, end).map((line, index) => {
     const number = start + 1 + index;
     const paddedNumber = ` ${number}`.slice(-numberMaxWidth);
-    const gutter = ` ${paddedNumber} | `;
+    const gutter = ` ${paddedNumber} |`;
     const hasMarker = markerLines[number];
     const lastMarkerLine = !markerLines[number + 1];
 
@@ -3110,16 +3192,16 @@ function codeFrameColumns(rawLines, loc, opts = {}) {
       if (Array.isArray(hasMarker)) {
         const markerSpacing = line.slice(0, Math.max(hasMarker[0] - 1, 0)).replace(/[^\t]/g, " ");
         const numberOfMarkers = hasMarker[1] || 1;
-        markerLine = ["\n ", maybeHighlight(defs.gutter, gutter.replace(/\d/g, " ")), markerSpacing, maybeHighlight(defs.marker, "^").repeat(numberOfMarkers)].join("");
+        markerLine = ["\n ", maybeHighlight(defs.gutter, gutter.replace(/\d/g, " ")), " ", markerSpacing, maybeHighlight(defs.marker, "^").repeat(numberOfMarkers)].join("");
 
         if (lastMarkerLine && opts.message) {
           markerLine += " " + maybeHighlight(defs.message, opts.message);
         }
       }
 
-      return [maybeHighlight(defs.marker, ">"), maybeHighlight(defs.gutter, gutter), line, markerLine].join("");
+      return [maybeHighlight(defs.marker, ">"), maybeHighlight(defs.gutter, gutter), line.length > 0 ? ` ${line}` : "", markerLine].join("");
     } else {
-      return ` ${maybeHighlight(defs.gutter, gutter)}${line}`;
+      return ` ${maybeHighlight(defs.gutter, gutter)}${line.length > 0 ? ` ${line}` : ""}`;
     }
   }).join("\n");
 
@@ -3224,16 +3306,23 @@ function isIdentifierChar(code) {
 function isIdentifierName(name) {
   let isFirst = true;
 
-  for (let _i = 0, _Array$from = Array.from(name); _i < _Array$from.length; _i++) {
-    const char = _Array$from[_i];
-    const cp = char.codePointAt(0);
+  for (let i = 0; i < name.length; i++) {
+    let cp = name.charCodeAt(i);
+
+    if ((cp & 0xfc00) === 0xd800 && i + 1 < name.length) {
+      const trail = name.charCodeAt(++i);
+
+      if ((trail & 0xfc00) === 0xdc00) {
+        cp = 0x10000 + ((cp & 0x3ff) << 10) + (trail & 0x3ff);
+      }
+    }
 
     if (isFirst) {
+      isFirst = false;
+
       if (!isIdentifierStart(cp)) {
         return false;
       }
-
-      isFirst = false;
     } else if (!isIdentifierChar(cp)) {
       return false;
     }
@@ -3366,23 +3455,19 @@ exports.shouldHighlight = shouldHighlight;
 exports.getChalk = getChalk;
 exports.default = highlight;
 
-var _jsTokens = _interopRequireWildcard(__nccwpck_require__(51531));
+var _jsTokens = __nccwpck_require__(51531);
 
 var _helperValidatorIdentifier = __nccwpck_require__(86607);
 
-var _chalk = _interopRequireDefault(__nccwpck_require__(38707));
+var _chalk = __nccwpck_require__(38707);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+const sometimesKeywords = new Set(["as", "async", "from", "get", "of", "set"]);
 
 function getDefs(chalk) {
   return {
     keyword: chalk.cyan,
     capitalized: chalk.yellow,
-    jsx_tag: chalk.yellow,
+    jsxIdentifier: chalk.yellow,
     punctuator: chalk.yellow,
     number: chalk.magenta,
     string: chalk.green,
@@ -3393,66 +3478,79 @@ function getDefs(chalk) {
 }
 
 const NEWLINE = /\r\n|[\n\r\u2028\u2029]/;
-const JSX_TAG = /^[a-z][\w-]*$/i;
 const BRACKET = /^[()[\]{}]$/;
+let tokenize;
+{
+  const JSX_TAG = /^[a-z][\w-]*$/i;
 
-function getTokenType(match) {
-  const [offset, text] = match.slice(-2);
-  const token = (0, _jsTokens.matchToToken)(match);
+  const getTokenType = function (token, offset, text) {
+    if (token.type === "name") {
+      if ((0, _helperValidatorIdentifier.isKeyword)(token.value) || (0, _helperValidatorIdentifier.isStrictReservedWord)(token.value, true) || sometimesKeywords.has(token.value)) {
+        return "keyword";
+      }
 
-  if (token.type === "name") {
-    if ((0, _helperValidatorIdentifier.isKeyword)(token.value) || (0, _helperValidatorIdentifier.isReservedWord)(token.value)) {
-      return "keyword";
+      if (JSX_TAG.test(token.value) && (text[offset - 1] === "<" || text.substr(offset - 2, 2) == "</")) {
+        return "jsxIdentifier";
+      }
+
+      if (token.value[0] !== token.value[0].toLowerCase()) {
+        return "capitalized";
+      }
     }
 
-    if (JSX_TAG.test(token.value) && (text[offset - 1] === "<" || text.substr(offset - 2, 2) == "</")) {
-      return "jsx_tag";
+    if (token.type === "punctuator" && BRACKET.test(token.value)) {
+      return "bracket";
     }
 
-    if (token.value[0] !== token.value[0].toLowerCase()) {
-      return "capitalized";
+    if (token.type === "invalid" && (token.value === "@" || token.value === "#")) {
+      return "punctuator";
     }
-  }
 
-  if (token.type === "punctuator" && BRACKET.test(token.value)) {
-    return "bracket";
-  }
+    return token.type;
+  };
 
-  if (token.type === "invalid" && (token.value === "@" || token.value === "#")) {
-    return "punctuator";
-  }
+  tokenize = function* (text) {
+    let match;
 
-  return token.type;
+    while (match = _jsTokens.default.exec(text)) {
+      const token = _jsTokens.matchToToken(match);
+
+      yield {
+        type: getTokenType(token, match.index, text),
+        value: token.value
+      };
+    }
+  };
 }
 
 function highlightTokens(defs, text) {
-  return text.replace(_jsTokens.default, function (...args) {
-    const type = getTokenType(args);
+  let highlighted = "";
+
+  for (const {
+    type,
+    value
+  } of tokenize(text)) {
     const colorize = defs[type];
 
     if (colorize) {
-      return args[0].split(NEWLINE).map(str => colorize(str)).join("\n");
+      highlighted += value.split(NEWLINE).map(str => colorize(str)).join("\n");
     } else {
-      return args[0];
+      highlighted += value;
     }
-  });
+  }
+
+  return highlighted;
 }
 
 function shouldHighlight(options) {
-  return _chalk.default.supportsColor || options.forceColor;
+  return !!_chalk.supportsColor || options.forceColor;
 }
 
 function getChalk(options) {
-  let chalk = _chalk.default;
-
-  if (options.forceColor) {
-    chalk = new _chalk.default.constructor({
-      enabled: true,
-      level: 1
-    });
-  }
-
-  return chalk;
+  return options.forceColor ? new _chalk.constructor({
+    enabled: true,
+    level: 1
+  }) : _chalk;
 }
 
 function highlight(code, options = {}) {
@@ -3473,6 +3571,7 @@ function highlight(code, options = {}) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createFileSystemAdapter = exports.FILE_SYSTEM_ADAPTER = void 0;
 const fs = __nccwpck_require__(35747);
 exports.FILE_SYSTEM_ADAPTER = {
     lstat: fs.lstat,
@@ -3499,9 +3598,13 @@ exports.createFileSystemAdapter = createFileSystemAdapter;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.IS_SUPPORT_READDIR_WITH_FILE_TYPES = void 0;
 const NODE_PROCESS_VERSION_PARTS = process.versions.node.split('.');
-const MAJOR_VERSION = parseInt(NODE_PROCESS_VERSION_PARTS[0], 10);
-const MINOR_VERSION = parseInt(NODE_PROCESS_VERSION_PARTS[1], 10);
+if (NODE_PROCESS_VERSION_PARTS[0] === undefined || NODE_PROCESS_VERSION_PARTS[1] === undefined) {
+    throw new Error(`Unexpected behavior. The 'process.versions.node' variable has invalid value: ${process.versions.node}`);
+}
+const MAJOR_VERSION = Number.parseInt(NODE_PROCESS_VERSION_PARTS[0], 10);
+const MINOR_VERSION = Number.parseInt(NODE_PROCESS_VERSION_PARTS[1], 10);
 const SUPPORTED_MAJOR_VERSION = 10;
 const SUPPORTED_MINOR_VERSION = 10;
 const IS_MATCHED_BY_MAJOR = MAJOR_VERSION > SUPPORTED_MAJOR_VERSION;
@@ -3520,13 +3623,15 @@ exports.IS_SUPPORT_READDIR_WITH_FILE_TYPES = IS_MATCHED_BY_MAJOR || IS_MATCHED_B
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Settings = exports.scandirSync = exports.scandir = void 0;
 const async = __nccwpck_require__(84507);
 const sync = __nccwpck_require__(69560);
 const settings_1 = __nccwpck_require__(88662);
 exports.Settings = settings_1.default;
 function scandir(path, optionsOrSettingsOrCallback, callback) {
     if (typeof optionsOrSettingsOrCallback === 'function') {
-        return async.read(path, getSettings(), optionsOrSettingsOrCallback);
+        async.read(path, getSettings(), optionsOrSettingsOrCallback);
+        return;
     }
     async.read(path, getSettings(optionsOrSettingsOrCallback), callback);
 }
@@ -3552,34 +3657,40 @@ function getSettings(settingsOrOptions = {}) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.readdir = exports.readdirWithFileTypes = exports.read = void 0;
 const fsStat = __nccwpck_require__(70109);
 const rpl = __nccwpck_require__(75288);
 const constants_1 = __nccwpck_require__(18838);
 const utils = __nccwpck_require__(16297);
+const common = __nccwpck_require__(3847);
 function read(directory, settings, callback) {
     if (!settings.stats && constants_1.IS_SUPPORT_READDIR_WITH_FILE_TYPES) {
-        return readdirWithFileTypes(directory, settings, callback);
+        readdirWithFileTypes(directory, settings, callback);
+        return;
     }
-    return readdir(directory, settings, callback);
+    readdir(directory, settings, callback);
 }
 exports.read = read;
 function readdirWithFileTypes(directory, settings, callback) {
     settings.fs.readdir(directory, { withFileTypes: true }, (readdirError, dirents) => {
         if (readdirError !== null) {
-            return callFailureCallback(callback, readdirError);
+            callFailureCallback(callback, readdirError);
+            return;
         }
         const entries = dirents.map((dirent) => ({
             dirent,
             name: dirent.name,
-            path: `${directory}${settings.pathSegmentSeparator}${dirent.name}`
+            path: common.joinPathSegments(directory, dirent.name, settings.pathSegmentSeparator)
         }));
         if (!settings.followSymbolicLinks) {
-            return callSuccessCallback(callback, entries);
+            callSuccessCallback(callback, entries);
+            return;
         }
         const tasks = entries.map((entry) => makeRplTaskEntry(entry, settings));
         rpl(tasks, (rplError, rplEntries) => {
             if (rplError !== null) {
-                return callFailureCallback(callback, rplError);
+                callFailureCallback(callback, rplError);
+                return;
             }
             callSuccessCallback(callback, rplEntries);
         });
@@ -3589,46 +3700,54 @@ exports.readdirWithFileTypes = readdirWithFileTypes;
 function makeRplTaskEntry(entry, settings) {
     return (done) => {
         if (!entry.dirent.isSymbolicLink()) {
-            return done(null, entry);
+            done(null, entry);
+            return;
         }
         settings.fs.stat(entry.path, (statError, stats) => {
             if (statError !== null) {
                 if (settings.throwErrorOnBrokenSymbolicLink) {
-                    return done(statError);
+                    done(statError);
+                    return;
                 }
-                return done(null, entry);
+                done(null, entry);
+                return;
             }
             entry.dirent = utils.fs.createDirentFromStats(entry.name, stats);
-            return done(null, entry);
+            done(null, entry);
         });
     };
 }
 function readdir(directory, settings, callback) {
     settings.fs.readdir(directory, (readdirError, names) => {
         if (readdirError !== null) {
-            return callFailureCallback(callback, readdirError);
+            callFailureCallback(callback, readdirError);
+            return;
         }
-        const filepaths = names.map((name) => `${directory}${settings.pathSegmentSeparator}${name}`);
-        const tasks = filepaths.map((filepath) => {
-            return (done) => fsStat.stat(filepath, settings.fsStatSettings, done);
+        const tasks = names.map((name) => {
+            const path = common.joinPathSegments(directory, name, settings.pathSegmentSeparator);
+            return (done) => {
+                fsStat.stat(path, settings.fsStatSettings, (error, stats) => {
+                    if (error !== null) {
+                        done(error);
+                        return;
+                    }
+                    const entry = {
+                        name,
+                        path,
+                        dirent: utils.fs.createDirentFromStats(name, stats)
+                    };
+                    if (settings.stats) {
+                        entry.stats = stats;
+                    }
+                    done(null, entry);
+                });
+            };
         });
-        rpl(tasks, (rplError, results) => {
+        rpl(tasks, (rplError, entries) => {
             if (rplError !== null) {
-                return callFailureCallback(callback, rplError);
+                callFailureCallback(callback, rplError);
+                return;
             }
-            const entries = [];
-            names.forEach((name, index) => {
-                const stats = results[index];
-                const entry = {
-                    name,
-                    path: filepaths[index],
-                    dirent: utils.fs.createDirentFromStats(name, stats)
-                };
-                if (settings.stats) {
-                    entry.stats = stats;
-                }
-                entries.push(entry);
-            });
             callSuccessCallback(callback, entries);
         });
     });
@@ -3644,15 +3763,38 @@ function callSuccessCallback(callback, result) {
 
 /***/ }),
 
+/***/ 3847:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.joinPathSegments = void 0;
+function joinPathSegments(a, b, separator) {
+    /**
+     * The correct handling of cases when the first segment is a root (`/`, `C:/`) or UNC path (`//?/C:/`).
+     */
+    if (a.endsWith(separator)) {
+        return a + b;
+    }
+    return a + separator + b;
+}
+exports.joinPathSegments = joinPathSegments;
+
+
+/***/ }),
+
 /***/ 69560:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.readdir = exports.readdirWithFileTypes = exports.read = void 0;
 const fsStat = __nccwpck_require__(70109);
 const constants_1 = __nccwpck_require__(18838);
 const utils = __nccwpck_require__(16297);
+const common = __nccwpck_require__(3847);
 function read(directory, settings) {
     if (!settings.stats && constants_1.IS_SUPPORT_READDIR_WITH_FILE_TYPES) {
         return readdirWithFileTypes(directory, settings);
@@ -3666,7 +3808,7 @@ function readdirWithFileTypes(directory, settings) {
         const entry = {
             dirent,
             name: dirent.name,
-            path: `${directory}${settings.pathSegmentSeparator}${dirent.name}`
+            path: common.joinPathSegments(directory, dirent.name, settings.pathSegmentSeparator)
         };
         if (entry.dirent.isSymbolicLink() && settings.followSymbolicLinks) {
             try {
@@ -3686,7 +3828,7 @@ exports.readdirWithFileTypes = readdirWithFileTypes;
 function readdir(directory, settings) {
     const names = settings.fs.readdirSync(directory);
     return names.map((name) => {
-        const entryPath = `${directory}${settings.pathSegmentSeparator}${name}`;
+        const entryPath = common.joinPathSegments(directory, name, settings.pathSegmentSeparator);
         const stats = fsStat.statSync(entryPath, settings.fsStatSettings);
         const entry = {
             name,
@@ -3728,7 +3870,7 @@ class Settings {
         });
     }
     _getValue(option, value) {
-        return option === undefined ? value : option;
+        return option !== null && option !== void 0 ? option : value;
     }
 }
 exports.default = Settings;
@@ -3742,6 +3884,7 @@ exports.default = Settings;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createDirentFromStats = void 0;
 class DirentFromStats {
     constructor(name, stats) {
         this.name = name;
@@ -3768,6 +3911,7 @@ exports.createDirentFromStats = createDirentFromStats;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.fs = void 0;
 const fs = __nccwpck_require__(60883);
 exports.fs = fs;
 
@@ -3780,6 +3924,7 @@ exports.fs = fs;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createFileSystemAdapter = exports.FILE_SYSTEM_ADAPTER = void 0;
 const fs = __nccwpck_require__(35747);
 exports.FILE_SYSTEM_ADAPTER = {
     lstat: fs.lstat,
@@ -3804,13 +3949,15 @@ exports.createFileSystemAdapter = createFileSystemAdapter;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.statSync = exports.stat = exports.Settings = void 0;
 const async = __nccwpck_require__(34147);
 const sync = __nccwpck_require__(34527);
 const settings_1 = __nccwpck_require__(12410);
 exports.Settings = settings_1.default;
 function stat(path, optionsOrSettingsOrCallback, callback) {
     if (typeof optionsOrSettingsOrCallback === 'function') {
-        return async.read(path, getSettings(), optionsOrSettingsOrCallback);
+        async.read(path, getSettings(), optionsOrSettingsOrCallback);
+        return;
     }
     async.read(path, getSettings(optionsOrSettingsOrCallback), callback);
 }
@@ -3836,20 +3983,25 @@ function getSettings(settingsOrOptions = {}) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.read = void 0;
 function read(path, settings, callback) {
     settings.fs.lstat(path, (lstatError, lstat) => {
         if (lstatError !== null) {
-            return callFailureCallback(callback, lstatError);
+            callFailureCallback(callback, lstatError);
+            return;
         }
         if (!lstat.isSymbolicLink() || !settings.followSymbolicLink) {
-            return callSuccessCallback(callback, lstat);
+            callSuccessCallback(callback, lstat);
+            return;
         }
         settings.fs.stat(path, (statError, stat) => {
             if (statError !== null) {
                 if (settings.throwErrorOnBrokenSymbolicLink) {
-                    return callFailureCallback(callback, statError);
+                    callFailureCallback(callback, statError);
+                    return;
                 }
-                return callSuccessCallback(callback, lstat);
+                callSuccessCallback(callback, lstat);
+                return;
             }
             if (settings.markSymbolicLink) {
                 stat.isSymbolicLink = () => true;
@@ -3875,6 +4027,7 @@ function callSuccessCallback(callback, result) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.read = void 0;
 function read(path, settings) {
     const lstat = settings.fs.lstatSync(path);
     if (!lstat.isSymbolicLink() || !settings.followSymbolicLink) {
@@ -3915,7 +4068,7 @@ class Settings {
         this.throwErrorOnBrokenSymbolicLink = this._getValue(this._options.throwErrorOnBrokenSymbolicLink, true);
     }
     _getValue(option, value) {
-        return option === undefined ? value : option;
+        return option !== null && option !== void 0 ? option : value;
     }
 }
 exports.default = Settings;
@@ -3929,6 +4082,7 @@ exports.default = Settings;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Settings = exports.walkStream = exports.walkSync = exports.walk = void 0;
 const async_1 = __nccwpck_require__(77523);
 const stream_1 = __nccwpck_require__(96737);
 const sync_1 = __nccwpck_require__(13068);
@@ -3936,7 +4090,8 @@ const settings_1 = __nccwpck_require__(50141);
 exports.Settings = settings_1.default;
 function walk(directory, optionsOrSettingsOrCallback, callback) {
     if (typeof optionsOrSettingsOrCallback === 'function') {
-        return new async_1.default(directory, getSettings()).read(optionsOrSettingsOrCallback);
+        new async_1.default(directory, getSettings()).read(optionsOrSettingsOrCallback);
+        return;
     }
     new async_1.default(directory, getSettings(optionsOrSettingsOrCallback)).read(callback);
 }
@@ -3975,17 +4130,17 @@ class AsyncProvider {
         this._root = _root;
         this._settings = _settings;
         this._reader = new async_1.default(this._root, this._settings);
-        this._storage = new Set();
+        this._storage = [];
     }
     read(callback) {
         this._reader.onError((error) => {
             callFailureCallback(callback, error);
         });
         this._reader.onEntry((entry) => {
-            this._storage.add(entry);
+            this._storage.push(entry);
         });
         this._reader.onEnd(() => {
-            callSuccessCallback(callback, [...this._storage]);
+            callSuccessCallback(callback, this._storage);
         });
         this._reader.read();
     }
@@ -4017,7 +4172,11 @@ class StreamProvider {
         this._stream = new stream_1.Readable({
             objectMode: true,
             read: () => { },
-            destroy: this._reader.destroy.bind(this._reader)
+            destroy: () => {
+                if (!this._reader.isDestroyed) {
+                    this._reader.destroy();
+                }
+            }
         });
     }
     read() {
@@ -4095,6 +4254,9 @@ class AsyncReader extends reader_1.default {
         });
         return this._emitter;
     }
+    get isDestroyed() {
+        return this._isDestroyed;
+    }
     destroy() {
         if (this._isDestroyed) {
             throw new Error('The reader is already destroyed');
@@ -4122,7 +4284,8 @@ class AsyncReader extends reader_1.default {
     _worker(item, done) {
         this._scandir(item.directory, this._settings.fsScandirSettings, (error, entries) => {
             if (error !== null) {
-                return done(error, undefined);
+                done(error, undefined);
+                return;
             }
             for (const entry of entries) {
                 this._handleEntry(entry, item.base);
@@ -4131,7 +4294,7 @@ class AsyncReader extends reader_1.default {
         });
     }
     _handleError(error) {
-        if (!common.isFatalError(this._settings, error)) {
+        if (this._isDestroyed || !common.isFatalError(this._settings, error)) {
             return;
         }
         this._isFatalError = true;
@@ -4150,7 +4313,7 @@ class AsyncReader extends reader_1.default {
             this._emitEntry(entry);
         }
         if (entry.dirent.isDirectory() && common.isAppliedFilter(this._settings.deepFilter, entry)) {
-            this._pushToQueue(fullpath, entry.path);
+            this._pushToQueue(fullpath, base === undefined ? undefined : entry.path);
         }
     }
     _emitEntry(entry) {
@@ -4168,6 +4331,7 @@ exports.default = AsyncReader;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.joinPathSegments = exports.replacePathSegmentSeparator = exports.isAppliedFilter = exports.isFatalError = void 0;
 function isFatalError(settings, error) {
     if (settings.errorFilter === null) {
         return true;
@@ -4180,12 +4344,18 @@ function isAppliedFilter(filter, value) {
 }
 exports.isAppliedFilter = isAppliedFilter;
 function replacePathSegmentSeparator(filepath, separator) {
-    return filepath.split(/[\\/]/).join(separator);
+    return filepath.split(/[/\\]/).join(separator);
 }
 exports.replacePathSegmentSeparator = replacePathSegmentSeparator;
 function joinPathSegments(a, b, separator) {
     if (a === '') {
         return b;
+    }
+    /**
+     * The correct handling of cases when the first segment is a root (`/`, `C:/`) or UNC path (`//?/C:/`).
+     */
+    if (a.endsWith(separator)) {
+        return a + b;
     }
     return a + separator + b;
 }
@@ -4226,13 +4396,13 @@ class SyncReader extends reader_1.default {
     constructor() {
         super(...arguments);
         this._scandir = fsScandir.scandirSync;
-        this._storage = new Set();
+        this._storage = [];
         this._queue = new Set();
     }
     read() {
         this._pushToQueue(this._root, this._settings.basePath);
         this._handleQueue();
-        return [...this._storage];
+        return this._storage;
     }
     _pushToQueue(directory, base) {
         this._queue.add({ directory, base });
@@ -4268,11 +4438,11 @@ class SyncReader extends reader_1.default {
             this._pushToStorage(entry);
         }
         if (entry.dirent.isDirectory() && common.isAppliedFilter(this._settings.deepFilter, entry)) {
-            this._pushToQueue(fullpath, entry.path);
+            this._pushToQueue(fullpath, base === undefined ? undefined : entry.path);
         }
     }
     _pushToStorage(entry) {
-        this._storage.add(entry);
+        this._storage.push(entry);
     }
 }
 exports.default = SyncReader;
@@ -4292,7 +4462,7 @@ class Settings {
     constructor(_options = {}) {
         this._options = _options;
         this.basePath = this._getValue(this._options.basePath, undefined);
-        this.concurrency = this._getValue(this._options.concurrency, Infinity);
+        this.concurrency = this._getValue(this._options.concurrency, Number.POSITIVE_INFINITY);
         this.deepFilter = this._getValue(this._options.deepFilter, null);
         this.entryFilter = this._getValue(this._options.entryFilter, null);
         this.errorFilter = this._getValue(this._options.errorFilter, null);
@@ -4306,7 +4476,7 @@ class Settings {
         });
     }
     _getValue(option, value) {
-        return option === undefined ? value : option;
+        return option !== null && option !== void 0 ? option : value;
     }
 }
 exports.default = Settings;
@@ -4379,7 +4549,7 @@ exports.createTokenAuth = createTokenAuth;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-var universalUserAgent = __nccwpck_require__(77540);
+var universalUserAgent = __nccwpck_require__(45030);
 var beforeAfterHook = __nccwpck_require__(83682);
 var request = __nccwpck_require__(36234);
 var graphql = __nccwpck_require__(88467);
@@ -4421,8 +4591,9 @@ function _objectWithoutProperties(source, excluded) {
   return target;
 }
 
-const VERSION = "3.2.1";
+const VERSION = "3.5.1";
 
+const _excluded = ["authStrategy"];
 class Octokit {
   constructor(options = {}) {
     const hook = new beforeAfterHook.Collection();
@@ -4430,6 +4601,7 @@ class Octokit {
       baseUrl: request.request.endpoint.DEFAULTS.baseUrl,
       headers: {},
       request: Object.assign({}, options.request, {
+        // @ts-ignore internal usage only, no need to type
         hook: hook.bind(null, "request")
       }),
       mediaType: {
@@ -4483,7 +4655,7 @@ class Octokit {
       const {
         authStrategy
       } = options,
-            otherOptions = _objectWithoutProperties(options, ["authStrategy"]);
+            otherOptions = _objectWithoutProperties(options, _excluded);
 
       const auth = authStrategy(Object.assign({
         request: this.request,
@@ -4553,32 +4725,6 @@ exports.Octokit = Octokit;
 
 /***/ }),
 
-/***/ 77540:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-function getUserAgent() {
-  if (typeof navigator === "object" && "userAgent" in navigator) {
-    return navigator.userAgent;
-  }
-
-  if (typeof process === "object" && "version" in process) {
-    return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
-  }
-
-  return "<environment undetectable>";
-}
-
-exports.getUserAgent = getUserAgent;
-//# sourceMappingURL=index.js.map
-
-
-/***/ }),
-
 /***/ 59440:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -4587,9 +4733,7 @@ exports.getUserAgent = getUserAgent;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var isPlainObject = _interopDefault(__nccwpck_require__(48840));
+var isPlainObject = __nccwpck_require__(63287);
 var universalUserAgent = __nccwpck_require__(45030);
 
 function lowercaseKeys(object) {
@@ -4606,7 +4750,7 @@ function lowercaseKeys(object) {
 function mergeDeep(defaults, options) {
   const result = Object.assign({}, defaults);
   Object.keys(options).forEach(key => {
-    if (isPlainObject(options[key])) {
+    if (isPlainObject.isPlainObject(options[key])) {
       if (!(key in defaults)) Object.assign(result, {
         [key]: options[key]
       });else result[key] = mergeDeep(defaults[key], options[key]);
@@ -4617,6 +4761,16 @@ function mergeDeep(defaults, options) {
     }
   });
   return result;
+}
+
+function removeUndefinedProperties(obj) {
+  for (const key in obj) {
+    if (obj[key] === undefined) {
+      delete obj[key];
+    }
+  }
+
+  return obj;
 }
 
 function merge(defaults, route, options) {
@@ -4633,7 +4787,10 @@ function merge(defaults, route, options) {
   } // lowercase header names before merging with defaults to avoid duplicates
 
 
-  options.headers = lowercaseKeys(options.headers);
+  options.headers = lowercaseKeys(options.headers); // remove properties with undefined values before merging
+
+  removeUndefinedProperties(options);
+  removeUndefinedProperties(options.headers);
   const mergedOptions = mergeDeep(defaults || {}, options); // mediaType.previews arrays are merged, instead of overwritten
 
   if (defaults && defaults.mediaType.previews.length) {
@@ -4855,7 +5012,7 @@ function parse(options) {
   // https://fetch.spec.whatwg.org/#methods
   let method = options.method.toUpperCase(); // replace :varname with {varname} to make it RFC 6570 compatible
 
-  let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{+$1}");
+  let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
   let headers = Object.assign({}, options.headers);
   let body;
   let parameters = omit(options, ["method", "baseUrl", "url", "headers", "request", "mediaType"]); // extract variable names from URL to calculate remaining variables later
@@ -4869,9 +5026,9 @@ function parse(options) {
 
   const omittedParameters = Object.keys(options).filter(option => urlVariableNames.includes(option)).concat("baseUrl");
   const remainingParameters = omit(parameters, omittedParameters);
-  const isBinaryRequset = /application\/octet-stream/i.test(headers.accept);
+  const isBinaryRequest = /application\/octet-stream/i.test(headers.accept);
 
-  if (!isBinaryRequset) {
+  if (!isBinaryRequest) {
     if (options.mediaType.format) {
       // e.g. application/vnd.github.v3+json => application/vnd.github.v3.raw
       headers.accept = headers.accept.split(/,/).map(preview => preview.replace(/application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/, `application/vnd$1$2.${options.mediaType.format}`)).join(",");
@@ -4940,7 +5097,7 @@ function withDefaults(oldDefaults, newDefaults) {
   });
 }
 
-const VERSION = "6.0.2";
+const VERSION = "6.0.12";
 
 const userAgent = `octokit-endpoint.js/${VERSION} ${universalUserAgent.getUserAgent()}`; // DEFAULTS has all properties set that EndpointOptions has, except url.
 // So we use RequestParameters and add method as additional required property.
@@ -4974,16 +5131,19 @@ exports.endpoint = endpoint;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-var request = __nccwpck_require__(63758);
+var request = __nccwpck_require__(36234);
 var universalUserAgent = __nccwpck_require__(45030);
 
-const VERSION = "4.5.0";
+const VERSION = "4.6.4";
 
 class GraphqlError extends Error {
   constructor(request, response) {
     const message = response.data.errors[0].message;
     super(message);
     Object.assign(this, response.data);
+    Object.assign(this, {
+      headers: response.headers
+    });
     this.name = "GraphqlError";
     this.request = request; // Maintains proper stack trace (only available on V8)
 
@@ -4997,13 +5157,26 @@ class GraphqlError extends Error {
 }
 
 const NON_VARIABLE_OPTIONS = ["method", "baseUrl", "url", "headers", "request", "query", "mediaType"];
+const FORBIDDEN_VARIABLE_OPTIONS = ["query", "method", "url"];
+const GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
 function graphql(request, query, options) {
-  options = typeof query === "string" ? options = Object.assign({
+  if (options) {
+    if (typeof query === "string" && "query" in options) {
+      return Promise.reject(new Error(`[@octokit/graphql] "query" cannot be used as variable name`));
+    }
+
+    for (const key in options) {
+      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
+      return Promise.reject(new Error(`[@octokit/graphql] "${key}" cannot be used as variable name`));
+    }
+  }
+
+  const parsedOptions = typeof query === "string" ? Object.assign({
     query
-  }, options) : options = query;
-  const requestOptions = Object.keys(options).reduce((result, key) => {
+  }, options) : query;
+  const requestOptions = Object.keys(parsedOptions).reduce((result, key) => {
     if (NON_VARIABLE_OPTIONS.includes(key)) {
-      result[key] = options[key];
+      result[key] = parsedOptions[key];
       return result;
     }
 
@@ -5011,12 +5184,27 @@ function graphql(request, query, options) {
       result.variables = {};
     }
 
-    result.variables[key] = options[key];
+    result.variables[key] = parsedOptions[key];
     return result;
-  }, {});
+  }, {}); // workaround for GitHub Enterprise baseUrl set with /api/v3 suffix
+  // https://github.com/octokit/auth-app.js/issues/111#issuecomment-657610451
+
+  const baseUrl = parsedOptions.baseUrl || request.endpoint.DEFAULTS.baseUrl;
+
+  if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) {
+    requestOptions.url = baseUrl.replace(GHES_V3_SUFFIX_REGEX, "/api/graphql");
+  }
+
   return request(requestOptions).then(response => {
     if (response.data.errors) {
+      const headers = {};
+
+      for (const key of Object.keys(response.headers)) {
+        headers[key] = response.headers[key];
+      }
+
       throw new GraphqlError(requestOptions, {
+        headers,
         data: response.data
       });
     }
@@ -5059,1812 +5247,6 @@ exports.withCustomRequest = withCustomRequest;
 
 /***/ }),
 
-/***/ 63758:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var endpoint = __nccwpck_require__(59440);
-var universalUserAgent = __nccwpck_require__(45030);
-var isPlainObject = _interopDefault(__nccwpck_require__(48840));
-var nodeFetch = _interopDefault(__nccwpck_require__(55655));
-var requestError = __nccwpck_require__(10537);
-
-const VERSION = "5.4.4";
-
-function getBufferResponse(response) {
-  return response.arrayBuffer();
-}
-
-function fetchWrapper(requestOptions) {
-  if (isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
-    requestOptions.body = JSON.stringify(requestOptions.body);
-  }
-
-  let headers = {};
-  let status;
-  let url;
-  const fetch = requestOptions.request && requestOptions.request.fetch || nodeFetch;
-  return fetch(requestOptions.url, Object.assign({
-    method: requestOptions.method,
-    body: requestOptions.body,
-    headers: requestOptions.headers,
-    redirect: requestOptions.redirect
-  }, requestOptions.request)).then(response => {
-    url = response.url;
-    status = response.status;
-
-    for (const keyAndValue of response.headers) {
-      headers[keyAndValue[0]] = keyAndValue[1];
-    }
-
-    if (status === 204 || status === 205) {
-      return;
-    } // GitHub API returns 200 for HEAD requests
-
-
-    if (requestOptions.method === "HEAD") {
-      if (status < 400) {
-        return;
-      }
-
-      throw new requestError.RequestError(response.statusText, status, {
-        headers,
-        request: requestOptions
-      });
-    }
-
-    if (status === 304) {
-      throw new requestError.RequestError("Not modified", status, {
-        headers,
-        request: requestOptions
-      });
-    }
-
-    if (status >= 400) {
-      return response.text().then(message => {
-        const error = new requestError.RequestError(message, status, {
-          headers,
-          request: requestOptions
-        });
-
-        try {
-          let responseBody = JSON.parse(error.message);
-          Object.assign(error, responseBody);
-          let errors = responseBody.errors; // Assumption `errors` would always be in Array format
-
-          error.message = error.message + ": " + errors.map(JSON.stringify).join(", ");
-        } catch (e) {// ignore, see octokit/rest.js#684
-        }
-
-        throw error;
-      });
-    }
-
-    const contentType = response.headers.get("content-type");
-
-    if (/application\/json/.test(contentType)) {
-      return response.json();
-    }
-
-    if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
-      return response.text();
-    }
-
-    return getBufferResponse(response);
-  }).then(data => {
-    return {
-      status,
-      url,
-      headers,
-      data
-    };
-  }).catch(error => {
-    if (error instanceof requestError.RequestError) {
-      throw error;
-    }
-
-    throw new requestError.RequestError(error.message, 500, {
-      headers,
-      request: requestOptions
-    });
-  });
-}
-
-function withDefaults(oldEndpoint, newDefaults) {
-  const endpoint = oldEndpoint.defaults(newDefaults);
-
-  const newApi = function (route, parameters) {
-    const endpointOptions = endpoint.merge(route, parameters);
-
-    if (!endpointOptions.request || !endpointOptions.request.hook) {
-      return fetchWrapper(endpoint.parse(endpointOptions));
-    }
-
-    const request = (route, parameters) => {
-      return fetchWrapper(endpoint.parse(endpoint.merge(route, parameters)));
-    };
-
-    Object.assign(request, {
-      endpoint,
-      defaults: withDefaults.bind(null, endpoint)
-    });
-    return endpointOptions.request.hook(request, endpointOptions);
-  };
-
-  return Object.assign(newApi, {
-    endpoint,
-    defaults: withDefaults.bind(null, endpoint)
-  });
-}
-
-const request = withDefaults(endpoint.endpoint, {
-  headers: {
-    "user-agent": `octokit-request.js/${VERSION} ${universalUserAgent.getUserAgent()}`
-  }
-});
-
-exports.request = request;
-//# sourceMappingURL=index.js.map
-
-
-/***/ }),
-
-/***/ 55655:
-/***/ ((module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var Stream = _interopDefault(__nccwpck_require__(92413));
-var http = _interopDefault(__nccwpck_require__(98605));
-var Url = _interopDefault(__nccwpck_require__(78835));
-var https = _interopDefault(__nccwpck_require__(57211));
-var zlib = _interopDefault(__nccwpck_require__(78761));
-
-// Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
-
-// fix for "Readable" isn't a named export issue
-const Readable = Stream.Readable;
-
-const BUFFER = Symbol('buffer');
-const TYPE = Symbol('type');
-
-class Blob {
-	constructor() {
-		this[TYPE] = '';
-
-		const blobParts = arguments[0];
-		const options = arguments[1];
-
-		const buffers = [];
-		let size = 0;
-
-		if (blobParts) {
-			const a = blobParts;
-			const length = Number(a.length);
-			for (let i = 0; i < length; i++) {
-				const element = a[i];
-				let buffer;
-				if (element instanceof Buffer) {
-					buffer = element;
-				} else if (ArrayBuffer.isView(element)) {
-					buffer = Buffer.from(element.buffer, element.byteOffset, element.byteLength);
-				} else if (element instanceof ArrayBuffer) {
-					buffer = Buffer.from(element);
-				} else if (element instanceof Blob) {
-					buffer = element[BUFFER];
-				} else {
-					buffer = Buffer.from(typeof element === 'string' ? element : String(element));
-				}
-				size += buffer.length;
-				buffers.push(buffer);
-			}
-		}
-
-		this[BUFFER] = Buffer.concat(buffers);
-
-		let type = options && options.type !== undefined && String(options.type).toLowerCase();
-		if (type && !/[^\u0020-\u007E]/.test(type)) {
-			this[TYPE] = type;
-		}
-	}
-	get size() {
-		return this[BUFFER].length;
-	}
-	get type() {
-		return this[TYPE];
-	}
-	text() {
-		return Promise.resolve(this[BUFFER].toString());
-	}
-	arrayBuffer() {
-		const buf = this[BUFFER];
-		const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
-		return Promise.resolve(ab);
-	}
-	stream() {
-		const readable = new Readable();
-		readable._read = function () {};
-		readable.push(this[BUFFER]);
-		readable.push(null);
-		return readable;
-	}
-	toString() {
-		return '[object Blob]';
-	}
-	slice() {
-		const size = this.size;
-
-		const start = arguments[0];
-		const end = arguments[1];
-		let relativeStart, relativeEnd;
-		if (start === undefined) {
-			relativeStart = 0;
-		} else if (start < 0) {
-			relativeStart = Math.max(size + start, 0);
-		} else {
-			relativeStart = Math.min(start, size);
-		}
-		if (end === undefined) {
-			relativeEnd = size;
-		} else if (end < 0) {
-			relativeEnd = Math.max(size + end, 0);
-		} else {
-			relativeEnd = Math.min(end, size);
-		}
-		const span = Math.max(relativeEnd - relativeStart, 0);
-
-		const buffer = this[BUFFER];
-		const slicedBuffer = buffer.slice(relativeStart, relativeStart + span);
-		const blob = new Blob([], { type: arguments[2] });
-		blob[BUFFER] = slicedBuffer;
-		return blob;
-	}
-}
-
-Object.defineProperties(Blob.prototype, {
-	size: { enumerable: true },
-	type: { enumerable: true },
-	slice: { enumerable: true }
-});
-
-Object.defineProperty(Blob.prototype, Symbol.toStringTag, {
-	value: 'Blob',
-	writable: false,
-	enumerable: false,
-	configurable: true
-});
-
-/**
- * fetch-error.js
- *
- * FetchError interface for operational errors
- */
-
-/**
- * Create FetchError instance
- *
- * @param   String      message      Error message for human
- * @param   String      type         Error type for machine
- * @param   String      systemError  For Node.js system error
- * @return  FetchError
- */
-function FetchError(message, type, systemError) {
-  Error.call(this, message);
-
-  this.message = message;
-  this.type = type;
-
-  // when err.type is `system`, err.code contains system error code
-  if (systemError) {
-    this.code = this.errno = systemError.code;
-  }
-
-  // hide custom error implementation details from end-users
-  Error.captureStackTrace(this, this.constructor);
-}
-
-FetchError.prototype = Object.create(Error.prototype);
-FetchError.prototype.constructor = FetchError;
-FetchError.prototype.name = 'FetchError';
-
-let convert;
-try {
-	convert = __nccwpck_require__(85100)/* .convert */ .O;
-} catch (e) {}
-
-const INTERNALS = Symbol('Body internals');
-
-// fix an issue where "PassThrough" isn't a named export for node <10
-const PassThrough = Stream.PassThrough;
-
-/**
- * Body mixin
- *
- * Ref: https://fetch.spec.whatwg.org/#body
- *
- * @param   Stream  body  Readable stream
- * @param   Object  opts  Response options
- * @return  Void
- */
-function Body(body) {
-	var _this = this;
-
-	var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-	    _ref$size = _ref.size;
-
-	let size = _ref$size === undefined ? 0 : _ref$size;
-	var _ref$timeout = _ref.timeout;
-	let timeout = _ref$timeout === undefined ? 0 : _ref$timeout;
-
-	if (body == null) {
-		// body is undefined or null
-		body = null;
-	} else if (isURLSearchParams(body)) {
-		// body is a URLSearchParams
-		body = Buffer.from(body.toString());
-	} else if (isBlob(body)) ; else if (Buffer.isBuffer(body)) ; else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-		// body is ArrayBuffer
-		body = Buffer.from(body);
-	} else if (ArrayBuffer.isView(body)) {
-		// body is ArrayBufferView
-		body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
-	} else if (body instanceof Stream) ; else {
-		// none of the above
-		// coerce to string then buffer
-		body = Buffer.from(String(body));
-	}
-	this[INTERNALS] = {
-		body,
-		disturbed: false,
-		error: null
-	};
-	this.size = size;
-	this.timeout = timeout;
-
-	if (body instanceof Stream) {
-		body.on('error', function (err) {
-			const error = err.name === 'AbortError' ? err : new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, 'system', err);
-			_this[INTERNALS].error = error;
-		});
-	}
-}
-
-Body.prototype = {
-	get body() {
-		return this[INTERNALS].body;
-	},
-
-	get bodyUsed() {
-		return this[INTERNALS].disturbed;
-	},
-
-	/**
-  * Decode response as ArrayBuffer
-  *
-  * @return  Promise
-  */
-	arrayBuffer() {
-		return consumeBody.call(this).then(function (buf) {
-			return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
-		});
-	},
-
-	/**
-  * Return raw response as Blob
-  *
-  * @return Promise
-  */
-	blob() {
-		let ct = this.headers && this.headers.get('content-type') || '';
-		return consumeBody.call(this).then(function (buf) {
-			return Object.assign(
-			// Prevent copying
-			new Blob([], {
-				type: ct.toLowerCase()
-			}), {
-				[BUFFER]: buf
-			});
-		});
-	},
-
-	/**
-  * Decode response as json
-  *
-  * @return  Promise
-  */
-	json() {
-		var _this2 = this;
-
-		return consumeBody.call(this).then(function (buffer) {
-			try {
-				return JSON.parse(buffer.toString());
-			} catch (err) {
-				return Body.Promise.reject(new FetchError(`invalid json response body at ${_this2.url} reason: ${err.message}`, 'invalid-json'));
-			}
-		});
-	},
-
-	/**
-  * Decode response as text
-  *
-  * @return  Promise
-  */
-	text() {
-		return consumeBody.call(this).then(function (buffer) {
-			return buffer.toString();
-		});
-	},
-
-	/**
-  * Decode response as buffer (non-spec api)
-  *
-  * @return  Promise
-  */
-	buffer() {
-		return consumeBody.call(this);
-	},
-
-	/**
-  * Decode response as text, while automatically detecting the encoding and
-  * trying to decode to UTF-8 (non-spec api)
-  *
-  * @return  Promise
-  */
-	textConverted() {
-		var _this3 = this;
-
-		return consumeBody.call(this).then(function (buffer) {
-			return convertBody(buffer, _this3.headers);
-		});
-	}
-};
-
-// In browsers, all properties are enumerable.
-Object.defineProperties(Body.prototype, {
-	body: { enumerable: true },
-	bodyUsed: { enumerable: true },
-	arrayBuffer: { enumerable: true },
-	blob: { enumerable: true },
-	json: { enumerable: true },
-	text: { enumerable: true }
-});
-
-Body.mixIn = function (proto) {
-	for (const name of Object.getOwnPropertyNames(Body.prototype)) {
-		// istanbul ignore else: future proof
-		if (!(name in proto)) {
-			const desc = Object.getOwnPropertyDescriptor(Body.prototype, name);
-			Object.defineProperty(proto, name, desc);
-		}
-	}
-};
-
-/**
- * Consume and convert an entire Body to a Buffer.
- *
- * Ref: https://fetch.spec.whatwg.org/#concept-body-consume-body
- *
- * @return  Promise
- */
-function consumeBody() {
-	var _this4 = this;
-
-	if (this[INTERNALS].disturbed) {
-		return Body.Promise.reject(new TypeError(`body used already for: ${this.url}`));
-	}
-
-	this[INTERNALS].disturbed = true;
-
-	if (this[INTERNALS].error) {
-		return Body.Promise.reject(this[INTERNALS].error);
-	}
-
-	let body = this.body;
-
-	// body is null
-	if (body === null) {
-		return Body.Promise.resolve(Buffer.alloc(0));
-	}
-
-	// body is blob
-	if (isBlob(body)) {
-		body = body.stream();
-	}
-
-	// body is buffer
-	if (Buffer.isBuffer(body)) {
-		return Body.Promise.resolve(body);
-	}
-
-	// istanbul ignore if: should never happen
-	if (!(body instanceof Stream)) {
-		return Body.Promise.resolve(Buffer.alloc(0));
-	}
-
-	// body is stream
-	// get ready to actually consume the body
-	let accum = [];
-	let accumBytes = 0;
-	let abort = false;
-
-	return new Body.Promise(function (resolve, reject) {
-		let resTimeout;
-
-		// allow timeout on slow response body
-		if (_this4.timeout) {
-			resTimeout = setTimeout(function () {
-				abort = true;
-				reject(new FetchError(`Response timeout while trying to fetch ${_this4.url} (over ${_this4.timeout}ms)`, 'body-timeout'));
-			}, _this4.timeout);
-		}
-
-		// handle stream errors
-		body.on('error', function (err) {
-			if (err.name === 'AbortError') {
-				// if the request was aborted, reject with this Error
-				abort = true;
-				reject(err);
-			} else {
-				// other errors, such as incorrect content-encoding
-				reject(new FetchError(`Invalid response body while trying to fetch ${_this4.url}: ${err.message}`, 'system', err));
-			}
-		});
-
-		body.on('data', function (chunk) {
-			if (abort || chunk === null) {
-				return;
-			}
-
-			if (_this4.size && accumBytes + chunk.length > _this4.size) {
-				abort = true;
-				reject(new FetchError(`content size at ${_this4.url} over limit: ${_this4.size}`, 'max-size'));
-				return;
-			}
-
-			accumBytes += chunk.length;
-			accum.push(chunk);
-		});
-
-		body.on('end', function () {
-			if (abort) {
-				return;
-			}
-
-			clearTimeout(resTimeout);
-
-			try {
-				resolve(Buffer.concat(accum, accumBytes));
-			} catch (err) {
-				// handle streams that have accumulated too much data (issue #414)
-				reject(new FetchError(`Could not create Buffer from response body for ${_this4.url}: ${err.message}`, 'system', err));
-			}
-		});
-	});
-}
-
-/**
- * Detect buffer encoding and convert to target encoding
- * ref: http://www.w3.org/TR/2011/WD-html5-20110113/parsing.html#determining-the-character-encoding
- *
- * @param   Buffer  buffer    Incoming buffer
- * @param   String  encoding  Target encoding
- * @return  String
- */
-function convertBody(buffer, headers) {
-	if (typeof convert !== 'function') {
-		throw new Error('The package `encoding` must be installed to use the textConverted() function');
-	}
-
-	const ct = headers.get('content-type');
-	let charset = 'utf-8';
-	let res, str;
-
-	// header
-	if (ct) {
-		res = /charset=([^;]*)/i.exec(ct);
-	}
-
-	// no charset in content type, peek at response body for at most 1024 bytes
-	str = buffer.slice(0, 1024).toString();
-
-	// html5
-	if (!res && str) {
-		res = /<meta.+?charset=(['"])(.+?)\1/i.exec(str);
-	}
-
-	// html4
-	if (!res && str) {
-		res = /<meta[\s]+?http-equiv=(['"])content-type\1[\s]+?content=(['"])(.+?)\2/i.exec(str);
-
-		if (res) {
-			res = /charset=(.*)/i.exec(res.pop());
-		}
-	}
-
-	// xml
-	if (!res && str) {
-		res = /<\?xml.+?encoding=(['"])(.+?)\1/i.exec(str);
-	}
-
-	// found charset
-	if (res) {
-		charset = res.pop();
-
-		// prevent decode issues when sites use incorrect encoding
-		// ref: https://hsivonen.fi/encoding-menu/
-		if (charset === 'gb2312' || charset === 'gbk') {
-			charset = 'gb18030';
-		}
-	}
-
-	// turn raw buffers into a single utf-8 buffer
-	return convert(buffer, 'UTF-8', charset).toString();
-}
-
-/**
- * Detect a URLSearchParams object
- * ref: https://github.com/bitinn/node-fetch/issues/296#issuecomment-307598143
- *
- * @param   Object  obj     Object to detect by type or brand
- * @return  String
- */
-function isURLSearchParams(obj) {
-	// Duck-typing as a necessary condition.
-	if (typeof obj !== 'object' || typeof obj.append !== 'function' || typeof obj.delete !== 'function' || typeof obj.get !== 'function' || typeof obj.getAll !== 'function' || typeof obj.has !== 'function' || typeof obj.set !== 'function') {
-		return false;
-	}
-
-	// Brand-checking and more duck-typing as optional condition.
-	return obj.constructor.name === 'URLSearchParams' || Object.prototype.toString.call(obj) === '[object URLSearchParams]' || typeof obj.sort === 'function';
-}
-
-/**
- * Check if `obj` is a W3C `Blob` object (which `File` inherits from)
- * @param  {*} obj
- * @return {boolean}
- */
-function isBlob(obj) {
-	return typeof obj === 'object' && typeof obj.arrayBuffer === 'function' && typeof obj.type === 'string' && typeof obj.stream === 'function' && typeof obj.constructor === 'function' && typeof obj.constructor.name === 'string' && /^(Blob|File)$/.test(obj.constructor.name) && /^(Blob|File)$/.test(obj[Symbol.toStringTag]);
-}
-
-/**
- * Clone body given Res/Req instance
- *
- * @param   Mixed  instance  Response or Request instance
- * @return  Mixed
- */
-function clone(instance) {
-	let p1, p2;
-	let body = instance.body;
-
-	// don't allow cloning a used body
-	if (instance.bodyUsed) {
-		throw new Error('cannot clone body after it is used');
-	}
-
-	// check that body is a stream and not form-data object
-	// note: we can't clone the form-data object without having it as a dependency
-	if (body instanceof Stream && typeof body.getBoundary !== 'function') {
-		// tee instance body
-		p1 = new PassThrough();
-		p2 = new PassThrough();
-		body.pipe(p1);
-		body.pipe(p2);
-		// set instance body to teed body and return the other teed body
-		instance[INTERNALS].body = p1;
-		body = p2;
-	}
-
-	return body;
-}
-
-/**
- * Performs the operation "extract a `Content-Type` value from |object|" as
- * specified in the specification:
- * https://fetch.spec.whatwg.org/#concept-bodyinit-extract
- *
- * This function assumes that instance.body is present.
- *
- * @param   Mixed  instance  Any options.body input
- */
-function extractContentType(body) {
-	if (body === null) {
-		// body is null
-		return null;
-	} else if (typeof body === 'string') {
-		// body is string
-		return 'text/plain;charset=UTF-8';
-	} else if (isURLSearchParams(body)) {
-		// body is a URLSearchParams
-		return 'application/x-www-form-urlencoded;charset=UTF-8';
-	} else if (isBlob(body)) {
-		// body is blob
-		return body.type || null;
-	} else if (Buffer.isBuffer(body)) {
-		// body is buffer
-		return null;
-	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-		// body is ArrayBuffer
-		return null;
-	} else if (ArrayBuffer.isView(body)) {
-		// body is ArrayBufferView
-		return null;
-	} else if (typeof body.getBoundary === 'function') {
-		// detect form data input from form-data module
-		return `multipart/form-data;boundary=${body.getBoundary()}`;
-	} else if (body instanceof Stream) {
-		// body is stream
-		// can't really do much about this
-		return null;
-	} else {
-		// Body constructor defaults other things to string
-		return 'text/plain;charset=UTF-8';
-	}
-}
-
-/**
- * The Fetch Standard treats this as if "total bytes" is a property on the body.
- * For us, we have to explicitly get it with a function.
- *
- * ref: https://fetch.spec.whatwg.org/#concept-body-total-bytes
- *
- * @param   Body    instance   Instance of Body
- * @return  Number?            Number of bytes, or null if not possible
- */
-function getTotalBytes(instance) {
-	const body = instance.body;
-
-
-	if (body === null) {
-		// body is null
-		return 0;
-	} else if (isBlob(body)) {
-		return body.size;
-	} else if (Buffer.isBuffer(body)) {
-		// body is buffer
-		return body.length;
-	} else if (body && typeof body.getLengthSync === 'function') {
-		// detect form data input from form-data module
-		if (body._lengthRetrievers && body._lengthRetrievers.length == 0 || // 1.x
-		body.hasKnownLength && body.hasKnownLength()) {
-			// 2.x
-			return body.getLengthSync();
-		}
-		return null;
-	} else {
-		// body is stream
-		return null;
-	}
-}
-
-/**
- * Write a Body to a Node.js WritableStream (e.g. http.Request) object.
- *
- * @param   Body    instance   Instance of Body
- * @return  Void
- */
-function writeToStream(dest, instance) {
-	const body = instance.body;
-
-
-	if (body === null) {
-		// body is null
-		dest.end();
-	} else if (isBlob(body)) {
-		body.stream().pipe(dest);
-	} else if (Buffer.isBuffer(body)) {
-		// body is buffer
-		dest.write(body);
-		dest.end();
-	} else {
-		// body is stream
-		body.pipe(dest);
-	}
-}
-
-// expose Promise
-Body.Promise = global.Promise;
-
-/**
- * headers.js
- *
- * Headers class offers convenient helpers
- */
-
-const invalidTokenRegex = /[^\^_`a-zA-Z\-0-9!#$%&'*+.|~]/;
-const invalidHeaderCharRegex = /[^\t\x20-\x7e\x80-\xff]/;
-
-function validateName(name) {
-	name = `${name}`;
-	if (invalidTokenRegex.test(name) || name === '') {
-		throw new TypeError(`${name} is not a legal HTTP header name`);
-	}
-}
-
-function validateValue(value) {
-	value = `${value}`;
-	if (invalidHeaderCharRegex.test(value)) {
-		throw new TypeError(`${value} is not a legal HTTP header value`);
-	}
-}
-
-/**
- * Find the key in the map object given a header name.
- *
- * Returns undefined if not found.
- *
- * @param   String  name  Header name
- * @return  String|Undefined
- */
-function find(map, name) {
-	name = name.toLowerCase();
-	for (const key in map) {
-		if (key.toLowerCase() === name) {
-			return key;
-		}
-	}
-	return undefined;
-}
-
-const MAP = Symbol('map');
-class Headers {
-	/**
-  * Headers class
-  *
-  * @param   Object  headers  Response headers
-  * @return  Void
-  */
-	constructor() {
-		let init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-		this[MAP] = Object.create(null);
-
-		if (init instanceof Headers) {
-			const rawHeaders = init.raw();
-			const headerNames = Object.keys(rawHeaders);
-
-			for (const headerName of headerNames) {
-				for (const value of rawHeaders[headerName]) {
-					this.append(headerName, value);
-				}
-			}
-
-			return;
-		}
-
-		// We don't worry about converting prop to ByteString here as append()
-		// will handle it.
-		if (init == null) ; else if (typeof init === 'object') {
-			const method = init[Symbol.iterator];
-			if (method != null) {
-				if (typeof method !== 'function') {
-					throw new TypeError('Header pairs must be iterable');
-				}
-
-				// sequence<sequence<ByteString>>
-				// Note: per spec we have to first exhaust the lists then process them
-				const pairs = [];
-				for (const pair of init) {
-					if (typeof pair !== 'object' || typeof pair[Symbol.iterator] !== 'function') {
-						throw new TypeError('Each header pair must be iterable');
-					}
-					pairs.push(Array.from(pair));
-				}
-
-				for (const pair of pairs) {
-					if (pair.length !== 2) {
-						throw new TypeError('Each header pair must be a name/value tuple');
-					}
-					this.append(pair[0], pair[1]);
-				}
-			} else {
-				// record<ByteString, ByteString>
-				for (const key of Object.keys(init)) {
-					const value = init[key];
-					this.append(key, value);
-				}
-			}
-		} else {
-			throw new TypeError('Provided initializer must be an object');
-		}
-	}
-
-	/**
-  * Return combined header value given name
-  *
-  * @param   String  name  Header name
-  * @return  Mixed
-  */
-	get(name) {
-		name = `${name}`;
-		validateName(name);
-		const key = find(this[MAP], name);
-		if (key === undefined) {
-			return null;
-		}
-
-		return this[MAP][key].join(', ');
-	}
-
-	/**
-  * Iterate over all headers
-  *
-  * @param   Function  callback  Executed for each item with parameters (value, name, thisArg)
-  * @param   Boolean   thisArg   `this` context for callback function
-  * @return  Void
-  */
-	forEach(callback) {
-		let thisArg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-
-		let pairs = getHeaders(this);
-		let i = 0;
-		while (i < pairs.length) {
-			var _pairs$i = pairs[i];
-			const name = _pairs$i[0],
-			      value = _pairs$i[1];
-
-			callback.call(thisArg, value, name, this);
-			pairs = getHeaders(this);
-			i++;
-		}
-	}
-
-	/**
-  * Overwrite header values given name
-  *
-  * @param   String  name   Header name
-  * @param   String  value  Header value
-  * @return  Void
-  */
-	set(name, value) {
-		name = `${name}`;
-		value = `${value}`;
-		validateName(name);
-		validateValue(value);
-		const key = find(this[MAP], name);
-		this[MAP][key !== undefined ? key : name] = [value];
-	}
-
-	/**
-  * Append a value onto existing header
-  *
-  * @param   String  name   Header name
-  * @param   String  value  Header value
-  * @return  Void
-  */
-	append(name, value) {
-		name = `${name}`;
-		value = `${value}`;
-		validateName(name);
-		validateValue(value);
-		const key = find(this[MAP], name);
-		if (key !== undefined) {
-			this[MAP][key].push(value);
-		} else {
-			this[MAP][name] = [value];
-		}
-	}
-
-	/**
-  * Check for header name existence
-  *
-  * @param   String   name  Header name
-  * @return  Boolean
-  */
-	has(name) {
-		name = `${name}`;
-		validateName(name);
-		return find(this[MAP], name) !== undefined;
-	}
-
-	/**
-  * Delete all header values given name
-  *
-  * @param   String  name  Header name
-  * @return  Void
-  */
-	delete(name) {
-		name = `${name}`;
-		validateName(name);
-		const key = find(this[MAP], name);
-		if (key !== undefined) {
-			delete this[MAP][key];
-		}
-	}
-
-	/**
-  * Return raw headers (non-spec api)
-  *
-  * @return  Object
-  */
-	raw() {
-		return this[MAP];
-	}
-
-	/**
-  * Get an iterator on keys.
-  *
-  * @return  Iterator
-  */
-	keys() {
-		return createHeadersIterator(this, 'key');
-	}
-
-	/**
-  * Get an iterator on values.
-  *
-  * @return  Iterator
-  */
-	values() {
-		return createHeadersIterator(this, 'value');
-	}
-
-	/**
-  * Get an iterator on entries.
-  *
-  * This is the default iterator of the Headers object.
-  *
-  * @return  Iterator
-  */
-	[Symbol.iterator]() {
-		return createHeadersIterator(this, 'key+value');
-	}
-}
-Headers.prototype.entries = Headers.prototype[Symbol.iterator];
-
-Object.defineProperty(Headers.prototype, Symbol.toStringTag, {
-	value: 'Headers',
-	writable: false,
-	enumerable: false,
-	configurable: true
-});
-
-Object.defineProperties(Headers.prototype, {
-	get: { enumerable: true },
-	forEach: { enumerable: true },
-	set: { enumerable: true },
-	append: { enumerable: true },
-	has: { enumerable: true },
-	delete: { enumerable: true },
-	keys: { enumerable: true },
-	values: { enumerable: true },
-	entries: { enumerable: true }
-});
-
-function getHeaders(headers) {
-	let kind = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'key+value';
-
-	const keys = Object.keys(headers[MAP]).sort();
-	return keys.map(kind === 'key' ? function (k) {
-		return k.toLowerCase();
-	} : kind === 'value' ? function (k) {
-		return headers[MAP][k].join(', ');
-	} : function (k) {
-		return [k.toLowerCase(), headers[MAP][k].join(', ')];
-	});
-}
-
-const INTERNAL = Symbol('internal');
-
-function createHeadersIterator(target, kind) {
-	const iterator = Object.create(HeadersIteratorPrototype);
-	iterator[INTERNAL] = {
-		target,
-		kind,
-		index: 0
-	};
-	return iterator;
-}
-
-const HeadersIteratorPrototype = Object.setPrototypeOf({
-	next() {
-		// istanbul ignore if
-		if (!this || Object.getPrototypeOf(this) !== HeadersIteratorPrototype) {
-			throw new TypeError('Value of `this` is not a HeadersIterator');
-		}
-
-		var _INTERNAL = this[INTERNAL];
-		const target = _INTERNAL.target,
-		      kind = _INTERNAL.kind,
-		      index = _INTERNAL.index;
-
-		const values = getHeaders(target, kind);
-		const len = values.length;
-		if (index >= len) {
-			return {
-				value: undefined,
-				done: true
-			};
-		}
-
-		this[INTERNAL].index = index + 1;
-
-		return {
-			value: values[index],
-			done: false
-		};
-	}
-}, Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]())));
-
-Object.defineProperty(HeadersIteratorPrototype, Symbol.toStringTag, {
-	value: 'HeadersIterator',
-	writable: false,
-	enumerable: false,
-	configurable: true
-});
-
-/**
- * Export the Headers object in a form that Node.js can consume.
- *
- * @param   Headers  headers
- * @return  Object
- */
-function exportNodeCompatibleHeaders(headers) {
-	const obj = Object.assign({ __proto__: null }, headers[MAP]);
-
-	// http.request() only supports string as Host header. This hack makes
-	// specifying custom Host header possible.
-	const hostHeaderKey = find(headers[MAP], 'Host');
-	if (hostHeaderKey !== undefined) {
-		obj[hostHeaderKey] = obj[hostHeaderKey][0];
-	}
-
-	return obj;
-}
-
-/**
- * Create a Headers object from an object of headers, ignoring those that do
- * not conform to HTTP grammar productions.
- *
- * @param   Object  obj  Object of headers
- * @return  Headers
- */
-function createHeadersLenient(obj) {
-	const headers = new Headers();
-	for (const name of Object.keys(obj)) {
-		if (invalidTokenRegex.test(name)) {
-			continue;
-		}
-		if (Array.isArray(obj[name])) {
-			for (const val of obj[name]) {
-				if (invalidHeaderCharRegex.test(val)) {
-					continue;
-				}
-				if (headers[MAP][name] === undefined) {
-					headers[MAP][name] = [val];
-				} else {
-					headers[MAP][name].push(val);
-				}
-			}
-		} else if (!invalidHeaderCharRegex.test(obj[name])) {
-			headers[MAP][name] = [obj[name]];
-		}
-	}
-	return headers;
-}
-
-const INTERNALS$1 = Symbol('Response internals');
-
-// fix an issue where "STATUS_CODES" aren't a named export for node <10
-const STATUS_CODES = http.STATUS_CODES;
-
-/**
- * Response class
- *
- * @param   Stream  body  Readable stream
- * @param   Object  opts  Response options
- * @return  Void
- */
-class Response {
-	constructor() {
-		let body = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-		let opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-		Body.call(this, body, opts);
-
-		const status = opts.status || 200;
-		const headers = new Headers(opts.headers);
-
-		if (body != null && !headers.has('Content-Type')) {
-			const contentType = extractContentType(body);
-			if (contentType) {
-				headers.append('Content-Type', contentType);
-			}
-		}
-
-		this[INTERNALS$1] = {
-			url: opts.url,
-			status,
-			statusText: opts.statusText || STATUS_CODES[status],
-			headers,
-			counter: opts.counter
-		};
-	}
-
-	get url() {
-		return this[INTERNALS$1].url || '';
-	}
-
-	get status() {
-		return this[INTERNALS$1].status;
-	}
-
-	/**
-  * Convenience property representing if the request ended normally
-  */
-	get ok() {
-		return this[INTERNALS$1].status >= 200 && this[INTERNALS$1].status < 300;
-	}
-
-	get redirected() {
-		return this[INTERNALS$1].counter > 0;
-	}
-
-	get statusText() {
-		return this[INTERNALS$1].statusText;
-	}
-
-	get headers() {
-		return this[INTERNALS$1].headers;
-	}
-
-	/**
-  * Clone this response
-  *
-  * @return  Response
-  */
-	clone() {
-		return new Response(clone(this), {
-			url: this.url,
-			status: this.status,
-			statusText: this.statusText,
-			headers: this.headers,
-			ok: this.ok,
-			redirected: this.redirected
-		});
-	}
-}
-
-Body.mixIn(Response.prototype);
-
-Object.defineProperties(Response.prototype, {
-	url: { enumerable: true },
-	status: { enumerable: true },
-	ok: { enumerable: true },
-	redirected: { enumerable: true },
-	statusText: { enumerable: true },
-	headers: { enumerable: true },
-	clone: { enumerable: true }
-});
-
-Object.defineProperty(Response.prototype, Symbol.toStringTag, {
-	value: 'Response',
-	writable: false,
-	enumerable: false,
-	configurable: true
-});
-
-const INTERNALS$2 = Symbol('Request internals');
-
-// fix an issue where "format", "parse" aren't a named export for node <10
-const parse_url = Url.parse;
-const format_url = Url.format;
-
-const streamDestructionSupported = 'destroy' in Stream.Readable.prototype;
-
-/**
- * Check if a value is an instance of Request.
- *
- * @param   Mixed   input
- * @return  Boolean
- */
-function isRequest(input) {
-	return typeof input === 'object' && typeof input[INTERNALS$2] === 'object';
-}
-
-function isAbortSignal(signal) {
-	const proto = signal && typeof signal === 'object' && Object.getPrototypeOf(signal);
-	return !!(proto && proto.constructor.name === 'AbortSignal');
-}
-
-/**
- * Request class
- *
- * @param   Mixed   input  Url or Request instance
- * @param   Object  init   Custom options
- * @return  Void
- */
-class Request {
-	constructor(input) {
-		let init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-		let parsedURL;
-
-		// normalize input
-		if (!isRequest(input)) {
-			if (input && input.href) {
-				// in order to support Node.js' Url objects; though WHATWG's URL objects
-				// will fall into this branch also (since their `toString()` will return
-				// `href` property anyway)
-				parsedURL = parse_url(input.href);
-			} else {
-				// coerce input to a string before attempting to parse
-				parsedURL = parse_url(`${input}`);
-			}
-			input = {};
-		} else {
-			parsedURL = parse_url(input.url);
-		}
-
-		let method = init.method || input.method || 'GET';
-		method = method.toUpperCase();
-
-		if ((init.body != null || isRequest(input) && input.body !== null) && (method === 'GET' || method === 'HEAD')) {
-			throw new TypeError('Request with GET/HEAD method cannot have body');
-		}
-
-		let inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
-
-		Body.call(this, inputBody, {
-			timeout: init.timeout || input.timeout || 0,
-			size: init.size || input.size || 0
-		});
-
-		const headers = new Headers(init.headers || input.headers || {});
-
-		if (inputBody != null && !headers.has('Content-Type')) {
-			const contentType = extractContentType(inputBody);
-			if (contentType) {
-				headers.append('Content-Type', contentType);
-			}
-		}
-
-		let signal = isRequest(input) ? input.signal : null;
-		if ('signal' in init) signal = init.signal;
-
-		if (signal != null && !isAbortSignal(signal)) {
-			throw new TypeError('Expected signal to be an instanceof AbortSignal');
-		}
-
-		this[INTERNALS$2] = {
-			method,
-			redirect: init.redirect || input.redirect || 'follow',
-			headers,
-			parsedURL,
-			signal
-		};
-
-		// node-fetch-only options
-		this.follow = init.follow !== undefined ? init.follow : input.follow !== undefined ? input.follow : 20;
-		this.compress = init.compress !== undefined ? init.compress : input.compress !== undefined ? input.compress : true;
-		this.counter = init.counter || input.counter || 0;
-		this.agent = init.agent || input.agent;
-	}
-
-	get method() {
-		return this[INTERNALS$2].method;
-	}
-
-	get url() {
-		return format_url(this[INTERNALS$2].parsedURL);
-	}
-
-	get headers() {
-		return this[INTERNALS$2].headers;
-	}
-
-	get redirect() {
-		return this[INTERNALS$2].redirect;
-	}
-
-	get signal() {
-		return this[INTERNALS$2].signal;
-	}
-
-	/**
-  * Clone this request
-  *
-  * @return  Request
-  */
-	clone() {
-		return new Request(this);
-	}
-}
-
-Body.mixIn(Request.prototype);
-
-Object.defineProperty(Request.prototype, Symbol.toStringTag, {
-	value: 'Request',
-	writable: false,
-	enumerable: false,
-	configurable: true
-});
-
-Object.defineProperties(Request.prototype, {
-	method: { enumerable: true },
-	url: { enumerable: true },
-	headers: { enumerable: true },
-	redirect: { enumerable: true },
-	clone: { enumerable: true },
-	signal: { enumerable: true }
-});
-
-/**
- * Convert a Request to Node.js http request options.
- *
- * @param   Request  A Request instance
- * @return  Object   The options object to be passed to http.request
- */
-function getNodeRequestOptions(request) {
-	const parsedURL = request[INTERNALS$2].parsedURL;
-	const headers = new Headers(request[INTERNALS$2].headers);
-
-	// fetch step 1.3
-	if (!headers.has('Accept')) {
-		headers.set('Accept', '*/*');
-	}
-
-	// Basic fetch
-	if (!parsedURL.protocol || !parsedURL.hostname) {
-		throw new TypeError('Only absolute URLs are supported');
-	}
-
-	if (!/^https?:$/.test(parsedURL.protocol)) {
-		throw new TypeError('Only HTTP(S) protocols are supported');
-	}
-
-	if (request.signal && request.body instanceof Stream.Readable && !streamDestructionSupported) {
-		throw new Error('Cancellation of streamed requests with AbortSignal is not supported in node < 8');
-	}
-
-	// HTTP-network-or-cache fetch steps 2.4-2.7
-	let contentLengthValue = null;
-	if (request.body == null && /^(POST|PUT)$/i.test(request.method)) {
-		contentLengthValue = '0';
-	}
-	if (request.body != null) {
-		const totalBytes = getTotalBytes(request);
-		if (typeof totalBytes === 'number') {
-			contentLengthValue = String(totalBytes);
-		}
-	}
-	if (contentLengthValue) {
-		headers.set('Content-Length', contentLengthValue);
-	}
-
-	// HTTP-network-or-cache fetch step 2.11
-	if (!headers.has('User-Agent')) {
-		headers.set('User-Agent', 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)');
-	}
-
-	// HTTP-network-or-cache fetch step 2.15
-	if (request.compress && !headers.has('Accept-Encoding')) {
-		headers.set('Accept-Encoding', 'gzip,deflate');
-	}
-
-	let agent = request.agent;
-	if (typeof agent === 'function') {
-		agent = agent(parsedURL);
-	}
-
-	if (!headers.has('Connection') && !agent) {
-		headers.set('Connection', 'close');
-	}
-
-	// HTTP-network fetch step 4.2
-	// chunked encoding is handled by Node.js
-
-	return Object.assign({}, parsedURL, {
-		method: request.method,
-		headers: exportNodeCompatibleHeaders(headers),
-		agent
-	});
-}
-
-/**
- * abort-error.js
- *
- * AbortError interface for cancelled requests
- */
-
-/**
- * Create AbortError instance
- *
- * @param   String      message      Error message for human
- * @return  AbortError
- */
-function AbortError(message) {
-  Error.call(this, message);
-
-  this.type = 'aborted';
-  this.message = message;
-
-  // hide custom error implementation details from end-users
-  Error.captureStackTrace(this, this.constructor);
-}
-
-AbortError.prototype = Object.create(Error.prototype);
-AbortError.prototype.constructor = AbortError;
-AbortError.prototype.name = 'AbortError';
-
-// fix an issue where "PassThrough", "resolve" aren't a named export for node <10
-const PassThrough$1 = Stream.PassThrough;
-const resolve_url = Url.resolve;
-
-/**
- * Fetch function
- *
- * @param   Mixed    url   Absolute url or Request instance
- * @param   Object   opts  Fetch options
- * @return  Promise
- */
-function fetch(url, opts) {
-
-	// allow custom promise
-	if (!fetch.Promise) {
-		throw new Error('native promise missing, set fetch.Promise to your favorite alternative');
-	}
-
-	Body.Promise = fetch.Promise;
-
-	// wrap http.request into fetch
-	return new fetch.Promise(function (resolve, reject) {
-		// build request object
-		const request = new Request(url, opts);
-		const options = getNodeRequestOptions(request);
-
-		const send = (options.protocol === 'https:' ? https : http).request;
-		const signal = request.signal;
-
-		let response = null;
-
-		const abort = function abort() {
-			let error = new AbortError('The user aborted a request.');
-			reject(error);
-			if (request.body && request.body instanceof Stream.Readable) {
-				request.body.destroy(error);
-			}
-			if (!response || !response.body) return;
-			response.body.emit('error', error);
-		};
-
-		if (signal && signal.aborted) {
-			abort();
-			return;
-		}
-
-		const abortAndFinalize = function abortAndFinalize() {
-			abort();
-			finalize();
-		};
-
-		// send request
-		const req = send(options);
-		let reqTimeout;
-
-		if (signal) {
-			signal.addEventListener('abort', abortAndFinalize);
-		}
-
-		function finalize() {
-			req.abort();
-			if (signal) signal.removeEventListener('abort', abortAndFinalize);
-			clearTimeout(reqTimeout);
-		}
-
-		if (request.timeout) {
-			req.once('socket', function (socket) {
-				reqTimeout = setTimeout(function () {
-					reject(new FetchError(`network timeout at: ${request.url}`, 'request-timeout'));
-					finalize();
-				}, request.timeout);
-			});
-		}
-
-		req.on('error', function (err) {
-			reject(new FetchError(`request to ${request.url} failed, reason: ${err.message}`, 'system', err));
-			finalize();
-		});
-
-		req.on('response', function (res) {
-			clearTimeout(reqTimeout);
-
-			const headers = createHeadersLenient(res.headers);
-
-			// HTTP fetch step 5
-			if (fetch.isRedirect(res.statusCode)) {
-				// HTTP fetch step 5.2
-				const location = headers.get('Location');
-
-				// HTTP fetch step 5.3
-				const locationURL = location === null ? null : resolve_url(request.url, location);
-
-				// HTTP fetch step 5.5
-				switch (request.redirect) {
-					case 'error':
-						reject(new FetchError(`redirect mode is set to error: ${request.url}`, 'no-redirect'));
-						finalize();
-						return;
-					case 'manual':
-						// node-fetch-specific step: make manual redirect a bit easier to use by setting the Location header value to the resolved URL.
-						if (locationURL !== null) {
-							// handle corrupted header
-							try {
-								headers.set('Location', locationURL);
-							} catch (err) {
-								// istanbul ignore next: nodejs server prevent invalid response headers, we can't test this through normal request
-								reject(err);
-							}
-						}
-						break;
-					case 'follow':
-						// HTTP-redirect fetch step 2
-						if (locationURL === null) {
-							break;
-						}
-
-						// HTTP-redirect fetch step 5
-						if (request.counter >= request.follow) {
-							reject(new FetchError(`maximum redirect reached at: ${request.url}`, 'max-redirect'));
-							finalize();
-							return;
-						}
-
-						// HTTP-redirect fetch step 6 (counter increment)
-						// Create a new Request object.
-						const requestOpts = {
-							headers: new Headers(request.headers),
-							follow: request.follow,
-							counter: request.counter + 1,
-							agent: request.agent,
-							compress: request.compress,
-							method: request.method,
-							body: request.body,
-							signal: request.signal,
-							timeout: request.timeout
-						};
-
-						// HTTP-redirect fetch step 9
-						if (res.statusCode !== 303 && request.body && getTotalBytes(request) === null) {
-							reject(new FetchError('Cannot follow redirect with body being a readable stream', 'unsupported-redirect'));
-							finalize();
-							return;
-						}
-
-						// HTTP-redirect fetch step 11
-						if (res.statusCode === 303 || (res.statusCode === 301 || res.statusCode === 302) && request.method === 'POST') {
-							requestOpts.method = 'GET';
-							requestOpts.body = undefined;
-							requestOpts.headers.delete('content-length');
-						}
-
-						// HTTP-redirect fetch step 15
-						resolve(fetch(new Request(locationURL, requestOpts)));
-						finalize();
-						return;
-				}
-			}
-
-			// prepare response
-			res.once('end', function () {
-				if (signal) signal.removeEventListener('abort', abortAndFinalize);
-			});
-			let body = res.pipe(new PassThrough$1());
-
-			const response_options = {
-				url: request.url,
-				status: res.statusCode,
-				statusText: res.statusMessage,
-				headers: headers,
-				size: request.size,
-				timeout: request.timeout,
-				counter: request.counter
-			};
-
-			// HTTP-network fetch step 12.1.1.3
-			const codings = headers.get('Content-Encoding');
-
-			// HTTP-network fetch step 12.1.1.4: handle content codings
-
-			// in following scenarios we ignore compression support
-			// 1. compression support is disabled
-			// 2. HEAD request
-			// 3. no Content-Encoding header
-			// 4. no content response (204)
-			// 5. content not modified response (304)
-			if (!request.compress || request.method === 'HEAD' || codings === null || res.statusCode === 204 || res.statusCode === 304) {
-				response = new Response(body, response_options);
-				resolve(response);
-				return;
-			}
-
-			// For Node v6+
-			// Be less strict when decoding compressed responses, since sometimes
-			// servers send slightly invalid responses that are still accepted
-			// by common browsers.
-			// Always using Z_SYNC_FLUSH is what cURL does.
-			const zlibOptions = {
-				flush: zlib.Z_SYNC_FLUSH,
-				finishFlush: zlib.Z_SYNC_FLUSH
-			};
-
-			// for gzip
-			if (codings == 'gzip' || codings == 'x-gzip') {
-				body = body.pipe(zlib.createGunzip(zlibOptions));
-				response = new Response(body, response_options);
-				resolve(response);
-				return;
-			}
-
-			// for deflate
-			if (codings == 'deflate' || codings == 'x-deflate') {
-				// handle the infamous raw deflate response from old servers
-				// a hack for old IIS and Apache servers
-				const raw = res.pipe(new PassThrough$1());
-				raw.once('data', function (chunk) {
-					// see http://stackoverflow.com/questions/37519828
-					if ((chunk[0] & 0x0F) === 0x08) {
-						body = body.pipe(zlib.createInflate());
-					} else {
-						body = body.pipe(zlib.createInflateRaw());
-					}
-					response = new Response(body, response_options);
-					resolve(response);
-				});
-				return;
-			}
-
-			// for br
-			if (codings == 'br' && typeof zlib.createBrotliDecompress === 'function') {
-				body = body.pipe(zlib.createBrotliDecompress());
-				response = new Response(body, response_options);
-				resolve(response);
-				return;
-			}
-
-			// otherwise, use response as-is
-			response = new Response(body, response_options);
-			resolve(response);
-		});
-
-		writeToStream(req, request);
-	});
-}
-/**
- * Redirect code matching
- *
- * @param   Number   code  Status code
- * @return  Boolean
- */
-fetch.isRedirect = function (code) {
-	return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
-};
-
-// expose Promise
-fetch.Promise = global.Promise;
-
-module.exports = exports = fetch;
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.default = exports;
-exports.Headers = Headers;
-exports.Request = Request;
-exports.Response = Response;
-exports.FetchError = FetchError;
-
-
-/***/ }),
-
 /***/ 64193:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -6873,7 +5255,60 @@ exports.FetchError = FetchError;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-const VERSION = "2.6.0";
+const VERSION = "2.14.0";
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+
+    if (enumerableOnly) {
+      symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+    }
+
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
 
 /**
  * Some “list” response that can be paginated have a different response structure
@@ -6892,6 +5327,13 @@ const VERSION = "2.6.0";
  * otherwise match: https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
  */
 function normalizePaginatedListResponse(response) {
+  // endpoints can respond with 204 if repository is empty
+  if (!response.data) {
+    return _objectSpread2(_objectSpread2({}, response), {}, {
+      data: []
+    });
+  }
+
   const responseNeedsNormalization = "total_count" in response.data && !("url" in response.data);
   if (!responseNeedsNormalization) return response; // keep the additional properties intact as there is currently no other way
   // to retrieve the same information.
@@ -6930,19 +5372,32 @@ function iterator(octokit, route, parameters) {
         if (!url) return {
           done: true
         };
-        const response = await requestMethod({
-          method,
-          url,
-          headers
-        });
-        const normalizedResponse = normalizePaginatedListResponse(response); // `response.headers.link` format:
-        // '<https://api.github.com/users/aseemk/followers?page=2>; rel="next", <https://api.github.com/users/aseemk/followers?page=2>; rel="last"'
-        // sets `url` to undefined if "next" URL is not present or `link` header is not set
 
-        url = ((normalizedResponse.headers.link || "").match(/<([^>]+)>;\s*rel="next"/) || [])[1];
-        return {
-          value: normalizedResponse
-        };
+        try {
+          const response = await requestMethod({
+            method,
+            url,
+            headers
+          });
+          const normalizedResponse = normalizePaginatedListResponse(response); // `response.headers.link` format:
+          // '<https://api.github.com/users/aseemk/followers?page=2>; rel="next", <https://api.github.com/users/aseemk/followers?page=2>; rel="last"'
+          // sets `url` to undefined if "next" URL is not present or `link` header is not set
+
+          url = ((normalizedResponse.headers.link || "").match(/<([^>]+)>;\s*rel="next"/) || [])[1];
+          return {
+            value: normalizedResponse
+          };
+        } catch (error) {
+          if (error.status !== 409) throw error;
+          url = "";
+          return {
+            value: {
+              status: 200,
+              headers: {},
+              data: []
+            }
+          };
+        }
       }
 
     })
@@ -6984,6 +5439,16 @@ const composePaginateRest = Object.assign(paginate, {
   iterator
 });
 
+const paginatingEndpoints = ["GET /app/hook/deliveries", "GET /app/installations", "GET /applications/grants", "GET /authorizations", "GET /enterprises/{enterprise}/actions/permissions/organizations", "GET /enterprises/{enterprise}/actions/runner-groups", "GET /enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/organizations", "GET /enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/runners", "GET /enterprises/{enterprise}/actions/runners", "GET /enterprises/{enterprise}/actions/runners/downloads", "GET /events", "GET /gists", "GET /gists/public", "GET /gists/starred", "GET /gists/{gist_id}/comments", "GET /gists/{gist_id}/commits", "GET /gists/{gist_id}/forks", "GET /installation/repositories", "GET /issues", "GET /marketplace_listing/plans", "GET /marketplace_listing/plans/{plan_id}/accounts", "GET /marketplace_listing/stubbed/plans", "GET /marketplace_listing/stubbed/plans/{plan_id}/accounts", "GET /networks/{owner}/{repo}/events", "GET /notifications", "GET /organizations", "GET /orgs/{org}/actions/permissions/repositories", "GET /orgs/{org}/actions/runner-groups", "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories", "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/runners", "GET /orgs/{org}/actions/runners", "GET /orgs/{org}/actions/runners/downloads", "GET /orgs/{org}/actions/secrets", "GET /orgs/{org}/actions/secrets/{secret_name}/repositories", "GET /orgs/{org}/blocks", "GET /orgs/{org}/credential-authorizations", "GET /orgs/{org}/events", "GET /orgs/{org}/failed_invitations", "GET /orgs/{org}/hooks", "GET /orgs/{org}/hooks/{hook_id}/deliveries", "GET /orgs/{org}/installations", "GET /orgs/{org}/invitations", "GET /orgs/{org}/invitations/{invitation_id}/teams", "GET /orgs/{org}/issues", "GET /orgs/{org}/members", "GET /orgs/{org}/migrations", "GET /orgs/{org}/migrations/{migration_id}/repositories", "GET /orgs/{org}/outside_collaborators", "GET /orgs/{org}/projects", "GET /orgs/{org}/public_members", "GET /orgs/{org}/repos", "GET /orgs/{org}/team-sync/groups", "GET /orgs/{org}/teams", "GET /orgs/{org}/teams/{team_slug}/discussions", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions", "GET /orgs/{org}/teams/{team_slug}/invitations", "GET /orgs/{org}/teams/{team_slug}/members", "GET /orgs/{org}/teams/{team_slug}/projects", "GET /orgs/{org}/teams/{team_slug}/repos", "GET /orgs/{org}/teams/{team_slug}/team-sync/group-mappings", "GET /orgs/{org}/teams/{team_slug}/teams", "GET /projects/columns/{column_id}/cards", "GET /projects/{project_id}/collaborators", "GET /projects/{project_id}/columns", "GET /repos/{owner}/{repo}/actions/artifacts", "GET /repos/{owner}/{repo}/actions/runners", "GET /repos/{owner}/{repo}/actions/runners/downloads", "GET /repos/{owner}/{repo}/actions/runs", "GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts", "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs", "GET /repos/{owner}/{repo}/actions/secrets", "GET /repos/{owner}/{repo}/actions/workflows", "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs", "GET /repos/{owner}/{repo}/assignees", "GET /repos/{owner}/{repo}/branches", "GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations", "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs", "GET /repos/{owner}/{repo}/code-scanning/alerts", "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances", "GET /repos/{owner}/{repo}/code-scanning/analyses", "GET /repos/{owner}/{repo}/collaborators", "GET /repos/{owner}/{repo}/comments", "GET /repos/{owner}/{repo}/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/commits", "GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head", "GET /repos/{owner}/{repo}/commits/{commit_sha}/comments", "GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls", "GET /repos/{owner}/{repo}/commits/{ref}/check-runs", "GET /repos/{owner}/{repo}/commits/{ref}/check-suites", "GET /repos/{owner}/{repo}/commits/{ref}/statuses", "GET /repos/{owner}/{repo}/contributors", "GET /repos/{owner}/{repo}/deployments", "GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses", "GET /repos/{owner}/{repo}/events", "GET /repos/{owner}/{repo}/forks", "GET /repos/{owner}/{repo}/git/matching-refs/{ref}", "GET /repos/{owner}/{repo}/hooks", "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries", "GET /repos/{owner}/{repo}/invitations", "GET /repos/{owner}/{repo}/issues", "GET /repos/{owner}/{repo}/issues/comments", "GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/issues/events", "GET /repos/{owner}/{repo}/issues/{issue_number}/comments", "GET /repos/{owner}/{repo}/issues/{issue_number}/events", "GET /repos/{owner}/{repo}/issues/{issue_number}/labels", "GET /repos/{owner}/{repo}/issues/{issue_number}/reactions", "GET /repos/{owner}/{repo}/issues/{issue_number}/timeline", "GET /repos/{owner}/{repo}/keys", "GET /repos/{owner}/{repo}/labels", "GET /repos/{owner}/{repo}/milestones", "GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels", "GET /repos/{owner}/{repo}/notifications", "GET /repos/{owner}/{repo}/pages/builds", "GET /repos/{owner}/{repo}/projects", "GET /repos/{owner}/{repo}/pulls", "GET /repos/{owner}/{repo}/pulls/comments", "GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/pulls/{pull_number}/comments", "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits", "GET /repos/{owner}/{repo}/pulls/{pull_number}/files", "GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers", "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews", "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments", "GET /repos/{owner}/{repo}/releases", "GET /repos/{owner}/{repo}/releases/{release_id}/assets", "GET /repos/{owner}/{repo}/secret-scanning/alerts", "GET /repos/{owner}/{repo}/stargazers", "GET /repos/{owner}/{repo}/subscribers", "GET /repos/{owner}/{repo}/tags", "GET /repos/{owner}/{repo}/teams", "GET /repositories", "GET /repositories/{repository_id}/environments/{environment_name}/secrets", "GET /scim/v2/enterprises/{enterprise}/Groups", "GET /scim/v2/enterprises/{enterprise}/Users", "GET /scim/v2/organizations/{org}/Users", "GET /search/code", "GET /search/commits", "GET /search/issues", "GET /search/labels", "GET /search/repositories", "GET /search/topics", "GET /search/users", "GET /teams/{team_id}/discussions", "GET /teams/{team_id}/discussions/{discussion_number}/comments", "GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions", "GET /teams/{team_id}/discussions/{discussion_number}/reactions", "GET /teams/{team_id}/invitations", "GET /teams/{team_id}/members", "GET /teams/{team_id}/projects", "GET /teams/{team_id}/repos", "GET /teams/{team_id}/team-sync/group-mappings", "GET /teams/{team_id}/teams", "GET /user/blocks", "GET /user/emails", "GET /user/followers", "GET /user/following", "GET /user/gpg_keys", "GET /user/installations", "GET /user/installations/{installation_id}/repositories", "GET /user/issues", "GET /user/keys", "GET /user/marketplace_purchases", "GET /user/marketplace_purchases/stubbed", "GET /user/memberships/orgs", "GET /user/migrations", "GET /user/migrations/{migration_id}/repositories", "GET /user/orgs", "GET /user/public_emails", "GET /user/repos", "GET /user/repository_invitations", "GET /user/starred", "GET /user/subscriptions", "GET /user/teams", "GET /users", "GET /users/{username}/events", "GET /users/{username}/events/orgs/{org}", "GET /users/{username}/events/public", "GET /users/{username}/followers", "GET /users/{username}/following", "GET /users/{username}/gists", "GET /users/{username}/gpg_keys", "GET /users/{username}/keys", "GET /users/{username}/orgs", "GET /users/{username}/projects", "GET /users/{username}/received_events", "GET /users/{username}/received_events/public", "GET /users/{username}/repos", "GET /users/{username}/starred", "GET /users/{username}/subscriptions"];
+
+function isPaginatingEndpoint(arg) {
+  if (typeof arg === "string") {
+    return paginatingEndpoints.includes(arg);
+  } else {
+    return false;
+  }
+}
+
 /**
  * @param octokit Octokit instance
  * @param options Options passed to Octokit constructor
@@ -6999,7 +5464,9 @@ function paginateRest(octokit) {
 paginateRest.VERSION = VERSION;
 
 exports.composePaginateRest = composePaginateRest;
+exports.isPaginatingEndpoint = isPaginatingEndpoint;
 exports.paginateRest = paginateRest;
+exports.paginatingEndpoints = paginatingEndpoints;
 //# sourceMappingURL=index.js.map
 
 
@@ -7013,10 +5480,60 @@ exports.paginateRest = paginateRest;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
 const Endpoints = {
   actions: {
     addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
     cancelWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel"],
+    createOrUpdateEnvironmentSecret: ["PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"],
     createOrUpdateOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}"],
     createOrUpdateRepoSecret: ["PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
     createRegistrationTokenForOrg: ["POST /orgs/{org}/actions/runners/registration-token"],
@@ -7025,21 +5542,37 @@ const Endpoints = {
     createRemoveTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/remove-token"],
     createWorkflowDispatch: ["POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches"],
     deleteArtifact: ["DELETE /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+    deleteEnvironmentSecret: ["DELETE /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"],
     deleteOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}"],
     deleteRepoSecret: ["DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
     deleteSelfHostedRunnerFromOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}"],
     deleteSelfHostedRunnerFromRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}"],
     deleteWorkflowRun: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}"],
     deleteWorkflowRunLogs: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs"],
+    disableSelectedRepositoryGithubActionsOrganization: ["DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}"],
+    disableWorkflow: ["PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable"],
     downloadArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}"],
     downloadJobLogsForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs"],
     downloadWorkflowRunLogs: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs"],
+    enableSelectedRepositoryGithubActionsOrganization: ["PUT /orgs/{org}/actions/permissions/repositories/{repository_id}"],
+    enableWorkflow: ["PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable"],
+    getAllowedActionsOrganization: ["GET /orgs/{org}/actions/permissions/selected-actions"],
+    getAllowedActionsRepository: ["GET /repos/{owner}/{repo}/actions/permissions/selected-actions"],
     getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+    getEnvironmentPublicKey: ["GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key"],
+    getEnvironmentSecret: ["GET /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"],
+    getGithubActionsPermissionsOrganization: ["GET /orgs/{org}/actions/permissions"],
+    getGithubActionsPermissionsRepository: ["GET /repos/{owner}/{repo}/actions/permissions"],
     getJobForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}"],
     getOrgPublicKey: ["GET /orgs/{org}/actions/secrets/public-key"],
     getOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}"],
+    getPendingDeploymentsForRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"],
+    getRepoPermissions: ["GET /repos/{owner}/{repo}/actions/permissions", {}, {
+      renamed: ["actions", "getGithubActionsPermissionsRepository"]
+    }],
     getRepoPublicKey: ["GET /repos/{owner}/{repo}/actions/secrets/public-key"],
     getRepoSecret: ["GET /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
+    getReviewsForRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/approvals"],
     getSelfHostedRunnerForOrg: ["GET /orgs/{org}/actions/runners/{runner_id}"],
     getSelfHostedRunnerForRepo: ["GET /repos/{owner}/{repo}/actions/runners/{runner_id}"],
     getWorkflow: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}"],
@@ -7047,6 +5580,7 @@ const Endpoints = {
     getWorkflowRunUsage: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/timing"],
     getWorkflowUsage: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing"],
     listArtifactsForRepo: ["GET /repos/{owner}/{repo}/actions/artifacts"],
+    listEnvironmentSecrets: ["GET /repositories/{repository_id}/environments/{environment_name}/secrets"],
     listJobsForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs"],
     listOrgSecrets: ["GET /orgs/{org}/actions/secrets"],
     listRepoSecrets: ["GET /repos/{owner}/{repo}/actions/secrets"],
@@ -7054,6 +5588,7 @@ const Endpoints = {
     listRunnerApplicationsForOrg: ["GET /orgs/{org}/actions/runners/downloads"],
     listRunnerApplicationsForRepo: ["GET /repos/{owner}/{repo}/actions/runners/downloads"],
     listSelectedReposForOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}/repositories"],
+    listSelectedRepositoriesEnabledGithubActionsOrganization: ["GET /orgs/{org}/actions/permissions/repositories"],
     listSelfHostedRunnersForOrg: ["GET /orgs/{org}/actions/runners"],
     listSelfHostedRunnersForRepo: ["GET /repos/{owner}/{repo}/actions/runners"],
     listWorkflowRunArtifacts: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"],
@@ -7061,7 +5596,13 @@ const Endpoints = {
     listWorkflowRunsForRepo: ["GET /repos/{owner}/{repo}/actions/runs"],
     reRunWorkflow: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun"],
     removeSelectedRepoFromOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
-    setSelectedReposForOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories"]
+    reviewPendingDeploymentsForRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"],
+    setAllowedActionsOrganization: ["PUT /orgs/{org}/actions/permissions/selected-actions"],
+    setAllowedActionsRepository: ["PUT /repos/{owner}/{repo}/actions/permissions/selected-actions"],
+    setGithubActionsPermissionsOrganization: ["PUT /orgs/{org}/actions/permissions"],
+    setGithubActionsPermissionsRepository: ["PUT /repos/{owner}/{repo}/actions/permissions"],
+    setSelectedReposForOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories"],
+    setSelectedRepositoriesEnabledGithubActionsOrganization: ["PUT /orgs/{org}/actions/permissions/repositories"]
   },
   activity: {
     checkRepoIsStarredByAuthenticatedUser: ["GET /user/starred/{owner}/{repo}"],
@@ -7117,6 +5658,7 @@ const Endpoints = {
     getSubscriptionPlanForAccount: ["GET /marketplace_listing/accounts/{account_id}"],
     getSubscriptionPlanForAccountStubbed: ["GET /marketplace_listing/stubbed/accounts/{account_id}"],
     getUserInstallation: ["GET /users/{username}/installation"],
+    getWebhookConfigForApp: ["GET /app/hook/config"],
     listAccountsForPlan: ["GET /marketplace_listing/plans/{plan_id}/accounts"],
     listAccountsForPlanStubbed: ["GET /marketplace_listing/stubbed/plans/{plan_id}/accounts"],
     listInstallationReposForAuthenticatedUser: ["GET /user/installations/{installation_id}/repositories"],
@@ -7130,8 +5672,10 @@ const Endpoints = {
     removeRepoFromInstallation: ["DELETE /user/installations/{installation_id}/repositories/{repository_id}"],
     resetToken: ["PATCH /applications/{client_id}/token"],
     revokeInstallationAccessToken: ["DELETE /installation/token"],
+    scopeToken: ["POST /applications/{client_id}/token/scoped"],
     suspendInstallation: ["PUT /app/installations/{installation_id}/suspended"],
-    unsuspendInstallation: ["DELETE /app/installations/{installation_id}/suspended"]
+    unsuspendInstallation: ["DELETE /app/installations/{installation_id}/suspended"],
+    updateWebhookConfigForApp: ["PATCH /app/hook/config"]
   },
   billing: {
     getGithubActionsBillingOrg: ["GET /orgs/{org}/settings/billing/actions"],
@@ -7142,69 +5686,29 @@ const Endpoints = {
     getSharedStorageBillingUser: ["GET /users/{username}/settings/billing/shared-storage"]
   },
   checks: {
-    create: ["POST /repos/{owner}/{repo}/check-runs", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    createSuite: ["POST /repos/{owner}/{repo}/check-suites", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    get: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    getSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    listAnnotations: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    listForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-runs", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    listForSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    listSuitesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-suites", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    rerequestSuite: ["POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    setSuitesPreferences: ["PATCH /repos/{owner}/{repo}/check-suites/preferences", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }],
-    update: ["PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}", {
-      mediaType: {
-        previews: ["antiope"]
-      }
-    }]
+    create: ["POST /repos/{owner}/{repo}/check-runs"],
+    createSuite: ["POST /repos/{owner}/{repo}/check-suites"],
+    get: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}"],
+    getSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}"],
+    listAnnotations: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations"],
+    listForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-runs"],
+    listForSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs"],
+    listSuitesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-suites"],
+    rerequestSuite: ["POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest"],
+    setSuitesPreferences: ["PATCH /repos/{owner}/{repo}/check-suites/preferences"],
+    update: ["PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}"]
   },
   codeScanning: {
+    deleteAnalysis: ["DELETE /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}{?confirm_delete}"],
     getAlert: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}", {}, {
       renamedParameters: {
         alert_id: "alert_number"
       }
     }],
+    getAnalysis: ["GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"],
+    getSarif: ["GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"],
     listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"],
+    listAlertsInstances: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"],
     listRecentAnalyses: ["GET /repos/{owner}/{repo}/code-scanning/analyses"],
     updateAlert: ["PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"],
     uploadSarif: ["POST /repos/{owner}/{repo}/code-scanning/sarifs"]
@@ -7228,6 +5732,16 @@ const Endpoints = {
   },
   emojis: {
     get: ["GET /emojis"]
+  },
+  enterpriseAdmin: {
+    disableSelectedOrganizationGithubActionsEnterprise: ["DELETE /enterprises/{enterprise}/actions/permissions/organizations/{org_id}"],
+    enableSelectedOrganizationGithubActionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/organizations/{org_id}"],
+    getAllowedActionsEnterprise: ["GET /enterprises/{enterprise}/actions/permissions/selected-actions"],
+    getGithubActionsPermissionsEnterprise: ["GET /enterprises/{enterprise}/actions/permissions"],
+    listSelectedOrganizationsEnabledGithubActionsEnterprise: ["GET /enterprises/{enterprise}/actions/permissions/organizations"],
+    setAllowedActionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/selected-actions"],
+    setGithubActionsPermissionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions"],
+    setSelectedOrganizationsEnabledGithubActionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/organizations"]
   },
   gists: {
     checkIsStarred: ["GET /gists/{gist_id}/star"],
@@ -7271,35 +5785,23 @@ const Endpoints = {
     getTemplate: ["GET /gitignore/templates/{name}"]
   },
   interactions: {
-    getRestrictionsForOrg: ["GET /orgs/{org}/interaction-limits", {
-      mediaType: {
-        previews: ["sombra"]
-      }
+    getRestrictionsForAuthenticatedUser: ["GET /user/interaction-limits"],
+    getRestrictionsForOrg: ["GET /orgs/{org}/interaction-limits"],
+    getRestrictionsForRepo: ["GET /repos/{owner}/{repo}/interaction-limits"],
+    getRestrictionsForYourPublicRepos: ["GET /user/interaction-limits", {}, {
+      renamed: ["interactions", "getRestrictionsForAuthenticatedUser"]
     }],
-    getRestrictionsForRepo: ["GET /repos/{owner}/{repo}/interaction-limits", {
-      mediaType: {
-        previews: ["sombra"]
-      }
+    removeRestrictionsForAuthenticatedUser: ["DELETE /user/interaction-limits"],
+    removeRestrictionsForOrg: ["DELETE /orgs/{org}/interaction-limits"],
+    removeRestrictionsForRepo: ["DELETE /repos/{owner}/{repo}/interaction-limits"],
+    removeRestrictionsForYourPublicRepos: ["DELETE /user/interaction-limits", {}, {
+      renamed: ["interactions", "removeRestrictionsForAuthenticatedUser"]
     }],
-    removeRestrictionsForOrg: ["DELETE /orgs/{org}/interaction-limits", {
-      mediaType: {
-        previews: ["sombra"]
-      }
-    }],
-    removeRestrictionsForRepo: ["DELETE /repos/{owner}/{repo}/interaction-limits", {
-      mediaType: {
-        previews: ["sombra"]
-      }
-    }],
-    setRestrictionsForOrg: ["PUT /orgs/{org}/interaction-limits", {
-      mediaType: {
-        previews: ["sombra"]
-      }
-    }],
-    setRestrictionsForRepo: ["PUT /repos/{owner}/{repo}/interaction-limits", {
-      mediaType: {
-        previews: ["sombra"]
-      }
+    setRestrictionsForAuthenticatedUser: ["PUT /user/interaction-limits"],
+    setRestrictionsForOrg: ["PUT /orgs/{org}/interaction-limits"],
+    setRestrictionsForRepo: ["PUT /repos/{owner}/{repo}/interaction-limits"],
+    setRestrictionsForYourPublicRepos: ["PUT /user/interaction-limits", {}, {
+      renamed: ["interactions", "setRestrictionsForAuthenticatedUser"]
     }]
   },
   issues: {
@@ -7361,7 +5863,10 @@ const Endpoints = {
     }]
   },
   meta: {
-    get: ["GET /meta"]
+    get: ["GET /meta"],
+    getOctocat: ["GET /octocat"],
+    getZen: ["GET /zen"],
+    root: ["GET /"]
   },
   migrations: {
     cancelImport: ["DELETE /repos/{owner}/{repo}/import"],
@@ -7437,6 +5942,7 @@ const Endpoints = {
   },
   orgs: {
     blockUser: ["PUT /orgs/{org}/blocks/{username}"],
+    cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
     checkBlockedUser: ["GET /orgs/{org}/blocks/{username}"],
     checkMembershipForUser: ["GET /orgs/{org}/members/{username}"],
     checkPublicMembershipForUser: ["GET /orgs/{org}/public_members/{username}"],
@@ -7448,9 +5954,11 @@ const Endpoints = {
     getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
     getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
     getWebhook: ["GET /orgs/{org}/hooks/{hook_id}"],
+    getWebhookConfigForOrg: ["GET /orgs/{org}/hooks/{hook_id}/config"],
     list: ["GET /organizations"],
     listAppInstallations: ["GET /orgs/{org}/installations"],
     listBlockedUsers: ["GET /orgs/{org}/blocks"],
+    listFailedInvitations: ["GET /orgs/{org}/failed_invitations"],
     listForAuthenticatedUser: ["GET /user/orgs"],
     listForUser: ["GET /users/{username}/orgs"],
     listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
@@ -7470,7 +5978,33 @@ const Endpoints = {
     unblockUser: ["DELETE /orgs/{org}/blocks/{username}"],
     update: ["PATCH /orgs/{org}"],
     updateMembershipForAuthenticatedUser: ["PATCH /user/memberships/orgs/{org}"],
-    updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"]
+    updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"],
+    updateWebhookConfigForOrg: ["PATCH /orgs/{org}/hooks/{hook_id}/config"]
+  },
+  packages: {
+    deletePackageForAuthenticatedUser: ["DELETE /user/packages/{package_type}/{package_name}"],
+    deletePackageForOrg: ["DELETE /orgs/{org}/packages/{package_type}/{package_name}"],
+    deletePackageVersionForAuthenticatedUser: ["DELETE /user/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    deletePackageVersionForOrg: ["DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    getAllPackageVersionsForAPackageOwnedByAnOrg: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions", {}, {
+      renamed: ["packages", "getAllPackageVersionsForPackageOwnedByOrg"]
+    }],
+    getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions", {}, {
+      renamed: ["packages", "getAllPackageVersionsForPackageOwnedByAuthenticatedUser"]
+    }],
+    getAllPackageVersionsForPackageOwnedByAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions"],
+    getAllPackageVersionsForPackageOwnedByOrg: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions"],
+    getAllPackageVersionsForPackageOwnedByUser: ["GET /users/{username}/packages/{package_type}/{package_name}/versions"],
+    getPackageForAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}"],
+    getPackageForOrganization: ["GET /orgs/{org}/packages/{package_type}/{package_name}"],
+    getPackageForUser: ["GET /users/{username}/packages/{package_type}/{package_name}"],
+    getPackageVersionForAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    getPackageVersionForOrganization: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    getPackageVersionForUser: ["GET /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    restorePackageForAuthenticatedUser: ["POST /user/packages/{package_type}/{package_name}/restore{?token}"],
+    restorePackageForOrg: ["POST /orgs/{org}/packages/{package_type}/{package_name}/restore{?token}"],
+    restorePackageVersionForAuthenticatedUser: ["POST /user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"],
+    restorePackageVersionForOrg: ["POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"]
   },
   projects: {
     addCollaborator: ["PUT /projects/{project_id}/collaborators/{username}", {
@@ -7701,7 +6235,7 @@ const Endpoints = {
         previews: ["squirrel-girl"]
       }
     }, {
-      deprecated: "octokit.reactions.deleteLegacy() is deprecated, see https://developer.github.com/v3/reactions/#delete-a-reaction-legacy"
+      deprecated: "octokit.rest.reactions.deleteLegacy() is deprecated, see https://docs.github.com/rest/reference/reactions/#delete-a-reaction-legacy"
     }],
     listForCommitComment: ["GET /repos/{owner}/{repo}/comments/{comment_id}/reactions", {
       mediaType: {
@@ -7770,6 +6304,7 @@ const Endpoints = {
     createForAuthenticatedUser: ["POST /user/repos"],
     createFork: ["POST /repos/{owner}/{repo}/forks"],
     createInOrg: ["POST /orgs/{org}/repos"],
+    createOrUpdateEnvironment: ["PUT /repos/{owner}/{repo}/environments/{environment_name}"],
     createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
     createPagesSite: ["POST /repos/{owner}/{repo}/pages", {
       mediaType: {
@@ -7787,6 +6322,7 @@ const Endpoints = {
     delete: ["DELETE /repos/{owner}/{repo}"],
     deleteAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
     deleteAdminBranchProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
+    deleteAnEnvironment: ["DELETE /repos/{owner}/{repo}/environments/{environment_name}"],
     deleteBranchProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection"],
     deleteCommitComment: ["DELETE /repos/{owner}/{repo}/comments/{comment_id}"],
     deleteCommitSignatureProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures", {
@@ -7817,7 +6353,11 @@ const Endpoints = {
         previews: ["dorian"]
       }
     }],
-    downloadArchive: ["GET /repos/{owner}/{repo}/{archive_format}/{ref}"],
+    downloadArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}", {}, {
+      renamed: ["repos", "downloadZipballArchive"]
+    }],
+    downloadTarballArchive: ["GET /repos/{owner}/{repo}/tarball/{ref}"],
+    downloadZipballArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}"],
     enableAutomatedSecurityFixes: ["PUT /repos/{owner}/{repo}/automated-security-fixes", {
       mediaType: {
         previews: ["london"]
@@ -7831,6 +6371,7 @@ const Endpoints = {
     get: ["GET /repos/{owner}/{repo}"],
     getAccessRestrictions: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
     getAdminBranchProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
+    getAllEnvironments: ["GET /repos/{owner}/{repo}/environments"],
     getAllStatusCheckContexts: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts"],
     getAllTopics: ["GET /repos/{owner}/{repo}/topics", {
       mediaType: {
@@ -7852,16 +6393,13 @@ const Endpoints = {
         previews: ["zzzax"]
       }
     }],
-    getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile", {
-      mediaType: {
-        previews: ["black-panther"]
-      }
-    }],
+    getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile"],
     getContent: ["GET /repos/{owner}/{repo}/contents/{path}"],
     getContributorsStats: ["GET /repos/{owner}/{repo}/stats/contributors"],
     getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
     getDeployment: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}"],
     getDeploymentStatus: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses/{status_id}"],
+    getEnvironment: ["GET /repos/{owner}/{repo}/environments/{environment_name}"],
     getLatestPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/latest"],
     getLatestRelease: ["GET /repos/{owner}/{repo}/releases/latest"],
     getPages: ["GET /repos/{owner}/{repo}/pages"],
@@ -7870,6 +6408,7 @@ const Endpoints = {
     getPullRequestReviewProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
     getPunchCardStats: ["GET /repos/{owner}/{repo}/stats/punch_card"],
     getReadme: ["GET /repos/{owner}/{repo}/readme"],
+    getReadmeInDirectory: ["GET /repos/{owner}/{repo}/readme/{dir}"],
     getRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}"],
     getReleaseAsset: ["GET /repos/{owner}/{repo}/releases/assets/{asset_id}"],
     getReleaseByTag: ["GET /repos/{owner}/{repo}/releases/tags/{tag}"],
@@ -7880,6 +6419,7 @@ const Endpoints = {
     getUsersWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users"],
     getViews: ["GET /repos/{owner}/{repo}/traffic/views"],
     getWebhook: ["GET /repos/{owner}/{repo}/hooks/{hook_id}"],
+    getWebhookConfigForRepo: ["GET /repos/{owner}/{repo}/hooks/{hook_id}/config"],
     listBranches: ["GET /repos/{owner}/{repo}/branches"],
     listBranchesForHeadCommit: ["GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head", {
       mediaType: {
@@ -7930,6 +6470,7 @@ const Endpoints = {
     removeUserAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users", {}, {
       mapToData: "users"
     }],
+    renameBranch: ["POST /repos/{owner}/{repo}/branches/{branch}/rename"],
     replaceAllTopics: ["PUT /repos/{owner}/{repo}/topics", {
       mediaType: {
         previews: ["mercy"]
@@ -7959,8 +6500,12 @@ const Endpoints = {
     updatePullRequestReviewProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
     updateRelease: ["PATCH /repos/{owner}/{repo}/releases/{release_id}"],
     updateReleaseAsset: ["PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}"],
-    updateStatusCheckPotection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
+    updateStatusCheckPotection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks", {}, {
+      renamed: ["repos", "updateStatusCheckProtection"]
+    }],
+    updateStatusCheckProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
     updateWebhook: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}"],
+    updateWebhookConfigForRepo: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config"],
     uploadReleaseAsset: ["POST /repos/{owner}/{repo}/releases/{release_id}/assets{?name,label}", {
       baseUrl: "https://uploads.github.com"
     }]
@@ -7981,6 +6526,11 @@ const Endpoints = {
       }
     }],
     users: ["GET /search/users"]
+  },
+  secretScanning: {
+    getAlert: ["GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"],
+    listAlertsForRepo: ["GET /repos/{owner}/{repo}/secret-scanning/alerts"],
+    updateAlert: ["PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"]
   },
   teams: {
     addOrUpdateMembershipForUserInOrg: ["PUT /orgs/{org}/teams/{team_slug}/memberships/{username}"],
@@ -8062,7 +6612,7 @@ const Endpoints = {
   }
 };
 
-const VERSION = "4.2.1";
+const VERSION = "4.15.1";
 
 function endpointsToMethods(octokit, endpointsMap) {
   const newMethods = {};
@@ -8145,19 +6695,11 @@ function decorate(octokit, scope, methodName, defaults, decorations) {
   return Object.assign(withDecorations, requestWithDefaults);
 }
 
-/**
- * This plugin is a 1:1 copy of internal @octokit/rest plugins. The primary
- * goal is to rebuild @octokit/rest on top of @octokit/core. Once that is
- * done, we will remove the registerEndpoints methods and return the methods
- * directly as with the other plugins. At that point we will also remove the
- * legacy workarounds and deprecations.
- *
- * See the plan at
- * https://github.com/octokit/plugin-rest-endpoint-methods.js/pull/1
- */
-
 function restEndpointMethods(octokit) {
-  return endpointsToMethods(octokit, Endpoints);
+  const api = endpointsToMethods(octokit, Endpoints);
+  return _objectSpread2(_objectSpread2({}, api), {}, {
+    rest: api
+  });
 }
 restEndpointMethods.VERSION = VERSION;
 
@@ -8180,7 +6722,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var deprecation = __nccwpck_require__(58932);
 var once = _interopDefault(__nccwpck_require__(1223));
 
-const logOnce = once(deprecation => console.warn(deprecation));
+const logOnceCode = once(deprecation => console.warn(deprecation));
+const logOnceHeaders = once(deprecation => console.warn(deprecation));
 /**
  * Error with extra properties to help with debugging
  */
@@ -8197,14 +6740,17 @@ class RequestError extends Error {
 
     this.name = "HttpError";
     this.status = statusCode;
-    Object.defineProperty(this, "code", {
-      get() {
-        logOnce(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
-        return statusCode;
-      }
+    let headers;
 
-    });
-    this.headers = options.headers || {}; // redact request credentials without mutating original request options
+    if ("headers" in options && typeof options.headers !== "undefined") {
+      headers = options.headers;
+    }
+
+    if ("response" in options) {
+      this.response = options.response;
+      headers = options.response.headers;
+    } // redact request credentials without mutating original request options
+
 
     const requestCopy = Object.assign({}, options.request);
 
@@ -8219,7 +6765,22 @@ class RequestError extends Error {
     .replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]") // OAuth tokens can be passed as URL query parameters, although it is not recommended
     // see https://developer.github.com/v3/#oauth2-token-sent-in-a-header
     .replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
-    this.request = requestCopy;
+    this.request = requestCopy; // deprecations
+
+    Object.defineProperty(this, "code", {
+      get() {
+        logOnceCode(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
+        return statusCode;
+      }
+
+    });
+    Object.defineProperty(this, "headers", {
+      get() {
+        logOnceHeaders(new deprecation.Deprecation("[@octokit/request-error] `error.headers` is deprecated, use `error.response.headers`."));
+        return headers || {};
+      }
+
+    });
   }
 
 }
@@ -8241,18 +6802,20 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var endpoint = __nccwpck_require__(59440);
-var universalUserAgent = __nccwpck_require__(41441);
-var isPlainObject = __nccwpck_require__(49062);
+var universalUserAgent = __nccwpck_require__(45030);
+var isPlainObject = __nccwpck_require__(63287);
 var nodeFetch = _interopDefault(__nccwpck_require__(80467));
-var requestError = __nccwpck_require__(30013);
+var requestError = __nccwpck_require__(10537);
 
-const VERSION = "5.4.10";
+const VERSION = "5.6.0";
 
 function getBufferResponse(response) {
   return response.arrayBuffer();
 }
 
 function fetchWrapper(requestOptions) {
+  const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
+
   if (isPlainObject.isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
     requestOptions.body = JSON.stringify(requestOptions.body);
   }
@@ -8266,12 +6829,20 @@ function fetchWrapper(requestOptions) {
     body: requestOptions.body,
     headers: requestOptions.headers,
     redirect: requestOptions.redirect
-  }, requestOptions.request)).then(response => {
+  }, // `requestOptions.request.agent` type is incompatible
+  // see https://github.com/octokit/types.ts/pull/264
+  requestOptions.request)).then(async response => {
     url = response.url;
     status = response.status;
 
     for (const keyAndValue of response.headers) {
       headers[keyAndValue[0]] = keyAndValue[1];
+    }
+
+    if ("deprecation" in headers) {
+      const matches = headers.link && headers.link.match(/<([^>]+)>; rel="deprecation"/);
+      const deprecationLink = matches && matches.pop();
+      log.warn(`[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${headers.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`);
     }
 
     if (status === 204 || status === 205) {
@@ -8285,49 +6856,43 @@ function fetchWrapper(requestOptions) {
       }
 
       throw new requestError.RequestError(response.statusText, status, {
-        headers,
+        response: {
+          url,
+          status,
+          headers,
+          data: undefined
+        },
         request: requestOptions
       });
     }
 
     if (status === 304) {
       throw new requestError.RequestError("Not modified", status, {
-        headers,
+        response: {
+          url,
+          status,
+          headers,
+          data: await getResponseData(response)
+        },
         request: requestOptions
       });
     }
 
     if (status >= 400) {
-      return response.text().then(message => {
-        const error = new requestError.RequestError(message, status, {
+      const data = await getResponseData(response);
+      const error = new requestError.RequestError(toErrorMessage(data), status, {
+        response: {
+          url,
+          status,
           headers,
-          request: requestOptions
-        });
-
-        try {
-          let responseBody = JSON.parse(error.message);
-          Object.assign(error, responseBody);
-          let errors = responseBody.errors; // Assumption `errors` would always be in Array format
-
-          error.message = error.message + ": " + errors.map(JSON.stringify).join(", ");
-        } catch (e) {// ignore, see octokit/rest.js#684
-        }
-
-        throw error;
+          data
+        },
+        request: requestOptions
       });
+      throw error;
     }
 
-    const contentType = response.headers.get("content-type");
-
-    if (/application\/json/.test(contentType)) {
-      return response.json();
-    }
-
-    if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
-      return response.text();
-    }
-
-    return getBufferResponse(response);
+    return getResponseData(response);
   }).then(data => {
     return {
       status,
@@ -8336,15 +6901,40 @@ function fetchWrapper(requestOptions) {
       data
     };
   }).catch(error => {
-    if (error instanceof requestError.RequestError) {
-      throw error;
-    }
-
+    if (error instanceof requestError.RequestError) throw error;
     throw new requestError.RequestError(error.message, 500, {
-      headers,
       request: requestOptions
     });
   });
+}
+
+async function getResponseData(response) {
+  const contentType = response.headers.get("content-type");
+
+  if (/application\/json/.test(contentType)) {
+    return response.json();
+  }
+
+  if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
+    return response.text();
+  }
+
+  return getBufferResponse(response);
+}
+
+function toErrorMessage(data) {
+  if (typeof data === "string") return data; // istanbul ignore else - just in case
+
+  if ("message" in data) {
+    if (Array.isArray(data.errors)) {
+      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
+    }
+
+    return data.message;
+  } // istanbul ignore next - just in case
+
+
+  return `Unknown error: ${JSON.stringify(data)}`;
 }
 
 function withDefaults(oldEndpoint, newDefaults) {
@@ -8381,141 +6971,6 @@ const request = withDefaults(endpoint.endpoint, {
 });
 
 exports.request = request;
-//# sourceMappingURL=index.js.map
-
-
-/***/ }),
-
-/***/ 30013:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var deprecation = __nccwpck_require__(58932);
-var once = _interopDefault(__nccwpck_require__(1223));
-
-const logOnce = once(deprecation => console.warn(deprecation));
-/**
- * Error with extra properties to help with debugging
- */
-
-class RequestError extends Error {
-  constructor(message, statusCode, options) {
-    super(message); // Maintains proper stack trace (only available on V8)
-
-    /* istanbul ignore next */
-
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
-    }
-
-    this.name = "HttpError";
-    this.status = statusCode;
-    Object.defineProperty(this, "code", {
-      get() {
-        logOnce(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
-        return statusCode;
-      }
-
-    });
-    this.headers = options.headers || {}; // redact request credentials without mutating original request options
-
-    const requestCopy = Object.assign({}, options.request);
-
-    if (options.request.headers.authorization) {
-      requestCopy.headers = Object.assign({}, options.request.headers, {
-        authorization: options.request.headers.authorization.replace(/ .*$/, " [REDACTED]")
-      });
-    }
-
-    requestCopy.url = requestCopy.url // client_id & client_secret can be passed as URL query parameters to increase rate limit
-    // see https://developer.github.com/v3/#increasing-the-unauthenticated-rate-limit-for-oauth-applications
-    .replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]") // OAuth tokens can be passed as URL query parameters, although it is not recommended
-    // see https://developer.github.com/v3/#oauth2-token-sent-in-a-header
-    .replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
-    this.request = requestCopy;
-  }
-
-}
-
-exports.RequestError = RequestError;
-//# sourceMappingURL=index.js.map
-
-
-/***/ }),
-
-/***/ 49062:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-/*!
- * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObject(o) {
-  return Object.prototype.toString.call(o) === '[object Object]';
-}
-
-function isPlainObject(o) {
-  var ctor,prot;
-
-  if (isObject(o) === false) return false;
-
-  // If has modified constructor
-  ctor = o.constructor;
-  if (ctor === undefined) return true;
-
-  // If has modified prototype
-  prot = ctor.prototype;
-  if (isObject(prot) === false) return false;
-
-  // If constructor does not have an Object-specific method
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  }
-
-  // Most likely a plain Object
-  return true;
-}
-
-exports.isPlainObject = isPlainObject;
-
-
-/***/ }),
-
-/***/ 41441:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-function getUserAgent() {
-  if (typeof navigator === "object" && "userAgent" in navigator) {
-    return navigator.userAgent;
-  }
-
-  if (typeof process === "object" && "version" in process) {
-    return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
-  }
-
-  return "<environment undetectable>";
-}
-
-exports.getUserAgent = getUserAgent;
 //# sourceMappingURL=index.js.map
 
 
@@ -8742,6 +7197,9 @@ function range(a, b, str) {
   var i = ai;
 
   if (ai >= 0 && bi > 0) {
+    if(a===b) {
+      return [ai, bi];
+    }
     begs = [];
     left = str.length;
 
@@ -8842,51 +7300,51 @@ module.exports.Collection = Hook.Collection
 /***/ 5549:
 /***/ ((module) => {
 
-module.exports = addHook
+module.exports = addHook;
 
-function addHook (state, kind, name, hook) {
-  var orig = hook
+function addHook(state, kind, name, hook) {
+  var orig = hook;
   if (!state.registry[name]) {
-    state.registry[name] = []
+    state.registry[name] = [];
   }
 
-  if (kind === 'before') {
+  if (kind === "before") {
     hook = function (method, options) {
       return Promise.resolve()
         .then(orig.bind(null, options))
-        .then(method.bind(null, options))
-    }
+        .then(method.bind(null, options));
+    };
   }
 
-  if (kind === 'after') {
+  if (kind === "after") {
     hook = function (method, options) {
-      var result
+      var result;
       return Promise.resolve()
         .then(method.bind(null, options))
         .then(function (result_) {
-          result = result_
-          return orig(result, options)
+          result = result_;
+          return orig(result, options);
         })
         .then(function () {
-          return result
-        })
-    }
+          return result;
+        });
+    };
   }
 
-  if (kind === 'error') {
+  if (kind === "error") {
     hook = function (method, options) {
       return Promise.resolve()
         .then(method.bind(null, options))
         .catch(function (error) {
-          return orig(error, options)
-        })
-    }
+          return orig(error, options);
+        });
+    };
   }
 
   state.registry[name].push({
     hook: hook,
-    orig: orig
-  })
+    orig: orig,
+  });
 }
 
 
@@ -8895,33 +7353,32 @@ function addHook (state, kind, name, hook) {
 /***/ 44670:
 /***/ ((module) => {
 
-module.exports = register
+module.exports = register;
 
-function register (state, name, method, options) {
-  if (typeof method !== 'function') {
-    throw new Error('method for before hook must be a function')
+function register(state, name, method, options) {
+  if (typeof method !== "function") {
+    throw new Error("method for before hook must be a function");
   }
 
   if (!options) {
-    options = {}
+    options = {};
   }
 
   if (Array.isArray(name)) {
     return name.reverse().reduce(function (callback, name) {
-      return register.bind(null, state, name, callback, options)
-    }, method)()
+      return register.bind(null, state, name, callback, options);
+    }, method)();
   }
 
-  return Promise.resolve()
-    .then(function () {
-      if (!state.registry[name]) {
-        return method(options)
-      }
+  return Promise.resolve().then(function () {
+    if (!state.registry[name]) {
+      return method(options);
+    }
 
-      return (state.registry[name]).reduce(function (method, registered) {
-        return registered.hook.bind(null, method, options)
-      }, method)()
-    })
+    return state.registry[name].reduce(function (method, registered) {
+      return registered.hook.bind(null, method, options);
+    }, method)();
+  });
 }
 
 
@@ -8930,22 +7387,24 @@ function register (state, name, method, options) {
 /***/ 6819:
 /***/ ((module) => {
 
-module.exports = removeHook
+module.exports = removeHook;
 
-function removeHook (state, name, method) {
+function removeHook(state, name, method) {
   if (!state.registry[name]) {
-    return
+    return;
   }
 
   var index = state.registry[name]
-    .map(function (registered) { return registered.orig })
-    .indexOf(method)
+    .map(function (registered) {
+      return registered.orig;
+    })
+    .indexOf(method);
 
   if (index === -1) {
-    return
+    return;
   }
 
-  state.registry[name].splice(index, 1)
+  state.registry[name].splice(index, 1);
 }
 
 
@@ -12010,7 +10469,7 @@ module.exports = readShebang;
 
 const path = __nccwpck_require__(85622);
 const which = __nccwpck_require__(34207);
-const getPathKey = __nccwpck_require__(29060);
+const getPathKey = __nccwpck_require__(20539);
 
 function resolveCommandAttempt(parsed, withoutPathExt) {
     const env = parsed.options.env || process.env;
@@ -12058,30 +10517,6 @@ function resolveCommand(parsed) {
 }
 
 module.exports = resolveCommand;
-
-
-/***/ }),
-
-/***/ 29060:
-/***/ ((module) => {
-
-"use strict";
-
-
-const pathKey = (options = {}) => {
-	const environment = options.env || process.env;
-	const platform = options.platform || process.platform;
-
-	if (platform !== 'win32') {
-		return 'PATH';
-	}
-
-	return Object.keys(environment).reverse().find(key => key.toUpperCase() === 'PATH') || 'Path';
-};
-
-module.exports = pathKey;
-// TODO: Remove this for the next major release
-module.exports.default = pathKey;
 
 
 /***/ }),
@@ -12193,107 +10628,6 @@ module.exports.sync = (input, options) => {
 
 	return [].concat.apply([], globs); // eslint-disable-line prefer-spread
 };
-
-
-/***/ }),
-
-/***/ 81205:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-var once = __nccwpck_require__(1223);
-
-var noop = function() {};
-
-var isRequest = function(stream) {
-	return stream.setHeader && typeof stream.abort === 'function';
-};
-
-var isChildProcess = function(stream) {
-	return stream.stdio && Array.isArray(stream.stdio) && stream.stdio.length === 3
-};
-
-var eos = function(stream, opts, callback) {
-	if (typeof opts === 'function') return eos(stream, null, opts);
-	if (!opts) opts = {};
-
-	callback = once(callback || noop);
-
-	var ws = stream._writableState;
-	var rs = stream._readableState;
-	var readable = opts.readable || (opts.readable !== false && stream.readable);
-	var writable = opts.writable || (opts.writable !== false && stream.writable);
-	var cancelled = false;
-
-	var onlegacyfinish = function() {
-		if (!stream.writable) onfinish();
-	};
-
-	var onfinish = function() {
-		writable = false;
-		if (!readable) callback.call(stream);
-	};
-
-	var onend = function() {
-		readable = false;
-		if (!writable) callback.call(stream);
-	};
-
-	var onexit = function(exitCode) {
-		callback.call(stream, exitCode ? new Error('exited with error code: ' + exitCode) : null);
-	};
-
-	var onerror = function(err) {
-		callback.call(stream, err);
-	};
-
-	var onclose = function() {
-		process.nextTick(onclosenexttick);
-	};
-
-	var onclosenexttick = function() {
-		if (cancelled) return;
-		if (readable && !(rs && (rs.ended && !rs.destroyed))) return callback.call(stream, new Error('premature close'));
-		if (writable && !(ws && (ws.ended && !ws.destroyed))) return callback.call(stream, new Error('premature close'));
-	};
-
-	var onrequest = function() {
-		stream.req.on('finish', onfinish);
-	};
-
-	if (isRequest(stream)) {
-		stream.on('complete', onfinish);
-		stream.on('abort', onclose);
-		if (stream.req) onrequest();
-		else stream.on('request', onrequest);
-	} else if (writable && !ws) { // legacy streams
-		stream.on('end', onlegacyfinish);
-		stream.on('close', onlegacyfinish);
-	}
-
-	if (isChildProcess(stream)) stream.on('exit', onexit);
-
-	stream.on('end', onend);
-	stream.on('finish', onfinish);
-	if (opts.error !== false) stream.on('error', onerror);
-	stream.on('close', onclose);
-
-	return function() {
-		cancelled = true;
-		stream.removeListener('complete', onfinish);
-		stream.removeListener('abort', onclose);
-		stream.removeListener('request', onrequest);
-		if (stream.req) stream.req.removeListener('finish', onfinish);
-		stream.removeListener('end', onlegacyfinish);
-		stream.removeListener('close', onlegacyfinish);
-		stream.removeListener('finish', onfinish);
-		stream.removeListener('exit', onexit);
-		stream.removeListener('end', onend);
-		stream.removeListener('error', onerror);
-		stream.removeListener('close', onclose);
-	};
-};
-
-module.exports = eos;
 
 
 /***/ }),
@@ -12479,10 +10813,10 @@ const npmRunPath = __nccwpck_require__(20502);
 const onetime = __nccwpck_require__(89082);
 const makeError = __nccwpck_require__(62187);
 const normalizeStdio = __nccwpck_require__(10166);
-const {spawnedKill, spawnedCancel, setupTimeout, setExitHandler} = __nccwpck_require__(39819);
+const {spawnedKill, spawnedCancel, setupTimeout, validateTimeout, setExitHandler} = __nccwpck_require__(39819);
 const {handleInput, getSpawnedResult, makeAllStream, validateInputSync} = __nccwpck_require__(32592);
 const {mergePromise, getSpawnedPromise} = __nccwpck_require__(97814);
-const {joinCommand, parseCommand} = __nccwpck_require__(88286);
+const {joinCommand, parseCommand, getEscapedCommand} = __nccwpck_require__(88286);
 
 const DEFAULT_MAX_BUFFER = 1000 * 1000 * 100;
 
@@ -12546,6 +10880,9 @@ const handleOutput = (options, value, error) => {
 const execa = (file, args, options) => {
 	const parsed = handleArguments(file, args, options);
 	const command = joinCommand(file, args);
+	const escapedCommand = getEscapedCommand(file, args);
+
+	validateTimeout(parsed.options);
 
 	let spawned;
 	try {
@@ -12559,6 +10896,7 @@ const execa = (file, args, options) => {
 			stderr: '',
 			all: '',
 			command,
+			escapedCommand,
 			parsed,
 			timedOut: false,
 			isCanceled: false,
@@ -12591,6 +10929,7 @@ const execa = (file, args, options) => {
 				stderr,
 				all,
 				command,
+				escapedCommand,
 				parsed,
 				timedOut,
 				isCanceled: context.isCanceled,
@@ -12606,6 +10945,7 @@ const execa = (file, args, options) => {
 
 		return {
 			command,
+			escapedCommand,
 			exitCode: 0,
 			stdout,
 			stderr,
@@ -12631,6 +10971,7 @@ module.exports = execa;
 module.exports.sync = (file, args, options) => {
 	const parsed = handleArguments(file, args, options);
 	const command = joinCommand(file, args);
+	const escapedCommand = getEscapedCommand(file, args);
 
 	validateInputSync(parsed.options);
 
@@ -12644,6 +10985,7 @@ module.exports.sync = (file, args, options) => {
 			stderr: '',
 			all: '',
 			command,
+			escapedCommand,
 			parsed,
 			timedOut: false,
 			isCanceled: false,
@@ -12662,6 +11004,7 @@ module.exports.sync = (file, args, options) => {
 			signal: result.signal,
 			exitCode: result.status,
 			command,
+			escapedCommand,
 			parsed,
 			timedOut: result.error && result.error.code === 'ETIMEDOUT',
 			isCanceled: false,
@@ -12677,6 +11020,7 @@ module.exports.sync = (file, args, options) => {
 
 	return {
 		command,
+		escapedCommand,
 		exitCode: 0,
 		stdout,
 		stderr,
@@ -12737,15 +11081,34 @@ module.exports.node = (scriptPath, args, options = {}) => {
 
 "use strict";
 
-const SPACES_REGEXP = / +/g;
-
-const joinCommand = (file, args = []) => {
+const normalizeArgs = (file, args = []) => {
 	if (!Array.isArray(args)) {
-		return file;
+		return [file];
 	}
 
-	return [file, ...args].join(' ');
+	return [file, ...args];
 };
+
+const NO_ESCAPE_REGEXP = /^[\w.-]+$/;
+const DOUBLE_QUOTES_REGEXP = /"/g;
+
+const escapeArg = arg => {
+	if (typeof arg !== 'string' || NO_ESCAPE_REGEXP.test(arg)) {
+		return arg;
+	}
+
+	return `"${arg.replace(DOUBLE_QUOTES_REGEXP, '\\"')}"`;
+};
+
+const joinCommand = (file, args) => {
+	return normalizeArgs(file, args).join(' ');
+};
+
+const getEscapedCommand = (file, args) => {
+	return normalizeArgs(file, args).map(arg => escapeArg(arg)).join(' ');
+};
+
+const SPACES_REGEXP = / +/g;
 
 // Handle `execa.command()`
 const parseCommand = command => {
@@ -12766,6 +11129,7 @@ const parseCommand = command => {
 
 module.exports = {
 	joinCommand,
+	getEscapedCommand,
 	parseCommand
 };
 
@@ -12811,6 +11175,7 @@ const makeError = ({
 	signal,
 	exitCode,
 	command,
+	escapedCommand,
 	timedOut,
 	isCanceled,
 	killed,
@@ -12839,6 +11204,7 @@ const makeError = ({
 
 	error.shortMessage = shortMessage;
 	error.command = command;
+	error.escapedCommand = escapedCommand;
 	error.exitCode = exitCode;
 	error.signal = signal;
 	error.signalDescription = signalDescription;
@@ -12943,10 +11309,6 @@ const setupTimeout = (spawned, {timeout, killSignal = 'SIGTERM'}, spawnedPromise
 		return spawnedPromise;
 	}
 
-	if (!Number.isFinite(timeout) || timeout < 0) {
-		throw new TypeError(`Expected the \`timeout\` option to be a non-negative integer, got \`${timeout}\` (${typeof timeout})`);
-	}
-
 	let timeoutId;
 	const timeoutPromise = new Promise((resolve, reject) => {
 		timeoutId = setTimeout(() => {
@@ -12959,6 +11321,12 @@ const setupTimeout = (spawned, {timeout, killSignal = 'SIGTERM'}, spawnedPromise
 	});
 
 	return Promise.race([timeoutPromise, safeSpawnedPromise]);
+};
+
+const validateTimeout = ({timeout}) => {
+	if (timeout !== undefined && (!Number.isFinite(timeout) || timeout < 0)) {
+		throw new TypeError(`Expected the \`timeout\` option to be a non-negative integer, got \`${timeout}\` (${typeof timeout})`);
+	}
 };
 
 // `cleanup` option handling
@@ -12980,6 +11348,7 @@ module.exports = {
 	spawnedKill,
 	spawnedCancel,
 	setupTimeout,
+	validateTimeout,
 	setExitHandler
 };
 
@@ -13112,7 +11481,7 @@ const mergeStream = __nccwpck_require__(2621);
 // `input` option
 const handleInput = (spawned, input) => {
 	// Checking for stdin is workaround for https://github.com/nodejs/node/issues/26852
-	// TODO: Remove `|| spawned.stdin === undefined` once we drop support for Node.js <=12.2.0
+	// @todo remove `|| spawned.stdin === undefined` once we drop support for Node.js <=12.2.0
 	if (input === undefined || spawned.stdin === undefined) {
 		return;
 	}
@@ -13286,6 +11655,7 @@ module.exports = FastGlob;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.convertPatternGroupToTask = exports.convertPatternGroupsToTasks = exports.groupPatternsByBaseDirectory = exports.getNegativePatternsAsPositive = exports.getPositivePatterns = exports.convertPatternsToTasks = exports.generate = void 0;
 const utils = __nccwpck_require__(45444);
 function generate(patterns, settings) {
     const positivePatterns = getPositivePatterns(patterns);
@@ -13297,15 +11667,30 @@ function generate(patterns, settings) {
     return staticTasks.concat(dynamicTasks);
 }
 exports.generate = generate;
+/**
+ * Returns tasks grouped by basic pattern directories.
+ *
+ * Patterns that can be found inside (`./`) and outside (`../`) the current directory are handled separately.
+ * This is necessary because directory traversal starts at the base directory and goes deeper.
+ */
 function convertPatternsToTasks(positive, negative, dynamic) {
-    const positivePatternsGroup = groupPatternsByBaseDirectory(positive);
-    // When we have a global group – there is no reason to divide the patterns into independent tasks.
-    // In this case, the global task covers the rest.
-    if ('.' in positivePatternsGroup) {
-        const task = convertPatternGroupToTask('.', positive, negative, dynamic);
-        return [task];
+    const tasks = [];
+    const patternsOutsideCurrentDirectory = utils.pattern.getPatternsOutsideCurrentDirectory(positive);
+    const patternsInsideCurrentDirectory = utils.pattern.getPatternsInsideCurrentDirectory(positive);
+    const outsideCurrentDirectoryGroup = groupPatternsByBaseDirectory(patternsOutsideCurrentDirectory);
+    const insideCurrentDirectoryGroup = groupPatternsByBaseDirectory(patternsInsideCurrentDirectory);
+    tasks.push(...convertPatternGroupsToTasks(outsideCurrentDirectoryGroup, negative, dynamic));
+    /*
+     * For the sake of reducing future accesses to the file system, we merge all tasks within the current directory
+     * into a global task, if at least one pattern refers to the root (`.`). In this case, the global task covers the rest.
+     */
+    if ('.' in insideCurrentDirectoryGroup) {
+        tasks.push(convertPatternGroupToTask('.', patternsInsideCurrentDirectory, negative, dynamic));
     }
-    return convertPatternGroupsToTasks(positivePatternsGroup, negative, dynamic);
+    else {
+        tasks.push(...convertPatternGroupsToTasks(insideCurrentDirectoryGroup, negative, dynamic));
+    }
+    return tasks;
 }
 exports.convertPatternsToTasks = convertPatternsToTasks;
 function getPositivePatterns(patterns) {
@@ -13414,8 +11799,7 @@ class DeepFilter {
         return utils.pattern.convertPatternsToRe(affectDepthOfReadingPatterns, this._micromatchOptions);
     }
     _filter(basePath, entry, matcher, negativeRe) {
-        const depth = this._getEntryLevel(basePath, entry.path);
-        if (this._isSkippedByDeep(depth)) {
+        if (this._isSkippedByDeep(basePath, entry.path)) {
             return false;
         }
         if (this._isSkippedSymbolicLink(entry)) {
@@ -13427,22 +11811,31 @@ class DeepFilter {
         }
         return this._isSkippedByNegativePatterns(filepath, negativeRe);
     }
-    _isSkippedByDeep(entryDepth) {
-        return entryDepth >= this._settings.deep;
+    _isSkippedByDeep(basePath, entryPath) {
+        /**
+         * Avoid unnecessary depth calculations when it doesn't matter.
+         */
+        if (this._settings.deep === Infinity) {
+            return false;
+        }
+        return this._getEntryLevel(basePath, entryPath) >= this._settings.deep;
+    }
+    _getEntryLevel(basePath, entryPath) {
+        const entryPathDepth = entryPath.split('/').length;
+        if (basePath === '') {
+            return entryPathDepth;
+        }
+        const basePathDepth = basePath.split('/').length;
+        return entryPathDepth - basePathDepth;
     }
     _isSkippedSymbolicLink(entry) {
         return !this._settings.followSymbolicLinks && entry.dirent.isSymbolicLink();
     }
-    _getEntryLevel(basePath, entryPath) {
-        const basePathDepth = basePath.split('/').length;
-        const entryPathDepth = entryPath.split('/').length;
-        return entryPathDepth - (basePath === '' ? 0 : basePathDepth);
-    }
     _isSkippedByPositivePatterns(entryPath, matcher) {
         return !this._settings.baseNameMatch && !matcher.match(entryPath);
     }
-    _isSkippedByNegativePatterns(entryPath, negativeRe) {
-        return !utils.pattern.matchAny(entryPath, negativeRe);
+    _isSkippedByNegativePatterns(entryPath, patternsRe) {
+        return !utils.pattern.matchAny(entryPath, patternsRe);
     }
 }
 exports.default = DeepFilter;
@@ -13469,20 +11862,21 @@ class EntryFilter {
         return (entry) => this._filter(entry, positiveRe, negativeRe);
     }
     _filter(entry, positiveRe, negativeRe) {
-        if (this._settings.unique) {
-            if (this._isDuplicateEntry(entry)) {
-                return false;
-            }
-            this._createIndexRecord(entry);
+        if (this._settings.unique && this._isDuplicateEntry(entry)) {
+            return false;
         }
         if (this._onlyFileFilter(entry) || this._onlyDirectoryFilter(entry)) {
             return false;
         }
-        if (this._isSkippedByAbsoluteNegativePatterns(entry, negativeRe)) {
+        if (this._isSkippedByAbsoluteNegativePatterns(entry.path, negativeRe)) {
             return false;
         }
         const filepath = this._settings.baseNameMatch ? entry.name : entry.path;
-        return this._isMatchToPatterns(filepath, positiveRe) && !this._isMatchToPatterns(entry.path, negativeRe);
+        const isMatched = this._isMatchToPatterns(filepath, positiveRe) && !this._isMatchToPatterns(entry.path, negativeRe);
+        if (this._settings.unique && isMatched) {
+            this._createIndexRecord(entry);
+        }
+        return isMatched;
     }
     _isDuplicateEntry(entry) {
         return this.index.has(entry.path);
@@ -13496,12 +11890,12 @@ class EntryFilter {
     _onlyDirectoryFilter(entry) {
         return this._settings.onlyDirectories && !entry.dirent.isDirectory();
     }
-    _isSkippedByAbsoluteNegativePatterns(entry, negativeRe) {
+    _isSkippedByAbsoluteNegativePatterns(entryPath, patternsRe) {
         if (!this._settings.absolute) {
             return false;
         }
-        const fullpath = utils.path.makeAbsolute(this._settings.cwd, entry.path);
-        return this._isMatchToPatterns(fullpath, negativeRe);
+        const fullpath = utils.path.makeAbsolute(this._settings.cwd, entryPath);
+        return utils.pattern.matchAny(fullpath, patternsRe);
     }
     _isMatchToPatterns(entryPath, patternsRe) {
         const filepath = utils.path.removeLeadingDotSegment(entryPath);
@@ -13961,9 +12355,14 @@ exports.default = ReaderSync;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.DEFAULT_FILE_SYSTEM_ADAPTER = void 0;
 const fs = __nccwpck_require__(35747);
 const os = __nccwpck_require__(12087);
-const CPU_COUNT = os.cpus().length;
+/**
+ * The `os.cpus` method can return zero. We expect the number of cores to be greater than zero.
+ * https://github.com/nodejs/node/blob/7faeddf23a98c53896f8b574a6e66589e8fb1eb8/lib/os.js#L106-L107
+ */
+const CPU_COUNT = Math.max(os.cpus().length, 1);
 exports.DEFAULT_FILE_SYSTEM_ADAPTER = {
     lstat: fs.lstat,
     lstatSync: fs.lstatSync,
@@ -14021,6 +12420,7 @@ exports.default = Settings;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.splitWhen = exports.flatten = void 0;
 function flatten(items) {
     return items.reduce((collection, item) => [].concat(collection, item), []);
 }
@@ -14050,6 +12450,7 @@ exports.splitWhen = splitWhen;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isEnoentCodeError = void 0;
 function isEnoentCodeError(error) {
     return error.code === 'ENOENT';
 }
@@ -14064,6 +12465,7 @@ exports.isEnoentCodeError = isEnoentCodeError;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createDirentFromStats = void 0;
 class DirentFromStats {
     constructor(name, stats) {
         this.name = name;
@@ -14090,6 +12492,7 @@ exports.createDirentFromStats = createDirentFromStats;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.string = exports.stream = exports.pattern = exports.path = exports.fs = exports.errno = exports.array = void 0;
 const array = __nccwpck_require__(85325);
 exports.array = array;
 const errno = __nccwpck_require__(41230);
@@ -14114,6 +12517,7 @@ exports.string = string;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.removeLeadingDotSegment = exports.escape = exports.makeAbsolute = exports.unixify = void 0;
 const path = __nccwpck_require__(85622);
 const LEADING_DOT_SEGMENT_CHARACTERS_COUNT = 2; // ./ or .\\
 const UNESCAPED_GLOB_SYMBOLS_RE = /(\\?)([()*?[\]{|}]|^!|[!+@](?=\())/g;
@@ -14154,10 +12558,10 @@ exports.removeLeadingDotSegment = removeLeadingDotSegment;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.matchAny = exports.convertPatternsToRe = exports.makeRe = exports.getPatternParts = exports.expandBraceExpansion = exports.expandPatternsWithBraceExpansion = exports.isAffectDepthOfReadingPattern = exports.endsWithSlashGlobStar = exports.hasGlobStar = exports.getBaseDirectory = exports.isPatternRelatedToParentDirectory = exports.getPatternsOutsideCurrentDirectory = exports.getPatternsInsideCurrentDirectory = exports.getPositivePatterns = exports.getNegativePatterns = exports.isPositivePattern = exports.isNegativePattern = exports.convertToNegativePattern = exports.convertToPositivePattern = exports.isDynamicPattern = exports.isStaticPattern = void 0;
 const path = __nccwpck_require__(85622);
 const globParent = __nccwpck_require__(54655);
 const micromatch = __nccwpck_require__(76228);
-const picomatch = __nccwpck_require__(78569);
 const GLOBSTAR = '**';
 const ESCAPE_SYMBOL = '\\';
 const COMMON_GLOB_SYMBOLS_RE = /[*?]|^!/;
@@ -14170,6 +12574,14 @@ function isStaticPattern(pattern, options = {}) {
 }
 exports.isStaticPattern = isStaticPattern;
 function isDynamicPattern(pattern, options = {}) {
+    /**
+     * A special case with an empty string is necessary for matching patterns that start with a forward slash.
+     * An empty string cannot be a dynamic pattern.
+     * For example, the pattern `/lib/*` will be spread into parts: '', 'lib', '*'.
+     */
+    if (pattern === '') {
+        return false;
+    }
     /**
      * When the `caseSensitiveMatch` option is disabled, all patterns must be marked as dynamic, because we cannot check
      * filepath directly (without read directory).
@@ -14213,6 +12625,32 @@ function getPositivePatterns(patterns) {
     return patterns.filter(isPositivePattern);
 }
 exports.getPositivePatterns = getPositivePatterns;
+/**
+ * Returns patterns that can be applied inside the current directory.
+ *
+ * @example
+ * // ['./*', '*', 'a/*']
+ * getPatternsInsideCurrentDirectory(['./*', '*', 'a/*', '../*', './../*'])
+ */
+function getPatternsInsideCurrentDirectory(patterns) {
+    return patterns.filter((pattern) => !isPatternRelatedToParentDirectory(pattern));
+}
+exports.getPatternsInsideCurrentDirectory = getPatternsInsideCurrentDirectory;
+/**
+ * Returns patterns to be expanded relative to (outside) the current directory.
+ *
+ * @example
+ * // ['../*', './../*']
+ * getPatternsInsideCurrentDirectory(['./*', '*', 'a/*', '../*', './../*'])
+ */
+function getPatternsOutsideCurrentDirectory(patterns) {
+    return patterns.filter(isPatternRelatedToParentDirectory);
+}
+exports.getPatternsOutsideCurrentDirectory = getPatternsOutsideCurrentDirectory;
+function isPatternRelatedToParentDirectory(pattern) {
+    return pattern.startsWith('..') || pattern.startsWith('./..');
+}
+exports.isPatternRelatedToParentDirectory = isPatternRelatedToParentDirectory;
 function getBaseDirectory(pattern) {
     return globParent(pattern, { flipBackslashes: false });
 }
@@ -14244,12 +12682,23 @@ function expandBraceExpansion(pattern) {
 }
 exports.expandBraceExpansion = expandBraceExpansion;
 function getPatternParts(pattern, options) {
-    const info = picomatch.scan(pattern, Object.assign(Object.assign({}, options), { parts: true }));
-    // See micromatch/picomatch#58 for more details
-    if (info.parts.length === 0) {
-        return [pattern];
+    let { parts } = micromatch.scan(pattern, Object.assign(Object.assign({}, options), { parts: true }));
+    /**
+     * The scan method returns an empty array in some cases.
+     * See micromatch/picomatch#58 for more details.
+     */
+    if (parts.length === 0) {
+        parts = [pattern];
     }
-    return info.parts;
+    /**
+     * The scan method does not return an empty part for the pattern with a forward slash.
+     * This is another part of micromatch/picomatch#58.
+     */
+    if (parts[0].startsWith('/')) {
+        parts[0] = parts[0].slice(1);
+        parts.unshift('');
+    }
+    return parts;
 }
 exports.getPatternParts = getPatternParts;
 function makeRe(pattern, options) {
@@ -14274,6 +12723,7 @@ exports.matchAny = matchAny;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.merge = void 0;
 const merge2 = __nccwpck_require__(82578);
 function merge(streams) {
     const mergedStream = merge2(streams);
@@ -14298,6 +12748,7 @@ function propagateCloseEventToSources(streams) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isEmpty = exports.isString = void 0;
 function isString(input) {
     return typeof input === 'string';
 }
@@ -14316,6 +12767,8 @@ exports.isEmpty = isEmpty;
 "use strict";
 
 
+/* eslint-disable no-var */
+
 var reusify = __nccwpck_require__(32113)
 
 function fastqueue (context, worker, concurrency) {
@@ -14325,10 +12778,15 @@ function fastqueue (context, worker, concurrency) {
     context = null
   }
 
+  if (concurrency < 1) {
+    throw new Error('fastqueue concurrency must be greater than 1')
+  }
+
   var cache = reusify(Task)
   var queueHead = null
   var queueTail = null
   var _running = 0
+  var errorHandler = null
 
   var self = {
     push: push,
@@ -14345,7 +12803,8 @@ function fastqueue (context, worker, concurrency) {
     unshift: unshift,
     empty: noop,
     kill: kill,
-    killAndDrain: killAndDrain
+    killAndDrain: killAndDrain,
+    error: error
   }
 
   return self
@@ -14402,6 +12861,7 @@ function fastqueue (context, worker, concurrency) {
     current.release = release
     current.value = value
     current.callback = done || noop
+    current.errorHandler = errorHandler
 
     if (_running === self.concurrency || self.paused) {
       if (queueTail) {
@@ -14477,6 +12937,10 @@ function fastqueue (context, worker, concurrency) {
     self.drain()
     self.drain = noop
   }
+
+  function error (handler) {
+    errorHandler = handler
+  }
 }
 
 function noop () {}
@@ -14487,19 +12951,75 @@ function Task () {
   this.next = null
   this.release = noop
   this.context = null
+  this.errorHandler = null
 
   var self = this
 
   this.worked = function worked (err, result) {
     var callback = self.callback
+    var errorHandler = self.errorHandler
+    var val = self.value
     self.value = null
     self.callback = noop
+    if (self.errorHandler) {
+      errorHandler(err, val)
+    }
     callback.call(self.context, err, result)
     self.release(self)
   }
 }
 
+function queueAsPromised (context, worker, concurrency) {
+  if (typeof context === 'function') {
+    concurrency = worker
+    worker = context
+    context = null
+  }
+
+  function asyncWrapper (arg, cb) {
+    worker.call(this, arg)
+      .then(function (res) {
+        cb(null, res)
+      }, cb)
+  }
+
+  var queue = fastqueue(context, asyncWrapper, concurrency)
+
+  var pushCb = queue.push
+  var unshiftCb = queue.unshift
+
+  queue.push = push
+  queue.unshift = unshift
+
+  return queue
+
+  function push (value) {
+    return new Promise(function (resolve, reject) {
+      pushCb(value, function (err, result) {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(result)
+      })
+    })
+  }
+
+  function unshift (value) {
+    return new Promise(function (resolve, reject) {
+      unshiftCb(value, function (err, result) {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(result)
+      })
+    })
+  }
+}
+
 module.exports = fastqueue
+module.exports.promise = queueAsPromised
 
 
 /***/ }),
@@ -15455,7 +13975,7 @@ var isWin32 = __nccwpck_require__(12087).platform() === 'win32';
 
 var slash = '/';
 var backslash = /\\/g;
-var enclosure = /[\{\[].*[\/]*.*[\}\]]$/;
+var enclosure = /[\{\[].*[\}\]]$/;
 var globby = /(^|[^\\])([\{\[]|\([^\)]+$)/;
 var escaped = /\\([\!\*\?\|\[\]\(\)\{\}])/g;
 
@@ -15463,6 +13983,7 @@ var escaped = /\\([\!\*\?\|\[\]\(\)\{\}])/g;
  * @param {string} str
  * @param {Object} opts
  * @param {boolean} [opts.flipBackslashes=true]
+ * @returns {string}
  */
 module.exports = function globParent(str, opts) {
   var options = Object.assign({ flipBackslashes: true }, opts);
@@ -15495,8 +14016,6 @@ module.exports = function globParent(str, opts) {
 /***/ 47625:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
-exports.alphasort = alphasort
-exports.alphasorti = alphasorti
 exports.setopts = setopts
 exports.ownProp = ownProp
 exports.makeAbs = makeAbs
@@ -15514,12 +14033,8 @@ var minimatch = __nccwpck_require__(83973)
 var isAbsolute = __nccwpck_require__(38714)
 var Minimatch = minimatch.Minimatch
 
-function alphasorti (a, b) {
-  return a.toLowerCase().localeCompare(b.toLowerCase())
-}
-
 function alphasort (a, b) {
-  return a.localeCompare(b)
+  return a.localeCompare(b, 'en')
 }
 
 function setupIgnores (self, options) {
@@ -15647,7 +14162,7 @@ function finish (self) {
     all = Object.keys(all)
 
   if (!self.nosort)
-    all = all.sort(self.nocase ? alphasorti : alphasort)
+    all = all.sort(alphasort)
 
   // at *some* point we statted all of these
   if (self.mark) {
@@ -15795,8 +14310,6 @@ var assert = __nccwpck_require__(42357)
 var isAbsolute = __nccwpck_require__(38714)
 var globSync = __nccwpck_require__(29010)
 var common = __nccwpck_require__(47625)
-var alphasort = common.alphasort
-var alphasorti = common.alphasorti
 var setopts = common.setopts
 var ownProp = common.ownProp
 var inflight = __nccwpck_require__(52492)
@@ -16552,8 +15065,6 @@ var path = __nccwpck_require__(85622)
 var assert = __nccwpck_require__(42357)
 var isAbsolute = __nccwpck_require__(38714)
 var common = __nccwpck_require__(47625)
-var alphasort = common.alphasort
-var alphasorti = common.alphasorti
 var setopts = common.setopts
 var ownProp = common.ownProp
 var childrenIgnored = common.childrenIgnored
@@ -17083,7 +15594,7 @@ const reduceIgnore = files => {
 const ensureAbsolutePathForCwd = (cwd, p) => {
 	cwd = slash(cwd);
 	if (path.isAbsolute(p)) {
-		if (p.startsWith(cwd)) {
+		if (slash(p).startsWith(cwd)) {
 			return p;
 		}
 
@@ -17727,7 +16238,7 @@ function fromUrl (giturl, opts) {
     isGitHubShorthand(giturl) ? 'github:' + giturl : giturl
   )
   var parsed = parseGitUrl(url)
-  var shortcutMatch = url.match(new RegExp('^([^:]+):(?:(?:[^@:]+(?:[^@]+)?@)?([^/]*))[/](.+?)(?:[.]git)?($|#)'))
+  var shortcutMatch = url.match(/^([^:]+):(?:[^@]+@)?(?:([^/]*)\/)?([^#]+)/)
   var matches = Object.keys(gitHosts).map(function (gitHostName) {
     try {
       var gitHostInfo = gitHosts[gitHostName]
@@ -17741,7 +16252,7 @@ function fromUrl (giturl, opts) {
       var defaultRepresentation = null
       if (shortcutMatch && shortcutMatch[1] === gitHostName) {
         user = shortcutMatch[2] && decodeURIComponent(shortcutMatch[2])
-        project = decodeURIComponent(shortcutMatch[3])
+        project = decodeURIComponent(shortcutMatch[3].replace(/\.git$/, ''))
         defaultRepresentation = 'shortcut'
       } else {
         if (parsed.host && parsed.host !== gitHostInfo.domain && parsed.host.replace(/^www[.]/, '') !== gitHostInfo.domain) return
@@ -19180,22 +17691,13 @@ module.exports = function(num) {
 
 /***/ }),
 
-/***/ 48840:
-/***/ ((module) => {
+/***/ 63287:
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 
-/*!
- * isobject <https://github.com/jonschlinkert/isobject>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObject(val) {
-  return val != null && typeof val === 'object' && Array.isArray(val) === false;
-}
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 /*!
  * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
@@ -19204,23 +17706,22 @@ function isObject(val) {
  * Released under the MIT License.
  */
 
-function isObjectObject(o) {
-  return isObject(o) === true
-    && Object.prototype.toString.call(o) === '[object Object]';
+function isObject(o) {
+  return Object.prototype.toString.call(o) === '[object Object]';
 }
 
 function isPlainObject(o) {
   var ctor,prot;
 
-  if (isObjectObject(o) === false) return false;
+  if (isObject(o) === false) return false;
 
   // If has modified constructor
   ctor = o.constructor;
-  if (typeof ctor !== 'function') return false;
+  if (ctor === undefined) return true;
 
   // If has modified prototype
   prot = ctor.prototype;
-  if (isObjectObject(prot) === false) return false;
+  if (isObject(prot) === false) return false;
 
   // If constructor does not have an Object-specific method
   if (prot.hasOwnProperty('isPrototypeOf') === false) {
@@ -19231,7 +17732,7 @@ function isPlainObject(o) {
   return true;
 }
 
-module.exports = isPlainObject;
+exports.isPlainObject = isPlainObject;
 
 
 /***/ }),
@@ -19265,8 +17766,7 @@ isStream.duplex = stream =>
 
 isStream.transform = stream =>
 	isStream.duplex(stream) &&
-	typeof stream._transform === 'function' &&
-	typeof stream._transformState === 'object';
+	typeof stream._transform === 'function';
 
 module.exports = isStream;
 
@@ -19464,47 +17964,130 @@ exports.matchToToken = function(match) {
 
 /***/ }),
 
-/***/ 55586:
+/***/ 89062:
 /***/ ((module) => {
 
 "use strict";
 
 
-module.exports = parseJson
-function parseJson (txt, reviver, context) {
+const hexify = char => {
+  const h = char.charCodeAt(0).toString(16).toUpperCase()
+  return '0x' + (h.length % 2 ? '0' : '') + h
+}
+
+const parseError = (e, txt, context) => {
+  if (!txt) {
+    return {
+      message: e.message + ' while parsing empty string',
+      position: 0,
+    }
+  }
+  const badToken = e.message.match(/^Unexpected token (.) .*position\s+(\d+)/i)
+  const errIdx = badToken ? +badToken[2]
+    : e.message.match(/^Unexpected end of JSON.*/i) ? txt.length - 1
+    : null
+
+  const msg = badToken ? e.message.replace(/^Unexpected token ./, `Unexpected token ${
+      JSON.stringify(badToken[1])
+    } (${hexify(badToken[1])})`)
+    : e.message
+
+  if (errIdx !== null && errIdx !== undefined) {
+    const start = errIdx <= context ? 0
+      : errIdx - context
+
+    const end = errIdx + context >= txt.length ? txt.length
+      : errIdx + context
+
+    const slice = (start === 0 ? '' : '...') +
+      txt.slice(start, end) +
+      (end === txt.length ? '' : '...')
+
+    const near = txt === slice ? '' : 'near '
+
+    return {
+      message: msg + ` while parsing ${near}${JSON.stringify(slice)}`,
+      position: errIdx,
+    }
+  } else {
+    return {
+      message: msg + ` while parsing '${txt.slice(0, context * 2)}'`,
+      position: 0,
+    }
+  }
+}
+
+class JSONParseError extends SyntaxError {
+  constructor (er, txt, context, caller) {
+    context = context || 20
+    const metadata = parseError(er, txt, context)
+    super(metadata.message)
+    Object.assign(this, metadata)
+    this.code = 'EJSONPARSE'
+    this.systemError = er
+    Error.captureStackTrace(this, caller || this.constructor)
+  }
+  get name () { return this.constructor.name }
+  set name (n) {}
+  get [Symbol.toStringTag] () { return this.constructor.name }
+}
+
+const kIndent = Symbol.for('indent')
+const kNewline = Symbol.for('newline')
+// only respect indentation if we got a line break, otherwise squash it
+// things other than objects and arrays aren't indented, so ignore those
+// Important: in both of these regexps, the $1 capture group is the newline
+// or undefined, and the $2 capture group is the indent, or undefined.
+const formatRE = /^\s*[{\[]((?:\r?\n)+)([\s\t]*)/
+const emptyRE = /^(?:\{\}|\[\])((?:\r?\n)+)?$/
+
+const parseJson = (txt, reviver, context) => {
+  const parseText = stripBOM(txt)
   context = context || 20
   try {
-    return JSON.parse(txt, reviver)
+    // get the indentation so that we can save it back nicely
+    // if the file starts with {" then we have an indent of '', ie, none
+    // otherwise, pick the indentation of the next line after the first \n
+    // If the pattern doesn't match, then it means no indentation.
+    // JSON.stringify ignores symbols, so this is reasonably safe.
+    // if the string is '{}' or '[]', then use the default 2-space indent.
+    const [, newline = '\n', indent = '  '] = parseText.match(emptyRE) ||
+      parseText.match(formatRE) ||
+      [, '', '']
+
+    const result = JSON.parse(parseText, reviver)
+    if (result && typeof result === 'object') {
+      result[kNewline] = newline
+      result[kIndent] = indent
+    }
+    return result
   } catch (e) {
-    if (typeof txt !== 'string') {
+    if (typeof txt !== 'string' && !Buffer.isBuffer(txt)) {
       const isEmptyArray = Array.isArray(txt) && txt.length === 0
-      const errorMessage = 'Cannot parse ' +
-      (isEmptyArray ? 'an empty array' : String(txt))
-      throw new TypeError(errorMessage)
+      throw Object.assign(new TypeError(
+        `Cannot parse ${isEmptyArray ? 'an empty array' : String(txt)}`
+      ), {
+        code: 'EJSONPARSE',
+        systemError: e,
+      })
     }
-    const syntaxErr = e.message.match(/^Unexpected token.*position\s+(\d+)/i)
-    const errIdx = syntaxErr
-    ? +syntaxErr[1]
-    : e.message.match(/^Unexpected end of JSON.*/i)
-    ? txt.length - 1
-    : null
-    if (errIdx != null) {
-      const start = errIdx <= context
-      ? 0
-      : errIdx - context
-      const end = errIdx + context >= txt.length
-      ? txt.length
-      : errIdx + context
-      e.message += ` while parsing near '${
-        start === 0 ? '' : '...'
-      }${txt.slice(start, end)}${
-        end === txt.length ? '' : '...'
-      }'`
-    } else {
-      e.message += ` while parsing '${txt.slice(0, context * 2)}'`
-    }
-    throw e
+
+    throw new JSONParseError(e, parseText, context, parseJson)
   }
+}
+
+// Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+// because the buffer-to-string conversion in `fs.readFileSync()`
+// translates it to FEFF, the UTF-16 BOM.
+const stripBOM = txt => String(txt).replace(/^\uFEFF/, '')
+
+module.exports = parseJson
+parseJson.JSONParseError = JSONParseError
+
+parseJson.noExceptions = (txt, reviver) => {
+  try {
+    return JSON.parse(stripBOM(txt), reviver)
+  } catch (e) {}
 }
 
 
@@ -19645,46 +18228,6 @@ module.exports.sync = (paths, options) => {
 		}
 	}
 };
-
-
-/***/ }),
-
-/***/ 7493:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const os = __nccwpck_require__(12087);
-
-const nameMap = new Map([
-	[19, 'Catalina'],
-	[18, 'Mojave'],
-	[17, 'High Sierra'],
-	[16, 'Sierra'],
-	[15, 'El Capitan'],
-	[14, 'Yosemite'],
-	[13, 'Mavericks'],
-	[12, 'Mountain Lion'],
-	[11, 'Lion'],
-	[10, 'Snow Leopard'],
-	[9, 'Leopard'],
-	[8, 'Tiger'],
-	[7, 'Panther'],
-	[6, 'Jaguar'],
-	[5, 'Puma']
-]);
-
-const macosRelease = release => {
-	release = Number((release || os.release()).split('.')[0]);
-	return {
-		name: nameMap.get(release),
-		version: '10.' + (release - 4)
-	};
-};
-
-module.exports = macosRelease;
-// TODO: remove this in the next major version
-module.exports.default = macosRelease;
 
 
 /***/ }),
@@ -19900,7 +18443,7 @@ const util = __nccwpck_require__(31669);
 const braces = __nccwpck_require__(50610);
 const picomatch = __nccwpck_require__(78569);
 const utils = __nccwpck_require__(30479);
-const isEmptyString = val => typeof val === 'string' && (val === '' || val === './');
+const isEmptyString = val => val === '' || val === './';
 
 /**
  * Returns an array of strings that match one or more glob patterns.
@@ -19912,9 +18455,9 @@ const isEmptyString = val => typeof val === 'string' && (val === '' || val === '
  * console.log(mm(['a.js', 'a.txt'], ['*.js']));
  * //=> [ 'a.js' ]
  * ```
- * @param {String|Array<string>} list List of strings to match.
- * @param {String|Array<string>} patterns One or more glob patterns to use for matching.
- * @param {Object} options See available [options](#options)
+ * @param {String|Array<string>} `list` List of strings to match.
+ * @param {String|Array<string>} `patterns` One or more glob patterns to use for matching.
+ * @param {Object} `options` See available [options](#options)
  * @return {Array} Returns an array of matches
  * @summary false
  * @api public
@@ -20009,9 +18552,9 @@ micromatch.matcher = (pattern, options) => picomatch(pattern, options);
  * console.log(mm.isMatch('a.a', ['b.*', '*.a'])); //=> true
  * console.log(mm.isMatch('a.a', 'b.*')); //=> false
  * ```
- * @param {String} str The string to test.
- * @param {String|Array} patterns One or more glob patterns to use for matching.
- * @param {Object} [options] See available [options](#options).
+ * @param {String} `str` The string to test.
+ * @param {String|Array} `patterns` One or more glob patterns to use for matching.
+ * @param {Object} `[options]` See available [options](#options).
  * @return {Boolean} Returns true if any patterns match `str`
  * @api public
  */
@@ -20077,7 +18620,7 @@ micromatch.not = (list, patterns, options = {}) => {
  * @param {String} `str` The string to match.
  * @param {String|Array} `patterns` Glob pattern to use for matching.
  * @param {Object} `options` See available [options](#options) for changing how matches are performed
- * @return {Boolean} Returns true if the patter matches any part of `str`.
+ * @return {Boolean} Returns true if any of the patterns matches any part of `str`.
  * @api public
  */
 
@@ -20148,7 +18691,7 @@ micromatch.matchKeys = (obj, patterns, options) => {
  * @param {String|Array} `list` The string or array of strings to test. Returns as soon as the first match is found.
  * @param {String|Array} `patterns` One or more glob patterns to use for matching.
  * @param {Object} `options` See available [options](#options) for changing how matches are performed
- * @return {Boolean} Returns true if any patterns match `str`
+ * @return {Boolean} Returns true if any `patterns` matches any of the strings in `list`
  * @api public
  */
 
@@ -20184,7 +18727,7 @@ micromatch.some = (list, patterns, options) => {
  * @param {String|Array} `list` The string or array of strings to test.
  * @param {String|Array} `patterns` One or more glob patterns to use for matching.
  * @param {Object} `options` See available [options](#options) for changing how matches are performed
- * @return {Boolean} Returns true if any patterns match `str`
+ * @return {Boolean} Returns true if all `patterns` matches all of the strings in `list`
  * @api public
  */
 
@@ -20250,7 +18793,7 @@ micromatch.all = (str, patterns, options) => {
  * @param {String} `glob` Glob pattern to use for matching.
  * @param {String} `input` String to match
  * @param {Object} `options` See available [options](#options) for changing how matches are performed
- * @return {Boolean} Returns an array of captures if the input matches the glob pattern, otherwise `null`.
+ * @return {Array|null} Returns an array of captures if the input matches the glob pattern, otherwise `null`.
  * @api public
  */
 
@@ -21313,25 +19856,6 @@ function regExpEscape (s) {
   return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
 }
 
-
-/***/ }),
-
-/***/ 38560:
-/***/ ((module) => {
-
-"use strict";
-
-
-/**
- * Tries to execute a function and discards any error that occurs.
- * @param {Function} fn - Function that might or might not throw an error.
- * @returns {?*} Return-value of the function when no error occurred.
- */
-module.exports = function(fn) {
-
-	try { return fn() } catch (e) {}
-
-}
 
 /***/ }),
 
@@ -23520,7 +22044,7 @@ function ucFirst (string) {
 "use strict";
 
 const path = __nccwpck_require__(85622);
-const pathKey = __nccwpck_require__(37278);
+const pathKey = __nccwpck_require__(20539);
 
 const npmRunPath = options => {
 	options = {
@@ -23565,30 +22089,6 @@ module.exports.env = options => {
 
 	return env;
 };
-
-
-/***/ }),
-
-/***/ 37278:
-/***/ ((module) => {
-
-"use strict";
-
-
-const pathKey = (options = {}) => {
-	const environment = options.env || process.env;
-	const platform = options.platform || process.platform;
-
-	if (platform !== 'win32') {
-		return 'PATH';
-	}
-
-	return Object.keys(environment).reverse().find(key => key.toUpperCase() === 'PATH') || 'Path';
-};
-
-module.exports = pathKey;
-// TODO: Remove this for the next major release
-module.exports.default = pathKey;
 
 
 /***/ }),
@@ -23689,83 +22189,6 @@ module.exports.callCount = function_ => {
 	}
 
 	return calledFunctions.get(function_);
-};
-
-
-/***/ }),
-
-/***/ 54824:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const os = __nccwpck_require__(12087);
-const macosRelease = __nccwpck_require__(7493);
-const winRelease = __nccwpck_require__(63515);
-
-const osName = (platform, release) => {
-	if (!platform && release) {
-		throw new Error('You can\'t specify a `release` without specifying `platform`');
-	}
-
-	platform = platform || os.platform();
-
-	let id;
-
-	if (platform === 'darwin') {
-		if (!release && os.platform() === 'darwin') {
-			release = os.release();
-		}
-
-		const prefix = release ? (Number(release.split('.')[0]) > 15 ? 'macOS' : 'OS X') : 'macOS';
-		id = release ? macosRelease(release).name : '';
-		return prefix + (id ? ' ' + id : '');
-	}
-
-	if (platform === 'linux') {
-		if (!release && os.platform() === 'linux') {
-			release = os.release();
-		}
-
-		id = release ? release.replace(/^(\d+\.\d+).*/, '$1') : '';
-		return 'Linux' + (id ? ' ' + id : '');
-	}
-
-	if (platform === 'win32') {
-		if (!release && os.platform() === 'win32') {
-			release = os.release();
-		}
-
-		id = release ? winRelease(release) : '';
-		return 'Windows' + (id ? ' ' + id : '');
-	}
-
-	return platform;
-};
-
-module.exports = osName;
-
-
-/***/ }),
-
-/***/ 31330:
-/***/ ((module) => {
-
-"use strict";
-
-module.exports = (promise, onFinally) => {
-	onFinally = onFinally || (() => {});
-
-	return promise.then(
-		val => new Promise(resolve => {
-			resolve(onFinally());
-		}).then(() => val),
-		err => new Promise(resolve => {
-			resolve(onFinally());
-		}).then(() => {
-			throw err;
-		})
-	);
 };
 
 
@@ -23919,7 +22342,7 @@ module.exports.default = pTry;
 "use strict";
 
 const errorEx = __nccwpck_require__(23505);
-const fallback = __nccwpck_require__(55586);
+const fallback = __nccwpck_require__(89062);
 const {default: LinesAndColumns} = __nccwpck_require__(96309);
 const {codeFrameColumns} = __nccwpck_require__(45211);
 
@@ -23928,7 +22351,7 @@ const JSONError = errorEx('JSONError', {
 	codeFrame: errorEx.append('\n\n%s\n')
 });
 
-module.exports = (string, reviver, filename) => {
+const parseJson = (string, reviver, filename) => {
 	if (typeof reviver === 'string') {
 		filename = reviver;
 		reviver = null;
@@ -23943,7 +22366,7 @@ module.exports = (string, reviver, filename) => {
 		}
 	} catch (error) {
 		error.message = error.message.replace(/\n/g, '');
-		const indexMatch = error.message.match(/in JSON at position (\d+) while parsing near/);
+		const indexMatch = error.message.match(/in JSON at position (\d+) while parsing/);
 
 		const jsonError = new JSONError(error);
 		if (filename) {
@@ -23967,6 +22390,10 @@ module.exports = (string, reviver, filename) => {
 		throw jsonError;
 	}
 };
+
+parseJson.JSONError = JSONError;
+
+module.exports = parseJson;
 
 
 /***/ }),
@@ -24035,18 +22462,21 @@ module.exports.win32 = win32;
 
 "use strict";
 
-module.exports = opts => {
-	opts = opts || {};
 
-	const env = opts.env || process.env;
-	const platform = opts.platform || process.platform;
+const pathKey = (options = {}) => {
+	const environment = options.env || process.env;
+	const platform = options.platform || process.platform;
 
 	if (platform !== 'win32') {
 		return 'PATH';
 	}
 
-	return Object.keys(env).find(x => x.toUpperCase() === 'PATH') || 'Path';
+	return Object.keys(environment).reverse().find(key => key.toUpperCase() === 'PATH') || 'Path';
 };
+
+module.exports = pathKey;
+// TODO: Remove this for the next major release
+module.exports.default = pathKey;
 
 
 /***/ }),
@@ -24059,29 +22489,14 @@ module.exports = opts => {
 
 var isWindows = process.platform === 'win32';
 
-// Regex to split a windows path into three parts: [*, device, slash,
-// tail] windows-only
-var splitDeviceRe =
-    /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
-
-// Regex to split the tail part of the above into [*, dir, basename, ext]
-var splitTailRe =
-    /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
+// Regex to split a windows path into into [dir, root, basename, name, ext]
+var splitWindowsRe =
+    /^(((?:[a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?[\\\/]?)(?:[^\\\/]*[\\\/])*)((\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))[\\\/]*$/;
 
 var win32 = {};
 
-// Function to split a filename into [root, dir, basename, ext]
 function win32SplitPath(filename) {
-  // Separate device+slash from tail
-  var result = splitDeviceRe.exec(filename),
-      device = (result[1] || '') + (result[2] || ''),
-      tail = result[3] || '';
-  // Split the tail into dir, basename and extension
-  var result2 = splitTailRe.exec(tail),
-      dir = result2[1],
-      basename = result2[2],
-      ext = result2[3];
-  return [device, dir, basename, ext];
+  return splitWindowsRe.exec(filename).slice(1);
 }
 
 win32.parse = function(pathString) {
@@ -24091,24 +22506,24 @@ win32.parse = function(pathString) {
     );
   }
   var allParts = win32SplitPath(pathString);
-  if (!allParts || allParts.length !== 4) {
+  if (!allParts || allParts.length !== 5) {
     throw new TypeError("Invalid path '" + pathString + "'");
   }
   return {
-    root: allParts[0],
-    dir: allParts[0] + allParts[1].slice(0, -1),
+    root: allParts[1],
+    dir: allParts[0] === allParts[1] ? allParts[0] : allParts[0].slice(0, -1),
     base: allParts[2],
-    ext: allParts[3],
-    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+    ext: allParts[4],
+    name: allParts[3]
   };
 };
 
 
 
-// Split a filename into [root, dir, basename, ext], unix version
+// Split a filename into [dir, root, basename, name, ext], unix version
 // 'root' is just a slash, or nothing.
 var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+    /^((\/?)(?:[^\/]*\/)*)((\.{1,2}|[^\/]+?|)(\.[^.\/]*|))[\/]*$/;
 var posix = {};
 
 
@@ -24124,19 +22539,16 @@ posix.parse = function(pathString) {
     );
   }
   var allParts = posixSplitPath(pathString);
-  if (!allParts || allParts.length !== 4) {
+  if (!allParts || allParts.length !== 5) {
     throw new TypeError("Invalid path '" + pathString + "'");
   }
-  allParts[1] = allParts[1] || '';
-  allParts[2] = allParts[2] || '';
-  allParts[3] = allParts[3] || '';
-
+  
   return {
-    root: allParts[0],
-    dir: allParts[0] + allParts[1].slice(0, -1),
+    root: allParts[1],
+    dir: allParts[0].slice(0, -1),
     base: allParts[2],
-    ext: allParts[3],
-    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+    ext: allParts[4],
+    name: allParts[3],
   };
 };
 
@@ -24499,7 +22911,7 @@ const parse = (input, options) => {
     START_ANCHOR
   } = PLATFORM_CHARS;
 
-  const globstar = (opts) => {
+  const globstar = opts => {
     return `(${capture}(?:(?!${START_ANCHOR}${opts.dot ? DOTS_SLASH : DOT_LITERAL}).)*?)`;
   };
 
@@ -24549,12 +22961,13 @@ const parse = (input, options) => {
 
   const eos = () => state.index === len - 1;
   const peek = state.peek = (n = 1) => input[state.index + n];
-  const advance = state.advance = () => input[++state.index];
+  const advance = state.advance = () => input[++state.index] || '';
   const remaining = () => input.slice(state.index + 1);
   const consume = (value = '', num = 0) => {
     state.consumed += value;
     state.index += num;
   };
+
   const append = token => {
     state.output += token.output != null ? token.output : token.value;
     consume(token.value);
@@ -24610,7 +23023,7 @@ const parse = (input, options) => {
       }
     }
 
-    if (extglobs.length && tok.type !== 'paren' && !EXTGLOB_CHARS[tok.value]) {
+    if (extglobs.length && tok.type !== 'paren') {
       extglobs[extglobs.length - 1].inner += tok.value;
     }
 
@@ -24642,6 +23055,7 @@ const parse = (input, options) => {
 
   const extglobClose = token => {
     let output = token.close + (opts.capture ? ')' : '');
+    let rest;
 
     if (token.type === 'negate') {
       let extglobStar = star;
@@ -24654,7 +23068,11 @@ const parse = (input, options) => {
         output = token.close = `)$))${extglobStar}`;
       }
 
-      if (token.prev.type === 'bos' && eos()) {
+      if (token.inner.includes('*') && (rest = remaining()) && /^\.[^\\/.]+$/.test(rest)) {
+        output = token.close = `)${rest})${extglobStar})`;
+      }
+
+      if (token.prev.type === 'bos') {
         state.negatedExtglob = true;
       }
     }
@@ -24763,9 +23181,9 @@ const parse = (input, options) => {
       }
 
       if (opts.unescape === true) {
-        value = advance() || '';
+        value = advance();
       } else {
-        value += advance() || '';
+        value += advance();
       }
 
       if (state.brackets === 0) {
@@ -25429,7 +23847,7 @@ parse.fastpaths = (input, options) => {
     star = `(${star})`;
   }
 
-  const globstar = (opts) => {
+  const globstar = opts => {
     if (opts.noglobstar === true) return star;
     return `(${capture}(?:(?!${START_ANCHOR}${opts.dot ? DOTS_SLASH : DOT_LITERAL}).)*?)`;
   };
@@ -25724,6 +24142,40 @@ picomatch.parse = (pattern, options) => {
 picomatch.scan = (input, options) => scan(input, options);
 
 /**
+ * Compile a regular expression from the `state` object returned by the
+ * [parse()](#parse) method.
+ *
+ * @param {Object} `state`
+ * @param {Object} `options`
+ * @param {Boolean} `returnOutput` Intended for implementors, this argument allows you to return the raw output from the parser.
+ * @param {Boolean} `returnState` Adds the state to a `state` property on the returned regex. Useful for implementors and debugging.
+ * @return {RegExp}
+ * @api public
+ */
+
+picomatch.compileRe = (state, options, returnOutput = false, returnState = false) => {
+  if (returnOutput === true) {
+    return state.output;
+  }
+
+  const opts = options || {};
+  const prepend = opts.contains ? '' : '^';
+  const append = opts.contains ? '' : '$';
+
+  let source = `${prepend}(?:${state.output})${append}`;
+  if (state && state.negated === true) {
+    source = `^(?!${source}).*$`;
+  }
+
+  const regex = picomatch.toRegex(source, options);
+  if (returnState === true) {
+    regex.state = state;
+  }
+
+  return regex;
+};
+
+/**
  * Create a regular expression from a parsed glob pattern.
  *
  * ```js
@@ -25736,56 +24188,25 @@ picomatch.scan = (input, options) => scan(input, options);
  * ```
  * @param {String} `state` The object returned from the `.parse` method.
  * @param {Object} `options`
+ * @param {Boolean} `returnOutput` Implementors may use this argument to return the compiled output, instead of a regular expression. This is not exposed on the options to prevent end-users from mutating the result.
+ * @param {Boolean} `returnState` Implementors may use this argument to return the state from the parsed glob with the returned regular expression.
  * @return {RegExp} Returns a regex created from the given pattern.
  * @api public
  */
 
-picomatch.compileRe = (parsed, options, returnOutput = false, returnState = false) => {
-  if (returnOutput === true) {
-    return parsed.output;
-  }
-
-  const opts = options || {};
-  const prepend = opts.contains ? '' : '^';
-  const append = opts.contains ? '' : '$';
-
-  let source = `${prepend}(?:${parsed.output})${append}`;
-  if (parsed && parsed.negated === true) {
-    source = `^(?!${source}).*$`;
-  }
-
-  const regex = picomatch.toRegex(source, options);
-  if (returnState === true) {
-    regex.state = parsed;
-  }
-
-  return regex;
-};
-
-picomatch.makeRe = (input, options, returnOutput = false, returnState = false) => {
+picomatch.makeRe = (input, options = {}, returnOutput = false, returnState = false) => {
   if (!input || typeof input !== 'string') {
     throw new TypeError('Expected a non-empty string');
   }
 
-  const opts = options || {};
   let parsed = { negated: false, fastpaths: true };
-  let prefix = '';
-  let output;
 
-  if (input.startsWith('./')) {
-    input = input.slice(2);
-    prefix = parsed.prefix = './';
+  if (options.fastpaths !== false && (input[0] === '.' || input[0] === '*')) {
+    parsed.output = parse.fastpaths(input, options);
   }
 
-  if (opts.fastpaths !== false && (input[0] === '.' || input[0] === '*')) {
-    output = parse.fastpaths(input, options);
-  }
-
-  if (output === undefined) {
+  if (!parsed.output) {
     parsed = parse(input, options);
-    parsed.prefix = prefix + (parsed.prefix || '');
-  } else {
-    parsed.output = output;
   }
 
   return picomatch.compileRe(parsed, options, returnOutput, returnState);
@@ -25872,7 +24293,8 @@ const depth = token => {
 /**
  * Quickly scans a glob pattern and returns an object with a handful of
  * useful properties, like `isGlob`, `path` (the leading non-glob, if it exists),
- * `glob` (the actual pattern), and `negated` (true if the path starts with `!`).
+ * `glob` (the actual pattern), `negated` (true if the path starts with `!` but not
+ * with `!(`) and `negatedExtglob` (true if the path starts with `!(`).
  *
  * ```js
  * const pm = require('picomatch');
@@ -25906,6 +24328,7 @@ const scan = (input, options) => {
   let braceEscaped = false;
   let backslashes = false;
   let negated = false;
+  let negatedExtglob = false;
   let finished = false;
   let braces = 0;
   let prev;
@@ -26017,6 +24440,9 @@ const scan = (input, options) => {
         isGlob = token.isGlob = true;
         isExtglob = token.isExtglob = true;
         finished = true;
+        if (code === CHAR_EXCLAMATION_MARK && index === start) {
+          negatedExtglob = true;
+        }
 
         if (scanToEnd === true) {
           while (eos() !== true && (code = advance())) {
@@ -26071,13 +24497,15 @@ const scan = (input, options) => {
           isBracket = token.isBracket = true;
           isGlob = token.isGlob = true;
           finished = true;
-
-          if (scanToEnd === true) {
-            continue;
-          }
           break;
         }
       }
+
+      if (scanToEnd === true) {
+        continue;
+      }
+
+      break;
     }
 
     if (opts.nonegate !== true && code === CHAR_EXCLAMATION_MARK && index === start) {
@@ -26168,7 +24596,8 @@ const scan = (input, options) => {
     isGlob,
     isExtglob,
     isGlobstar,
-    negated
+    negated,
+    negatedExtglob
   };
 
   if (opts.tokens === true) {
@@ -26297,91 +24726,18 @@ exports.wrapOutput = (input, state = {}, options = {}) => {
 
 /***/ }),
 
-/***/ 18341:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ 89795:
+/***/ ((module) => {
 
-var once = __nccwpck_require__(1223)
-var eos = __nccwpck_require__(81205)
-var fs = __nccwpck_require__(35747) // we only need fs to get the ReadStream and WriteStream prototypes
+/*! queue-microtask. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+let promise
 
-var noop = function () {}
-var ancient = /^v?\.0/.test(process.version)
-
-var isFn = function (fn) {
-  return typeof fn === 'function'
-}
-
-var isFS = function (stream) {
-  if (!ancient) return false // newer node version do not need to care about fs is a special way
-  if (!fs) return false // browser
-  return (stream instanceof (fs.ReadStream || noop) || stream instanceof (fs.WriteStream || noop)) && isFn(stream.close)
-}
-
-var isRequest = function (stream) {
-  return stream.setHeader && isFn(stream.abort)
-}
-
-var destroyer = function (stream, reading, writing, callback) {
-  callback = once(callback)
-
-  var closed = false
-  stream.on('close', function () {
-    closed = true
-  })
-
-  eos(stream, {readable: reading, writable: writing}, function (err) {
-    if (err) return callback(err)
-    closed = true
-    callback()
-  })
-
-  var destroyed = false
-  return function (err) {
-    if (closed) return
-    if (destroyed) return
-    destroyed = true
-
-    if (isFS(stream)) return stream.close(noop) // use close for fs streams to avoid fd leaks
-    if (isRequest(stream)) return stream.abort() // request.destroy just do .end - .abort is what we want
-
-    if (isFn(stream.destroy)) return stream.destroy()
-
-    callback(err || new Error('stream was destroyed'))
-  }
-}
-
-var call = function (fn) {
-  fn()
-}
-
-var pipe = function (from, to) {
-  return from.pipe(to)
-}
-
-var pump = function () {
-  var streams = Array.prototype.slice.call(arguments)
-  var callback = isFn(streams[streams.length - 1] || noop) && streams.pop() || noop
-
-  if (Array.isArray(streams[0])) streams = streams[0]
-  if (streams.length < 2) throw new Error('pump requires two streams per minimum')
-
-  var error
-  var destroys = streams.map(function (stream, i) {
-    var reading = i < streams.length - 1
-    var writing = i > 0
-    return destroyer(stream, reading, writing, function (err) {
-      if (!error) error = err
-      if (err) destroys.forEach(call)
-      if (reading) return
-      destroys.forEach(call)
-      callback(error)
-    })
-  })
-
-  return streams.reduce(pipe)
-}
-
-module.exports = pump
+module.exports = typeof queueMicrotask === 'function'
+  ? queueMicrotask.bind(typeof window !== 'undefined' ? window : global)
+  // reuse resolved promise, and allocate it lazily
+  : cb => (promise || (promise = Promise.resolve()))
+    .then(cb)
+    .catch(err => setTimeout(() => { throw err }, 0))
 
 
 /***/ }),
@@ -26533,6 +24889,20 @@ var maybeRealpath = function maybeRealpath(realpath, x, opts, cb) {
     }
 };
 
+var defaultReadPackage = function defaultReadPackage(readFile, pkgfile, cb) {
+    readFile(pkgfile, function (readFileErr, body) {
+        if (readFileErr) cb(readFileErr);
+        else {
+            try {
+                var pkg = JSON.parse(body);
+                cb(null, pkg);
+            } catch (jsonErr) {
+                cb(null);
+            }
+        }
+    });
+};
+
 var getPackageCandidates = function getPackageCandidates(x, start, opts) {
     var dirs = nodeModulesPaths(start, opts, x);
     for (var i = 0; i < dirs.length; i++) {
@@ -26561,6 +24931,13 @@ module.exports = function resolve(x, options, callback) {
     var isDirectory = opts.isDirectory || defaultIsDir;
     var readFile = opts.readFile || fs.readFile;
     var realpath = opts.realpath || defaultRealpath;
+    var readPackage = opts.readPackage || defaultReadPackage;
+    if (opts.readFile && opts.readPackage) {
+        var conflictErr = new TypeError('`readFile` and `readPackage` are mutually exclusive.');
+        return process.nextTick(function () {
+            cb(conflictErr);
+        });
+    }
     var packageIterator = opts.packageIterator;
 
     var extensions = opts.extensions || ['.js'];
@@ -26688,9 +25065,10 @@ module.exports = function resolve(x, options, callback) {
                 // on err, ex is false
                 if (!ex) return loadpkg(path.dirname(dir), cb);
 
-                readFile(pkgfile, function (err, body) {
+                readPackage(readFile, pkgfile, function (err, pkgParam) {
                     if (err) cb(err);
-                    try { var pkg = JSON.parse(body); } catch (jsonErr) {}
+
+                    var pkg = pkgParam;
 
                     if (pkg && opts.packageFilter) {
                         pkg = opts.packageFilter(pkg, pkgfile);
@@ -26716,11 +25094,10 @@ module.exports = function resolve(x, options, callback) {
                 if (err) return cb(err);
                 if (!ex) return loadAsFile(path.join(x, 'index'), fpkg, cb);
 
-                readFile(pkgfile, function (err, body) {
+                readPackage(readFile, pkgfile, function (err, pkgParam) {
                     if (err) return cb(err);
-                    try {
-                        var pkg = JSON.parse(body);
-                    } catch (jsonErr) {}
+
+                    var pkg = pkgParam;
 
                     if (pkg && opts.packageFilter) {
                         pkg = opts.packageFilter(pkg, pkgfile);
@@ -26995,6 +25372,14 @@ var maybeRealpathSync = function maybeRealpathSync(realpathSync, x, opts) {
     return x;
 };
 
+var defaultReadPackageSync = function defaultReadPackageSync(readFileSync, pkgfile) {
+    var body = readFileSync(pkgfile);
+    try {
+        var pkg = JSON.parse(body);
+        return pkg;
+    } catch (jsonErr) {}
+};
+
 var getPackageCandidates = function getPackageCandidates(x, start, opts) {
     var dirs = nodeModulesPaths(start, opts, x);
     for (var i = 0; i < dirs.length; i++) {
@@ -27013,6 +25398,10 @@ module.exports = function resolveSync(x, options) {
     var readFileSync = opts.readFileSync || fs.readFileSync;
     var isDirectory = opts.isDirectory || defaultIsDir;
     var realpathSync = opts.realpathSync || defaultRealpathSync;
+    var readPackageSync = opts.readPackageSync || defaultReadPackageSync;
+    if (opts.readFileSync && opts.readPackageSync) {
+        throw new TypeError('`readFileSync` and `readPackageSync` are mutually exclusive.');
+    }
     var packageIterator = opts.packageIterator;
 
     var extensions = opts.extensions || ['.js'];
@@ -27077,11 +25466,7 @@ module.exports = function resolveSync(x, options) {
             return loadpkg(path.dirname(dir));
         }
 
-        var body = readFileSync(pkgfile);
-
-        try {
-            var pkg = JSON.parse(body);
-        } catch (jsonErr) {}
+        var pkg = readPackageSync(readFileSync, pkgfile);
 
         if (pkg && opts.packageFilter) {
             // v2 will pass pkgfile
@@ -27095,8 +25480,7 @@ module.exports = function resolveSync(x, options) {
         var pkgfile = path.join(maybeRealpathSync(realpathSync, x, opts), '/package.json');
         if (isFile(pkgfile)) {
             try {
-                var body = readFileSync(pkgfile, 'UTF8');
-                var pkg = JSON.parse(body);
+                var pkg = readPackageSync(readFileSync, pkgfile);
             } catch (e) {}
 
             if (pkg && opts.packageFilter) {
@@ -27565,13 +25949,16 @@ function rmkidsSync (p, options) {
 /***/ }),
 
 /***/ 75288:
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
+/*! run-parallel. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 module.exports = runParallel
 
+const queueMicrotask = __nccwpck_require__(89795)
+
 function runParallel (tasks, cb) {
-  var results, pending, keys
-  var isSync = true
+  let results, pending, keys
+  let isSync = true
 
   if (Array.isArray(tasks)) {
     results = []
@@ -27587,7 +25974,7 @@ function runParallel (tasks, cb) {
       if (cb) cb(err, results)
       cb = null
     }
-    if (isSync) process.nextTick(end)
+    if (isSync) queueMicrotask(end)
     else end()
   }
 
@@ -30067,29 +28454,6 @@ module.exports = function (source) {
 
 /***/ }),
 
-/***/ 85515:
-/***/ ((module) => {
-
-"use strict";
-
-module.exports = function (x) {
-	var lf = typeof x === 'string' ? '\n' : '\n'.charCodeAt();
-	var cr = typeof x === 'string' ? '\r' : '\r'.charCodeAt();
-
-	if (x[x.length - 1] === lf) {
-		x = x.slice(0, x.length - 1);
-	}
-
-	if (x[x.length - 1] === cr) {
-		x = x.slice(0, x.length - 1);
-	}
-
-	return x;
-};
-
-
-/***/ }),
-
 /***/ 88174:
 /***/ ((module) => {
 
@@ -31654,27 +30018,23 @@ exports.debug = debug; // for test
 /***/ }),
 
 /***/ 45030:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var osName = _interopDefault(__nccwpck_require__(54824));
-
 function getUserAgent() {
-  try {
-    return `Node.js/${process.version.substr(1)} (${osName()}; ${process.arch})`;
-  } catch (error) {
-    if (/wmic os get Caption/.test(error.message)) {
-      return "Windows <version undetectable>";
-    }
-
-    return "<environment undetectable>";
+  if (typeof navigator === "object" && "userAgent" in navigator) {
+    return navigator.userAgent;
   }
+
+  if (typeof process === "object" && "version" in process) {
+    return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
+  }
+
+  return "<environment undetectable>";
 }
 
 exports.getUserAgent = getUserAgent;
@@ -31908,1298 +30268,6 @@ which.sync = whichSync
 
 /***/ }),
 
-/***/ 63515:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const os = __nccwpck_require__(12087);
-const execa = __nccwpck_require__(64780);
-
-// Reference: https://www.gaijin.at/en/lstwinver.php
-const names = new Map([
-	['10.0', '10'],
-	['6.3', '8.1'],
-	['6.2', '8'],
-	['6.1', '7'],
-	['6.0', 'Vista'],
-	['5.2', 'Server 2003'],
-	['5.1', 'XP'],
-	['5.0', '2000'],
-	['4.9', 'ME'],
-	['4.1', '98'],
-	['4.0', '95']
-]);
-
-const windowsRelease = release => {
-	const version = /\d+\.\d/.exec(release || os.release());
-
-	if (release && !version) {
-		throw new Error('`release` argument doesn\'t match `n.n`');
-	}
-
-	const ver = (version || [])[0];
-
-	// Server 2008, 2012, 2016, and 2019 versions are ambiguous with desktop versions and must be detected at runtime.
-	// If `release` is omitted or we're on a Windows system, and the version number is an ambiguous version
-	// then use `wmic` to get the OS caption: https://msdn.microsoft.com/en-us/library/aa394531(v=vs.85).aspx
-	// If `wmic` is obsoloete (later versions of Windows 10), use PowerShell instead.
-	// If the resulting caption contains the year 2008, 2012, 2016 or 2019, it is a server version, so return a server OS name.
-	if ((!release || release === os.release()) && ['6.1', '6.2', '6.3', '10.0'].includes(ver)) {
-		let stdout;
-		try {
-			stdout = execa.sync('wmic', ['os', 'get', 'Caption']).stdout || '';
-		} catch (_) {
-			stdout = execa.sync('powershell', ['(Get-CimInstance -ClassName Win32_OperatingSystem).caption']).stdout || '';
-		}
-
-		const year = (stdout.match(/2008|2012|2016|2019/) || [])[0];
-
-		if (year) {
-			return `Server ${year}`;
-		}
-	}
-
-	return names.get(ver);
-};
-
-module.exports = windowsRelease;
-
-
-/***/ }),
-
-/***/ 36868:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const cp = __nccwpck_require__(63129);
-const parse = __nccwpck_require__(56876);
-const enoent = __nccwpck_require__(48625);
-
-function spawn(command, args, options) {
-    // Parse the arguments
-    const parsed = parse(command, args, options);
-
-    // Spawn the child process
-    const spawned = cp.spawn(parsed.command, parsed.args, parsed.options);
-
-    // Hook into child process "exit" event to emit an error if the command
-    // does not exists, see: https://github.com/IndigoUnited/node-cross-spawn/issues/16
-    enoent.hookChildProcess(spawned, parsed);
-
-    return spawned;
-}
-
-function spawnSync(command, args, options) {
-    // Parse the arguments
-    const parsed = parse(command, args, options);
-
-    // Spawn the child process
-    const result = cp.spawnSync(parsed.command, parsed.args, parsed.options);
-
-    // Analyze if the command does not exist, see: https://github.com/IndigoUnited/node-cross-spawn/issues/16
-    result.error = result.error || enoent.verifyENOENTSync(result.status, parsed);
-
-    return result;
-}
-
-module.exports = spawn;
-module.exports.spawn = spawn;
-module.exports.sync = spawnSync;
-
-module.exports._parse = parse;
-module.exports._enoent = enoent;
-
-
-/***/ }),
-
-/***/ 48625:
-/***/ ((module) => {
-
-"use strict";
-
-
-const isWin = process.platform === 'win32';
-
-function notFoundError(original, syscall) {
-    return Object.assign(new Error(`${syscall} ${original.command} ENOENT`), {
-        code: 'ENOENT',
-        errno: 'ENOENT',
-        syscall: `${syscall} ${original.command}`,
-        path: original.command,
-        spawnargs: original.args,
-    });
-}
-
-function hookChildProcess(cp, parsed) {
-    if (!isWin) {
-        return;
-    }
-
-    const originalEmit = cp.emit;
-
-    cp.emit = function (name, arg1) {
-        // If emitting "exit" event and exit code is 1, we need to check if
-        // the command exists and emit an "error" instead
-        // See https://github.com/IndigoUnited/node-cross-spawn/issues/16
-        if (name === 'exit') {
-            const err = verifyENOENT(arg1, parsed, 'spawn');
-
-            if (err) {
-                return originalEmit.call(cp, 'error', err);
-            }
-        }
-
-        return originalEmit.apply(cp, arguments); // eslint-disable-line prefer-rest-params
-    };
-}
-
-function verifyENOENT(status, parsed) {
-    if (isWin && status === 1 && !parsed.file) {
-        return notFoundError(parsed.original, 'spawn');
-    }
-
-    return null;
-}
-
-function verifyENOENTSync(status, parsed) {
-    if (isWin && status === 1 && !parsed.file) {
-        return notFoundError(parsed.original, 'spawnSync');
-    }
-
-    return null;
-}
-
-module.exports = {
-    hookChildProcess,
-    verifyENOENT,
-    verifyENOENTSync,
-    notFoundError,
-};
-
-
-/***/ }),
-
-/***/ 56876:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const path = __nccwpck_require__(85622);
-const niceTry = __nccwpck_require__(38560);
-const resolveCommand = __nccwpck_require__(38741);
-const escape = __nccwpck_require__(44300);
-const readShebang = __nccwpck_require__(58536);
-const semver = __nccwpck_require__(85911);
-
-const isWin = process.platform === 'win32';
-const isExecutableRegExp = /\.(?:com|exe)$/i;
-const isCmdShimRegExp = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i;
-
-// `options.shell` is supported in Node ^4.8.0, ^5.7.0 and >= 6.0.0
-const supportsShellOption = niceTry(() => semver.satisfies(process.version, '^4.8.0 || ^5.7.0 || >= 6.0.0', true)) || false;
-
-function detectShebang(parsed) {
-    parsed.file = resolveCommand(parsed);
-
-    const shebang = parsed.file && readShebang(parsed.file);
-
-    if (shebang) {
-        parsed.args.unshift(parsed.file);
-        parsed.command = shebang;
-
-        return resolveCommand(parsed);
-    }
-
-    return parsed.file;
-}
-
-function parseNonShell(parsed) {
-    if (!isWin) {
-        return parsed;
-    }
-
-    // Detect & add support for shebangs
-    const commandFile = detectShebang(parsed);
-
-    // We don't need a shell if the command filename is an executable
-    const needsShell = !isExecutableRegExp.test(commandFile);
-
-    // If a shell is required, use cmd.exe and take care of escaping everything correctly
-    // Note that `forceShell` is an hidden option used only in tests
-    if (parsed.options.forceShell || needsShell) {
-        // Need to double escape meta chars if the command is a cmd-shim located in `node_modules/.bin/`
-        // The cmd-shim simply calls execute the package bin file with NodeJS, proxying any argument
-        // Because the escape of metachars with ^ gets interpreted when the cmd.exe is first called,
-        // we need to double escape them
-        const needsDoubleEscapeMetaChars = isCmdShimRegExp.test(commandFile);
-
-        // Normalize posix paths into OS compatible paths (e.g.: foo/bar -> foo\bar)
-        // This is necessary otherwise it will always fail with ENOENT in those cases
-        parsed.command = path.normalize(parsed.command);
-
-        // Escape command & arguments
-        parsed.command = escape.command(parsed.command);
-        parsed.args = parsed.args.map((arg) => escape.argument(arg, needsDoubleEscapeMetaChars));
-
-        const shellCommand = [parsed.command].concat(parsed.args).join(' ');
-
-        parsed.args = ['/d', '/s', '/c', `"${shellCommand}"`];
-        parsed.command = process.env.comspec || 'cmd.exe';
-        parsed.options.windowsVerbatimArguments = true; // Tell node's spawn that the arguments are already escaped
-    }
-
-    return parsed;
-}
-
-function parseShell(parsed) {
-    // If node supports the shell option, there's no need to mimic its behavior
-    if (supportsShellOption) {
-        return parsed;
-    }
-
-    // Mimic node shell option
-    // See https://github.com/nodejs/node/blob/b9f6a2dc059a1062776133f3d4fd848c4da7d150/lib/child_process.js#L335
-    const shellCommand = [parsed.command].concat(parsed.args).join(' ');
-
-    if (isWin) {
-        parsed.command = typeof parsed.options.shell === 'string' ? parsed.options.shell : process.env.comspec || 'cmd.exe';
-        parsed.args = ['/d', '/s', '/c', `"${shellCommand}"`];
-        parsed.options.windowsVerbatimArguments = true; // Tell node's spawn that the arguments are already escaped
-    } else {
-        if (typeof parsed.options.shell === 'string') {
-            parsed.command = parsed.options.shell;
-        } else if (process.platform === 'android') {
-            parsed.command = '/system/bin/sh';
-        } else {
-            parsed.command = '/bin/sh';
-        }
-
-        parsed.args = ['-c', shellCommand];
-    }
-
-    return parsed;
-}
-
-function parse(command, args, options) {
-    // Normalize arguments, similar to nodejs
-    if (args && !Array.isArray(args)) {
-        options = args;
-        args = null;
-    }
-
-    args = args ? args.slice(0) : []; // Clone array to avoid changing the original
-    options = Object.assign({}, options); // Clone object to avoid changing the original
-
-    // Build our parsed object
-    const parsed = {
-        command,
-        args,
-        options,
-        file: undefined,
-        original: {
-            command,
-            args,
-        },
-    };
-
-    // Delegate further parsing to shell or non-shell
-    return options.shell ? parseShell(parsed) : parseNonShell(parsed);
-}
-
-module.exports = parse;
-
-
-/***/ }),
-
-/***/ 44300:
-/***/ ((module) => {
-
-"use strict";
-
-
-// See http://www.robvanderwoude.com/escapechars.php
-const metaCharsRegExp = /([()\][%!^"`<>&|;, *?])/g;
-
-function escapeCommand(arg) {
-    // Escape meta chars
-    arg = arg.replace(metaCharsRegExp, '^$1');
-
-    return arg;
-}
-
-function escapeArgument(arg, doubleEscapeMetaChars) {
-    // Convert to string
-    arg = `${arg}`;
-
-    // Algorithm below is based on https://qntm.org/cmd
-
-    // Sequence of backslashes followed by a double quote:
-    // double up all the backslashes and escape the double quote
-    arg = arg.replace(/(\\*)"/g, '$1$1\\"');
-
-    // Sequence of backslashes followed by the end of the string
-    // (which will become a double quote later):
-    // double up all the backslashes
-    arg = arg.replace(/(\\*)$/, '$1$1');
-
-    // All other backslashes occur literally
-
-    // Quote the whole thing:
-    arg = `"${arg}"`;
-
-    // Escape meta chars
-    arg = arg.replace(metaCharsRegExp, '^$1');
-
-    // Double escape meta chars if necessary
-    if (doubleEscapeMetaChars) {
-        arg = arg.replace(metaCharsRegExp, '^$1');
-    }
-
-    return arg;
-}
-
-module.exports.command = escapeCommand;
-module.exports.argument = escapeArgument;
-
-
-/***/ }),
-
-/***/ 58536:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const fs = __nccwpck_require__(35747);
-const shebangCommand = __nccwpck_require__(32116);
-
-function readShebang(command) {
-    // Read the first 150 bytes from the file
-    const size = 150;
-    let buffer;
-
-    if (Buffer.alloc) {
-        // Node.js v4.5+ / v5.10+
-        buffer = Buffer.alloc(size);
-    } else {
-        // Old Node.js API
-        buffer = new Buffer(size);
-        buffer.fill(0); // zero-fill
-    }
-
-    let fd;
-
-    try {
-        fd = fs.openSync(command, 'r');
-        fs.readSync(fd, buffer, 0, size, 0);
-        fs.closeSync(fd);
-    } catch (e) { /* Empty */ }
-
-    // Attempt to extract shebang (null is returned if not a shebang)
-    return shebangCommand(buffer.toString());
-}
-
-module.exports = readShebang;
-
-
-/***/ }),
-
-/***/ 38741:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const path = __nccwpck_require__(85622);
-const which = __nccwpck_require__(13411);
-const pathKey = __nccwpck_require__(20539)();
-
-function resolveCommandAttempt(parsed, withoutPathExt) {
-    const cwd = process.cwd();
-    const hasCustomCwd = parsed.options.cwd != null;
-
-    // If a custom `cwd` was specified, we need to change the process cwd
-    // because `which` will do stat calls but does not support a custom cwd
-    if (hasCustomCwd) {
-        try {
-            process.chdir(parsed.options.cwd);
-        } catch (err) {
-            /* Empty */
-        }
-    }
-
-    let resolved;
-
-    try {
-        resolved = which.sync(parsed.command, {
-            path: (parsed.options.env || process.env)[pathKey],
-            pathExt: withoutPathExt ? path.delimiter : undefined,
-        });
-    } catch (e) {
-        /* Empty */
-    } finally {
-        process.chdir(cwd);
-    }
-
-    // If we successfully resolved, ensure that an absolute path is returned
-    // Note that when a custom `cwd` was used, we need to resolve to an absolute path based on it
-    if (resolved) {
-        resolved = path.resolve(hasCustomCwd ? parsed.options.cwd : '', resolved);
-    }
-
-    return resolved;
-}
-
-function resolveCommand(parsed) {
-    return resolveCommandAttempt(parsed) || resolveCommandAttempt(parsed, true);
-}
-
-module.exports = resolveCommand;
-
-
-/***/ }),
-
-/***/ 64780:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const path = __nccwpck_require__(85622);
-const childProcess = __nccwpck_require__(63129);
-const crossSpawn = __nccwpck_require__(36868);
-const stripEof = __nccwpck_require__(85515);
-const npmRunPath = __nccwpck_require__(12509);
-const isStream = __nccwpck_require__(12597);
-const _getStream = __nccwpck_require__(72560);
-const pFinally = __nccwpck_require__(31330);
-const onExit = __nccwpck_require__(24931);
-const errname = __nccwpck_require__(32160);
-const stdio = __nccwpck_require__(27023);
-
-const TEN_MEGABYTES = 1000 * 1000 * 10;
-
-function handleArgs(cmd, args, opts) {
-	let parsed;
-
-	opts = Object.assign({
-		extendEnv: true,
-		env: {}
-	}, opts);
-
-	if (opts.extendEnv) {
-		opts.env = Object.assign({}, process.env, opts.env);
-	}
-
-	if (opts.__winShell === true) {
-		delete opts.__winShell;
-		parsed = {
-			command: cmd,
-			args,
-			options: opts,
-			file: cmd,
-			original: {
-				cmd,
-				args
-			}
-		};
-	} else {
-		parsed = crossSpawn._parse(cmd, args, opts);
-	}
-
-	opts = Object.assign({
-		maxBuffer: TEN_MEGABYTES,
-		buffer: true,
-		stripEof: true,
-		preferLocal: true,
-		localDir: parsed.options.cwd || process.cwd(),
-		encoding: 'utf8',
-		reject: true,
-		cleanup: true
-	}, parsed.options);
-
-	opts.stdio = stdio(opts);
-
-	if (opts.preferLocal) {
-		opts.env = npmRunPath.env(Object.assign({}, opts, {cwd: opts.localDir}));
-	}
-
-	if (opts.detached) {
-		// #115
-		opts.cleanup = false;
-	}
-
-	if (process.platform === 'win32' && path.basename(parsed.command) === 'cmd.exe') {
-		// #116
-		parsed.args.unshift('/q');
-	}
-
-	return {
-		cmd: parsed.command,
-		args: parsed.args,
-		opts,
-		parsed
-	};
-}
-
-function handleInput(spawned, input) {
-	if (input === null || input === undefined) {
-		return;
-	}
-
-	if (isStream(input)) {
-		input.pipe(spawned.stdin);
-	} else {
-		spawned.stdin.end(input);
-	}
-}
-
-function handleOutput(opts, val) {
-	if (val && opts.stripEof) {
-		val = stripEof(val);
-	}
-
-	return val;
-}
-
-function handleShell(fn, cmd, opts) {
-	let file = '/bin/sh';
-	let args = ['-c', cmd];
-
-	opts = Object.assign({}, opts);
-
-	if (process.platform === 'win32') {
-		opts.__winShell = true;
-		file = process.env.comspec || 'cmd.exe';
-		args = ['/s', '/c', `"${cmd}"`];
-		opts.windowsVerbatimArguments = true;
-	}
-
-	if (opts.shell) {
-		file = opts.shell;
-		delete opts.shell;
-	}
-
-	return fn(file, args, opts);
-}
-
-function getStream(process, stream, {encoding, buffer, maxBuffer}) {
-	if (!process[stream]) {
-		return null;
-	}
-
-	let ret;
-
-	if (!buffer) {
-		// TODO: Use `ret = util.promisify(stream.finished)(process[stream]);` when targeting Node.js 10
-		ret = new Promise((resolve, reject) => {
-			process[stream]
-				.once('end', resolve)
-				.once('error', reject);
-		});
-	} else if (encoding) {
-		ret = _getStream(process[stream], {
-			encoding,
-			maxBuffer
-		});
-	} else {
-		ret = _getStream.buffer(process[stream], {maxBuffer});
-	}
-
-	return ret.catch(err => {
-		err.stream = stream;
-		err.message = `${stream} ${err.message}`;
-		throw err;
-	});
-}
-
-function makeError(result, options) {
-	const {stdout, stderr} = result;
-
-	let err = result.error;
-	const {code, signal} = result;
-
-	const {parsed, joinedCmd} = options;
-	const timedOut = options.timedOut || false;
-
-	if (!err) {
-		let output = '';
-
-		if (Array.isArray(parsed.opts.stdio)) {
-			if (parsed.opts.stdio[2] !== 'inherit') {
-				output += output.length > 0 ? stderr : `\n${stderr}`;
-			}
-
-			if (parsed.opts.stdio[1] !== 'inherit') {
-				output += `\n${stdout}`;
-			}
-		} else if (parsed.opts.stdio !== 'inherit') {
-			output = `\n${stderr}${stdout}`;
-		}
-
-		err = new Error(`Command failed: ${joinedCmd}${output}`);
-		err.code = code < 0 ? errname(code) : code;
-	}
-
-	err.stdout = stdout;
-	err.stderr = stderr;
-	err.failed = true;
-	err.signal = signal || null;
-	err.cmd = joinedCmd;
-	err.timedOut = timedOut;
-
-	return err;
-}
-
-function joinCmd(cmd, args) {
-	let joinedCmd = cmd;
-
-	if (Array.isArray(args) && args.length > 0) {
-		joinedCmd += ' ' + args.join(' ');
-	}
-
-	return joinedCmd;
-}
-
-module.exports = (cmd, args, opts) => {
-	const parsed = handleArgs(cmd, args, opts);
-	const {encoding, buffer, maxBuffer} = parsed.opts;
-	const joinedCmd = joinCmd(cmd, args);
-
-	let spawned;
-	try {
-		spawned = childProcess.spawn(parsed.cmd, parsed.args, parsed.opts);
-	} catch (err) {
-		return Promise.reject(err);
-	}
-
-	let removeExitHandler;
-	if (parsed.opts.cleanup) {
-		removeExitHandler = onExit(() => {
-			spawned.kill();
-		});
-	}
-
-	let timeoutId = null;
-	let timedOut = false;
-
-	const cleanup = () => {
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-			timeoutId = null;
-		}
-
-		if (removeExitHandler) {
-			removeExitHandler();
-		}
-	};
-
-	if (parsed.opts.timeout > 0) {
-		timeoutId = setTimeout(() => {
-			timeoutId = null;
-			timedOut = true;
-			spawned.kill(parsed.opts.killSignal);
-		}, parsed.opts.timeout);
-	}
-
-	const processDone = new Promise(resolve => {
-		spawned.on('exit', (code, signal) => {
-			cleanup();
-			resolve({code, signal});
-		});
-
-		spawned.on('error', err => {
-			cleanup();
-			resolve({error: err});
-		});
-
-		if (spawned.stdin) {
-			spawned.stdin.on('error', err => {
-				cleanup();
-				resolve({error: err});
-			});
-		}
-	});
-
-	function destroy() {
-		if (spawned.stdout) {
-			spawned.stdout.destroy();
-		}
-
-		if (spawned.stderr) {
-			spawned.stderr.destroy();
-		}
-	}
-
-	const handlePromise = () => pFinally(Promise.all([
-		processDone,
-		getStream(spawned, 'stdout', {encoding, buffer, maxBuffer}),
-		getStream(spawned, 'stderr', {encoding, buffer, maxBuffer})
-	]).then(arr => {
-		const result = arr[0];
-		result.stdout = arr[1];
-		result.stderr = arr[2];
-
-		if (result.error || result.code !== 0 || result.signal !== null) {
-			const err = makeError(result, {
-				joinedCmd,
-				parsed,
-				timedOut
-			});
-
-			// TODO: missing some timeout logic for killed
-			// https://github.com/nodejs/node/blob/master/lib/child_process.js#L203
-			// err.killed = spawned.killed || killed;
-			err.killed = err.killed || spawned.killed;
-
-			if (!parsed.opts.reject) {
-				return err;
-			}
-
-			throw err;
-		}
-
-		return {
-			stdout: handleOutput(parsed.opts, result.stdout),
-			stderr: handleOutput(parsed.opts, result.stderr),
-			code: 0,
-			failed: false,
-			killed: false,
-			signal: null,
-			cmd: joinedCmd,
-			timedOut: false
-		};
-	}), destroy);
-
-	crossSpawn._enoent.hookChildProcess(spawned, parsed.parsed);
-
-	handleInput(spawned, parsed.opts.input);
-
-	spawned.then = (onfulfilled, onrejected) => handlePromise().then(onfulfilled, onrejected);
-	spawned.catch = onrejected => handlePromise().catch(onrejected);
-
-	return spawned;
-};
-
-// TODO: set `stderr: 'ignore'` when that option is implemented
-module.exports.stdout = (...args) => module.exports(...args).then(x => x.stdout);
-
-// TODO: set `stdout: 'ignore'` when that option is implemented
-module.exports.stderr = (...args) => module.exports(...args).then(x => x.stderr);
-
-module.exports.shell = (cmd, opts) => handleShell(module.exports, cmd, opts);
-
-module.exports.sync = (cmd, args, opts) => {
-	const parsed = handleArgs(cmd, args, opts);
-	const joinedCmd = joinCmd(cmd, args);
-
-	if (isStream(parsed.opts.input)) {
-		throw new TypeError('The `input` option cannot be a stream in sync mode');
-	}
-
-	const result = childProcess.spawnSync(parsed.cmd, parsed.args, parsed.opts);
-	result.code = result.status;
-
-	if (result.error || result.status !== 0 || result.signal !== null) {
-		const err = makeError(result, {
-			joinedCmd,
-			parsed
-		});
-
-		if (!parsed.opts.reject) {
-			return err;
-		}
-
-		throw err;
-	}
-
-	return {
-		stdout: handleOutput(parsed.opts, result.stdout),
-		stderr: handleOutput(parsed.opts, result.stderr),
-		code: 0,
-		failed: false,
-		signal: null,
-		cmd: joinedCmd,
-		timedOut: false
-	};
-};
-
-module.exports.shellSync = (cmd, opts) => handleShell(module.exports.sync, cmd, opts);
-
-
-/***/ }),
-
-/***/ 32160:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-// Older verions of Node.js might not have `util.getSystemErrorName()`.
-// In that case, fall back to a deprecated internal.
-const util = __nccwpck_require__(31669);
-
-let uv;
-
-if (typeof util.getSystemErrorName === 'function') {
-	module.exports = util.getSystemErrorName;
-} else {
-	try {
-		uv = process.binding('uv');
-
-		if (typeof uv.errname !== 'function') {
-			throw new TypeError('uv.errname is not a function');
-		}
-	} catch (err) {
-		console.error('execa/lib/errname: unable to establish process.binding(\'uv\')', err);
-		uv = null;
-	}
-
-	module.exports = code => errname(uv, code);
-}
-
-// Used for testing the fallback behavior
-module.exports.__test__ = errname;
-
-function errname(uv, code) {
-	if (uv) {
-		return uv.errname(code);
-	}
-
-	if (!(code < 0)) {
-		throw new Error('err >= 0');
-	}
-
-	return `Unknown system error ${code}`;
-}
-
-
-
-/***/ }),
-
-/***/ 27023:
-/***/ ((module) => {
-
-"use strict";
-
-const alias = ['stdin', 'stdout', 'stderr'];
-
-const hasAlias = opts => alias.some(x => Boolean(opts[x]));
-
-module.exports = opts => {
-	if (!opts) {
-		return null;
-	}
-
-	if (opts.stdio && hasAlias(opts)) {
-		throw new Error(`It's not possible to provide \`stdio\` in combination with one of ${alias.map(x => `\`${x}\``).join(', ')}`);
-	}
-
-	if (typeof opts.stdio === 'string') {
-		return opts.stdio;
-	}
-
-	const stdio = opts.stdio || [];
-
-	if (!Array.isArray(stdio)) {
-		throw new TypeError(`Expected \`stdio\` to be of type \`string\` or \`Array\`, got \`${typeof stdio}\``);
-	}
-
-	const result = [];
-	const len = Math.max(stdio.length, alias.length);
-
-	for (let i = 0; i < len; i++) {
-		let value = null;
-
-		if (stdio[i] !== undefined) {
-			value = stdio[i];
-		} else if (opts[alias[i]] !== undefined) {
-			value = opts[alias[i]];
-		}
-
-		result[i] = value;
-	}
-
-	return result;
-};
-
-
-/***/ }),
-
-/***/ 59286:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const {PassThrough} = __nccwpck_require__(92413);
-
-module.exports = options => {
-	options = Object.assign({}, options);
-
-	const {array} = options;
-	let {encoding} = options;
-	const buffer = encoding === 'buffer';
-	let objectMode = false;
-
-	if (array) {
-		objectMode = !(encoding || buffer);
-	} else {
-		encoding = encoding || 'utf8';
-	}
-
-	if (buffer) {
-		encoding = null;
-	}
-
-	let len = 0;
-	const ret = [];
-	const stream = new PassThrough({objectMode});
-
-	if (encoding) {
-		stream.setEncoding(encoding);
-	}
-
-	stream.on('data', chunk => {
-		ret.push(chunk);
-
-		if (objectMode) {
-			len = ret.length;
-		} else {
-			len += chunk.length;
-		}
-	});
-
-	stream.getBufferedValue = () => {
-		if (array) {
-			return ret;
-		}
-
-		return buffer ? Buffer.concat(ret, len) : ret.join('');
-	};
-
-	stream.getBufferedLength = () => len;
-
-	return stream;
-};
-
-
-/***/ }),
-
-/***/ 72560:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const pump = __nccwpck_require__(18341);
-const bufferStream = __nccwpck_require__(59286);
-
-class MaxBufferError extends Error {
-	constructor() {
-		super('maxBuffer exceeded');
-		this.name = 'MaxBufferError';
-	}
-}
-
-function getStream(inputStream, options) {
-	if (!inputStream) {
-		return Promise.reject(new Error('Expected a stream'));
-	}
-
-	options = Object.assign({maxBuffer: Infinity}, options);
-
-	const {maxBuffer} = options;
-
-	let stream;
-	return new Promise((resolve, reject) => {
-		const rejectPromise = error => {
-			if (error) { // A null check
-				error.bufferedData = stream.getBufferedValue();
-			}
-			reject(error);
-		};
-
-		stream = pump(inputStream, bufferStream(options), error => {
-			if (error) {
-				rejectPromise(error);
-				return;
-			}
-
-			resolve();
-		});
-
-		stream.on('data', () => {
-			if (stream.getBufferedLength() > maxBuffer) {
-				rejectPromise(new MaxBufferError());
-			}
-		});
-	}).then(() => stream.getBufferedValue());
-}
-
-module.exports = getStream;
-module.exports.buffer = (stream, options) => getStream(stream, Object.assign({}, options, {encoding: 'buffer'}));
-module.exports.array = (stream, options) => getStream(stream, Object.assign({}, options, {array: true}));
-module.exports.MaxBufferError = MaxBufferError;
-
-
-/***/ }),
-
-/***/ 12597:
-/***/ ((module) => {
-
-"use strict";
-
-
-var isStream = module.exports = function (stream) {
-	return stream !== null && typeof stream === 'object' && typeof stream.pipe === 'function';
-};
-
-isStream.writable = function (stream) {
-	return isStream(stream) && stream.writable !== false && typeof stream._write === 'function' && typeof stream._writableState === 'object';
-};
-
-isStream.readable = function (stream) {
-	return isStream(stream) && stream.readable !== false && typeof stream._read === 'function' && typeof stream._readableState === 'object';
-};
-
-isStream.duplex = function (stream) {
-	return isStream.writable(stream) && isStream.readable(stream);
-};
-
-isStream.transform = function (stream) {
-	return isStream.duplex(stream) && typeof stream._transform === 'function' && typeof stream._transformState === 'object';
-};
-
-
-/***/ }),
-
-/***/ 12509:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-const path = __nccwpck_require__(85622);
-const pathKey = __nccwpck_require__(20539);
-
-module.exports = opts => {
-	opts = Object.assign({
-		cwd: process.cwd(),
-		path: process.env[pathKey()]
-	}, opts);
-
-	let prev;
-	let pth = path.resolve(opts.cwd);
-	const ret = [];
-
-	while (prev !== pth) {
-		ret.push(path.join(pth, 'node_modules/.bin'));
-		prev = pth;
-		pth = path.resolve(pth, '..');
-	}
-
-	// ensure the running `node` binary is used
-	ret.push(path.dirname(process.execPath));
-
-	return ret.concat(opts.path).join(path.delimiter);
-};
-
-module.exports.env = opts => {
-	opts = Object.assign({
-		env: process.env
-	}, opts);
-
-	const env = Object.assign({}, opts.env);
-	const path = pathKey({env});
-
-	opts.path = env[path];
-	env[path] = module.exports(opts);
-
-	return env;
-};
-
-
-/***/ }),
-
-/***/ 32116:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-var shebangRegex = __nccwpck_require__(52998);
-
-module.exports = function (str) {
-	var match = str.match(shebangRegex);
-
-	if (!match) {
-		return null;
-	}
-
-	var arr = match[0].replace(/#! ?/, '').split(' ');
-	var bin = arr[0].split('/').pop();
-	var arg = arr[1];
-
-	return (bin === 'env' ?
-		arg :
-		bin + (arg ? ' ' + arg : '')
-	);
-};
-
-
-/***/ }),
-
-/***/ 52998:
-/***/ ((module) => {
-
-"use strict";
-
-module.exports = /^#!.*/;
-
-
-/***/ }),
-
-/***/ 13411:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-module.exports = which
-which.sync = whichSync
-
-var isWindows = process.platform === 'win32' ||
-    process.env.OSTYPE === 'cygwin' ||
-    process.env.OSTYPE === 'msys'
-
-var path = __nccwpck_require__(85622)
-var COLON = isWindows ? ';' : ':'
-var isexe = __nccwpck_require__(97126)
-
-function getNotFoundError (cmd) {
-  var er = new Error('not found: ' + cmd)
-  er.code = 'ENOENT'
-
-  return er
-}
-
-function getPathInfo (cmd, opt) {
-  var colon = opt.colon || COLON
-  var pathEnv = opt.path || process.env.PATH || ''
-  var pathExt = ['']
-
-  pathEnv = pathEnv.split(colon)
-
-  var pathExtExe = ''
-  if (isWindows) {
-    pathEnv.unshift(process.cwd())
-    pathExtExe = (opt.pathExt || process.env.PATHEXT || '.EXE;.CMD;.BAT;.COM')
-    pathExt = pathExtExe.split(colon)
-
-
-    // Always test the cmd itself first.  isexe will check to make sure
-    // it's found in the pathExt set.
-    if (cmd.indexOf('.') !== -1 && pathExt[0] !== '')
-      pathExt.unshift('')
-  }
-
-  // If it has a slash, then we don't bother searching the pathenv.
-  // just check the file itself, and that's it.
-  if (cmd.match(/\//) || isWindows && cmd.match(/\\/))
-    pathEnv = ['']
-
-  return {
-    env: pathEnv,
-    ext: pathExt,
-    extExe: pathExtExe
-  }
-}
-
-function which (cmd, opt, cb) {
-  if (typeof opt === 'function') {
-    cb = opt
-    opt = {}
-  }
-
-  var info = getPathInfo(cmd, opt)
-  var pathEnv = info.env
-  var pathExt = info.ext
-  var pathExtExe = info.extExe
-  var found = []
-
-  ;(function F (i, l) {
-    if (i === l) {
-      if (opt.all && found.length)
-        return cb(null, found)
-      else
-        return cb(getNotFoundError(cmd))
-    }
-
-    var pathPart = pathEnv[i]
-    if (pathPart.charAt(0) === '"' && pathPart.slice(-1) === '"')
-      pathPart = pathPart.slice(1, -1)
-
-    var p = path.join(pathPart, cmd)
-    if (!pathPart && (/^\.[\\\/]/).test(cmd)) {
-      p = cmd.slice(0, 2) + p
-    }
-    ;(function E (ii, ll) {
-      if (ii === ll) return F(i + 1, l)
-      var ext = pathExt[ii]
-      isexe(p + ext, { pathExt: pathExtExe }, function (er, is) {
-        if (!er && is) {
-          if (opt.all)
-            found.push(p + ext)
-          else
-            return cb(null, p + ext)
-        }
-        return E(ii + 1, ll)
-      })
-    })(0, pathExt.length)
-  })(0, pathEnv.length)
-}
-
-function whichSync (cmd, opt) {
-  opt = opt || {}
-
-  var info = getPathInfo(cmd, opt)
-  var pathEnv = info.env
-  var pathExt = info.ext
-  var pathExtExe = info.extExe
-  var found = []
-
-  for (var i = 0, l = pathEnv.length; i < l; i ++) {
-    var pathPart = pathEnv[i]
-    if (pathPart.charAt(0) === '"' && pathPart.slice(-1) === '"')
-      pathPart = pathPart.slice(1, -1)
-
-    var p = path.join(pathPart, cmd)
-    if (!pathPart && /^\.[\\\/]/.test(cmd)) {
-      p = cmd.slice(0, 2) + p
-    }
-    for (var j = 0, ll = pathExt.length; j < ll; j ++) {
-      var cur = p + pathExt[j]
-      var is
-      try {
-        is = isexe.sync(cur, { pathExt: pathExtExe })
-        if (is) {
-          if (opt.all)
-            found.push(cur)
-          else
-            return cur
-        }
-      } catch (ex) {}
-    }
-  }
-
-  if (opt.all && found.length)
-    return found
-
-  if (opt.nothrow)
-    return null
-
-  throw getNotFoundError(cmd)
-}
-
-
-/***/ }),
-
 /***/ 62940:
 /***/ ((module) => {
 
@@ -33308,7 +30376,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
     }
 
     await artifact.create().uploadArtifact(
-      `${pkgName}-size`,
+      `${pkgName.replace('/', '-')}-size`,
       await globby(['dist/*'], { cwd: baseDir, absolute: true }),
       baseDir,
       {
@@ -33373,11 +30441,7 @@ Object.defineProperty(exports, "__esModule", ({
 exports.codeFrameColumns = codeFrameColumns;
 exports.default = _default;
 
-var _highlight = _interopRequireWildcard(__nccwpck_require__(39571));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _highlight = __nccwpck_require__(39571);
 
 let deprecationWarningShown = false;
 
@@ -33599,16 +30663,23 @@ function isIdentifierChar(code) {
 function isIdentifierName(name) {
   let isFirst = true;
 
-  for (let _i = 0, _Array$from = Array.from(name); _i < _Array$from.length; _i++) {
-    const char = _Array$from[_i];
-    const cp = char.codePointAt(0);
+  for (let i = 0; i < name.length; i++) {
+    let cp = name.charCodeAt(i);
+
+    if ((cp & 0xfc00) === 0xd800 && i + 1 < name.length) {
+      const trail = name.charCodeAt(++i);
+
+      if ((trail & 0xfc00) === 0xdc00) {
+        cp = 0x10000 + ((cp & 0x3ff) << 10) + (trail & 0x3ff);
+      }
+    }
 
     if (isFirst) {
+      isFirst = false;
+
       if (!isIdentifierStart(cp)) {
         return false;
       }
-
-      isFirst = false;
     } else if (!isIdentifierChar(cp)) {
       return false;
     }
@@ -33741,17 +30812,11 @@ exports.shouldHighlight = shouldHighlight;
 exports.getChalk = getChalk;
 exports.default = highlight;
 
-var jsTokensNs = _interopRequireWildcard(__nccwpck_require__(52388));
+var _jsTokens = __nccwpck_require__(52388);
 
 var _helperValidatorIdentifier = __nccwpck_require__(74246);
 
-var _chalk = _interopRequireDefault(__nccwpck_require__(85465));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _chalk = __nccwpck_require__(85465);
 
 const sometimesKeywords = new Set(["as", "async", "from", "get", "of", "set"]);
 
@@ -33773,9 +30838,6 @@ const NEWLINE = /\r\n|[\n\r\u2028\u2029]/;
 const BRACKET = /^[()[\]{}]$/;
 let tokenize;
 {
-  const {
-    matchToToken
-  } = jsTokensNs;
   const JSX_TAG = /^[a-z][\w-]*$/i;
 
   const getTokenType = function (token, offset, text) {
@@ -33807,8 +30869,9 @@ let tokenize;
   tokenize = function* (text) {
     let match;
 
-    while (match = jsTokensNs.default.exec(text)) {
-      const token = matchToToken(match);
+    while (match = _jsTokens.default.exec(text)) {
+      const token = _jsTokens.matchToToken(match);
+
       yield {
         type: getTokenType(token, match.index, text),
         value: token.value
@@ -33837,20 +30900,14 @@ function highlightTokens(defs, text) {
 }
 
 function shouldHighlight(options) {
-  return _chalk.default.supportsColor || options.forceColor;
+  return !!_chalk.supportsColor || options.forceColor;
 }
 
 function getChalk(options) {
-  let chalk = _chalk.default;
-
-  if (options.forceColor) {
-    chalk = new _chalk.default.constructor({
-      enabled: true,
-      level: 1
-    });
-  }
-
-  return chalk;
+  return options.forceColor ? new _chalk.constructor({
+    enabled: true,
+    level: 1
+  }) : _chalk;
 }
 
 function highlight(code, options = {}) {
@@ -37297,7 +34354,7 @@ module.exports = jsonFile
 
 
 const u = __nccwpck_require__(24437)/* .fromCallback */ .E
-const jsonFile = __nccwpck_require__(28302)
+const jsonFile = __nccwpck_require__(91393)
 
 module.exports = {
   // jsonfile exports
@@ -38404,147 +35461,6 @@ module.exports = {
   utimesMillis,
   utimesMillisSync
 }
-
-
-/***/ }),
-
-/***/ 28302:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-var _fs
-try {
-  _fs = __nccwpck_require__(82161)
-} catch (_) {
-  _fs = __nccwpck_require__(35747)
-}
-
-function readFile (file, options, callback) {
-  if (callback == null) {
-    callback = options
-    options = {}
-  }
-
-  if (typeof options === 'string') {
-    options = {encoding: options}
-  }
-
-  options = options || {}
-  var fs = options.fs || _fs
-
-  var shouldThrow = true
-  if ('throws' in options) {
-    shouldThrow = options.throws
-  }
-
-  fs.readFile(file, options, function (err, data) {
-    if (err) return callback(err)
-
-    data = stripBom(data)
-
-    var obj
-    try {
-      obj = JSON.parse(data, options ? options.reviver : null)
-    } catch (err2) {
-      if (shouldThrow) {
-        err2.message = file + ': ' + err2.message
-        return callback(err2)
-      } else {
-        return callback(null, null)
-      }
-    }
-
-    callback(null, obj)
-  })
-}
-
-function readFileSync (file, options) {
-  options = options || {}
-  if (typeof options === 'string') {
-    options = {encoding: options}
-  }
-
-  var fs = options.fs || _fs
-
-  var shouldThrow = true
-  if ('throws' in options) {
-    shouldThrow = options.throws
-  }
-
-  try {
-    var content = fs.readFileSync(file, options)
-    content = stripBom(content)
-    return JSON.parse(content, options.reviver)
-  } catch (err) {
-    if (shouldThrow) {
-      err.message = file + ': ' + err.message
-      throw err
-    } else {
-      return null
-    }
-  }
-}
-
-function stringify (obj, options) {
-  var spaces
-  var EOL = '\n'
-  if (typeof options === 'object' && options !== null) {
-    if (options.spaces) {
-      spaces = options.spaces
-    }
-    if (options.EOL) {
-      EOL = options.EOL
-    }
-  }
-
-  var str = JSON.stringify(obj, options ? options.replacer : null, spaces)
-
-  return str.replace(/\n/g, EOL) + EOL
-}
-
-function writeFile (file, obj, options, callback) {
-  if (callback == null) {
-    callback = options
-    options = {}
-  }
-  options = options || {}
-  var fs = options.fs || _fs
-
-  var str = ''
-  try {
-    str = stringify(obj, options)
-  } catch (err) {
-    // Need to return whether a callback was passed or not
-    if (callback) callback(err, null)
-    return
-  }
-
-  fs.writeFile(file, str, options, callback)
-}
-
-function writeFileSync (file, obj, options) {
-  options = options || {}
-  var fs = options.fs || _fs
-
-  var str = stringify(obj, options)
-  // not sure if fs.writeFileSync returns anything, but just in case
-  return fs.writeFileSync(file, str, options)
-}
-
-function stripBom (content) {
-  // we do this because JSON.parse would convert it to a utf8 string if encoding wasn't specified
-  if (Buffer.isBuffer(content)) content = content.toString('utf8')
-  content = content.replace(/^\uFEFF/, '')
-  return content
-}
-
-var jsonfile = {
-  readFile: readFile,
-  readFileSync: readFileSync,
-  writeFile: writeFile,
-  writeFileSync: writeFileSync
-}
-
-module.exports = jsonfile
 
 
 /***/ }),
@@ -40716,18 +37632,6 @@ Object.defineProperty(module, 'exports', {
 
 /***/ }),
 
-/***/ 898:
-/***/ ((module) => {
-
-module.exports = r => {
-  const n = process.versions.node.split('.').map(x => parseInt(x, 10))
-  r = r.split('.').map(x => parseInt(x, 10))
-  return n[0] > r[0] || (n[0] === r[0] && (n[1] > r[1] || (n[1] === r[1] && n[2] >= r[2])))
-}
-
-
-/***/ }),
-
 /***/ 19628:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -41232,16 +38136,16 @@ module.exports.BufferList = BufferList
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.boolean = void 0;
 const boolean = function (value) {
-    if (typeof value === 'string') {
-        return ['true', 't', 'yes', 'y', 'on', '1'].includes(value.trim().toLowerCase());
+    switch (Object.prototype.toString.call(value)) {
+        case '[object String]':
+            return ['true', 't', 'yes', 'y', 'on', '1'].includes(value.trim().toLowerCase());
+        case '[object Number]':
+            return value.valueOf() === 1;
+        case '[object Boolean]':
+            return value.valueOf();
+        default:
+            return false;
     }
-    if (typeof value === 'number') {
-        return value === 1;
-    }
-    if (typeof value === 'boolean') {
-        return value;
-    }
-    return false;
 };
 exports.boolean = boolean;
 
@@ -44136,6 +41040,175 @@ module.exports = resolveCommand;
 
 /***/ }),
 
+/***/ 28706:
+/***/ ((module) => {
+
+/**
+ * Helpers.
+ */
+
+var s = 1000;
+var m = s * 60;
+var h = m * 60;
+var d = h * 24;
+var w = d * 7;
+var y = d * 365.25;
+
+/**
+ * Parse or format the given `val`.
+ *
+ * Options:
+ *
+ *  - `long` verbose formatting [false]
+ *
+ * @param {String|Number} val
+ * @param {Object} [options]
+ * @throws {Error} throw an error if val is not a non-empty string or a number
+ * @return {String|Number}
+ * @api public
+ */
+
+module.exports = function(val, options) {
+  options = options || {};
+  var type = typeof val;
+  if (type === 'string' && val.length > 0) {
+    return parse(val);
+  } else if (type === 'number' && isFinite(val)) {
+    return options.long ? fmtLong(val) : fmtShort(val);
+  }
+  throw new Error(
+    'val is not a non-empty string or a valid number. val=' +
+      JSON.stringify(val)
+  );
+};
+
+/**
+ * Parse the given `str` and return milliseconds.
+ *
+ * @param {String} str
+ * @return {Number}
+ * @api private
+ */
+
+function parse(str) {
+  str = String(str);
+  if (str.length > 100) {
+    return;
+  }
+  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
+    str
+  );
+  if (!match) {
+    return;
+  }
+  var n = parseFloat(match[1]);
+  var type = (match[2] || 'ms').toLowerCase();
+  switch (type) {
+    case 'years':
+    case 'year':
+    case 'yrs':
+    case 'yr':
+    case 'y':
+      return n * y;
+    case 'weeks':
+    case 'week':
+    case 'w':
+      return n * w;
+    case 'days':
+    case 'day':
+    case 'd':
+      return n * d;
+    case 'hours':
+    case 'hour':
+    case 'hrs':
+    case 'hr':
+    case 'h':
+      return n * h;
+    case 'minutes':
+    case 'minute':
+    case 'mins':
+    case 'min':
+    case 'm':
+      return n * m;
+    case 'seconds':
+    case 'second':
+    case 'secs':
+    case 'sec':
+    case 's':
+      return n * s;
+    case 'milliseconds':
+    case 'millisecond':
+    case 'msecs':
+    case 'msec':
+    case 'ms':
+      return n;
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Short format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtShort(ms) {
+  var msAbs = Math.abs(ms);
+  if (msAbs >= d) {
+    return Math.round(ms / d) + 'd';
+  }
+  if (msAbs >= h) {
+    return Math.round(ms / h) + 'h';
+  }
+  if (msAbs >= m) {
+    return Math.round(ms / m) + 'm';
+  }
+  if (msAbs >= s) {
+    return Math.round(ms / s) + 's';
+  }
+  return ms + 'ms';
+}
+
+/**
+ * Long format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtLong(ms) {
+  var msAbs = Math.abs(ms);
+  if (msAbs >= d) {
+    return plural(ms, msAbs, d, 'day');
+  }
+  if (msAbs >= h) {
+    return plural(ms, msAbs, h, 'hour');
+  }
+  if (msAbs >= m) {
+    return plural(ms, msAbs, m, 'minute');
+  }
+  if (msAbs >= s) {
+    return plural(ms, msAbs, s, 'second');
+  }
+  return ms + ' ms';
+}
+
+/**
+ * Pluralization helper.
+ */
+
+function plural(ms, msAbs, n, name) {
+  var isPlural = msAbs >= n * 1.5;
+  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
+}
+
+
+/***/ }),
+
 /***/ 12369:
 /***/ ((module, exports, __nccwpck_require__) => {
 
@@ -44428,7 +41501,7 @@ function setup(env) {
 	createDebug.disable = disable;
 	createDebug.enable = enable;
 	createDebug.enabled = enabled;
-	createDebug.humanize = __nccwpck_require__(84004);
+	createDebug.humanize = __nccwpck_require__(28706);
 	createDebug.destroy = destroy;
 
 	Object.keys(env).forEach(key => {
@@ -44477,6 +41550,8 @@ function setup(env) {
 	function createDebug(namespace) {
 		let prevTime;
 		let enableOverride = null;
+		let namespacesCache;
+		let enabledCache;
 
 		function debug(...args) {
 			// Disabled?
@@ -44537,7 +41612,17 @@ function setup(env) {
 		Object.defineProperty(debug, 'enabled', {
 			enumerable: true,
 			configurable: false,
-			get: () => enableOverride === null ? createDebug.enabled(namespace) : enableOverride,
+			get: () => {
+				if (enableOverride !== null) {
+					return enableOverride;
+				}
+				if (namespacesCache !== createDebug.namespaces) {
+					namespacesCache = createDebug.namespaces;
+					enabledCache = createDebug.enabled(namespace);
+				}
+
+				return enabledCache;
+			},
 			set: v => {
 				enableOverride = v;
 			}
@@ -44566,6 +41651,7 @@ function setup(env) {
 	*/
 	function enable(namespaces) {
 		createDebug.save(namespaces);
+		createDebug.namespaces = namespaces;
 
 		createDebug.names = [];
 		createDebug.skips = [];
@@ -45845,10 +42931,10 @@ const npmRunPath = __nccwpck_require__(79391);
 const onetime = __nccwpck_require__(81053);
 const makeError = __nccwpck_require__(35528);
 const normalizeStdio = __nccwpck_require__(89816);
-const {spawnedKill, spawnedCancel, setupTimeout, setExitHandler} = __nccwpck_require__(51134);
+const {spawnedKill, spawnedCancel, setupTimeout, validateTimeout, setExitHandler} = __nccwpck_require__(51134);
 const {handleInput, getSpawnedResult, makeAllStream, validateInputSync} = __nccwpck_require__(15156);
 const {mergePromise, getSpawnedPromise} = __nccwpck_require__(31045);
-const {joinCommand, parseCommand} = __nccwpck_require__(36429);
+const {joinCommand, parseCommand, getEscapedCommand} = __nccwpck_require__(36429);
 
 const DEFAULT_MAX_BUFFER = 1000 * 1000 * 100;
 
@@ -45912,6 +42998,9 @@ const handleOutput = (options, value, error) => {
 const execa = (file, args, options) => {
 	const parsed = handleArguments(file, args, options);
 	const command = joinCommand(file, args);
+	const escapedCommand = getEscapedCommand(file, args);
+
+	validateTimeout(parsed.options);
 
 	let spawned;
 	try {
@@ -45925,6 +43014,7 @@ const execa = (file, args, options) => {
 			stderr: '',
 			all: '',
 			command,
+			escapedCommand,
 			parsed,
 			timedOut: false,
 			isCanceled: false,
@@ -45957,6 +43047,7 @@ const execa = (file, args, options) => {
 				stderr,
 				all,
 				command,
+				escapedCommand,
 				parsed,
 				timedOut,
 				isCanceled: context.isCanceled,
@@ -45972,6 +43063,7 @@ const execa = (file, args, options) => {
 
 		return {
 			command,
+			escapedCommand,
 			exitCode: 0,
 			stdout,
 			stderr,
@@ -45997,6 +43089,7 @@ module.exports = execa;
 module.exports.sync = (file, args, options) => {
 	const parsed = handleArguments(file, args, options);
 	const command = joinCommand(file, args);
+	const escapedCommand = getEscapedCommand(file, args);
 
 	validateInputSync(parsed.options);
 
@@ -46010,6 +43103,7 @@ module.exports.sync = (file, args, options) => {
 			stderr: '',
 			all: '',
 			command,
+			escapedCommand,
 			parsed,
 			timedOut: false,
 			isCanceled: false,
@@ -46028,6 +43122,7 @@ module.exports.sync = (file, args, options) => {
 			signal: result.signal,
 			exitCode: result.status,
 			command,
+			escapedCommand,
 			parsed,
 			timedOut: result.error && result.error.code === 'ETIMEDOUT',
 			isCanceled: false,
@@ -46043,6 +43138,7 @@ module.exports.sync = (file, args, options) => {
 
 	return {
 		command,
+		escapedCommand,
 		exitCode: 0,
 		stdout,
 		stderr,
@@ -46103,15 +43199,34 @@ module.exports.node = (scriptPath, args, options = {}) => {
 
 "use strict";
 
-const SPACES_REGEXP = / +/g;
-
-const joinCommand = (file, args = []) => {
+const normalizeArgs = (file, args = []) => {
 	if (!Array.isArray(args)) {
-		return file;
+		return [file];
 	}
 
-	return [file, ...args].join(' ');
+	return [file, ...args];
 };
+
+const NO_ESCAPE_REGEXP = /^[\w.-]+$/;
+const DOUBLE_QUOTES_REGEXP = /"/g;
+
+const escapeArg = arg => {
+	if (typeof arg !== 'string' || NO_ESCAPE_REGEXP.test(arg)) {
+		return arg;
+	}
+
+	return `"${arg.replace(DOUBLE_QUOTES_REGEXP, '\\"')}"`;
+};
+
+const joinCommand = (file, args) => {
+	return normalizeArgs(file, args).join(' ');
+};
+
+const getEscapedCommand = (file, args) => {
+	return normalizeArgs(file, args).map(arg => escapeArg(arg)).join(' ');
+};
+
+const SPACES_REGEXP = / +/g;
 
 // Handle `execa.command()`
 const parseCommand = command => {
@@ -46132,6 +43247,7 @@ const parseCommand = command => {
 
 module.exports = {
 	joinCommand,
+	getEscapedCommand,
 	parseCommand
 };
 
@@ -46177,6 +43293,7 @@ const makeError = ({
 	signal,
 	exitCode,
 	command,
+	escapedCommand,
 	timedOut,
 	isCanceled,
 	killed,
@@ -46205,6 +43322,7 @@ const makeError = ({
 
 	error.shortMessage = shortMessage;
 	error.command = command;
+	error.escapedCommand = escapedCommand;
 	error.exitCode = exitCode;
 	error.signal = signal;
 	error.signalDescription = signalDescription;
@@ -46309,10 +43427,6 @@ const setupTimeout = (spawned, {timeout, killSignal = 'SIGTERM'}, spawnedPromise
 		return spawnedPromise;
 	}
 
-	if (!Number.isFinite(timeout) || timeout < 0) {
-		throw new TypeError(`Expected the \`timeout\` option to be a non-negative integer, got \`${timeout}\` (${typeof timeout})`);
-	}
-
 	let timeoutId;
 	const timeoutPromise = new Promise((resolve, reject) => {
 		timeoutId = setTimeout(() => {
@@ -46325,6 +43439,12 @@ const setupTimeout = (spawned, {timeout, killSignal = 'SIGTERM'}, spawnedPromise
 	});
 
 	return Promise.race([timeoutPromise, safeSpawnedPromise]);
+};
+
+const validateTimeout = ({timeout}) => {
+	if (timeout !== undefined && (!Number.isFinite(timeout) || timeout < 0)) {
+		throw new TypeError(`Expected the \`timeout\` option to be a non-negative integer, got \`${timeout}\` (${typeof timeout})`);
+	}
 };
 
 // `cleanup` option handling
@@ -46346,6 +43466,7 @@ module.exports = {
 	spawnedKill,
 	spawnedCancel,
 	setupTimeout,
+	validateTimeout,
 	setExitHandler
 };
 
@@ -46478,7 +43599,7 @@ const mergeStream = __nccwpck_require__(6020);
 // `input` option
 const handleInput = (spawned, input) => {
 	// Checking for stdin is workaround for https://github.com/nodejs/node/issues/26852
-	// TODO: Remove `|| spawned.stdin === undefined` once we drop support for Node.js <=12.2.0
+	// @todo remove `|| spawned.stdin === undefined` once we drop support for Node.js <=12.2.0
 	if (input === undefined || spawned.stdin === undefined) {
 		return;
 	}
@@ -47338,7 +44459,7 @@ function copySync (src, dest, opts) {
     see https://github.com/jprichardson/node-fs-extra/issues/269`)
   }
 
-  const { srcStat, destStat } = stat.checkPathsSync(src, dest, 'copy')
+  const { srcStat, destStat } = stat.checkPathsSync(src, dest, 'copy', opts)
   stat.checkParentPathsSync(src, srcStat, dest, 'copy')
   return handleFilterAndCopy(destStat, src, dest, opts)
 }
@@ -47347,7 +44468,7 @@ function handleFilterAndCopy (destStat, src, dest, opts) {
   if (opts.filter && !opts.filter(src, dest)) return
   const destParent = path.dirname(dest)
   if (!fs.existsSync(destParent)) mkdirsSync(destParent)
-  return startCopy(destStat, src, dest, opts)
+  return getStats(destStat, src, dest, opts)
 }
 
 function startCopy (destStat, src, dest, opts) {
@@ -47364,6 +44485,9 @@ function getStats (destStat, src, dest, opts) {
            srcStat.isCharacterDevice() ||
            srcStat.isBlockDevice()) return onFile(srcStat, destStat, src, dest, opts)
   else if (srcStat.isSymbolicLink()) return onLink(destStat, src, dest, opts)
+  else if (srcStat.isSocket()) throw new Error(`Cannot copy a socket file: ${src}`)
+  else if (srcStat.isFIFO()) throw new Error(`Cannot copy a FIFO pipe: ${src}`)
+  throw new Error(`Unknown file: ${src}`)
 }
 
 function onFile (srcStat, destStat, src, dest, opts) {
@@ -47416,9 +44540,6 @@ function setDestTimestamps (src, dest) {
 
 function onDir (srcStat, destStat, src, dest, opts) {
   if (!destStat) return mkDirAndCopy(srcStat.mode, src, dest, opts)
-  if (destStat && !destStat.isDirectory()) {
-    throw new Error(`Cannot overwrite non-directory '${dest}' with directory '${src}'.`)
-  }
   return copyDir(src, dest, opts)
 }
 
@@ -47435,7 +44556,7 @@ function copyDir (src, dest, opts) {
 function copyDirItem (item, src, dest, opts) {
   const srcItem = path.join(src, item)
   const destItem = path.join(dest, item)
-  const { destStat } = stat.checkPathsSync(srcItem, destItem, 'copy')
+  const { destStat } = stat.checkPathsSync(srcItem, destItem, 'copy', opts)
   return startCopy(destStat, srcItem, destItem, opts)
 }
 
@@ -47531,7 +44652,7 @@ function copy (src, dest, opts, cb) {
     see https://github.com/jprichardson/node-fs-extra/issues/269`)
   }
 
-  stat.checkPaths(src, dest, 'copy', (err, stats) => {
+  stat.checkPaths(src, dest, 'copy', opts, (err, stats) => {
     if (err) return cb(err)
     const { srcStat, destStat } = stats
     stat.checkParentPaths(src, srcStat, dest, 'copy', err => {
@@ -47546,10 +44667,10 @@ function checkParentDir (destStat, src, dest, opts, cb) {
   const destParent = path.dirname(dest)
   pathExists(destParent, (err, dirExists) => {
     if (err) return cb(err)
-    if (dirExists) return startCopy(destStat, src, dest, opts, cb)
+    if (dirExists) return getStats(destStat, src, dest, opts, cb)
     mkdirs(destParent, err => {
       if (err) return cb(err)
-      return startCopy(destStat, src, dest, opts, cb)
+      return getStats(destStat, src, dest, opts, cb)
     })
   })
 }
@@ -47576,6 +44697,9 @@ function getStats (destStat, src, dest, opts, cb) {
              srcStat.isCharacterDevice() ||
              srcStat.isBlockDevice()) return onFile(srcStat, destStat, src, dest, opts, cb)
     else if (srcStat.isSymbolicLink()) return onLink(destStat, src, dest, opts, cb)
+    else if (srcStat.isSocket()) return cb(new Error(`Cannot copy a socket file: ${src}`))
+    else if (srcStat.isFIFO()) return cb(new Error(`Cannot copy a FIFO pipe: ${src}`))
+    return cb(new Error(`Unknown file: ${src}`))
   })
 }
 
@@ -47647,9 +44771,6 @@ function setDestTimestamps (src, dest, cb) {
 
 function onDir (srcStat, destStat, src, dest, opts, cb) {
   if (!destStat) return mkDirAndCopy(srcStat.mode, src, dest, opts, cb)
-  if (destStat && !destStat.isDirectory()) {
-    return cb(new Error(`Cannot overwrite non-directory '${dest}' with directory '${src}'.`))
-  }
   return copyDir(src, dest, opts, cb)
 }
 
@@ -47679,7 +44800,7 @@ function copyDirItems (items, src, dest, opts, cb) {
 function copyDirItem (items, item, src, dest, opts, cb) {
   const srcItem = path.join(src, item)
   const destItem = path.join(dest, item)
-  stat.checkPaths(srcItem, destItem, 'copy', (err, stats) => {
+  stat.checkPaths(srcItem, destItem, 'copy', opts, (err, stats) => {
     if (err) return cb(err)
     const { destStat } = stats
     startCopy(destStat, srcItem, destItem, opts, err => {
@@ -47758,30 +44879,21 @@ module.exports = {
 "use strict";
 
 
-const u = __nccwpck_require__(92178).fromCallback
-const fs = __nccwpck_require__(82161)
+const u = __nccwpck_require__(92178).fromPromise
+const fs = __nccwpck_require__(82998)
 const path = __nccwpck_require__(85622)
 const mkdir = __nccwpck_require__(81881)
 const remove = __nccwpck_require__(71703)
 
-const emptyDir = u(function emptyDir (dir, callback) {
-  callback = callback || function () {}
-  fs.readdir(dir, (err, items) => {
-    if (err) return mkdir.mkdirs(dir, callback)
+const emptyDir = u(async function emptyDir (dir) {
+  let items
+  try {
+    items = await fs.readdir(dir)
+  } catch {
+    return mkdir.mkdirs(dir)
+  }
 
-    items = items.map(item => path.join(dir, item))
-
-    deleteItem()
-
-    function deleteItem () {
-      const item = items.pop()
-      if (!item) return callback()
-      remove.remove(item, err => {
-        if (err) return callback(err)
-        deleteItem()
-      })
-    }
-  })
+  return Promise.all(items.map(item => remove.remove(path.join(dir, item))))
 })
 
 function emptyDirSync (dir) {
@@ -47927,6 +45039,7 @@ const path = __nccwpck_require__(85622)
 const fs = __nccwpck_require__(82161)
 const mkdir = __nccwpck_require__(81881)
 const pathExists = __nccwpck_require__(42176).pathExists
+const { areIdentical } = __nccwpck_require__(66834)
 
 function createLink (srcpath, dstpath, callback) {
   function makeLink (srcpath, dstpath) {
@@ -47936,14 +45049,13 @@ function createLink (srcpath, dstpath, callback) {
     })
   }
 
-  pathExists(dstpath, (err, destinationExists) => {
-    if (err) return callback(err)
-    if (destinationExists) return callback(null)
-    fs.lstat(srcpath, (err) => {
+  fs.lstat(dstpath, (_, dstStat) => {
+    fs.lstat(srcpath, (err, srcStat) => {
       if (err) {
         err.message = err.message.replace('lstat', 'ensureLink')
         return callback(err)
       }
+      if (dstStat && areIdentical(srcStat, dstStat)) return callback(null)
 
       const dir = path.dirname(dstpath)
       pathExists(dir, (err, dirExists) => {
@@ -47959,11 +45071,14 @@ function createLink (srcpath, dstpath, callback) {
 }
 
 function createLinkSync (srcpath, dstpath) {
-  const destinationExists = fs.existsSync(dstpath)
-  if (destinationExists) return undefined
+  let dstStat
+  try {
+    dstStat = fs.lstatSync(dstpath)
+  } catch {}
 
   try {
-    fs.lstatSync(srcpath)
+    const srcStat = fs.lstatSync(srcpath)
+    if (dstStat && areIdentical(srcStat, dstStat)) return
   } catch (err) {
     err.message = err.message.replace('lstat', 'ensureLink')
     throw err
@@ -48139,7 +45254,7 @@ module.exports = {
 
 const u = __nccwpck_require__(92178).fromCallback
 const path = __nccwpck_require__(85622)
-const fs = __nccwpck_require__(82161)
+const fs = __nccwpck_require__(82998)
 const _mkdirs = __nccwpck_require__(81881)
 const mkdirs = _mkdirs.mkdirs
 const mkdirsSync = _mkdirs.mkdirsSync
@@ -48154,26 +45269,38 @@ const symlinkTypeSync = _symlinkType.symlinkTypeSync
 
 const pathExists = __nccwpck_require__(42176).pathExists
 
+const { areIdentical } = __nccwpck_require__(66834)
+
 function createSymlink (srcpath, dstpath, type, callback) {
   callback = (typeof type === 'function') ? type : callback
   type = (typeof type === 'function') ? false : type
 
-  pathExists(dstpath, (err, destinationExists) => {
+  fs.lstat(dstpath, (err, stats) => {
+    if (!err && stats.isSymbolicLink()) {
+      Promise.all([
+        fs.stat(srcpath),
+        fs.stat(dstpath)
+      ]).then(([srcStat, dstStat]) => {
+        if (areIdentical(srcStat, dstStat)) return callback(null)
+        _createSymlink(srcpath, dstpath, type, callback)
+      })
+    } else _createSymlink(srcpath, dstpath, type, callback)
+  })
+}
+
+function _createSymlink (srcpath, dstpath, type, callback) {
+  symlinkPaths(srcpath, dstpath, (err, relative) => {
     if (err) return callback(err)
-    if (destinationExists) return callback(null)
-    symlinkPaths(srcpath, dstpath, (err, relative) => {
+    srcpath = relative.toDst
+    symlinkType(relative.toCwd, type, (err, type) => {
       if (err) return callback(err)
-      srcpath = relative.toDst
-      symlinkType(relative.toCwd, type, (err, type) => {
+      const dir = path.dirname(dstpath)
+      pathExists(dir, (err, dirExists) => {
         if (err) return callback(err)
-        const dir = path.dirname(dstpath)
-        pathExists(dir, (err, dirExists) => {
+        if (dirExists) return fs.symlink(srcpath, dstpath, type, callback)
+        mkdirs(dir, err => {
           if (err) return callback(err)
-          if (dirExists) return fs.symlink(srcpath, dstpath, type, callback)
-          mkdirs(dir, err => {
-            if (err) return callback(err)
-            fs.symlink(srcpath, dstpath, type, callback)
-          })
+          fs.symlink(srcpath, dstpath, type, callback)
         })
       })
     })
@@ -48181,8 +45308,15 @@ function createSymlink (srcpath, dstpath, type, callback) {
 }
 
 function createSymlinkSync (srcpath, dstpath, type) {
-  const destinationExists = fs.existsSync(dstpath)
-  if (destinationExists) return undefined
+  let stats
+  try {
+    stats = fs.lstatSync(dstpath)
+  } catch {}
+  if (stats && stats.isSymbolicLink()) {
+    const srcStat = fs.statSync(srcpath)
+    const dstStat = fs.statSync(dstpath)
+    if (areIdentical(srcStat, dstStat)) return
+  }
 
   const relative = symlinkPathsSync(srcpath, dstpath)
   srcpath = relative.toDst
@@ -48255,20 +45389,14 @@ const api = [
   return typeof fs[key] === 'function'
 })
 
-// Export all keys:
-Object.keys(fs).forEach(key => {
-  if (key === 'promises') {
-    // fs.promises is a getter property that triggers ExperimentalWarning
-    // Don't re-export it here, the getter is defined in "lib/index.js"
-    return
-  }
-  exports[key] = fs[key]
-})
+// Export cloned fs:
+Object.assign(exports, fs)
 
 // Universalify async methods:
 api.forEach(method => {
   exports[method] = u(fs[method])
 })
+exports.realpath.native = u(fs.realpath.native)
 
 // We differ from mz/fs in that we still ship the old, broken, fs.exists()
 // since we are a drop-in replacement for the native module
@@ -48332,11 +45460,6 @@ if (typeof fs.writev === 'function') {
   }
 }
 
-// fs.realpath.native only available in Node v9.2+
-if (typeof fs.realpath.native === 'function') {
-  exports.realpath.native = u(fs.realpath.native)
-}
-
 
 /***/ }),
 
@@ -48361,15 +45484,6 @@ module.exports = {
   ...__nccwpck_require__(81192),
   ...__nccwpck_require__(42176),
   ...__nccwpck_require__(71703)
-}
-
-// Export fs.promises as a getter property so that we don't trigger
-// ExperimentalWarning before fs.promises is actually accessed.
-const fs = __nccwpck_require__(35747)
-if (Object.getOwnPropertyDescriptor(fs, 'promises')) {
-  Object.defineProperty(module.exports, "promises", ({
-    get () { return fs.promises }
-  }))
 }
 
 
@@ -48405,7 +45519,7 @@ module.exports = jsonFile
 "use strict";
 
 
-const jsonFile = __nccwpck_require__(91393)
+const jsonFile = __nccwpck_require__(38021)
 
 module.exports = {
   // jsonfile exports
@@ -48424,7 +45538,7 @@ module.exports = {
 "use strict";
 
 
-const { stringify } = __nccwpck_require__(24401)
+const { stringify } = __nccwpck_require__(78429)
 const { outputFileSync } = __nccwpck_require__(81192)
 
 function outputJsonSync (file, data, options) {
@@ -48444,7 +45558,7 @@ module.exports = outputJsonSync
 "use strict";
 
 
-const { stringify } = __nccwpck_require__(24401)
+const { stringify } = __nccwpck_require__(78429)
 const { outputFile } = __nccwpck_require__(81192)
 
 async function outputJson (file, data, options = {}) {
@@ -48484,21 +45598,52 @@ module.exports = {
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
+
+const fs = __nccwpck_require__(82998)
+const { checkPath } = __nccwpck_require__(63538)
+
+const getMode = options => {
+  const defaults = { mode: 0o777 }
+  if (typeof options === 'number') return options
+  return ({ ...defaults, ...options }).mode
+}
+
+module.exports.makeDir = async (dir, options) => {
+  checkPath(dir)
+
+  return fs.mkdir(dir, {
+    mode: getMode(options),
+    recursive: true
+  })
+}
+
+module.exports.makeDirSync = (dir, options) => {
+  checkPath(dir)
+
+  return fs.mkdirSync(dir, {
+    mode: getMode(options),
+    recursive: true
+  })
+}
+
+
+/***/ }),
+
+/***/ 63538:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
 // Adapted from https://github.com/sindresorhus/make-dir
 // Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-const fs = __nccwpck_require__(82998)
 const path = __nccwpck_require__(85622)
-const atLeastNode = __nccwpck_require__(898)
-
-const useNativeRecursiveOption = atLeastNode('10.12.0')
 
 // https://github.com/nodejs/node/issues/8987
 // https://github.com/libuv/libuv/pull/1088
-const checkPath = pth => {
+module.exports.checkPath = function checkPath (pth) {
   if (process.platform === 'win32') {
     const pathHasInvalidWinCharacters = /[<>:"|?*]/.test(pth.replace(path.parse(pth).root, ''))
 
@@ -48508,122 +45653,6 @@ const checkPath = pth => {
       throw error
     }
   }
-}
-
-const processOptions = options => {
-  const defaults = { mode: 0o777 }
-  if (typeof options === 'number') options = { mode: options }
-  return { ...defaults, ...options }
-}
-
-const permissionError = pth => {
-  // This replicates the exception of `fs.mkdir` with native the
-  // `recusive` option when run on an invalid drive under Windows.
-  const error = new Error(`operation not permitted, mkdir '${pth}'`)
-  error.code = 'EPERM'
-  error.errno = -4048
-  error.path = pth
-  error.syscall = 'mkdir'
-  return error
-}
-
-module.exports.makeDir = async (input, options) => {
-  checkPath(input)
-  options = processOptions(options)
-
-  if (useNativeRecursiveOption) {
-    const pth = path.resolve(input)
-
-    return fs.mkdir(pth, {
-      mode: options.mode,
-      recursive: true
-    })
-  }
-
-  const make = async pth => {
-    try {
-      await fs.mkdir(pth, options.mode)
-    } catch (error) {
-      if (error.code === 'EPERM') {
-        throw error
-      }
-
-      if (error.code === 'ENOENT') {
-        if (path.dirname(pth) === pth) {
-          throw permissionError(pth)
-        }
-
-        if (error.message.includes('null bytes')) {
-          throw error
-        }
-
-        await make(path.dirname(pth))
-        return make(pth)
-      }
-
-      try {
-        const stats = await fs.stat(pth)
-        if (!stats.isDirectory()) {
-          // This error is never exposed to the user
-          // it is caught below, and the original error is thrown
-          throw new Error('The path is not a directory')
-        }
-      } catch {
-        throw error
-      }
-    }
-  }
-
-  return make(path.resolve(input))
-}
-
-module.exports.makeDirSync = (input, options) => {
-  checkPath(input)
-  options = processOptions(options)
-
-  if (useNativeRecursiveOption) {
-    const pth = path.resolve(input)
-
-    return fs.mkdirSync(pth, {
-      mode: options.mode,
-      recursive: true
-    })
-  }
-
-  const make = pth => {
-    try {
-      fs.mkdirSync(pth, options.mode)
-    } catch (error) {
-      if (error.code === 'EPERM') {
-        throw error
-      }
-
-      if (error.code === 'ENOENT') {
-        if (path.dirname(pth) === pth) {
-          throw permissionError(pth)
-        }
-
-        if (error.message.includes('null bytes')) {
-          throw error
-        }
-
-        make(path.dirname(pth))
-        return make(pth)
-      }
-
-      try {
-        if (!fs.statSync(pth).isDirectory()) {
-          // This error is never exposed to the user
-          // it is caught below, and the original error is thrown
-          throw new Error('The path is not a directory')
-        }
-      } catch {
-        throw error
-      }
-    }
-  }
-
-  return make(path.resolve(input))
 }
 
 
@@ -48659,13 +45688,20 @@ function moveSync (src, dest, opts) {
   opts = opts || {}
   const overwrite = opts.overwrite || opts.clobber || false
 
-  const { srcStat } = stat.checkPathsSync(src, dest, 'move')
+  const { srcStat, isChangingCase = false } = stat.checkPathsSync(src, dest, 'move', opts)
   stat.checkParentPathsSync(src, srcStat, dest, 'move')
-  mkdirpSync(path.dirname(dest))
-  return doRename(src, dest, overwrite)
+  if (!isParentRoot(dest)) mkdirpSync(path.dirname(dest))
+  return doRename(src, dest, overwrite, isChangingCase)
 }
 
-function doRename (src, dest, overwrite) {
+function isParentRoot (dest) {
+  const parent = path.dirname(dest)
+  const parsedPath = path.parse(parent)
+  return parsedPath.root === parent
+}
+
+function doRename (src, dest, overwrite, isChangingCase) {
+  if (isChangingCase) return rename(src, dest, overwrite)
   if (overwrite) {
     removeSync(dest)
     return rename(src, dest, overwrite)
@@ -48733,20 +45769,28 @@ function move (src, dest, opts, cb) {
 
   const overwrite = opts.overwrite || opts.clobber || false
 
-  stat.checkPaths(src, dest, 'move', (err, stats) => {
+  stat.checkPaths(src, dest, 'move', opts, (err, stats) => {
     if (err) return cb(err)
-    const { srcStat } = stats
+    const { srcStat, isChangingCase = false } = stats
     stat.checkParentPaths(src, srcStat, dest, 'move', err => {
       if (err) return cb(err)
+      if (isParentRoot(dest)) return doRename(src, dest, overwrite, isChangingCase, cb)
       mkdirp(path.dirname(dest), err => {
         if (err) return cb(err)
-        return doRename(src, dest, overwrite, cb)
+        return doRename(src, dest, overwrite, isChangingCase, cb)
       })
     })
   })
 }
 
-function doRename (src, dest, overwrite, cb) {
+function isParentRoot (dest) {
+  const parent = path.dirname(dest)
+  const parsedPath = path.parse(parent)
+  return parsedPath.root === parent
+}
+
+function doRename (src, dest, overwrite, isChangingCase, cb) {
+  if (isChangingCase) return rename(src, dest, overwrite, cb)
   if (overwrite) {
     return remove(dest, err => {
       if (err) return cb(err)
@@ -48858,12 +45902,25 @@ module.exports = {
 "use strict";
 
 
+const fs = __nccwpck_require__(82161)
 const u = __nccwpck_require__(92178).fromCallback
 const rimraf = __nccwpck_require__(90065)
 
+function remove (path, callback) {
+  // Node 14.14.0+
+  if (fs.rm) return fs.rm(path, { recursive: true, force: true }, callback)
+  rimraf(path, callback)
+}
+
+function removeSync (path) {
+  // Node 14.14.0+
+  if (fs.rmSync) return fs.rmSync(path, { recursive: true, force: true })
+  rimraf.sync(path)
+}
+
 module.exports = {
-  remove: u(rimraf),
-  removeSync: rimraf.sync
+  remove: u(remove),
+  removeSync
 }
 
 
@@ -49188,27 +46245,28 @@ rimraf.sync = rimrafSync
 const fs = __nccwpck_require__(82998)
 const path = __nccwpck_require__(85622)
 const util = __nccwpck_require__(31669)
-const atLeastNode = __nccwpck_require__(898)
 
-const nodeSupportsBigInt = atLeastNode('10.5.0')
-const stat = (file) => nodeSupportsBigInt ? fs.stat(file, { bigint: true }) : fs.stat(file)
-const statSync = (file) => nodeSupportsBigInt ? fs.statSync(file, { bigint: true }) : fs.statSync(file)
-
-function getStats (src, dest) {
+function getStats (src, dest, opts) {
+  const statFunc = opts.dereference
+    ? (file) => fs.stat(file, { bigint: true })
+    : (file) => fs.lstat(file, { bigint: true })
   return Promise.all([
-    stat(src),
-    stat(dest).catch(err => {
+    statFunc(src),
+    statFunc(dest).catch(err => {
       if (err.code === 'ENOENT') return null
       throw err
     })
   ]).then(([srcStat, destStat]) => ({ srcStat, destStat }))
 }
 
-function getStatsSync (src, dest) {
+function getStatsSync (src, dest, opts) {
   let destStat
-  const srcStat = statSync(src)
+  const statFunc = opts.dereference
+    ? (file) => fs.statSync(file, { bigint: true })
+    : (file) => fs.lstatSync(file, { bigint: true })
+  const srcStat = statFunc(src)
   try {
-    destStat = statSync(dest)
+    destStat = statFunc(dest)
   } catch (err) {
     if (err.code === 'ENOENT') return { srcStat, destStat: null }
     throw err
@@ -49216,13 +46274,30 @@ function getStatsSync (src, dest) {
   return { srcStat, destStat }
 }
 
-function checkPaths (src, dest, funcName, cb) {
-  util.callbackify(getStats)(src, dest, (err, stats) => {
+function checkPaths (src, dest, funcName, opts, cb) {
+  util.callbackify(getStats)(src, dest, opts, (err, stats) => {
     if (err) return cb(err)
     const { srcStat, destStat } = stats
-    if (destStat && areIdentical(srcStat, destStat)) {
-      return cb(new Error('Source and destination must not be the same.'))
+
+    if (destStat) {
+      if (areIdentical(srcStat, destStat)) {
+        const srcBaseName = path.basename(src)
+        const destBaseName = path.basename(dest)
+        if (funcName === 'move' &&
+          srcBaseName !== destBaseName &&
+          srcBaseName.toLowerCase() === destBaseName.toLowerCase()) {
+          return cb(null, { srcStat, destStat, isChangingCase: true })
+        }
+        return cb(new Error('Source and destination must not be the same.'))
+      }
+      if (srcStat.isDirectory() && !destStat.isDirectory()) {
+        return cb(new Error(`Cannot overwrite non-directory '${dest}' with directory '${src}'.`))
+      }
+      if (!srcStat.isDirectory() && destStat.isDirectory()) {
+        return cb(new Error(`Cannot overwrite directory '${dest}' with non-directory '${src}'.`))
+      }
     }
+
     if (srcStat.isDirectory() && isSrcSubdir(src, dest)) {
       return cb(new Error(errMsg(src, dest, funcName)))
     }
@@ -49230,11 +46305,28 @@ function checkPaths (src, dest, funcName, cb) {
   })
 }
 
-function checkPathsSync (src, dest, funcName) {
-  const { srcStat, destStat } = getStatsSync(src, dest)
-  if (destStat && areIdentical(srcStat, destStat)) {
-    throw new Error('Source and destination must not be the same.')
+function checkPathsSync (src, dest, funcName, opts) {
+  const { srcStat, destStat } = getStatsSync(src, dest, opts)
+
+  if (destStat) {
+    if (areIdentical(srcStat, destStat)) {
+      const srcBaseName = path.basename(src)
+      const destBaseName = path.basename(dest)
+      if (funcName === 'move' &&
+        srcBaseName !== destBaseName &&
+        srcBaseName.toLowerCase() === destBaseName.toLowerCase()) {
+        return { srcStat, destStat, isChangingCase: true }
+      }
+      throw new Error('Source and destination must not be the same.')
+    }
+    if (srcStat.isDirectory() && !destStat.isDirectory()) {
+      throw new Error(`Cannot overwrite non-directory '${dest}' with directory '${src}'.`)
+    }
+    if (!srcStat.isDirectory() && destStat.isDirectory()) {
+      throw new Error(`Cannot overwrite directory '${dest}' with non-directory '${src}'.`)
+    }
   }
+
   if (srcStat.isDirectory() && isSrcSubdir(src, dest)) {
     throw new Error(errMsg(src, dest, funcName))
   }
@@ -49249,7 +46341,7 @@ function checkParentPaths (src, srcStat, dest, funcName, cb) {
   const srcParent = path.resolve(path.dirname(src))
   const destParent = path.resolve(path.dirname(dest))
   if (destParent === srcParent || destParent === path.parse(destParent).root) return cb()
-  const callback = (err, destStat) => {
+  fs.stat(destParent, { bigint: true }, (err, destStat) => {
     if (err) {
       if (err.code === 'ENOENT') return cb()
       return cb(err)
@@ -49258,9 +46350,7 @@ function checkParentPaths (src, srcStat, dest, funcName, cb) {
       return cb(new Error(errMsg(src, dest, funcName)))
     }
     return checkParentPaths(src, srcStat, destParent, funcName, cb)
-  }
-  if (nodeSupportsBigInt) fs.stat(destParent, { bigint: true }, callback)
-  else fs.stat(destParent, callback)
+  })
 }
 
 function checkParentPathsSync (src, srcStat, dest, funcName) {
@@ -49269,7 +46359,7 @@ function checkParentPathsSync (src, srcStat, dest, funcName) {
   if (destParent === srcParent || destParent === path.parse(destParent).root) return
   let destStat
   try {
-    destStat = statSync(destParent)
+    destStat = fs.statSync(destParent, { bigint: true })
   } catch (err) {
     if (err.code === 'ENOENT') return
     throw err
@@ -49281,26 +46371,7 @@ function checkParentPathsSync (src, srcStat, dest, funcName) {
 }
 
 function areIdentical (srcStat, destStat) {
-  if (destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {
-    if (nodeSupportsBigInt || destStat.ino < Number.MAX_SAFE_INTEGER) {
-      // definitive answer
-      return true
-    }
-    // Use additional heuristics if we can't use 'bigint'.
-    // Different 'ino' could be represented the same if they are >= Number.MAX_SAFE_INTEGER
-    // See issue 657
-    if (destStat.size === srcStat.size &&
-        destStat.mode === srcStat.mode &&
-        destStat.nlink === srcStat.nlink &&
-        destStat.atimeMs === srcStat.atimeMs &&
-        destStat.mtimeMs === srcStat.mtimeMs &&
-        destStat.ctimeMs === srcStat.ctimeMs &&
-        destStat.birthtimeMs === srcStat.birthtimeMs) {
-      // heuristic answer
-      return true
-    }
-  }
-  return false
+  return destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev
 }
 
 // return true if dest is a subdir of src, otherwise false.
@@ -49320,7 +46391,8 @@ module.exports = {
   checkPathsSync,
   checkParentPaths,
   checkParentPathsSync,
-  isSrcSubdir
+  isSrcSubdir,
+  areIdentical
 }
 
 
@@ -49356,6 +46428,122 @@ module.exports = {
   utimesMillis,
   utimesMillisSync
 }
+
+
+/***/ }),
+
+/***/ 38021:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+let _fs
+try {
+  _fs = __nccwpck_require__(82161)
+} catch (_) {
+  _fs = __nccwpck_require__(35747)
+}
+const universalify = __nccwpck_require__(92178)
+const { stringify, stripBom } = __nccwpck_require__(78429)
+
+async function _readFile (file, options = {}) {
+  if (typeof options === 'string') {
+    options = { encoding: options }
+  }
+
+  const fs = options.fs || _fs
+
+  const shouldThrow = 'throws' in options ? options.throws : true
+
+  let data = await universalify.fromCallback(fs.readFile)(file, options)
+
+  data = stripBom(data)
+
+  let obj
+  try {
+    obj = JSON.parse(data, options ? options.reviver : null)
+  } catch (err) {
+    if (shouldThrow) {
+      err.message = `${file}: ${err.message}`
+      throw err
+    } else {
+      return null
+    }
+  }
+
+  return obj
+}
+
+const readFile = universalify.fromPromise(_readFile)
+
+function readFileSync (file, options = {}) {
+  if (typeof options === 'string') {
+    options = { encoding: options }
+  }
+
+  const fs = options.fs || _fs
+
+  const shouldThrow = 'throws' in options ? options.throws : true
+
+  try {
+    let content = fs.readFileSync(file, options)
+    content = stripBom(content)
+    return JSON.parse(content, options.reviver)
+  } catch (err) {
+    if (shouldThrow) {
+      err.message = `${file}: ${err.message}`
+      throw err
+    } else {
+      return null
+    }
+  }
+}
+
+async function _writeFile (file, obj, options = {}) {
+  const fs = options.fs || _fs
+
+  const str = stringify(obj, options)
+
+  await universalify.fromCallback(fs.writeFile)(file, str, options)
+}
+
+const writeFile = universalify.fromPromise(_writeFile)
+
+function writeFileSync (file, obj, options = {}) {
+  const fs = options.fs || _fs
+
+  const str = stringify(obj, options)
+  // not sure if fs.writeFileSync returns anything, but just in case
+  return fs.writeFileSync(file, str, options)
+}
+
+const jsonfile = {
+  readFile,
+  readFileSync,
+  writeFile,
+  writeFileSync
+}
+
+module.exports = jsonfile
+
+
+/***/ }),
+
+/***/ 78429:
+/***/ ((module) => {
+
+function stringify (obj, { EOL = '\n', finalEOL = true, replacer = null, spaces } = {}) {
+  const EOF = finalEOL ? EOL : ''
+  const str = JSON.stringify(obj, replacer, spaces)
+
+  return str.replace(/\n/g, EOL) + EOF
+}
+
+function stripBom (content) {
+  // we do this because JSON.parse would convert it to a utf8 string if encoding wasn't specified
+  if (Buffer.isBuffer(content)) content = content.toString('utf8')
+  return content.replace(/^\uFEFF/, '')
+}
+
+module.exports = { stringify, stripBom }
 
 
 /***/ }),
@@ -50419,7 +47607,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const isUrlMatchingNoProxy = (subjectUrl, noProxy) => {
   const subjectUrlTokens = (0, _url.parse)(subjectUrl);
-  const rules = noProxy.split(/[\s,]/);
+  const rules = noProxy.split(/[\s,]+/);
 
   for (const rule of rules) {
     const ruleMatch = rule.replace(/^(?<leadingDot>\.)/, '*').match(/^(?<hostname>.+?)(?::(?<port>\d+))?$/);
@@ -53927,7 +51115,7 @@ function fromUrl (giturl, opts) {
     isGitHubShorthand(giturl) ? 'github:' + giturl : giturl
   )
   var parsed = parseGitUrl(url)
-  var shortcutMatch = url.match(new RegExp('^([^:]+):(?:(?:[^@:]+(?:[^@]+)?@)?([^/]*))[/](.+?)(?:[.]git)?($|#)'))
+  var shortcutMatch = url.match(/^([^:]+):(?:[^@]+@)?(?:([^/]*)\/)?([^#]+)/)
   var matches = Object.keys(gitHosts).map(function (gitHostName) {
     try {
       var gitHostInfo = gitHosts[gitHostName]
@@ -53941,7 +51129,7 @@ function fromUrl (giturl, opts) {
       var defaultRepresentation = null
       if (shortcutMatch && shortcutMatch[1] === gitHostName) {
         user = shortcutMatch[2] && decodeURIComponent(shortcutMatch[2])
-        project = decodeURIComponent(shortcutMatch[3])
+        project = decodeURIComponent(shortcutMatch[3].replace(/\.git$/, ''))
         defaultRepresentation = 'shortcut'
       } else {
         if (parsed.host && parsed.host !== gitHostInfo.domain && parsed.host.replace(/^www[.]/, '') !== gitHostInfo.domain) return
@@ -55921,7 +53109,19 @@ module.exports = {
     'big5hkscs': {
         type: '_dbcs',
         table: function() { return __nccwpck_require__(23940).concat(__nccwpck_require__(52777)) },
-        encodeSkipVals: [0xa2cc],
+        encodeSkipVals: [
+            // Although Encoding Standard says we should avoid encoding to HKSCS area (See Step 1 of
+            // https://encoding.spec.whatwg.org/#index-big5-pointer), we still do it to increase compatibility with ICU.
+            // But if a single unicode point can be encoded both as HKSCS and regular Big5, we prefer the latter.
+            0x8e69, 0x8e6f, 0x8e7e, 0x8eab, 0x8eb4, 0x8ecd, 0x8ed0, 0x8f57, 0x8f69, 0x8f6e, 0x8fcb, 0x8ffe,
+            0x906d, 0x907a, 0x90c4, 0x90dc, 0x90f1, 0x91bf, 0x92af, 0x92b0, 0x92b1, 0x92b2, 0x92d1, 0x9447, 0x94ca,
+            0x95d9, 0x96fc, 0x9975, 0x9b76, 0x9b78, 0x9b7b, 0x9bc6, 0x9bde, 0x9bec, 0x9bf6, 0x9c42, 0x9c53, 0x9c62,
+            0x9c68, 0x9c6b, 0x9c77, 0x9cbc, 0x9cbd, 0x9cd0, 0x9d57, 0x9d5a, 0x9dc4, 0x9def, 0x9dfb, 0x9ea9, 0x9eef,
+            0x9efd, 0x9f60, 0x9fcb, 0xa077, 0xa0dc, 0xa0df, 0x8fcc, 0x92c8, 0x9644, 0x96ed,
+
+            // Step 2 of https://encoding.spec.whatwg.org/#index-big5-pointer: Use last pointer for U+2550, U+255E, U+2561, U+256A, U+5341, or U+5345
+            0xa2a4, 0xa2a5, 0xa2a7, 0xa2a6, 0xa2cc, 0xa2ce,
+        ],
     },
 
     'cnbig5': 'big5hkscs',
@@ -58491,10 +55691,30 @@ isStream.duplex = stream =>
 
 isStream.transform = stream =>
 	isStream.duplex(stream) &&
-	typeof stream._transform === 'function' &&
-	typeof stream._transformState === 'object';
+	typeof stream._transform === 'function';
 
 module.exports = isStream;
+
+
+/***/ }),
+
+/***/ 48698:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = () => {
+	if (process.platform !== 'win32') {
+		return true;
+	}
+
+	return Boolean(process.env.CI) ||
+		Boolean(process.env.WT_SESSION) || // Windows Terminal
+		process.env.TERM_PROGRAM === 'vscode' ||
+		process.env.TERM === 'xterm-256color' ||
+		process.env.TERM === 'alacritty';
+};
 
 
 /***/ }),
@@ -58921,61 +56141,72 @@ function serializer(replacer, cycleReplacer) {
 /***/ 91393:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-let _fs
+var _fs
 try {
   _fs = __nccwpck_require__(82161)
 } catch (_) {
   _fs = __nccwpck_require__(35747)
 }
-const universalify = __nccwpck_require__(92178)
-const { stringify, stripBom } = __nccwpck_require__(24401)
 
-async function _readFile (file, options = {}) {
+function readFile (file, options, callback) {
+  if (callback == null) {
+    callback = options
+    options = {}
+  }
+
   if (typeof options === 'string') {
-    options = { encoding: options }
+    options = {encoding: options}
   }
 
-  const fs = options.fs || _fs
+  options = options || {}
+  var fs = options.fs || _fs
 
-  const shouldThrow = 'throws' in options ? options.throws : true
+  var shouldThrow = true
+  if ('throws' in options) {
+    shouldThrow = options.throws
+  }
 
-  let data = await universalify.fromCallback(fs.readFile)(file, options)
+  fs.readFile(file, options, function (err, data) {
+    if (err) return callback(err)
 
-  data = stripBom(data)
+    data = stripBom(data)
 
-  let obj
-  try {
-    obj = JSON.parse(data, options ? options.reviver : null)
-  } catch (err) {
-    if (shouldThrow) {
-      err.message = `${file}: ${err.message}`
-      throw err
-    } else {
-      return null
+    var obj
+    try {
+      obj = JSON.parse(data, options ? options.reviver : null)
+    } catch (err2) {
+      if (shouldThrow) {
+        err2.message = file + ': ' + err2.message
+        return callback(err2)
+      } else {
+        return callback(null, null)
+      }
     }
-  }
 
-  return obj
+    callback(null, obj)
+  })
 }
 
-const readFile = universalify.fromPromise(_readFile)
-
-function readFileSync (file, options = {}) {
+function readFileSync (file, options) {
+  options = options || {}
   if (typeof options === 'string') {
-    options = { encoding: options }
+    options = {encoding: options}
   }
 
-  const fs = options.fs || _fs
+  var fs = options.fs || _fs
 
-  const shouldThrow = 'throws' in options ? options.throws : true
+  var shouldThrow = true
+  if ('throws' in options) {
+    shouldThrow = options.throws
+  }
 
   try {
-    let content = fs.readFileSync(file, options)
+    var content = fs.readFileSync(file, options)
     content = stripBom(content)
     return JSON.parse(content, options.reviver)
   } catch (err) {
     if (shouldThrow) {
-      err.message = `${file}: ${err.message}`
+      err.message = file + ': ' + err.message
       throw err
     } else {
       return null
@@ -58983,53 +56214,67 @@ function readFileSync (file, options = {}) {
   }
 }
 
-async function _writeFile (file, obj, options = {}) {
-  const fs = options.fs || _fs
+function stringify (obj, options) {
+  var spaces
+  var EOL = '\n'
+  if (typeof options === 'object' && options !== null) {
+    if (options.spaces) {
+      spaces = options.spaces
+    }
+    if (options.EOL) {
+      EOL = options.EOL
+    }
+  }
 
-  const str = stringify(obj, options)
+  var str = JSON.stringify(obj, options ? options.replacer : null, spaces)
 
-  await universalify.fromCallback(fs.writeFile)(file, str, options)
+  return str.replace(/\n/g, EOL) + EOL
 }
 
-const writeFile = universalify.fromPromise(_writeFile)
+function writeFile (file, obj, options, callback) {
+  if (callback == null) {
+    callback = options
+    options = {}
+  }
+  options = options || {}
+  var fs = options.fs || _fs
 
-function writeFileSync (file, obj, options = {}) {
-  const fs = options.fs || _fs
+  var str = ''
+  try {
+    str = stringify(obj, options)
+  } catch (err) {
+    // Need to return whether a callback was passed or not
+    if (callback) callback(err, null)
+    return
+  }
 
-  const str = stringify(obj, options)
+  fs.writeFile(file, str, options, callback)
+}
+
+function writeFileSync (file, obj, options) {
+  options = options || {}
+  var fs = options.fs || _fs
+
+  var str = stringify(obj, options)
   // not sure if fs.writeFileSync returns anything, but just in case
   return fs.writeFileSync(file, str, options)
-}
-
-const jsonfile = {
-  readFile,
-  readFileSync,
-  writeFile,
-  writeFileSync
-}
-
-module.exports = jsonfile
-
-
-/***/ }),
-
-/***/ 24401:
-/***/ ((module) => {
-
-function stringify (obj, { EOL = '\n', finalEOL = true, replacer = null, spaces } = {}) {
-  const EOF = finalEOL ? EOL : ''
-  const str = JSON.stringify(obj, replacer, spaces)
-
-  return str.replace(/\n/g, EOL) + EOF
 }
 
 function stripBom (content) {
   // we do this because JSON.parse would convert it to a utf8 string if encoding wasn't specified
   if (Buffer.isBuffer(content)) content = content.toString('utf8')
-  return content.replace(/^\uFEFF/, '')
+  content = content.replace(/^\uFEFF/, '')
+  return content
 }
 
-module.exports = { stringify, stripBom }
+var jsonfile = {
+  readFile: readFile,
+  readFileSync: readFileSync,
+  writeFile: writeFile,
+  writeFileSync: writeFileSync
+}
+
+module.exports = jsonfile
 
 
 /***/ }),
@@ -63882,8 +61127,7 @@ module.exports = toString;
 "use strict";
 
 const chalk = __nccwpck_require__(7833);
-
-const isSupported = process.platform !== 'win32' || process.env.CI || process.env.TERM === 'xterm-256color';
+const isUnicodeSupported = __nccwpck_require__(48698);
 
 const main = {
 	info: chalk.blue('ℹ'),
@@ -63892,14 +61136,14 @@ const main = {
 	error: chalk.red('✖')
 };
 
-const fallbacks = {
+const fallback = {
 	info: chalk.blue('i'),
 	success: chalk.green('√'),
 	warning: chalk.yellow('‼'),
 	error: chalk.red('×')
 };
 
-module.exports = isSupported ? main : fallbacks;
+module.exports = isUnicodeSupported() ? main : fallback;
 
 
 /***/ }),
@@ -64477,175 +61721,6 @@ module.exports = (fromStream, toStream) => {
 		toStream[prop] = typeof fromStream[prop] === 'function' ? fromStream[prop].bind(fromStream) : fromStream[prop];
 	}
 };
-
-
-/***/ }),
-
-/***/ 84004:
-/***/ ((module) => {
-
-/**
- * Helpers.
- */
-
-var s = 1000;
-var m = s * 60;
-var h = m * 60;
-var d = h * 24;
-var w = d * 7;
-var y = d * 365.25;
-
-/**
- * Parse or format the given `val`.
- *
- * Options:
- *
- *  - `long` verbose formatting [false]
- *
- * @param {String|Number} val
- * @param {Object} [options]
- * @throws {Error} throw an error if val is not a non-empty string or a number
- * @return {String|Number}
- * @api public
- */
-
-module.exports = function(val, options) {
-  options = options || {};
-  var type = typeof val;
-  if (type === 'string' && val.length > 0) {
-    return parse(val);
-  } else if (type === 'number' && isFinite(val)) {
-    return options.long ? fmtLong(val) : fmtShort(val);
-  }
-  throw new Error(
-    'val is not a non-empty string or a valid number. val=' +
-      JSON.stringify(val)
-  );
-};
-
-/**
- * Parse the given `str` and return milliseconds.
- *
- * @param {String} str
- * @return {Number}
- * @api private
- */
-
-function parse(str) {
-  str = String(str);
-  if (str.length > 100) {
-    return;
-  }
-  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
-    str
-  );
-  if (!match) {
-    return;
-  }
-  var n = parseFloat(match[1]);
-  var type = (match[2] || 'ms').toLowerCase();
-  switch (type) {
-    case 'years':
-    case 'year':
-    case 'yrs':
-    case 'yr':
-    case 'y':
-      return n * y;
-    case 'weeks':
-    case 'week':
-    case 'w':
-      return n * w;
-    case 'days':
-    case 'day':
-    case 'd':
-      return n * d;
-    case 'hours':
-    case 'hour':
-    case 'hrs':
-    case 'hr':
-    case 'h':
-      return n * h;
-    case 'minutes':
-    case 'minute':
-    case 'mins':
-    case 'min':
-    case 'm':
-      return n * m;
-    case 'seconds':
-    case 'second':
-    case 'secs':
-    case 'sec':
-    case 's':
-      return n * s;
-    case 'milliseconds':
-    case 'millisecond':
-    case 'msecs':
-    case 'msec':
-    case 'ms':
-      return n;
-    default:
-      return undefined;
-  }
-}
-
-/**
- * Short format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function fmtShort(ms) {
-  var msAbs = Math.abs(ms);
-  if (msAbs >= d) {
-    return Math.round(ms / d) + 'd';
-  }
-  if (msAbs >= h) {
-    return Math.round(ms / h) + 'h';
-  }
-  if (msAbs >= m) {
-    return Math.round(ms / m) + 'm';
-  }
-  if (msAbs >= s) {
-    return Math.round(ms / s) + 's';
-  }
-  return ms + 'ms';
-}
-
-/**
- * Long format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function fmtLong(ms) {
-  var msAbs = Math.abs(ms);
-  if (msAbs >= d) {
-    return plural(ms, msAbs, d, 'day');
-  }
-  if (msAbs >= h) {
-    return plural(ms, msAbs, h, 'hour');
-  }
-  if (msAbs >= m) {
-    return plural(ms, msAbs, m, 'minute');
-  }
-  if (msAbs >= s) {
-    return plural(ms, msAbs, s, 'second');
-  }
-  return ms + ' ms';
-}
-
-/**
- * Pluralization helper.
- */
-
-function plural(ms, msAbs, n, name) {
-  var isPlural = msAbs >= n * 1.5;
-  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
-}
 
 
 /***/ }),
@@ -66679,7 +63754,7 @@ const testParameter = (name, filters) => {
 };
 
 const normalizeDataURL = (urlString, {stripHash}) => {
-	const parts = urlString.match(/^data:(.*?),(.*?)(?:#(.*))?$/);
+	const parts = urlString.match(/^data:([^,]*?),([^#]*?)(?:#(.*))?$/);
 
 	if (!parts) {
 		throw new Error(`Invalid URL: ${urlString}`);
@@ -67955,18 +65030,12 @@ const logSymbols = __nccwpck_require__(87279);
 const stripAnsi = __nccwpck_require__(26301);
 const wcwidth = __nccwpck_require__(25997);
 const isInteractive = __nccwpck_require__(47133);
+const isUnicodeSupported = __nccwpck_require__(48698);
 const {BufferListStream} = __nccwpck_require__(93453);
 
 const TEXT = Symbol('text');
 const PREFIX_TEXT = Symbol('prefixText');
-
 const ASCII_ETX_CODE = 0x03; // Ctrl+C emits this code
-
-const terminalSupportsUnicode = () => (
-	process.platform !== 'win32' ||
-	process.env.TERM_PROGRAM === 'vscode' ||
-	Boolean(process.env.WT_SESSION)
-);
 
 class StdinDiscarder {
 	constructor() {
@@ -67975,7 +65044,7 @@ class StdinDiscarder {
 		this.mutedStream = new BufferListStream();
 		this.mutedStream.pipe(process.stdout);
 
-		const self = this;
+		const self = this; // eslint-disable-line unicorn/no-this-assignment
 		this.ourEmit = function (event, data, ...args) {
 			const {stdin} = process;
 			if (self.requests > 0 || stdin.emit === self.ourEmit) {
@@ -68117,15 +65186,15 @@ class Ora {
 			}
 
 			this._spinner = spinner;
-		} else if (!terminalSupportsUnicode()) {
+		} else if (!isUnicodeSupported()) {
 			this._spinner = cliSpinners.line;
 		} else if (spinner === undefined) {
 			// Set default spinner
 			this._spinner = cliSpinners.dots;
-		} else if (cliSpinners[spinner]) {
+		} else if (spinner !== 'default' && cliSpinners[spinner]) {
 			this._spinner = cliSpinners[spinner];
 		} else {
-			throw new Error(`There is no built-in spinner named '${spinner}'. See https://github.com/sindresorhus/cli-spinners/blob/master/spinners.json for a full list.`);
+			throw new Error(`There is no built-in spinner named '${spinner}'. See https://github.com/sindresorhus/cli-spinners/blob/main/spinners.json for a full list.`);
 		}
 
 		this._updateInterval(this._spinner.interval);
@@ -68770,29 +65839,14 @@ module.exports.default = pathKey;
 
 var isWindows = process.platform === 'win32';
 
-// Regex to split a windows path into three parts: [*, device, slash,
-// tail] windows-only
-var splitDeviceRe =
-    /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
-
-// Regex to split the tail part of the above into [*, dir, basename, ext]
-var splitTailRe =
-    /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
+// Regex to split a windows path into into [dir, root, basename, name, ext]
+var splitWindowsRe =
+    /^(((?:[a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?[\\\/]?)(?:[^\\\/]*[\\\/])*)((\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))[\\\/]*$/;
 
 var win32 = {};
 
-// Function to split a filename into [root, dir, basename, ext]
 function win32SplitPath(filename) {
-  // Separate device+slash from tail
-  var result = splitDeviceRe.exec(filename),
-      device = (result[1] || '') + (result[2] || ''),
-      tail = result[3] || '';
-  // Split the tail into dir, basename and extension
-  var result2 = splitTailRe.exec(tail),
-      dir = result2[1],
-      basename = result2[2],
-      ext = result2[3];
-  return [device, dir, basename, ext];
+  return splitWindowsRe.exec(filename).slice(1);
 }
 
 win32.parse = function(pathString) {
@@ -68802,24 +65856,24 @@ win32.parse = function(pathString) {
     );
   }
   var allParts = win32SplitPath(pathString);
-  if (!allParts || allParts.length !== 4) {
+  if (!allParts || allParts.length !== 5) {
     throw new TypeError("Invalid path '" + pathString + "'");
   }
   return {
-    root: allParts[0],
-    dir: allParts[0] + allParts[1].slice(0, -1),
+    root: allParts[1],
+    dir: allParts[0] === allParts[1] ? allParts[0] : allParts[0].slice(0, -1),
     base: allParts[2],
-    ext: allParts[3],
-    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+    ext: allParts[4],
+    name: allParts[3]
   };
 };
 
 
 
-// Split a filename into [root, dir, basename, ext], unix version
+// Split a filename into [dir, root, basename, name, ext], unix version
 // 'root' is just a slash, or nothing.
 var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+    /^((\/?)(?:[^\/]*\/)*)((\.{1,2}|[^\/]+?|)(\.[^.\/]*|))[\/]*$/;
 var posix = {};
 
 
@@ -68835,19 +65889,16 @@ posix.parse = function(pathString) {
     );
   }
   var allParts = posixSplitPath(pathString);
-  if (!allParts || allParts.length !== 4) {
+  if (!allParts || allParts.length !== 5) {
     throw new TypeError("Invalid path '" + pathString + "'");
   }
-  allParts[1] = allParts[1] || '';
-  allParts[2] = allParts[2] || '';
-  allParts[3] = allParts[3] || '';
-
+  
   return {
-    root: allParts[0],
-    dir: allParts[0] + allParts[1].slice(0, -1),
+    root: allParts[1],
+    dir: allParts[0].slice(0, -1),
     base: allParts[2],
-    ext: allParts[3],
-    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+    ext: allParts[4],
+    name: allParts[3],
   };
 };
 
@@ -73337,6 +70388,20 @@ var maybeRealpath = function maybeRealpath(realpath, x, opts, cb) {
     }
 };
 
+var defaultReadPackage = function defaultReadPackage(readFile, pkgfile, cb) {
+    readFile(pkgfile, function (readFileErr, body) {
+        if (readFileErr) cb(readFileErr);
+        else {
+            try {
+                var pkg = JSON.parse(body);
+                cb(null, pkg);
+            } catch (jsonErr) {
+                cb(null);
+            }
+        }
+    });
+};
+
 var getPackageCandidates = function getPackageCandidates(x, start, opts) {
     var dirs = nodeModulesPaths(start, opts, x);
     for (var i = 0; i < dirs.length; i++) {
@@ -73365,6 +70430,13 @@ module.exports = function resolve(x, options, callback) {
     var isDirectory = opts.isDirectory || defaultIsDir;
     var readFile = opts.readFile || fs.readFile;
     var realpath = opts.realpath || defaultRealpath;
+    var readPackage = opts.readPackage || defaultReadPackage;
+    if (opts.readFile && opts.readPackage) {
+        var conflictErr = new TypeError('`readFile` and `readPackage` are mutually exclusive.');
+        return process.nextTick(function () {
+            cb(conflictErr);
+        });
+    }
     var packageIterator = opts.packageIterator;
 
     var extensions = opts.extensions || ['.js'];
@@ -73492,9 +70564,10 @@ module.exports = function resolve(x, options, callback) {
                 // on err, ex is false
                 if (!ex) return loadpkg(path.dirname(dir), cb);
 
-                readFile(pkgfile, function (err, body) {
+                readPackage(readFile, pkgfile, function (err, pkgParam) {
                     if (err) cb(err);
-                    try { var pkg = JSON.parse(body); } catch (jsonErr) {}
+
+                    var pkg = pkgParam;
 
                     if (pkg && opts.packageFilter) {
                         pkg = opts.packageFilter(pkg, pkgfile);
@@ -73520,11 +70593,10 @@ module.exports = function resolve(x, options, callback) {
                 if (err) return cb(err);
                 if (!ex) return loadAsFile(path.join(x, 'index'), fpkg, cb);
 
-                readFile(pkgfile, function (err, body) {
+                readPackage(readFile, pkgfile, function (err, pkgParam) {
                     if (err) return cb(err);
-                    try {
-                        var pkg = JSON.parse(body);
-                    } catch (jsonErr) {}
+
+                    var pkg = pkgParam;
 
                     if (pkg && opts.packageFilter) {
                         pkg = opts.packageFilter(pkg, pkgfile);
@@ -73799,6 +70871,14 @@ var maybeRealpathSync = function maybeRealpathSync(realpathSync, x, opts) {
     return x;
 };
 
+var defaultReadPackageSync = function defaultReadPackageSync(readFileSync, pkgfile) {
+    var body = readFileSync(pkgfile);
+    try {
+        var pkg = JSON.parse(body);
+        return pkg;
+    } catch (jsonErr) {}
+};
+
 var getPackageCandidates = function getPackageCandidates(x, start, opts) {
     var dirs = nodeModulesPaths(start, opts, x);
     for (var i = 0; i < dirs.length; i++) {
@@ -73817,6 +70897,10 @@ module.exports = function resolveSync(x, options) {
     var readFileSync = opts.readFileSync || fs.readFileSync;
     var isDirectory = opts.isDirectory || defaultIsDir;
     var realpathSync = opts.realpathSync || defaultRealpathSync;
+    var readPackageSync = opts.readPackageSync || defaultReadPackageSync;
+    if (opts.readFileSync && opts.readPackageSync) {
+        throw new TypeError('`readFileSync` and `readPackageSync` are mutually exclusive.');
+    }
     var packageIterator = opts.packageIterator;
 
     var extensions = opts.extensions || ['.js'];
@@ -73881,11 +70965,7 @@ module.exports = function resolveSync(x, options) {
             return loadpkg(path.dirname(dir));
         }
 
-        var body = readFileSync(pkgfile);
-
-        try {
-            var pkg = JSON.parse(body);
-        } catch (jsonErr) {}
+        var pkg = readPackageSync(readFileSync, pkgfile);
 
         if (pkg && opts.packageFilter) {
             // v2 will pass pkgfile
@@ -73899,8 +70979,7 @@ module.exports = function resolveSync(x, options) {
         var pkgfile = path.join(maybeRealpathSync(realpathSync, x, opts), '/package.json');
         if (isFile(pkgfile)) {
             try {
-                var body = readFileSync(pkgfile, 'UTF8');
-                var pkg = JSON.parse(body);
+                var pkg = readPackageSync(readFileSync, pkgfile);
             } catch (e) {}
 
             if (pkg && opts.packageFilter) {
@@ -74956,6 +72035,78 @@ exports.default = _default;
     }
     /* eslint-enable quote-props */
 }(); // eslint-disable-line
+
+
+/***/ }),
+
+/***/ 79615:
+/***/ ((module, exports, __nccwpck_require__) => {
+
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+/* eslint-disable node/no-deprecated-api */
+var buffer = __nccwpck_require__(64293)
+var Buffer = buffer.Buffer
+
+// alternative to using Object.keys for old browsers
+function copyProps (src, dst) {
+  for (var key in src) {
+    dst[key] = src[key]
+  }
+}
+if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+  module.exports = buffer
+} else {
+  // Copy properties from require('buffer')
+  copyProps(buffer, exports)
+  exports.Buffer = SafeBuffer
+}
+
+function SafeBuffer (arg, encodingOrOffset, length) {
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.prototype = Object.create(Buffer.prototype)
+
+// Copy static methods from Buffer
+copyProps(Buffer, SafeBuffer)
+
+SafeBuffer.from = function (arg, encodingOrOffset, length) {
+  if (typeof arg === 'number') {
+    throw new TypeError('Argument must not be a number')
+  }
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.alloc = function (size, fill, encoding) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  var buf = Buffer(size)
+  if (fill !== undefined) {
+    if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+  } else {
+    buf.fill(0)
+  }
+  return buf
+}
+
+SafeBuffer.allocUnsafe = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
+}
+
+SafeBuffer.allocUnsafeSlow = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return buffer.SlowBuffer(size)
+}
 
 
 /***/ }),
@@ -77075,22 +74226,30 @@ module.exports = (versions, range, options) => {
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const Range = __nccwpck_require__(45636)
-const { ANY } = __nccwpck_require__(34777)
+const Comparator = __nccwpck_require__(34777)
+const { ANY } = Comparator
 const satisfies = __nccwpck_require__(60822)
 const compare = __nccwpck_require__(23681)
 
 // Complex range `r1 || r2 || ...` is a subset of `R1 || R2 || ...` iff:
-// - Every simple range `r1, r2, ...` is a subset of some `R1, R2, ...`
+// - Every simple range `r1, r2, ...` is a null set, OR
+// - Every simple range `r1, r2, ...` which is not a null set is a subset of
+//   some `R1, R2, ...`
 //
 // Simple range `c1 c2 ...` is a subset of simple range `C1 C2 ...` iff:
 // - If c is only the ANY comparator
 //   - If C is only the ANY comparator, return true
-//   - Else return false
+//   - Else if in prerelease mode, return false
+//   - else replace c with `[>=0.0.0]`
+// - If C is only the ANY comparator
+//   - if in prerelease mode, return true
+//   - else replace C with `[>=0.0.0]`
 // - Let EQ be the set of = comparators in c
 // - If EQ is more than one, return true (null set)
 // - Let GT be the highest > or >= comparator in c
 // - Let LT be the lowest < or <= comparator in c
 // - If GT and LT, and GT.semver > LT.semver, return true (null set)
+// - If any C is a = range, and GT or LT are set, return false
 // - If EQ
 //   - If GT, and EQ does not satisfy GT, return true (null set)
 //   - If LT, and EQ does not satisfy LT, return true (null set)
@@ -77099,13 +74258,16 @@ const compare = __nccwpck_require__(23681)
 // - If GT
 //   - If GT.semver is lower than any > or >= comp in C, return false
 //   - If GT is >=, and GT.semver does not satisfy every C, return false
+//   - If GT.semver has a prerelease, and not in prerelease mode
+//     - If no C has a prerelease and the GT.semver tuple, return false
 // - If LT
 //   - If LT.semver is greater than any < or <= comp in C, return false
 //   - If LT is <=, and LT.semver does not satisfy every C, return false
-// - If any C is a = range, and GT or LT are set, return false
+//   - If GT.semver has a prerelease, and not in prerelease mode
+//     - If no C has a prerelease and the LT.semver tuple, return false
 // - Else return true
 
-const subset = (sub, dom, options) => {
+const subset = (sub, dom, options = {}) => {
   if (sub === dom)
     return true
 
@@ -77134,8 +74296,21 @@ const simpleSubset = (sub, dom, options) => {
   if (sub === dom)
     return true
 
-  if (sub.length === 1 && sub[0].semver === ANY)
-    return dom.length === 1 && dom[0].semver === ANY
+  if (sub.length === 1 && sub[0].semver === ANY) {
+    if (dom.length === 1 && dom[0].semver === ANY)
+      return true
+    else if (options.includePrerelease)
+      sub = [ new Comparator('>=0.0.0-0') ]
+    else
+      sub = [ new Comparator('>=0.0.0') ]
+  }
+
+  if (dom.length === 1 && dom[0].semver === ANY) {
+    if (options.includePrerelease)
+      return true
+    else
+      dom = [ new Comparator('>=0.0.0') ]
+  }
 
   const eqSet = new Set()
   let gt, lt
@@ -77178,10 +74353,32 @@ const simpleSubset = (sub, dom, options) => {
 
   let higher, lower
   let hasDomLT, hasDomGT
+  // if the subset has a prerelease, we need a comparator in the superset
+  // with the same tuple and a prerelease, or it's not a subset
+  let needDomLTPre = lt &&
+    !options.includePrerelease &&
+    lt.semver.prerelease.length ? lt.semver : false
+  let needDomGTPre = gt &&
+    !options.includePrerelease &&
+    gt.semver.prerelease.length ? gt.semver : false
+  // exception: <1.2.3-0 is the same as <1.2.3
+  if (needDomLTPre && needDomLTPre.prerelease.length === 1 &&
+      lt.operator === '<' && needDomLTPre.prerelease[0] === 0) {
+    needDomLTPre = false
+  }
+
   for (const c of dom) {
     hasDomGT = hasDomGT || c.operator === '>' || c.operator === '>='
     hasDomLT = hasDomLT || c.operator === '<' || c.operator === '<='
     if (gt) {
+      if (needDomGTPre) {
+        if (c.semver.prerelease && c.semver.prerelease.length &&
+            c.semver.major === needDomGTPre.major &&
+            c.semver.minor === needDomGTPre.minor &&
+            c.semver.patch === needDomGTPre.patch) {
+          needDomGTPre = false
+        }
+      }
       if (c.operator === '>' || c.operator === '>=') {
         higher = higherGT(gt, c, options)
         if (higher === c && higher !== gt)
@@ -77190,6 +74387,14 @@ const simpleSubset = (sub, dom, options) => {
         return false
     }
     if (lt) {
+      if (needDomLTPre) {
+        if (c.semver.prerelease && c.semver.prerelease.length &&
+            c.semver.major === needDomLTPre.major &&
+            c.semver.minor === needDomLTPre.minor &&
+            c.semver.patch === needDomLTPre.patch) {
+          needDomLTPre = false
+        }
+      }
       if (c.operator === '<' || c.operator === '<=') {
         lower = lowerLT(lt, c, options)
         if (lower === c && lower !== lt)
@@ -77208,6 +74413,12 @@ const simpleSubset = (sub, dom, options) => {
     return false
 
   if (lt && hasDomGT && !gt && gtltComp !== 0)
+    return false
+
+  // we needed a prerelease range in a specific tuple, but didn't get one
+  // then this isn't a subset.  eg >=1.2.3-pre is not a subset of >=1.0.0,
+  // because it includes prereleases in the 1.2.3 tuple
+  if (needDomGTPre || needDomLTPre)
     return false
 
   return true
@@ -78350,7 +75561,7 @@ module.exports = function (source) {
 
 /*<replacement>*/
 
-var Buffer = __nccwpck_require__(84996).Buffer;
+var Buffer = __nccwpck_require__(79615).Buffer;
 /*</replacement>*/
 
 var isEncoding = Buffer.isEncoding || function (encoding) {
@@ -78621,78 +75832,6 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-
-/***/ }),
-
-/***/ 84996:
-/***/ ((module, exports, __nccwpck_require__) => {
-
-/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-/* eslint-disable node/no-deprecated-api */
-var buffer = __nccwpck_require__(64293)
-var Buffer = buffer.Buffer
-
-// alternative to using Object.keys for old browsers
-function copyProps (src, dst) {
-  for (var key in src) {
-    dst[key] = src[key]
-  }
-}
-if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
-  module.exports = buffer
-} else {
-  // Copy properties from require('buffer')
-  copyProps(buffer, exports)
-  exports.Buffer = SafeBuffer
-}
-
-function SafeBuffer (arg, encodingOrOffset, length) {
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.prototype = Object.create(Buffer.prototype)
-
-// Copy static methods from Buffer
-copyProps(Buffer, SafeBuffer)
-
-SafeBuffer.from = function (arg, encodingOrOffset, length) {
-  if (typeof arg === 'number') {
-    throw new TypeError('Argument must not be a number')
-  }
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.alloc = function (size, fill, encoding) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  var buf = Buffer(size)
-  if (fill !== undefined) {
-    if (typeof encoding === 'string') {
-      buf.fill(fill, encoding)
-    } else {
-      buf.fill(fill)
-    }
-  } else {
-    buf.fill(0)
-  }
-  return buf
-}
-
-SafeBuffer.allocUnsafe = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return Buffer(size)
-}
-
-SafeBuffer.allocUnsafeSlow = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return buffer.SlowBuffer(size)
-}
-
 
 /***/ }),
 
@@ -81213,6 +78352,7 @@ function defaultCallback(err) {
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/* eslint-disable no-console */
 /**
  * Various utility methods used in AEgir.
  *
@@ -81227,13 +78367,16 @@ const stripComments = __nccwpck_require__(96241)
 const stripBom = __nccwpck_require__(16639)
 const { download } = __nccwpck_require__(37196)
 const path = __nccwpck_require__(85622)
+const readline = __nccwpck_require__(51058)
 const readPkgUp = __nccwpck_require__(45730)
 const fs = __nccwpck_require__(66272)
 const execa = __nccwpck_require__(51737)
 const envPaths = __nccwpck_require__(47727)('aegir', { suffix: '' })
 const lockfile = __nccwpck_require__(92123)
 const {
+  // @ts-ignore
   packageJson: pkg,
+  // @ts-ignore
   path: pkgPath
 } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd())
@@ -81244,8 +78387,17 @@ const TEST_FOLDER = 'test'
 
 exports.pkg = pkg
 exports.repoDirectory = path.dirname(pkgPath)
+/**
+ * @param {string[]} p
+ */
 exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
+/**
+ * @param {string[]} p
+ */
 exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
+/**
+ * @param {string[]} p
+ */
 exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
 exports.hasTsconfig = exports.hasFile('tsconfig.json')
 
@@ -81292,20 +78444,6 @@ exports.getListrConfig = () => {
   }
 }
 
-// @ts-ignore
-exports.hook = (env, key) => (ctx) => {
-  if (ctx && ctx.hooks) {
-    if (ctx.hooks[env] && ctx.hooks[env][key]) {
-      return ctx.hooks[env][key]()
-    }
-    if (ctx.hooks[key]) {
-      return ctx.hooks[key]()
-    }
-  }
-
-  return Promise.resolve()
-}
-
 /**
  * @param {string} command
  * @param {string[] | undefined} args
@@ -81315,9 +78453,11 @@ exports.exec = (command, args, options = {}) => {
   const result = execa(command, args, options)
 
   if (!options.quiet) {
+    // @ts-ignore
     result.stdout.pipe(process.stdout)
   }
 
+  // @ts-ignore
   result.stderr.pipe(process.stderr)
 
   return result
@@ -81342,6 +78482,7 @@ function getPlatformPath () {
 }
 
 exports.getElectron = async () => {
+  // @ts-ignore
   const pkg = __nccwpck_require__(28524)
 
   const lockfilePath = path.join(envPaths.cache, '__electron-lock')
@@ -81411,6 +78552,32 @@ exports.gzipSize = (path) => {
   })
 }
 
+exports.otp = () => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+  const otp = []
+  return new Promise((resolve, reject) => {
+    rl.question('OTP: ', answer => {
+      resolve(answer)
+      console.log('\n')
+      rl.close()
+    })
+    // @ts-ignore
+    rl._writeToOutput = function _writeToOutput (k) {
+      otp.push(k)
+      if (otp.length === 6) {
+        // @ts-ignore
+        rl.write(null, { name: 'enter' })
+      } else {
+        // @ts-ignore
+        rl.output.write('*')
+      }
+    }
+  })
+}
+
 
 /***/ }),
 
@@ -81418,7 +78585,7 @@ exports.gzipSize = (path) => {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"assert\":true,\"assert/strict\":\">= 15\",\"async_hooks\":\">= 8\",\"buffer_ieee754\":\"< 0.9.7\",\"buffer\":true,\"child_process\":true,\"cluster\":true,\"console\":true,\"constants\":true,\"crypto\":true,\"_debug_agent\":\">= 1 && < 8\",\"_debugger\":\"< 8\",\"dgram\":true,\"diagnostics_channel\":\">= 15.1\",\"dns\":true,\"dns/promises\":\">= 15\",\"domain\":\">= 0.7.12\",\"events\":true,\"freelist\":\"< 6\",\"fs\":true,\"fs/promises\":[\">= 10 && < 10.1\",\">= 14\"],\"_http_agent\":\">= 0.11.1\",\"_http_client\":\">= 0.11.1\",\"_http_common\":\">= 0.11.1\",\"_http_incoming\":\">= 0.11.1\",\"_http_outgoing\":\">= 0.11.1\",\"_http_server\":\">= 0.11.1\",\"http\":true,\"http2\":\">= 8.8\",\"https\":true,\"inspector\":\">= 8.0.0\",\"_linklist\":\"< 8\",\"module\":true,\"net\":true,\"node-inspect/lib/_inspect\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_client\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_repl\":\">= 7.6.0 && < 12\",\"os\":true,\"path\":true,\"perf_hooks\":\">= 8.5\",\"process\":\">= 1\",\"punycode\":true,\"querystring\":true,\"readline\":true,\"repl\":true,\"smalloc\":\">= 0.11.5 && < 3\",\"_stream_duplex\":\">= 0.9.4\",\"_stream_transform\":\">= 0.9.4\",\"_stream_wrap\":\">= 1.4.1\",\"_stream_passthrough\":\">= 0.9.4\",\"_stream_readable\":\">= 0.9.4\",\"_stream_writable\":\">= 0.9.4\",\"stream\":true,\"stream/promises\":\">= 15\",\"string_decoder\":true,\"sys\":[\">= 0.6 && < 0.7\",\">= 0.8\"],\"timers\":true,\"timers/promises\":\">= 15\",\"_tls_common\":\">= 0.11.13\",\"_tls_legacy\":\">= 0.11.3 && < 10\",\"_tls_wrap\":\">= 0.11.3\",\"tls\":true,\"trace_events\":\">= 10\",\"tty\":true,\"url\":true,\"util\":true,\"v8/tools/arguments\":\">= 10 && < 12\",\"v8/tools/codemap\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/consarray\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/csvparser\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/logreader\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/profile_view\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/splaytree\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8\":\">= 1\",\"vm\":true,\"wasi\":\">= 13.4 && < 13.5\",\"worker_threads\":\">= 11.7\",\"zlib\":true}");
+module.exports = JSON.parse("{\"assert\":true,\"node:assert\":\">= 16\",\"assert/strict\":\">= 15\",\"node:assert/strict\":\">= 16\",\"async_hooks\":\">= 8\",\"node:async_hooks\":\">= 16\",\"buffer_ieee754\":\"< 0.9.7\",\"buffer\":true,\"node:buffer\":\">= 16\",\"child_process\":true,\"node:child_process\":\">= 16\",\"cluster\":true,\"node:cluster\":\">= 16\",\"console\":true,\"node:console\":\">= 16\",\"constants\":true,\"node:constants\":\">= 16\",\"crypto\":true,\"node:crypto\":\">= 16\",\"_debug_agent\":\">= 1 && < 8\",\"_debugger\":\"< 8\",\"dgram\":true,\"node:dgram\":\">= 16\",\"diagnostics_channel\":[\">= 14.17 && < 15\",\">= 15.1\"],\"node:diagnostics_channel\":\">= 16\",\"dns\":true,\"node:dns\":\">= 16\",\"dns/promises\":\">= 15\",\"node:dns/promises\":\">= 16\",\"domain\":\">= 0.7.12\",\"node:domain\":\">= 16\",\"events\":true,\"node:events\":\">= 16\",\"freelist\":\"< 6\",\"fs\":true,\"node:fs\":\">= 16\",\"fs/promises\":[\">= 10 && < 10.1\",\">= 14\"],\"node:fs/promises\":\">= 16\",\"_http_agent\":\">= 0.11.1\",\"node:_http_agent\":\">= 16\",\"_http_client\":\">= 0.11.1\",\"node:_http_client\":\">= 16\",\"_http_common\":\">= 0.11.1\",\"node:_http_common\":\">= 16\",\"_http_incoming\":\">= 0.11.1\",\"node:_http_incoming\":\">= 16\",\"_http_outgoing\":\">= 0.11.1\",\"node:_http_outgoing\":\">= 16\",\"_http_server\":\">= 0.11.1\",\"node:_http_server\":\">= 16\",\"http\":true,\"node:http\":\">= 16\",\"http2\":\">= 8.8\",\"node:http2\":\">= 16\",\"https\":true,\"node:https\":\">= 16\",\"inspector\":\">= 8\",\"node:inspector\":\">= 16\",\"_linklist\":\"< 8\",\"module\":true,\"node:module\":\">= 16\",\"net\":true,\"node:net\":\">= 16\",\"node-inspect/lib/_inspect\":\">= 7.6 && < 12\",\"node-inspect/lib/internal/inspect_client\":\">= 7.6 && < 12\",\"node-inspect/lib/internal/inspect_repl\":\">= 7.6 && < 12\",\"os\":true,\"node:os\":\">= 16\",\"path\":true,\"node:path\":\">= 16\",\"path/posix\":\">= 15.3\",\"node:path/posix\":\">= 16\",\"path/win32\":\">= 15.3\",\"node:path/win32\":\">= 16\",\"perf_hooks\":\">= 8.5\",\"node:perf_hooks\":\">= 16\",\"process\":\">= 1\",\"node:process\":\">= 16\",\"punycode\":true,\"node:punycode\":\">= 16\",\"querystring\":true,\"node:querystring\":\">= 16\",\"readline\":true,\"node:readline\":\">= 16\",\"repl\":true,\"node:repl\":\">= 16\",\"smalloc\":\">= 0.11.5 && < 3\",\"_stream_duplex\":\">= 0.9.4\",\"node:_stream_duplex\":\">= 16\",\"_stream_transform\":\">= 0.9.4\",\"node:_stream_transform\":\">= 16\",\"_stream_wrap\":\">= 1.4.1\",\"node:_stream_wrap\":\">= 16\",\"_stream_passthrough\":\">= 0.9.4\",\"node:_stream_passthrough\":\">= 16\",\"_stream_readable\":\">= 0.9.4\",\"node:_stream_readable\":\">= 16\",\"_stream_writable\":\">= 0.9.4\",\"node:_stream_writable\":\">= 16\",\"stream\":true,\"node:stream\":\">= 16\",\"stream/promises\":\">= 15\",\"node:stream/promises\":\">= 16\",\"stream/web\":\">= 16.5\",\"node:stream/web\":\">= 16.5\",\"string_decoder\":true,\"node:string_decoder\":\">= 16\",\"sys\":[\">= 0.6 && < 0.7\",\">= 0.8\"],\"node:sys\":\">= 16\",\"timers\":true,\"node:timers\":\">= 16\",\"timers/promises\":\">= 15\",\"node:timers/promises\":\">= 16\",\"_tls_common\":\">= 0.11.13\",\"node:_tls_common\":\">= 16\",\"_tls_legacy\":\">= 0.11.3 && < 10\",\"_tls_wrap\":\">= 0.11.3\",\"node:_tls_wrap\":\">= 16\",\"tls\":true,\"node:tls\":\">= 16\",\"trace_events\":\">= 10\",\"node:trace_events\":\">= 16\",\"tty\":true,\"node:tty\":\">= 16\",\"url\":true,\"node:url\":\">= 16\",\"util\":true,\"node:util\":\">= 16\",\"util/types\":\">= 15.3\",\"node:util/types\":\">= 16\",\"v8/tools/arguments\":\">= 10 && < 12\",\"v8/tools/codemap\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/consarray\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/csvparser\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/logreader\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/profile_view\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/splaytree\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8\":\">= 1\",\"node:v8\":\">= 16\",\"vm\":true,\"node:vm\":\">= 16\",\"wasi\":\">= 13.4 && < 13.5\",\"worker_threads\":\">= 11.7\",\"node:worker_threads\":\">= 16\",\"zlib\":true,\"node:zlib\":\">= 16\"}");
 
 /***/ }),
 
@@ -81442,7 +78609,7 @@ module.exports = JSON.parse("{\"repositories\":\"'repositories' (plural) Not sup
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"assert\":true,\"assert/strict\":\">= 15\",\"async_hooks\":\">= 8\",\"buffer_ieee754\":\"< 0.9.7\",\"buffer\":true,\"child_process\":true,\"cluster\":true,\"console\":true,\"constants\":true,\"crypto\":true,\"_debug_agent\":\">= 1 && < 8\",\"_debugger\":\"< 8\",\"dgram\":true,\"diagnostics_channel\":\">= 15.1\",\"dns\":true,\"dns/promises\":\">= 15\",\"domain\":\">= 0.7.12\",\"events\":true,\"freelist\":\"< 6\",\"fs\":true,\"fs/promises\":[\">= 10 && < 10.1\",\">= 14\"],\"_http_agent\":\">= 0.11.1\",\"_http_client\":\">= 0.11.1\",\"_http_common\":\">= 0.11.1\",\"_http_incoming\":\">= 0.11.1\",\"_http_outgoing\":\">= 0.11.1\",\"_http_server\":\">= 0.11.1\",\"http\":true,\"http2\":\">= 8.8\",\"https\":true,\"inspector\":\">= 8.0.0\",\"_linklist\":\"< 8\",\"module\":true,\"net\":true,\"node-inspect/lib/_inspect\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_client\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_repl\":\">= 7.6.0 && < 12\",\"os\":true,\"path\":true,\"perf_hooks\":\">= 8.5\",\"process\":\">= 1\",\"punycode\":true,\"querystring\":true,\"readline\":true,\"repl\":true,\"smalloc\":\">= 0.11.5 && < 3\",\"_stream_duplex\":\">= 0.9.4\",\"_stream_transform\":\">= 0.9.4\",\"_stream_wrap\":\">= 1.4.1\",\"_stream_passthrough\":\">= 0.9.4\",\"_stream_readable\":\">= 0.9.4\",\"_stream_writable\":\">= 0.9.4\",\"stream\":true,\"stream/promises\":\">= 15\",\"string_decoder\":true,\"sys\":[\">= 0.6 && < 0.7\",\">= 0.8\"],\"timers\":true,\"timers/promises\":\">= 15\",\"_tls_common\":\">= 0.11.13\",\"_tls_legacy\":\">= 0.11.3 && < 10\",\"_tls_wrap\":\">= 0.11.3\",\"tls\":true,\"trace_events\":\">= 10\",\"tty\":true,\"url\":true,\"util\":true,\"v8/tools/arguments\":\">= 10 && < 12\",\"v8/tools/codemap\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/consarray\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/csvparser\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/logreader\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/profile_view\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/splaytree\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8\":\">= 1\",\"vm\":true,\"wasi\":\">= 13.4 && < 13.5\",\"worker_threads\":\">= 11.7\",\"zlib\":true}");
+module.exports = JSON.parse("{\"assert\":true,\"assert/strict\":\">= 15\",\"async_hooks\":\">= 8\",\"buffer_ieee754\":\"< 0.9.7\",\"buffer\":true,\"child_process\":true,\"cluster\":true,\"console\":true,\"constants\":true,\"crypto\":true,\"_debug_agent\":\">= 1 && < 8\",\"_debugger\":\"< 8\",\"dgram\":true,\"diagnostics_channel\":\">= 15.1\",\"dns\":true,\"dns/promises\":\">= 15\",\"domain\":\">= 0.7.12\",\"events\":true,\"freelist\":\"< 6\",\"fs\":true,\"fs/promises\":[\">= 10 && < 10.1\",\">= 14\"],\"_http_agent\":\">= 0.11.1\",\"_http_client\":\">= 0.11.1\",\"_http_common\":\">= 0.11.1\",\"_http_incoming\":\">= 0.11.1\",\"_http_outgoing\":\">= 0.11.1\",\"_http_server\":\">= 0.11.1\",\"http\":true,\"http2\":\">= 8.8\",\"https\":true,\"inspector\":\">= 8.0.0\",\"_linklist\":\"< 8\",\"module\":true,\"net\":true,\"node-inspect/lib/_inspect\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_client\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_repl\":\">= 7.6.0 && < 12\",\"os\":true,\"path\":true,\"path/posix\":\">= 15.3\",\"path/win32\":\">= 15.3\",\"perf_hooks\":\">= 8.5\",\"process\":\">= 1\",\"punycode\":true,\"querystring\":true,\"readline\":true,\"repl\":true,\"smalloc\":\">= 0.11.5 && < 3\",\"_stream_duplex\":\">= 0.9.4\",\"_stream_transform\":\">= 0.9.4\",\"_stream_wrap\":\">= 1.4.1\",\"_stream_passthrough\":\">= 0.9.4\",\"_stream_readable\":\">= 0.9.4\",\"_stream_writable\":\">= 0.9.4\",\"stream\":true,\"stream/promises\":\">= 15\",\"string_decoder\":true,\"sys\":[\">= 0.6 && < 0.7\",\">= 0.8\"],\"timers\":true,\"timers/promises\":\">= 15\",\"_tls_common\":\">= 0.11.13\",\"_tls_legacy\":\">= 0.11.3 && < 10\",\"_tls_wrap\":\">= 0.11.3\",\"tls\":true,\"trace_events\":\">= 10\",\"tty\":true,\"url\":true,\"util\":true,\"util/types\":\">= 15.3\",\"v8/tools/arguments\":\">= 10 && < 12\",\"v8/tools/codemap\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/consarray\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/csvparser\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/logreader\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/profile_view\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/splaytree\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8\":\">= 1\",\"vm\":true,\"wasi\":\">= 13.4 && < 13.5\",\"worker_threads\":\">= 11.7\",\"zlib\":true}");
 
 /***/ }),
 
@@ -81466,7 +78633,7 @@ module.exports = JSON.parse("[\"AGPL-1.0\",\"AGPL-3.0\",\"BSD-2-Clause-FreeBSD\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("[\"0BSD\",\"AAL\",\"ADSL\",\"AFL-1.1\",\"AFL-1.2\",\"AFL-2.0\",\"AFL-2.1\",\"AFL-3.0\",\"AGPL-1.0-only\",\"AGPL-1.0-or-later\",\"AGPL-3.0-only\",\"AGPL-3.0-or-later\",\"AMDPLPA\",\"AML\",\"AMPAS\",\"ANTLR-PD\",\"APAFML\",\"APL-1.0\",\"APSL-1.0\",\"APSL-1.1\",\"APSL-1.2\",\"APSL-2.0\",\"Abstyles\",\"Adobe-2006\",\"Adobe-Glyph\",\"Afmparse\",\"Aladdin\",\"Apache-1.0\",\"Apache-1.1\",\"Apache-2.0\",\"Artistic-1.0\",\"Artistic-1.0-Perl\",\"Artistic-1.0-cl8\",\"Artistic-2.0\",\"BSD-1-Clause\",\"BSD-2-Clause\",\"BSD-2-Clause-Patent\",\"BSD-2-Clause-Views\",\"BSD-3-Clause\",\"BSD-3-Clause-Attribution\",\"BSD-3-Clause-Clear\",\"BSD-3-Clause-LBNL\",\"BSD-3-Clause-No-Nuclear-License\",\"BSD-3-Clause-No-Nuclear-License-2014\",\"BSD-3-Clause-No-Nuclear-Warranty\",\"BSD-3-Clause-Open-MPI\",\"BSD-4-Clause\",\"BSD-4-Clause-UC\",\"BSD-Protection\",\"BSD-Source-Code\",\"BSL-1.0\",\"Bahyph\",\"Barr\",\"Beerware\",\"BitTorrent-1.0\",\"BitTorrent-1.1\",\"BlueOak-1.0.0\",\"Borceux\",\"CAL-1.0\",\"CAL-1.0-Combined-Work-Exception\",\"CATOSL-1.1\",\"CC-BY-1.0\",\"CC-BY-2.0\",\"CC-BY-2.5\",\"CC-BY-3.0\",\"CC-BY-3.0-AT\",\"CC-BY-4.0\",\"CC-BY-NC-1.0\",\"CC-BY-NC-2.0\",\"CC-BY-NC-2.5\",\"CC-BY-NC-3.0\",\"CC-BY-NC-4.0\",\"CC-BY-NC-ND-1.0\",\"CC-BY-NC-ND-2.0\",\"CC-BY-NC-ND-2.5\",\"CC-BY-NC-ND-3.0\",\"CC-BY-NC-ND-3.0-IGO\",\"CC-BY-NC-ND-4.0\",\"CC-BY-NC-SA-1.0\",\"CC-BY-NC-SA-2.0\",\"CC-BY-NC-SA-2.5\",\"CC-BY-NC-SA-3.0\",\"CC-BY-NC-SA-4.0\",\"CC-BY-ND-1.0\",\"CC-BY-ND-2.0\",\"CC-BY-ND-2.5\",\"CC-BY-ND-3.0\",\"CC-BY-ND-4.0\",\"CC-BY-SA-1.0\",\"CC-BY-SA-2.0\",\"CC-BY-SA-2.5\",\"CC-BY-SA-3.0\",\"CC-BY-SA-3.0-AT\",\"CC-BY-SA-4.0\",\"CC-PDDC\",\"CC0-1.0\",\"CDDL-1.0\",\"CDDL-1.1\",\"CDLA-Permissive-1.0\",\"CDLA-Sharing-1.0\",\"CECILL-1.0\",\"CECILL-1.1\",\"CECILL-2.0\",\"CECILL-2.1\",\"CECILL-B\",\"CECILL-C\",\"CERN-OHL-1.1\",\"CERN-OHL-1.2\",\"CERN-OHL-P-2.0\",\"CERN-OHL-S-2.0\",\"CERN-OHL-W-2.0\",\"CNRI-Jython\",\"CNRI-Python\",\"CNRI-Python-GPL-Compatible\",\"CPAL-1.0\",\"CPL-1.0\",\"CPOL-1.02\",\"CUA-OPL-1.0\",\"Caldera\",\"ClArtistic\",\"Condor-1.1\",\"Crossword\",\"CrystalStacker\",\"Cube\",\"D-FSL-1.0\",\"DOC\",\"DSDP\",\"Dotseqn\",\"ECL-1.0\",\"ECL-2.0\",\"EFL-1.0\",\"EFL-2.0\",\"EPICS\",\"EPL-1.0\",\"EPL-2.0\",\"EUDatagrid\",\"EUPL-1.0\",\"EUPL-1.1\",\"EUPL-1.2\",\"Entessa\",\"ErlPL-1.1\",\"Eurosym\",\"FSFAP\",\"FSFUL\",\"FSFULLR\",\"FTL\",\"Fair\",\"Frameworx-1.0\",\"FreeImage\",\"GFDL-1.1-invariants-only\",\"GFDL-1.1-invariants-or-later\",\"GFDL-1.1-no-invariants-only\",\"GFDL-1.1-no-invariants-or-later\",\"GFDL-1.1-only\",\"GFDL-1.1-or-later\",\"GFDL-1.2-invariants-only\",\"GFDL-1.2-invariants-or-later\",\"GFDL-1.2-no-invariants-only\",\"GFDL-1.2-no-invariants-or-later\",\"GFDL-1.2-only\",\"GFDL-1.2-or-later\",\"GFDL-1.3-invariants-only\",\"GFDL-1.3-invariants-or-later\",\"GFDL-1.3-no-invariants-only\",\"GFDL-1.3-no-invariants-or-later\",\"GFDL-1.3-only\",\"GFDL-1.3-or-later\",\"GL2PS\",\"GLWTPL\",\"GPL-1.0-only\",\"GPL-1.0-or-later\",\"GPL-2.0-only\",\"GPL-2.0-or-later\",\"GPL-3.0-only\",\"GPL-3.0-or-later\",\"Giftware\",\"Glide\",\"Glulxe\",\"HPND\",\"HPND-sell-variant\",\"HaskellReport\",\"Hippocratic-2.1\",\"IBM-pibs\",\"ICU\",\"IJG\",\"IPA\",\"IPL-1.0\",\"ISC\",\"ImageMagick\",\"Imlib2\",\"Info-ZIP\",\"Intel\",\"Intel-ACPI\",\"Interbase-1.0\",\"JPNIC\",\"JSON\",\"JasPer-2.0\",\"LAL-1.2\",\"LAL-1.3\",\"LGPL-2.0-only\",\"LGPL-2.0-or-later\",\"LGPL-2.1-only\",\"LGPL-2.1-or-later\",\"LGPL-3.0-only\",\"LGPL-3.0-or-later\",\"LGPLLR\",\"LPL-1.0\",\"LPL-1.02\",\"LPPL-1.0\",\"LPPL-1.1\",\"LPPL-1.2\",\"LPPL-1.3a\",\"LPPL-1.3c\",\"Latex2e\",\"Leptonica\",\"LiLiQ-P-1.1\",\"LiLiQ-R-1.1\",\"LiLiQ-Rplus-1.1\",\"Libpng\",\"Linux-OpenIB\",\"MIT\",\"MIT-0\",\"MIT-CMU\",\"MIT-advertising\",\"MIT-enna\",\"MIT-feh\",\"MITNFA\",\"MPL-1.0\",\"MPL-1.1\",\"MPL-2.0\",\"MPL-2.0-no-copyleft-exception\",\"MS-PL\",\"MS-RL\",\"MTLL\",\"MakeIndex\",\"MirOS\",\"Motosoto\",\"MulanPSL-1.0\",\"MulanPSL-2.0\",\"Multics\",\"Mup\",\"NASA-1.3\",\"NBPL-1.0\",\"NCGL-UK-2.0\",\"NCSA\",\"NGPL\",\"NIST-PD\",\"NIST-PD-fallback\",\"NLOD-1.0\",\"NLPL\",\"NOSL\",\"NPL-1.0\",\"NPL-1.1\",\"NPOSL-3.0\",\"NRL\",\"NTP\",\"NTP-0\",\"Naumen\",\"Net-SNMP\",\"NetCDF\",\"Newsletr\",\"Nokia\",\"Noweb\",\"O-UDA-1.0\",\"OCCT-PL\",\"OCLC-2.0\",\"ODC-By-1.0\",\"ODbL-1.0\",\"OFL-1.0\",\"OFL-1.0-RFN\",\"OFL-1.0-no-RFN\",\"OFL-1.1\",\"OFL-1.1-RFN\",\"OFL-1.1-no-RFN\",\"OGC-1.0\",\"OGL-Canada-2.0\",\"OGL-UK-1.0\",\"OGL-UK-2.0\",\"OGL-UK-3.0\",\"OGTSL\",\"OLDAP-1.1\",\"OLDAP-1.2\",\"OLDAP-1.3\",\"OLDAP-1.4\",\"OLDAP-2.0\",\"OLDAP-2.0.1\",\"OLDAP-2.1\",\"OLDAP-2.2\",\"OLDAP-2.2.1\",\"OLDAP-2.2.2\",\"OLDAP-2.3\",\"OLDAP-2.4\",\"OLDAP-2.5\",\"OLDAP-2.6\",\"OLDAP-2.7\",\"OLDAP-2.8\",\"OML\",\"OPL-1.0\",\"OSET-PL-2.1\",\"OSL-1.0\",\"OSL-1.1\",\"OSL-2.0\",\"OSL-2.1\",\"OSL-3.0\",\"OpenSSL\",\"PDDL-1.0\",\"PHP-3.0\",\"PHP-3.01\",\"PSF-2.0\",\"Parity-6.0.0\",\"Parity-7.0.0\",\"Plexus\",\"PolyForm-Noncommercial-1.0.0\",\"PolyForm-Small-Business-1.0.0\",\"PostgreSQL\",\"Python-2.0\",\"QPL-1.0\",\"Qhull\",\"RHeCos-1.1\",\"RPL-1.1\",\"RPL-1.5\",\"RPSL-1.0\",\"RSA-MD\",\"RSCPL\",\"Rdisc\",\"Ruby\",\"SAX-PD\",\"SCEA\",\"SGI-B-1.0\",\"SGI-B-1.1\",\"SGI-B-2.0\",\"SHL-0.5\",\"SHL-0.51\",\"SISSL\",\"SISSL-1.2\",\"SMLNJ\",\"SMPPL\",\"SNIA\",\"SPL-1.0\",\"SSH-OpenSSH\",\"SSH-short\",\"SSPL-1.0\",\"SWL\",\"Saxpath\",\"Sendmail\",\"Sendmail-8.23\",\"SimPL-2.0\",\"Sleepycat\",\"Spencer-86\",\"Spencer-94\",\"Spencer-99\",\"SugarCRM-1.1.3\",\"TAPR-OHL-1.0\",\"TCL\",\"TCP-wrappers\",\"TMate\",\"TORQUE-1.1\",\"TOSL\",\"TU-Berlin-1.0\",\"TU-Berlin-2.0\",\"UCL-1.0\",\"UPL-1.0\",\"Unicode-DFS-2015\",\"Unicode-DFS-2016\",\"Unicode-TOU\",\"Unlicense\",\"VOSTROM\",\"VSL-1.0\",\"Vim\",\"W3C\",\"W3C-19980720\",\"W3C-20150513\",\"WTFPL\",\"Watcom-1.0\",\"Wsuipa\",\"X11\",\"XFree86-1.1\",\"XSkat\",\"Xerox\",\"Xnet\",\"YPL-1.0\",\"YPL-1.1\",\"ZPL-1.1\",\"ZPL-2.0\",\"ZPL-2.1\",\"Zed\",\"Zend-2.0\",\"Zimbra-1.3\",\"Zimbra-1.4\",\"Zlib\",\"blessing\",\"bzip2-1.0.5\",\"bzip2-1.0.6\",\"copyleft-next-0.3.0\",\"copyleft-next-0.3.1\",\"curl\",\"diffmark\",\"dvipdfm\",\"eGenix\",\"etalab-2.0\",\"gSOAP-1.3b\",\"gnuplot\",\"iMatix\",\"libpng-2.0\",\"libselinux-1.0\",\"libtiff\",\"mpich2\",\"psfrag\",\"psutils\",\"xinetd\",\"xpp\",\"zlib-acknowledgement\"]");
+module.exports = JSON.parse("[\"0BSD\",\"AAL\",\"ADSL\",\"AFL-1.1\",\"AFL-1.2\",\"AFL-2.0\",\"AFL-2.1\",\"AFL-3.0\",\"AGPL-1.0-only\",\"AGPL-1.0-or-later\",\"AGPL-3.0-only\",\"AGPL-3.0-or-later\",\"AMDPLPA\",\"AML\",\"AMPAS\",\"ANTLR-PD\",\"ANTLR-PD-fallback\",\"APAFML\",\"APL-1.0\",\"APSL-1.0\",\"APSL-1.1\",\"APSL-1.2\",\"APSL-2.0\",\"Abstyles\",\"Adobe-2006\",\"Adobe-Glyph\",\"Afmparse\",\"Aladdin\",\"Apache-1.0\",\"Apache-1.1\",\"Apache-2.0\",\"Artistic-1.0\",\"Artistic-1.0-Perl\",\"Artistic-1.0-cl8\",\"Artistic-2.0\",\"BSD-1-Clause\",\"BSD-2-Clause\",\"BSD-2-Clause-Patent\",\"BSD-2-Clause-Views\",\"BSD-3-Clause\",\"BSD-3-Clause-Attribution\",\"BSD-3-Clause-Clear\",\"BSD-3-Clause-LBNL\",\"BSD-3-Clause-Modification\",\"BSD-3-Clause-No-Military-License\",\"BSD-3-Clause-No-Nuclear-License\",\"BSD-3-Clause-No-Nuclear-License-2014\",\"BSD-3-Clause-No-Nuclear-Warranty\",\"BSD-3-Clause-Open-MPI\",\"BSD-4-Clause\",\"BSD-4-Clause-Shortened\",\"BSD-4-Clause-UC\",\"BSD-Protection\",\"BSD-Source-Code\",\"BSL-1.0\",\"BUSL-1.1\",\"Bahyph\",\"Barr\",\"Beerware\",\"BitTorrent-1.0\",\"BitTorrent-1.1\",\"BlueOak-1.0.0\",\"Borceux\",\"C-UDA-1.0\",\"CAL-1.0\",\"CAL-1.0-Combined-Work-Exception\",\"CATOSL-1.1\",\"CC-BY-1.0\",\"CC-BY-2.0\",\"CC-BY-2.5\",\"CC-BY-3.0\",\"CC-BY-3.0-AT\",\"CC-BY-3.0-US\",\"CC-BY-4.0\",\"CC-BY-NC-1.0\",\"CC-BY-NC-2.0\",\"CC-BY-NC-2.5\",\"CC-BY-NC-3.0\",\"CC-BY-NC-4.0\",\"CC-BY-NC-ND-1.0\",\"CC-BY-NC-ND-2.0\",\"CC-BY-NC-ND-2.5\",\"CC-BY-NC-ND-3.0\",\"CC-BY-NC-ND-3.0-IGO\",\"CC-BY-NC-ND-4.0\",\"CC-BY-NC-SA-1.0\",\"CC-BY-NC-SA-2.0\",\"CC-BY-NC-SA-2.5\",\"CC-BY-NC-SA-3.0\",\"CC-BY-NC-SA-4.0\",\"CC-BY-ND-1.0\",\"CC-BY-ND-2.0\",\"CC-BY-ND-2.5\",\"CC-BY-ND-3.0\",\"CC-BY-ND-4.0\",\"CC-BY-SA-1.0\",\"CC-BY-SA-2.0\",\"CC-BY-SA-2.0-UK\",\"CC-BY-SA-2.1-JP\",\"CC-BY-SA-2.5\",\"CC-BY-SA-3.0\",\"CC-BY-SA-3.0-AT\",\"CC-BY-SA-4.0\",\"CC-PDDC\",\"CC0-1.0\",\"CDDL-1.0\",\"CDDL-1.1\",\"CDL-1.0\",\"CDLA-Permissive-1.0\",\"CDLA-Sharing-1.0\",\"CECILL-1.0\",\"CECILL-1.1\",\"CECILL-2.0\",\"CECILL-2.1\",\"CECILL-B\",\"CECILL-C\",\"CERN-OHL-1.1\",\"CERN-OHL-1.2\",\"CERN-OHL-P-2.0\",\"CERN-OHL-S-2.0\",\"CERN-OHL-W-2.0\",\"CNRI-Jython\",\"CNRI-Python\",\"CNRI-Python-GPL-Compatible\",\"CPAL-1.0\",\"CPL-1.0\",\"CPOL-1.02\",\"CUA-OPL-1.0\",\"Caldera\",\"ClArtistic\",\"Condor-1.1\",\"Crossword\",\"CrystalStacker\",\"Cube\",\"D-FSL-1.0\",\"DOC\",\"DRL-1.0\",\"DSDP\",\"Dotseqn\",\"ECL-1.0\",\"ECL-2.0\",\"EFL-1.0\",\"EFL-2.0\",\"EPICS\",\"EPL-1.0\",\"EPL-2.0\",\"EUDatagrid\",\"EUPL-1.0\",\"EUPL-1.1\",\"EUPL-1.2\",\"Entessa\",\"ErlPL-1.1\",\"Eurosym\",\"FSFAP\",\"FSFUL\",\"FSFULLR\",\"FTL\",\"Fair\",\"Frameworx-1.0\",\"FreeBSD-DOC\",\"FreeImage\",\"GD\",\"GFDL-1.1-invariants-only\",\"GFDL-1.1-invariants-or-later\",\"GFDL-1.1-no-invariants-only\",\"GFDL-1.1-no-invariants-or-later\",\"GFDL-1.1-only\",\"GFDL-1.1-or-later\",\"GFDL-1.2-invariants-only\",\"GFDL-1.2-invariants-or-later\",\"GFDL-1.2-no-invariants-only\",\"GFDL-1.2-no-invariants-or-later\",\"GFDL-1.2-only\",\"GFDL-1.2-or-later\",\"GFDL-1.3-invariants-only\",\"GFDL-1.3-invariants-or-later\",\"GFDL-1.3-no-invariants-only\",\"GFDL-1.3-no-invariants-or-later\",\"GFDL-1.3-only\",\"GFDL-1.3-or-later\",\"GL2PS\",\"GLWTPL\",\"GPL-1.0-only\",\"GPL-1.0-or-later\",\"GPL-2.0-only\",\"GPL-2.0-or-later\",\"GPL-3.0-only\",\"GPL-3.0-or-later\",\"Giftware\",\"Glide\",\"Glulxe\",\"HPND\",\"HPND-sell-variant\",\"HTMLTIDY\",\"HaskellReport\",\"Hippocratic-2.1\",\"IBM-pibs\",\"ICU\",\"IJG\",\"IPA\",\"IPL-1.0\",\"ISC\",\"ImageMagick\",\"Imlib2\",\"Info-ZIP\",\"Intel\",\"Intel-ACPI\",\"Interbase-1.0\",\"JPNIC\",\"JSON\",\"JasPer-2.0\",\"LAL-1.2\",\"LAL-1.3\",\"LGPL-2.0-only\",\"LGPL-2.0-or-later\",\"LGPL-2.1-only\",\"LGPL-2.1-or-later\",\"LGPL-3.0-only\",\"LGPL-3.0-or-later\",\"LGPLLR\",\"LPL-1.0\",\"LPL-1.02\",\"LPPL-1.0\",\"LPPL-1.1\",\"LPPL-1.2\",\"LPPL-1.3a\",\"LPPL-1.3c\",\"Latex2e\",\"Leptonica\",\"LiLiQ-P-1.1\",\"LiLiQ-R-1.1\",\"LiLiQ-Rplus-1.1\",\"Libpng\",\"Linux-OpenIB\",\"MIT\",\"MIT-0\",\"MIT-CMU\",\"MIT-Modern-Variant\",\"MIT-advertising\",\"MIT-enna\",\"MIT-feh\",\"MIT-open-group\",\"MITNFA\",\"MPL-1.0\",\"MPL-1.1\",\"MPL-2.0\",\"MPL-2.0-no-copyleft-exception\",\"MS-PL\",\"MS-RL\",\"MTLL\",\"MakeIndex\",\"MirOS\",\"Motosoto\",\"MulanPSL-1.0\",\"MulanPSL-2.0\",\"Multics\",\"Mup\",\"NAIST-2003\",\"NASA-1.3\",\"NBPL-1.0\",\"NCGL-UK-2.0\",\"NCSA\",\"NGPL\",\"NIST-PD\",\"NIST-PD-fallback\",\"NLOD-1.0\",\"NLPL\",\"NOSL\",\"NPL-1.0\",\"NPL-1.1\",\"NPOSL-3.0\",\"NRL\",\"NTP\",\"NTP-0\",\"Naumen\",\"Net-SNMP\",\"NetCDF\",\"Newsletr\",\"Nokia\",\"Noweb\",\"O-UDA-1.0\",\"OCCT-PL\",\"OCLC-2.0\",\"ODC-By-1.0\",\"ODbL-1.0\",\"OFL-1.0\",\"OFL-1.0-RFN\",\"OFL-1.0-no-RFN\",\"OFL-1.1\",\"OFL-1.1-RFN\",\"OFL-1.1-no-RFN\",\"OGC-1.0\",\"OGDL-Taiwan-1.0\",\"OGL-Canada-2.0\",\"OGL-UK-1.0\",\"OGL-UK-2.0\",\"OGL-UK-3.0\",\"OGTSL\",\"OLDAP-1.1\",\"OLDAP-1.2\",\"OLDAP-1.3\",\"OLDAP-1.4\",\"OLDAP-2.0\",\"OLDAP-2.0.1\",\"OLDAP-2.1\",\"OLDAP-2.2\",\"OLDAP-2.2.1\",\"OLDAP-2.2.2\",\"OLDAP-2.3\",\"OLDAP-2.4\",\"OLDAP-2.5\",\"OLDAP-2.6\",\"OLDAP-2.7\",\"OLDAP-2.8\",\"OML\",\"OPL-1.0\",\"OSET-PL-2.1\",\"OSL-1.0\",\"OSL-1.1\",\"OSL-2.0\",\"OSL-2.1\",\"OSL-3.0\",\"OpenSSL\",\"PDDL-1.0\",\"PHP-3.0\",\"PHP-3.01\",\"PSF-2.0\",\"Parity-6.0.0\",\"Parity-7.0.0\",\"Plexus\",\"PolyForm-Noncommercial-1.0.0\",\"PolyForm-Small-Business-1.0.0\",\"PostgreSQL\",\"Python-2.0\",\"QPL-1.0\",\"Qhull\",\"RHeCos-1.1\",\"RPL-1.1\",\"RPL-1.5\",\"RPSL-1.0\",\"RSA-MD\",\"RSCPL\",\"Rdisc\",\"Ruby\",\"SAX-PD\",\"SCEA\",\"SGI-B-1.0\",\"SGI-B-1.1\",\"SGI-B-2.0\",\"SHL-0.5\",\"SHL-0.51\",\"SISSL\",\"SISSL-1.2\",\"SMLNJ\",\"SMPPL\",\"SNIA\",\"SPL-1.0\",\"SSH-OpenSSH\",\"SSH-short\",\"SSPL-1.0\",\"SWL\",\"Saxpath\",\"Sendmail\",\"Sendmail-8.23\",\"SimPL-2.0\",\"Sleepycat\",\"Spencer-86\",\"Spencer-94\",\"Spencer-99\",\"SugarCRM-1.1.3\",\"TAPR-OHL-1.0\",\"TCL\",\"TCP-wrappers\",\"TMate\",\"TORQUE-1.1\",\"TOSL\",\"TU-Berlin-1.0\",\"TU-Berlin-2.0\",\"UCL-1.0\",\"UPL-1.0\",\"Unicode-DFS-2015\",\"Unicode-DFS-2016\",\"Unicode-TOU\",\"Unlicense\",\"VOSTROM\",\"VSL-1.0\",\"Vim\",\"W3C\",\"W3C-19980720\",\"W3C-20150513\",\"WTFPL\",\"Watcom-1.0\",\"Wsuipa\",\"X11\",\"XFree86-1.1\",\"XSkat\",\"Xerox\",\"Xnet\",\"YPL-1.0\",\"YPL-1.1\",\"ZPL-1.1\",\"ZPL-2.0\",\"ZPL-2.1\",\"Zed\",\"Zend-2.0\",\"Zimbra-1.3\",\"Zimbra-1.4\",\"Zlib\",\"blessing\",\"bzip2-1.0.5\",\"bzip2-1.0.6\",\"copyleft-next-0.3.0\",\"copyleft-next-0.3.1\",\"curl\",\"diffmark\",\"dvipdfm\",\"eGenix\",\"etalab-2.0\",\"gSOAP-1.3b\",\"gnuplot\",\"iMatix\",\"libpng-2.0\",\"libselinux-1.0\",\"libtiff\",\"mpich2\",\"psfrag\",\"psutils\",\"xinetd\",\"xpp\",\"zlib-acknowledgement\"]");
 
 /***/ }),
 
@@ -81474,7 +78641,7 @@ module.exports = JSON.parse("[\"0BSD\",\"AAL\",\"ADSL\",\"AFL-1.1\",\"AFL-1.2\",
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"dots\":{\"interval\":80,\"frames\":[\"⠋\",\"⠙\",\"⠹\",\"⠸\",\"⠼\",\"⠴\",\"⠦\",\"⠧\",\"⠇\",\"⠏\"]},\"dots2\":{\"interval\":80,\"frames\":[\"⣾\",\"⣽\",\"⣻\",\"⢿\",\"⡿\",\"⣟\",\"⣯\",\"⣷\"]},\"dots3\":{\"interval\":80,\"frames\":[\"⠋\",\"⠙\",\"⠚\",\"⠞\",\"⠖\",\"⠦\",\"⠴\",\"⠲\",\"⠳\",\"⠓\"]},\"dots4\":{\"interval\":80,\"frames\":[\"⠄\",\"⠆\",\"⠇\",\"⠋\",\"⠙\",\"⠸\",\"⠰\",\"⠠\",\"⠰\",\"⠸\",\"⠙\",\"⠋\",\"⠇\",\"⠆\"]},\"dots5\":{\"interval\":80,\"frames\":[\"⠋\",\"⠙\",\"⠚\",\"⠒\",\"⠂\",\"⠂\",\"⠒\",\"⠲\",\"⠴\",\"⠦\",\"⠖\",\"⠒\",\"⠐\",\"⠐\",\"⠒\",\"⠓\",\"⠋\"]},\"dots6\":{\"interval\":80,\"frames\":[\"⠁\",\"⠉\",\"⠙\",\"⠚\",\"⠒\",\"⠂\",\"⠂\",\"⠒\",\"⠲\",\"⠴\",\"⠤\",\"⠄\",\"⠄\",\"⠤\",\"⠴\",\"⠲\",\"⠒\",\"⠂\",\"⠂\",\"⠒\",\"⠚\",\"⠙\",\"⠉\",\"⠁\"]},\"dots7\":{\"interval\":80,\"frames\":[\"⠈\",\"⠉\",\"⠋\",\"⠓\",\"⠒\",\"⠐\",\"⠐\",\"⠒\",\"⠖\",\"⠦\",\"⠤\",\"⠠\",\"⠠\",\"⠤\",\"⠦\",\"⠖\",\"⠒\",\"⠐\",\"⠐\",\"⠒\",\"⠓\",\"⠋\",\"⠉\",\"⠈\"]},\"dots8\":{\"interval\":80,\"frames\":[\"⠁\",\"⠁\",\"⠉\",\"⠙\",\"⠚\",\"⠒\",\"⠂\",\"⠂\",\"⠒\",\"⠲\",\"⠴\",\"⠤\",\"⠄\",\"⠄\",\"⠤\",\"⠠\",\"⠠\",\"⠤\",\"⠦\",\"⠖\",\"⠒\",\"⠐\",\"⠐\",\"⠒\",\"⠓\",\"⠋\",\"⠉\",\"⠈\",\"⠈\"]},\"dots9\":{\"interval\":80,\"frames\":[\"⢹\",\"⢺\",\"⢼\",\"⣸\",\"⣇\",\"⡧\",\"⡗\",\"⡏\"]},\"dots10\":{\"interval\":80,\"frames\":[\"⢄\",\"⢂\",\"⢁\",\"⡁\",\"⡈\",\"⡐\",\"⡠\"]},\"dots11\":{\"interval\":100,\"frames\":[\"⠁\",\"⠂\",\"⠄\",\"⡀\",\"⢀\",\"⠠\",\"⠐\",\"⠈\"]},\"dots12\":{\"interval\":80,\"frames\":[\"⢀⠀\",\"⡀⠀\",\"⠄⠀\",\"⢂⠀\",\"⡂⠀\",\"⠅⠀\",\"⢃⠀\",\"⡃⠀\",\"⠍⠀\",\"⢋⠀\",\"⡋⠀\",\"⠍⠁\",\"⢋⠁\",\"⡋⠁\",\"⠍⠉\",\"⠋⠉\",\"⠋⠉\",\"⠉⠙\",\"⠉⠙\",\"⠉⠩\",\"⠈⢙\",\"⠈⡙\",\"⢈⠩\",\"⡀⢙\",\"⠄⡙\",\"⢂⠩\",\"⡂⢘\",\"⠅⡘\",\"⢃⠨\",\"⡃⢐\",\"⠍⡐\",\"⢋⠠\",\"⡋⢀\",\"⠍⡁\",\"⢋⠁\",\"⡋⠁\",\"⠍⠉\",\"⠋⠉\",\"⠋⠉\",\"⠉⠙\",\"⠉⠙\",\"⠉⠩\",\"⠈⢙\",\"⠈⡙\",\"⠈⠩\",\"⠀⢙\",\"⠀⡙\",\"⠀⠩\",\"⠀⢘\",\"⠀⡘\",\"⠀⠨\",\"⠀⢐\",\"⠀⡐\",\"⠀⠠\",\"⠀⢀\",\"⠀⡀\"]},\"dots8Bit\":{\"interval\":80,\"frames\":[\"⠀\",\"⠁\",\"⠂\",\"⠃\",\"⠄\",\"⠅\",\"⠆\",\"⠇\",\"⡀\",\"⡁\",\"⡂\",\"⡃\",\"⡄\",\"⡅\",\"⡆\",\"⡇\",\"⠈\",\"⠉\",\"⠊\",\"⠋\",\"⠌\",\"⠍\",\"⠎\",\"⠏\",\"⡈\",\"⡉\",\"⡊\",\"⡋\",\"⡌\",\"⡍\",\"⡎\",\"⡏\",\"⠐\",\"⠑\",\"⠒\",\"⠓\",\"⠔\",\"⠕\",\"⠖\",\"⠗\",\"⡐\",\"⡑\",\"⡒\",\"⡓\",\"⡔\",\"⡕\",\"⡖\",\"⡗\",\"⠘\",\"⠙\",\"⠚\",\"⠛\",\"⠜\",\"⠝\",\"⠞\",\"⠟\",\"⡘\",\"⡙\",\"⡚\",\"⡛\",\"⡜\",\"⡝\",\"⡞\",\"⡟\",\"⠠\",\"⠡\",\"⠢\",\"⠣\",\"⠤\",\"⠥\",\"⠦\",\"⠧\",\"⡠\",\"⡡\",\"⡢\",\"⡣\",\"⡤\",\"⡥\",\"⡦\",\"⡧\",\"⠨\",\"⠩\",\"⠪\",\"⠫\",\"⠬\",\"⠭\",\"⠮\",\"⠯\",\"⡨\",\"⡩\",\"⡪\",\"⡫\",\"⡬\",\"⡭\",\"⡮\",\"⡯\",\"⠰\",\"⠱\",\"⠲\",\"⠳\",\"⠴\",\"⠵\",\"⠶\",\"⠷\",\"⡰\",\"⡱\",\"⡲\",\"⡳\",\"⡴\",\"⡵\",\"⡶\",\"⡷\",\"⠸\",\"⠹\",\"⠺\",\"⠻\",\"⠼\",\"⠽\",\"⠾\",\"⠿\",\"⡸\",\"⡹\",\"⡺\",\"⡻\",\"⡼\",\"⡽\",\"⡾\",\"⡿\",\"⢀\",\"⢁\",\"⢂\",\"⢃\",\"⢄\",\"⢅\",\"⢆\",\"⢇\",\"⣀\",\"⣁\",\"⣂\",\"⣃\",\"⣄\",\"⣅\",\"⣆\",\"⣇\",\"⢈\",\"⢉\",\"⢊\",\"⢋\",\"⢌\",\"⢍\",\"⢎\",\"⢏\",\"⣈\",\"⣉\",\"⣊\",\"⣋\",\"⣌\",\"⣍\",\"⣎\",\"⣏\",\"⢐\",\"⢑\",\"⢒\",\"⢓\",\"⢔\",\"⢕\",\"⢖\",\"⢗\",\"⣐\",\"⣑\",\"⣒\",\"⣓\",\"⣔\",\"⣕\",\"⣖\",\"⣗\",\"⢘\",\"⢙\",\"⢚\",\"⢛\",\"⢜\",\"⢝\",\"⢞\",\"⢟\",\"⣘\",\"⣙\",\"⣚\",\"⣛\",\"⣜\",\"⣝\",\"⣞\",\"⣟\",\"⢠\",\"⢡\",\"⢢\",\"⢣\",\"⢤\",\"⢥\",\"⢦\",\"⢧\",\"⣠\",\"⣡\",\"⣢\",\"⣣\",\"⣤\",\"⣥\",\"⣦\",\"⣧\",\"⢨\",\"⢩\",\"⢪\",\"⢫\",\"⢬\",\"⢭\",\"⢮\",\"⢯\",\"⣨\",\"⣩\",\"⣪\",\"⣫\",\"⣬\",\"⣭\",\"⣮\",\"⣯\",\"⢰\",\"⢱\",\"⢲\",\"⢳\",\"⢴\",\"⢵\",\"⢶\",\"⢷\",\"⣰\",\"⣱\",\"⣲\",\"⣳\",\"⣴\",\"⣵\",\"⣶\",\"⣷\",\"⢸\",\"⢹\",\"⢺\",\"⢻\",\"⢼\",\"⢽\",\"⢾\",\"⢿\",\"⣸\",\"⣹\",\"⣺\",\"⣻\",\"⣼\",\"⣽\",\"⣾\",\"⣿\"]},\"line\":{\"interval\":130,\"frames\":[\"-\",\"\\\\\",\"|\",\"/\"]},\"line2\":{\"interval\":100,\"frames\":[\"⠂\",\"-\",\"–\",\"—\",\"–\",\"-\"]},\"pipe\":{\"interval\":100,\"frames\":[\"┤\",\"┘\",\"┴\",\"└\",\"├\",\"┌\",\"┬\",\"┐\"]},\"simpleDots\":{\"interval\":400,\"frames\":[\".  \",\".. \",\"...\",\"   \"]},\"simpleDotsScrolling\":{\"interval\":200,\"frames\":[\".  \",\".. \",\"...\",\" ..\",\"  .\",\"   \"]},\"star\":{\"interval\":70,\"frames\":[\"✶\",\"✸\",\"✹\",\"✺\",\"✹\",\"✷\"]},\"star2\":{\"interval\":80,\"frames\":[\"+\",\"x\",\"*\"]},\"flip\":{\"interval\":70,\"frames\":[\"_\",\"_\",\"_\",\"-\",\"`\",\"`\",\"'\",\"´\",\"-\",\"_\",\"_\",\"_\"]},\"hamburger\":{\"interval\":100,\"frames\":[\"☱\",\"☲\",\"☴\"]},\"growVertical\":{\"interval\":120,\"frames\":[\"▁\",\"▃\",\"▄\",\"▅\",\"▆\",\"▇\",\"▆\",\"▅\",\"▄\",\"▃\"]},\"growHorizontal\":{\"interval\":120,\"frames\":[\"▏\",\"▎\",\"▍\",\"▌\",\"▋\",\"▊\",\"▉\",\"▊\",\"▋\",\"▌\",\"▍\",\"▎\"]},\"balloon\":{\"interval\":140,\"frames\":[\" \",\".\",\"o\",\"O\",\"@\",\"*\",\" \"]},\"balloon2\":{\"interval\":120,\"frames\":[\".\",\"o\",\"O\",\"°\",\"O\",\"o\",\".\"]},\"noise\":{\"interval\":100,\"frames\":[\"▓\",\"▒\",\"░\"]},\"bounce\":{\"interval\":120,\"frames\":[\"⠁\",\"⠂\",\"⠄\",\"⠂\"]},\"boxBounce\":{\"interval\":120,\"frames\":[\"▖\",\"▘\",\"▝\",\"▗\"]},\"boxBounce2\":{\"interval\":100,\"frames\":[\"▌\",\"▀\",\"▐\",\"▄\"]},\"triangle\":{\"interval\":50,\"frames\":[\"◢\",\"◣\",\"◤\",\"◥\"]},\"arc\":{\"interval\":100,\"frames\":[\"◜\",\"◠\",\"◝\",\"◞\",\"◡\",\"◟\"]},\"circle\":{\"interval\":120,\"frames\":[\"◡\",\"⊙\",\"◠\"]},\"squareCorners\":{\"interval\":180,\"frames\":[\"◰\",\"◳\",\"◲\",\"◱\"]},\"circleQuarters\":{\"interval\":120,\"frames\":[\"◴\",\"◷\",\"◶\",\"◵\"]},\"circleHalves\":{\"interval\":50,\"frames\":[\"◐\",\"◓\",\"◑\",\"◒\"]},\"squish\":{\"interval\":100,\"frames\":[\"╫\",\"╪\"]},\"toggle\":{\"interval\":250,\"frames\":[\"⊶\",\"⊷\"]},\"toggle2\":{\"interval\":80,\"frames\":[\"▫\",\"▪\"]},\"toggle3\":{\"interval\":120,\"frames\":[\"□\",\"■\"]},\"toggle4\":{\"interval\":100,\"frames\":[\"■\",\"□\",\"▪\",\"▫\"]},\"toggle5\":{\"interval\":100,\"frames\":[\"▮\",\"▯\"]},\"toggle6\":{\"interval\":300,\"frames\":[\"ဝ\",\"၀\"]},\"toggle7\":{\"interval\":80,\"frames\":[\"⦾\",\"⦿\"]},\"toggle8\":{\"interval\":100,\"frames\":[\"◍\",\"◌\"]},\"toggle9\":{\"interval\":100,\"frames\":[\"◉\",\"◎\"]},\"toggle10\":{\"interval\":100,\"frames\":[\"㊂\",\"㊀\",\"㊁\"]},\"toggle11\":{\"interval\":50,\"frames\":[\"⧇\",\"⧆\"]},\"toggle12\":{\"interval\":120,\"frames\":[\"☗\",\"☖\"]},\"toggle13\":{\"interval\":80,\"frames\":[\"=\",\"*\",\"-\"]},\"arrow\":{\"interval\":100,\"frames\":[\"←\",\"↖\",\"↑\",\"↗\",\"→\",\"↘\",\"↓\",\"↙\"]},\"arrow2\":{\"interval\":80,\"frames\":[\"⬆️ \",\"↗️ \",\"➡️ \",\"↘️ \",\"⬇️ \",\"↙️ \",\"⬅️ \",\"↖️ \"]},\"arrow3\":{\"interval\":120,\"frames\":[\"▹▹▹▹▹\",\"▸▹▹▹▹\",\"▹▸▹▹▹\",\"▹▹▸▹▹\",\"▹▹▹▸▹\",\"▹▹▹▹▸\"]},\"bouncingBar\":{\"interval\":80,\"frames\":[\"[    ]\",\"[=   ]\",\"[==  ]\",\"[=== ]\",\"[ ===]\",\"[  ==]\",\"[   =]\",\"[    ]\",\"[   =]\",\"[  ==]\",\"[ ===]\",\"[====]\",\"[=== ]\",\"[==  ]\",\"[=   ]\"]},\"bouncingBall\":{\"interval\":80,\"frames\":[\"( ●    )\",\"(  ●   )\",\"(   ●  )\",\"(    ● )\",\"(     ●)\",\"(    ● )\",\"(   ●  )\",\"(  ●   )\",\"( ●    )\",\"(●     )\"]},\"smiley\":{\"interval\":200,\"frames\":[\"😄 \",\"😝 \"]},\"monkey\":{\"interval\":300,\"frames\":[\"🙈 \",\"🙈 \",\"🙉 \",\"🙊 \"]},\"hearts\":{\"interval\":100,\"frames\":[\"💛 \",\"💙 \",\"💜 \",\"💚 \",\"❤️ \"]},\"clock\":{\"interval\":100,\"frames\":[\"🕛 \",\"🕐 \",\"🕑 \",\"🕒 \",\"🕓 \",\"🕔 \",\"🕕 \",\"🕖 \",\"🕗 \",\"🕘 \",\"🕙 \",\"🕚 \"]},\"earth\":{\"interval\":180,\"frames\":[\"🌍 \",\"🌎 \",\"🌏 \"]},\"material\":{\"interval\":17,\"frames\":[\"█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"██▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"███▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"████▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"██████▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"██████▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"███████▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"████████▁▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"██████████▁▁▁▁▁▁▁▁▁▁\",\"███████████▁▁▁▁▁▁▁▁▁\",\"█████████████▁▁▁▁▁▁▁\",\"██████████████▁▁▁▁▁▁\",\"██████████████▁▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁▁██████████████▁▁▁▁\",\"▁▁▁██████████████▁▁▁\",\"▁▁▁▁█████████████▁▁▁\",\"▁▁▁▁██████████████▁▁\",\"▁▁▁▁██████████████▁▁\",\"▁▁▁▁▁██████████████▁\",\"▁▁▁▁▁██████████████▁\",\"▁▁▁▁▁██████████████▁\",\"▁▁▁▁▁▁██████████████\",\"▁▁▁▁▁▁██████████████\",\"▁▁▁▁▁▁▁█████████████\",\"▁▁▁▁▁▁▁█████████████\",\"▁▁▁▁▁▁▁▁████████████\",\"▁▁▁▁▁▁▁▁████████████\",\"▁▁▁▁▁▁▁▁▁███████████\",\"▁▁▁▁▁▁▁▁▁███████████\",\"▁▁▁▁▁▁▁▁▁▁██████████\",\"▁▁▁▁▁▁▁▁▁▁██████████\",\"▁▁▁▁▁▁▁▁▁▁▁▁████████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁███████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁██████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█████\",\"█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁████\",\"██▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"██▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"███▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"████▁▁▁▁▁▁▁▁▁▁▁▁▁▁██\",\"█████▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"█████▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"██████▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"████████▁▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"███████████▁▁▁▁▁▁▁▁▁\",\"████████████▁▁▁▁▁▁▁▁\",\"████████████▁▁▁▁▁▁▁▁\",\"██████████████▁▁▁▁▁▁\",\"██████████████▁▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁▁▁█████████████▁▁▁▁\",\"▁▁▁▁▁████████████▁▁▁\",\"▁▁▁▁▁████████████▁▁▁\",\"▁▁▁▁▁▁███████████▁▁▁\",\"▁▁▁▁▁▁▁▁█████████▁▁▁\",\"▁▁▁▁▁▁▁▁█████████▁▁▁\",\"▁▁▁▁▁▁▁▁▁█████████▁▁\",\"▁▁▁▁▁▁▁▁▁█████████▁▁\",\"▁▁▁▁▁▁▁▁▁▁█████████▁\",\"▁▁▁▁▁▁▁▁▁▁▁████████▁\",\"▁▁▁▁▁▁▁▁▁▁▁████████▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁███████▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁███████▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁███████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁███████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\"]},\"moon\":{\"interval\":80,\"frames\":[\"🌑 \",\"🌒 \",\"🌓 \",\"🌔 \",\"🌕 \",\"🌖 \",\"🌗 \",\"🌘 \"]},\"runner\":{\"interval\":140,\"frames\":[\"🚶 \",\"🏃 \"]},\"pong\":{\"interval\":80,\"frames\":[\"▐⠂       ▌\",\"▐⠈       ▌\",\"▐ ⠂      ▌\",\"▐ ⠠      ▌\",\"▐  ⡀     ▌\",\"▐  ⠠     ▌\",\"▐   ⠂    ▌\",\"▐   ⠈    ▌\",\"▐    ⠂   ▌\",\"▐    ⠠   ▌\",\"▐     ⡀  ▌\",\"▐     ⠠  ▌\",\"▐      ⠂ ▌\",\"▐      ⠈ ▌\",\"▐       ⠂▌\",\"▐       ⠠▌\",\"▐       ⡀▌\",\"▐      ⠠ ▌\",\"▐      ⠂ ▌\",\"▐     ⠈  ▌\",\"▐     ⠂  ▌\",\"▐    ⠠   ▌\",\"▐    ⡀   ▌\",\"▐   ⠠    ▌\",\"▐   ⠂    ▌\",\"▐  ⠈     ▌\",\"▐  ⠂     ▌\",\"▐ ⠠      ▌\",\"▐ ⡀      ▌\",\"▐⠠       ▌\"]},\"shark\":{\"interval\":120,\"frames\":[\"▐|\\\\____________▌\",\"▐_|\\\\___________▌\",\"▐__|\\\\__________▌\",\"▐___|\\\\_________▌\",\"▐____|\\\\________▌\",\"▐_____|\\\\_______▌\",\"▐______|\\\\______▌\",\"▐_______|\\\\_____▌\",\"▐________|\\\\____▌\",\"▐_________|\\\\___▌\",\"▐__________|\\\\__▌\",\"▐___________|\\\\_▌\",\"▐____________|\\\\▌\",\"▐____________/|▌\",\"▐___________/|_▌\",\"▐__________/|__▌\",\"▐_________/|___▌\",\"▐________/|____▌\",\"▐_______/|_____▌\",\"▐______/|______▌\",\"▐_____/|_______▌\",\"▐____/|________▌\",\"▐___/|_________▌\",\"▐__/|__________▌\",\"▐_/|___________▌\",\"▐/|____________▌\"]},\"dqpb\":{\"interval\":100,\"frames\":[\"d\",\"q\",\"p\",\"b\"]},\"weather\":{\"interval\":100,\"frames\":[\"☀️ \",\"☀️ \",\"☀️ \",\"🌤 \",\"⛅️ \",\"🌥 \",\"☁️ \",\"🌧 \",\"🌨 \",\"🌧 \",\"🌨 \",\"🌧 \",\"🌨 \",\"⛈ \",\"🌨 \",\"🌧 \",\"🌨 \",\"☁️ \",\"🌥 \",\"⛅️ \",\"🌤 \",\"☀️ \",\"☀️ \"]},\"christmas\":{\"interval\":400,\"frames\":[\"🌲\",\"🎄\"]},\"grenade\":{\"interval\":80,\"frames\":[\"،   \",\"′   \",\" ´ \",\" ‾ \",\"  ⸌\",\"  ⸊\",\"  |\",\"  ⁎\",\"  ⁕\",\" ෴ \",\"  ⁓\",\"   \",\"   \",\"   \"]},\"point\":{\"interval\":125,\"frames\":[\"∙∙∙\",\"●∙∙\",\"∙●∙\",\"∙∙●\",\"∙∙∙\"]},\"layer\":{\"interval\":150,\"frames\":[\"-\",\"=\",\"≡\"]},\"betaWave\":{\"interval\":80,\"frames\":[\"ρββββββ\",\"βρβββββ\",\"ββρββββ\",\"βββρβββ\",\"ββββρββ\",\"βββββρβ\",\"ββββββρ\"]},\"aesthetic\":{\"interval\":80,\"frames\":[\"▰▱▱▱▱▱▱\",\"▰▰▱▱▱▱▱\",\"▰▰▰▱▱▱▱\",\"▰▰▰▰▱▱▱\",\"▰▰▰▰▰▱▱\",\"▰▰▰▰▰▰▱\",\"▰▰▰▰▰▰▰\",\"▰▱▱▱▱▱▱\"]}}");
+module.exports = JSON.parse("{\"dots\":{\"interval\":80,\"frames\":[\"⠋\",\"⠙\",\"⠹\",\"⠸\",\"⠼\",\"⠴\",\"⠦\",\"⠧\",\"⠇\",\"⠏\"]},\"dots2\":{\"interval\":80,\"frames\":[\"⣾\",\"⣽\",\"⣻\",\"⢿\",\"⡿\",\"⣟\",\"⣯\",\"⣷\"]},\"dots3\":{\"interval\":80,\"frames\":[\"⠋\",\"⠙\",\"⠚\",\"⠞\",\"⠖\",\"⠦\",\"⠴\",\"⠲\",\"⠳\",\"⠓\"]},\"dots4\":{\"interval\":80,\"frames\":[\"⠄\",\"⠆\",\"⠇\",\"⠋\",\"⠙\",\"⠸\",\"⠰\",\"⠠\",\"⠰\",\"⠸\",\"⠙\",\"⠋\",\"⠇\",\"⠆\"]},\"dots5\":{\"interval\":80,\"frames\":[\"⠋\",\"⠙\",\"⠚\",\"⠒\",\"⠂\",\"⠂\",\"⠒\",\"⠲\",\"⠴\",\"⠦\",\"⠖\",\"⠒\",\"⠐\",\"⠐\",\"⠒\",\"⠓\",\"⠋\"]},\"dots6\":{\"interval\":80,\"frames\":[\"⠁\",\"⠉\",\"⠙\",\"⠚\",\"⠒\",\"⠂\",\"⠂\",\"⠒\",\"⠲\",\"⠴\",\"⠤\",\"⠄\",\"⠄\",\"⠤\",\"⠴\",\"⠲\",\"⠒\",\"⠂\",\"⠂\",\"⠒\",\"⠚\",\"⠙\",\"⠉\",\"⠁\"]},\"dots7\":{\"interval\":80,\"frames\":[\"⠈\",\"⠉\",\"⠋\",\"⠓\",\"⠒\",\"⠐\",\"⠐\",\"⠒\",\"⠖\",\"⠦\",\"⠤\",\"⠠\",\"⠠\",\"⠤\",\"⠦\",\"⠖\",\"⠒\",\"⠐\",\"⠐\",\"⠒\",\"⠓\",\"⠋\",\"⠉\",\"⠈\"]},\"dots8\":{\"interval\":80,\"frames\":[\"⠁\",\"⠁\",\"⠉\",\"⠙\",\"⠚\",\"⠒\",\"⠂\",\"⠂\",\"⠒\",\"⠲\",\"⠴\",\"⠤\",\"⠄\",\"⠄\",\"⠤\",\"⠠\",\"⠠\",\"⠤\",\"⠦\",\"⠖\",\"⠒\",\"⠐\",\"⠐\",\"⠒\",\"⠓\",\"⠋\",\"⠉\",\"⠈\",\"⠈\"]},\"dots9\":{\"interval\":80,\"frames\":[\"⢹\",\"⢺\",\"⢼\",\"⣸\",\"⣇\",\"⡧\",\"⡗\",\"⡏\"]},\"dots10\":{\"interval\":80,\"frames\":[\"⢄\",\"⢂\",\"⢁\",\"⡁\",\"⡈\",\"⡐\",\"⡠\"]},\"dots11\":{\"interval\":100,\"frames\":[\"⠁\",\"⠂\",\"⠄\",\"⡀\",\"⢀\",\"⠠\",\"⠐\",\"⠈\"]},\"dots12\":{\"interval\":80,\"frames\":[\"⢀⠀\",\"⡀⠀\",\"⠄⠀\",\"⢂⠀\",\"⡂⠀\",\"⠅⠀\",\"⢃⠀\",\"⡃⠀\",\"⠍⠀\",\"⢋⠀\",\"⡋⠀\",\"⠍⠁\",\"⢋⠁\",\"⡋⠁\",\"⠍⠉\",\"⠋⠉\",\"⠋⠉\",\"⠉⠙\",\"⠉⠙\",\"⠉⠩\",\"⠈⢙\",\"⠈⡙\",\"⢈⠩\",\"⡀⢙\",\"⠄⡙\",\"⢂⠩\",\"⡂⢘\",\"⠅⡘\",\"⢃⠨\",\"⡃⢐\",\"⠍⡐\",\"⢋⠠\",\"⡋⢀\",\"⠍⡁\",\"⢋⠁\",\"⡋⠁\",\"⠍⠉\",\"⠋⠉\",\"⠋⠉\",\"⠉⠙\",\"⠉⠙\",\"⠉⠩\",\"⠈⢙\",\"⠈⡙\",\"⠈⠩\",\"⠀⢙\",\"⠀⡙\",\"⠀⠩\",\"⠀⢘\",\"⠀⡘\",\"⠀⠨\",\"⠀⢐\",\"⠀⡐\",\"⠀⠠\",\"⠀⢀\",\"⠀⡀\"]},\"dots8Bit\":{\"interval\":80,\"frames\":[\"⠀\",\"⠁\",\"⠂\",\"⠃\",\"⠄\",\"⠅\",\"⠆\",\"⠇\",\"⡀\",\"⡁\",\"⡂\",\"⡃\",\"⡄\",\"⡅\",\"⡆\",\"⡇\",\"⠈\",\"⠉\",\"⠊\",\"⠋\",\"⠌\",\"⠍\",\"⠎\",\"⠏\",\"⡈\",\"⡉\",\"⡊\",\"⡋\",\"⡌\",\"⡍\",\"⡎\",\"⡏\",\"⠐\",\"⠑\",\"⠒\",\"⠓\",\"⠔\",\"⠕\",\"⠖\",\"⠗\",\"⡐\",\"⡑\",\"⡒\",\"⡓\",\"⡔\",\"⡕\",\"⡖\",\"⡗\",\"⠘\",\"⠙\",\"⠚\",\"⠛\",\"⠜\",\"⠝\",\"⠞\",\"⠟\",\"⡘\",\"⡙\",\"⡚\",\"⡛\",\"⡜\",\"⡝\",\"⡞\",\"⡟\",\"⠠\",\"⠡\",\"⠢\",\"⠣\",\"⠤\",\"⠥\",\"⠦\",\"⠧\",\"⡠\",\"⡡\",\"⡢\",\"⡣\",\"⡤\",\"⡥\",\"⡦\",\"⡧\",\"⠨\",\"⠩\",\"⠪\",\"⠫\",\"⠬\",\"⠭\",\"⠮\",\"⠯\",\"⡨\",\"⡩\",\"⡪\",\"⡫\",\"⡬\",\"⡭\",\"⡮\",\"⡯\",\"⠰\",\"⠱\",\"⠲\",\"⠳\",\"⠴\",\"⠵\",\"⠶\",\"⠷\",\"⡰\",\"⡱\",\"⡲\",\"⡳\",\"⡴\",\"⡵\",\"⡶\",\"⡷\",\"⠸\",\"⠹\",\"⠺\",\"⠻\",\"⠼\",\"⠽\",\"⠾\",\"⠿\",\"⡸\",\"⡹\",\"⡺\",\"⡻\",\"⡼\",\"⡽\",\"⡾\",\"⡿\",\"⢀\",\"⢁\",\"⢂\",\"⢃\",\"⢄\",\"⢅\",\"⢆\",\"⢇\",\"⣀\",\"⣁\",\"⣂\",\"⣃\",\"⣄\",\"⣅\",\"⣆\",\"⣇\",\"⢈\",\"⢉\",\"⢊\",\"⢋\",\"⢌\",\"⢍\",\"⢎\",\"⢏\",\"⣈\",\"⣉\",\"⣊\",\"⣋\",\"⣌\",\"⣍\",\"⣎\",\"⣏\",\"⢐\",\"⢑\",\"⢒\",\"⢓\",\"⢔\",\"⢕\",\"⢖\",\"⢗\",\"⣐\",\"⣑\",\"⣒\",\"⣓\",\"⣔\",\"⣕\",\"⣖\",\"⣗\",\"⢘\",\"⢙\",\"⢚\",\"⢛\",\"⢜\",\"⢝\",\"⢞\",\"⢟\",\"⣘\",\"⣙\",\"⣚\",\"⣛\",\"⣜\",\"⣝\",\"⣞\",\"⣟\",\"⢠\",\"⢡\",\"⢢\",\"⢣\",\"⢤\",\"⢥\",\"⢦\",\"⢧\",\"⣠\",\"⣡\",\"⣢\",\"⣣\",\"⣤\",\"⣥\",\"⣦\",\"⣧\",\"⢨\",\"⢩\",\"⢪\",\"⢫\",\"⢬\",\"⢭\",\"⢮\",\"⢯\",\"⣨\",\"⣩\",\"⣪\",\"⣫\",\"⣬\",\"⣭\",\"⣮\",\"⣯\",\"⢰\",\"⢱\",\"⢲\",\"⢳\",\"⢴\",\"⢵\",\"⢶\",\"⢷\",\"⣰\",\"⣱\",\"⣲\",\"⣳\",\"⣴\",\"⣵\",\"⣶\",\"⣷\",\"⢸\",\"⢹\",\"⢺\",\"⢻\",\"⢼\",\"⢽\",\"⢾\",\"⢿\",\"⣸\",\"⣹\",\"⣺\",\"⣻\",\"⣼\",\"⣽\",\"⣾\",\"⣿\"]},\"line\":{\"interval\":130,\"frames\":[\"-\",\"\\\\\",\"|\",\"/\"]},\"line2\":{\"interval\":100,\"frames\":[\"⠂\",\"-\",\"–\",\"—\",\"–\",\"-\"]},\"pipe\":{\"interval\":100,\"frames\":[\"┤\",\"┘\",\"┴\",\"└\",\"├\",\"┌\",\"┬\",\"┐\"]},\"simpleDots\":{\"interval\":400,\"frames\":[\".  \",\".. \",\"...\",\"   \"]},\"simpleDotsScrolling\":{\"interval\":200,\"frames\":[\".  \",\".. \",\"...\",\" ..\",\"  .\",\"   \"]},\"star\":{\"interval\":70,\"frames\":[\"✶\",\"✸\",\"✹\",\"✺\",\"✹\",\"✷\"]},\"star2\":{\"interval\":80,\"frames\":[\"+\",\"x\",\"*\"]},\"flip\":{\"interval\":70,\"frames\":[\"_\",\"_\",\"_\",\"-\",\"`\",\"`\",\"'\",\"´\",\"-\",\"_\",\"_\",\"_\"]},\"hamburger\":{\"interval\":100,\"frames\":[\"☱\",\"☲\",\"☴\"]},\"growVertical\":{\"interval\":120,\"frames\":[\"▁\",\"▃\",\"▄\",\"▅\",\"▆\",\"▇\",\"▆\",\"▅\",\"▄\",\"▃\"]},\"growHorizontal\":{\"interval\":120,\"frames\":[\"▏\",\"▎\",\"▍\",\"▌\",\"▋\",\"▊\",\"▉\",\"▊\",\"▋\",\"▌\",\"▍\",\"▎\"]},\"balloon\":{\"interval\":140,\"frames\":[\" \",\".\",\"o\",\"O\",\"@\",\"*\",\" \"]},\"balloon2\":{\"interval\":120,\"frames\":[\".\",\"o\",\"O\",\"°\",\"O\",\"o\",\".\"]},\"noise\":{\"interval\":100,\"frames\":[\"▓\",\"▒\",\"░\"]},\"bounce\":{\"interval\":120,\"frames\":[\"⠁\",\"⠂\",\"⠄\",\"⠂\"]},\"boxBounce\":{\"interval\":120,\"frames\":[\"▖\",\"▘\",\"▝\",\"▗\"]},\"boxBounce2\":{\"interval\":100,\"frames\":[\"▌\",\"▀\",\"▐\",\"▄\"]},\"triangle\":{\"interval\":50,\"frames\":[\"◢\",\"◣\",\"◤\",\"◥\"]},\"arc\":{\"interval\":100,\"frames\":[\"◜\",\"◠\",\"◝\",\"◞\",\"◡\",\"◟\"]},\"circle\":{\"interval\":120,\"frames\":[\"◡\",\"⊙\",\"◠\"]},\"squareCorners\":{\"interval\":180,\"frames\":[\"◰\",\"◳\",\"◲\",\"◱\"]},\"circleQuarters\":{\"interval\":120,\"frames\":[\"◴\",\"◷\",\"◶\",\"◵\"]},\"circleHalves\":{\"interval\":50,\"frames\":[\"◐\",\"◓\",\"◑\",\"◒\"]},\"squish\":{\"interval\":100,\"frames\":[\"╫\",\"╪\"]},\"toggle\":{\"interval\":250,\"frames\":[\"⊶\",\"⊷\"]},\"toggle2\":{\"interval\":80,\"frames\":[\"▫\",\"▪\"]},\"toggle3\":{\"interval\":120,\"frames\":[\"□\",\"■\"]},\"toggle4\":{\"interval\":100,\"frames\":[\"■\",\"□\",\"▪\",\"▫\"]},\"toggle5\":{\"interval\":100,\"frames\":[\"▮\",\"▯\"]},\"toggle6\":{\"interval\":300,\"frames\":[\"ဝ\",\"၀\"]},\"toggle7\":{\"interval\":80,\"frames\":[\"⦾\",\"⦿\"]},\"toggle8\":{\"interval\":100,\"frames\":[\"◍\",\"◌\"]},\"toggle9\":{\"interval\":100,\"frames\":[\"◉\",\"◎\"]},\"toggle10\":{\"interval\":100,\"frames\":[\"㊂\",\"㊀\",\"㊁\"]},\"toggle11\":{\"interval\":50,\"frames\":[\"⧇\",\"⧆\"]},\"toggle12\":{\"interval\":120,\"frames\":[\"☗\",\"☖\"]},\"toggle13\":{\"interval\":80,\"frames\":[\"=\",\"*\",\"-\"]},\"arrow\":{\"interval\":100,\"frames\":[\"←\",\"↖\",\"↑\",\"↗\",\"→\",\"↘\",\"↓\",\"↙\"]},\"arrow2\":{\"interval\":80,\"frames\":[\"⬆️ \",\"↗️ \",\"➡️ \",\"↘️ \",\"⬇️ \",\"↙️ \",\"⬅️ \",\"↖️ \"]},\"arrow3\":{\"interval\":120,\"frames\":[\"▹▹▹▹▹\",\"▸▹▹▹▹\",\"▹▸▹▹▹\",\"▹▹▸▹▹\",\"▹▹▹▸▹\",\"▹▹▹▹▸\"]},\"bouncingBar\":{\"interval\":80,\"frames\":[\"[    ]\",\"[=   ]\",\"[==  ]\",\"[=== ]\",\"[ ===]\",\"[  ==]\",\"[   =]\",\"[    ]\",\"[   =]\",\"[  ==]\",\"[ ===]\",\"[====]\",\"[=== ]\",\"[==  ]\",\"[=   ]\"]},\"bouncingBall\":{\"interval\":80,\"frames\":[\"( ●    )\",\"(  ●   )\",\"(   ●  )\",\"(    ● )\",\"(     ●)\",\"(    ● )\",\"(   ●  )\",\"(  ●   )\",\"( ●    )\",\"(●     )\"]},\"smiley\":{\"interval\":200,\"frames\":[\"😄 \",\"😝 \"]},\"monkey\":{\"interval\":300,\"frames\":[\"🙈 \",\"🙈 \",\"🙉 \",\"🙊 \"]},\"hearts\":{\"interval\":100,\"frames\":[\"💛 \",\"💙 \",\"💜 \",\"💚 \",\"❤️ \"]},\"clock\":{\"interval\":100,\"frames\":[\"🕛 \",\"🕐 \",\"🕑 \",\"🕒 \",\"🕓 \",\"🕔 \",\"🕕 \",\"🕖 \",\"🕗 \",\"🕘 \",\"🕙 \",\"🕚 \"]},\"earth\":{\"interval\":180,\"frames\":[\"🌍 \",\"🌎 \",\"🌏 \"]},\"material\":{\"interval\":17,\"frames\":[\"█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"██▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"███▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"████▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"██████▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"██████▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"███████▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"████████▁▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"██████████▁▁▁▁▁▁▁▁▁▁\",\"███████████▁▁▁▁▁▁▁▁▁\",\"█████████████▁▁▁▁▁▁▁\",\"██████████████▁▁▁▁▁▁\",\"██████████████▁▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁▁██████████████▁▁▁▁\",\"▁▁▁██████████████▁▁▁\",\"▁▁▁▁█████████████▁▁▁\",\"▁▁▁▁██████████████▁▁\",\"▁▁▁▁██████████████▁▁\",\"▁▁▁▁▁██████████████▁\",\"▁▁▁▁▁██████████████▁\",\"▁▁▁▁▁██████████████▁\",\"▁▁▁▁▁▁██████████████\",\"▁▁▁▁▁▁██████████████\",\"▁▁▁▁▁▁▁█████████████\",\"▁▁▁▁▁▁▁█████████████\",\"▁▁▁▁▁▁▁▁████████████\",\"▁▁▁▁▁▁▁▁████████████\",\"▁▁▁▁▁▁▁▁▁███████████\",\"▁▁▁▁▁▁▁▁▁███████████\",\"▁▁▁▁▁▁▁▁▁▁██████████\",\"▁▁▁▁▁▁▁▁▁▁██████████\",\"▁▁▁▁▁▁▁▁▁▁▁▁████████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁███████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁██████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█████\",\"█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁████\",\"██▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"██▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"███▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"████▁▁▁▁▁▁▁▁▁▁▁▁▁▁██\",\"█████▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"█████▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"██████▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"████████▁▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"█████████▁▁▁▁▁▁▁▁▁▁▁\",\"███████████▁▁▁▁▁▁▁▁▁\",\"████████████▁▁▁▁▁▁▁▁\",\"████████████▁▁▁▁▁▁▁▁\",\"██████████████▁▁▁▁▁▁\",\"██████████████▁▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁██████████████▁▁▁▁▁\",\"▁▁▁█████████████▁▁▁▁\",\"▁▁▁▁▁████████████▁▁▁\",\"▁▁▁▁▁████████████▁▁▁\",\"▁▁▁▁▁▁███████████▁▁▁\",\"▁▁▁▁▁▁▁▁█████████▁▁▁\",\"▁▁▁▁▁▁▁▁█████████▁▁▁\",\"▁▁▁▁▁▁▁▁▁█████████▁▁\",\"▁▁▁▁▁▁▁▁▁█████████▁▁\",\"▁▁▁▁▁▁▁▁▁▁█████████▁\",\"▁▁▁▁▁▁▁▁▁▁▁████████▁\",\"▁▁▁▁▁▁▁▁▁▁▁████████▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁███████▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁███████▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁███████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁███████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁████\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁███\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\",\"▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\"]},\"moon\":{\"interval\":80,\"frames\":[\"🌑 \",\"🌒 \",\"🌓 \",\"🌔 \",\"🌕 \",\"🌖 \",\"🌗 \",\"🌘 \"]},\"runner\":{\"interval\":140,\"frames\":[\"🚶 \",\"🏃 \"]},\"pong\":{\"interval\":80,\"frames\":[\"▐⠂       ▌\",\"▐⠈       ▌\",\"▐ ⠂      ▌\",\"▐ ⠠      ▌\",\"▐  ⡀     ▌\",\"▐  ⠠     ▌\",\"▐   ⠂    ▌\",\"▐   ⠈    ▌\",\"▐    ⠂   ▌\",\"▐    ⠠   ▌\",\"▐     ⡀  ▌\",\"▐     ⠠  ▌\",\"▐      ⠂ ▌\",\"▐      ⠈ ▌\",\"▐       ⠂▌\",\"▐       ⠠▌\",\"▐       ⡀▌\",\"▐      ⠠ ▌\",\"▐      ⠂ ▌\",\"▐     ⠈  ▌\",\"▐     ⠂  ▌\",\"▐    ⠠   ▌\",\"▐    ⡀   ▌\",\"▐   ⠠    ▌\",\"▐   ⠂    ▌\",\"▐  ⠈     ▌\",\"▐  ⠂     ▌\",\"▐ ⠠      ▌\",\"▐ ⡀      ▌\",\"▐⠠       ▌\"]},\"shark\":{\"interval\":120,\"frames\":[\"▐|\\\\____________▌\",\"▐_|\\\\___________▌\",\"▐__|\\\\__________▌\",\"▐___|\\\\_________▌\",\"▐____|\\\\________▌\",\"▐_____|\\\\_______▌\",\"▐______|\\\\______▌\",\"▐_______|\\\\_____▌\",\"▐________|\\\\____▌\",\"▐_________|\\\\___▌\",\"▐__________|\\\\__▌\",\"▐___________|\\\\_▌\",\"▐____________|\\\\▌\",\"▐____________/|▌\",\"▐___________/|_▌\",\"▐__________/|__▌\",\"▐_________/|___▌\",\"▐________/|____▌\",\"▐_______/|_____▌\",\"▐______/|______▌\",\"▐_____/|_______▌\",\"▐____/|________▌\",\"▐___/|_________▌\",\"▐__/|__________▌\",\"▐_/|___________▌\",\"▐/|____________▌\"]},\"dqpb\":{\"interval\":100,\"frames\":[\"d\",\"q\",\"p\",\"b\"]},\"weather\":{\"interval\":100,\"frames\":[\"☀️ \",\"☀️ \",\"☀️ \",\"🌤 \",\"⛅️ \",\"🌥 \",\"☁️ \",\"🌧 \",\"🌨 \",\"🌧 \",\"🌨 \",\"🌧 \",\"🌨 \",\"⛈ \",\"🌨 \",\"🌧 \",\"🌨 \",\"☁️ \",\"🌥 \",\"⛅️ \",\"🌤 \",\"☀️ \",\"☀️ \"]},\"christmas\":{\"interval\":400,\"frames\":[\"🌲\",\"🎄\"]},\"grenade\":{\"interval\":80,\"frames\":[\"،  \",\"′  \",\" ´ \",\" ‾ \",\"  ⸌\",\"  ⸊\",\"  |\",\"  ⁎\",\"  ⁕\",\" ෴ \",\"  ⁓\",\"   \",\"   \",\"   \"]},\"point\":{\"interval\":125,\"frames\":[\"∙∙∙\",\"●∙∙\",\"∙●∙\",\"∙∙●\",\"∙∙∙\"]},\"layer\":{\"interval\":150,\"frames\":[\"-\",\"=\",\"≡\"]},\"betaWave\":{\"interval\":80,\"frames\":[\"ρββββββ\",\"βρβββββ\",\"ββρββββ\",\"βββρβββ\",\"ββββρββ\",\"βββββρβ\",\"ββββββρ\"]},\"fingerDance\":{\"interval\":160,\"frames\":[\"🤘 \",\"🤟 \",\"🖖 \",\"✋ \",\"🤚 \",\"👆 \"]},\"fistBump\":{\"interval\":80,\"frames\":[\"🤜　　　　🤛 \",\"🤜　　　　🤛 \",\"🤜　　　　🤛 \",\"　🤜　　🤛　 \",\"　　🤜🤛　　 \",\"　🤜✨🤛　　 \",\"🤜　✨　🤛　 \"]},\"soccerHeader\":{\"interval\":80,\"frames\":[\" 🧑⚽️       🧑 \",\"🧑  ⚽️      🧑 \",\"🧑   ⚽️     🧑 \",\"🧑    ⚽️    🧑 \",\"🧑     ⚽️   🧑 \",\"🧑      ⚽️  🧑 \",\"🧑       ⚽️🧑  \",\"🧑      ⚽️  🧑 \",\"🧑     ⚽️   🧑 \",\"🧑    ⚽️    🧑 \",\"🧑   ⚽️     🧑 \",\"🧑  ⚽️      🧑 \"]},\"mindblown\":{\"interval\":160,\"frames\":[\"😐 \",\"😐 \",\"😮 \",\"😮 \",\"😦 \",\"😦 \",\"😧 \",\"😧 \",\"🤯 \",\"💥 \",\"✨ \",\"　 \",\"　 \",\"　 \"]},\"speaker\":{\"interval\":160,\"frames\":[\"🔈 \",\"🔉 \",\"🔊 \",\"🔉 \"]},\"orangePulse\":{\"interval\":100,\"frames\":[\"🔸 \",\"🔶 \",\"🟠 \",\"🟠 \",\"🔶 \"]},\"bluePulse\":{\"interval\":100,\"frames\":[\"🔹 \",\"🔷 \",\"🔵 \",\"🔵 \",\"🔷 \"]},\"orangeBluePulse\":{\"interval\":100,\"frames\":[\"🔸 \",\"🔶 \",\"🟠 \",\"🟠 \",\"🔶 \",\"🔹 \",\"🔷 \",\"🔵 \",\"🔵 \",\"🔷 \"]},\"timeTravel\":{\"interval\":100,\"frames\":[\"🕛 \",\"🕚 \",\"🕙 \",\"🕘 \",\"🕗 \",\"🕖 \",\"🕕 \",\"🕔 \",\"🕓 \",\"🕒 \",\"🕑 \",\"🕐 \"]},\"aesthetic\":{\"interval\":80,\"frames\":[\"▰▱▱▱▱▱▱\",\"▰▰▱▱▱▱▱\",\"▰▰▰▱▱▱▱\",\"▰▰▰▰▱▱▱\",\"▰▰▰▰▰▱▱\",\"▰▰▰▰▰▰▱\",\"▰▰▰▰▰▰▰\",\"▰▱▱▱▱▱▱\"]}}");
 
 /***/ }),
 
@@ -81554,7 +78721,7 @@ module.exports = JSON.parse("[[\"0\",\"\\u0000\",128],[\"a1\",\"｡\",62],[\"814
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"assert\":true,\"assert/strict\":\">= 15\",\"async_hooks\":\">= 8\",\"buffer_ieee754\":\"< 0.9.7\",\"buffer\":true,\"child_process\":true,\"cluster\":true,\"console\":true,\"constants\":true,\"crypto\":true,\"_debug_agent\":\">= 1 && < 8\",\"_debugger\":\"< 8\",\"dgram\":true,\"diagnostics_channel\":\">= 15.1\",\"dns\":true,\"dns/promises\":\">= 15\",\"domain\":\">= 0.7.12\",\"events\":true,\"freelist\":\"< 6\",\"fs\":true,\"fs/promises\":[\">= 10 && < 10.1\",\">= 14\"],\"_http_agent\":\">= 0.11.1\",\"_http_client\":\">= 0.11.1\",\"_http_common\":\">= 0.11.1\",\"_http_incoming\":\">= 0.11.1\",\"_http_outgoing\":\">= 0.11.1\",\"_http_server\":\">= 0.11.1\",\"http\":true,\"http2\":\">= 8.8\",\"https\":true,\"inspector\":\">= 8.0.0\",\"_linklist\":\"< 8\",\"module\":true,\"net\":true,\"node-inspect/lib/_inspect\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_client\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_repl\":\">= 7.6.0 && < 12\",\"os\":true,\"path\":true,\"path/posix\":\">= 15.3\",\"path/win32\":\">= 15.3\",\"perf_hooks\":\">= 8.5\",\"process\":\">= 1\",\"punycode\":true,\"querystring\":true,\"readline\":true,\"repl\":true,\"smalloc\":\">= 0.11.5 && < 3\",\"_stream_duplex\":\">= 0.9.4\",\"_stream_transform\":\">= 0.9.4\",\"_stream_wrap\":\">= 1.4.1\",\"_stream_passthrough\":\">= 0.9.4\",\"_stream_readable\":\">= 0.9.4\",\"_stream_writable\":\">= 0.9.4\",\"stream\":true,\"stream/promises\":\">= 15\",\"string_decoder\":true,\"sys\":[\">= 0.6 && < 0.7\",\">= 0.8\"],\"timers\":true,\"timers/promises\":\">= 15\",\"_tls_common\":\">= 0.11.13\",\"_tls_legacy\":\">= 0.11.3 && < 10\",\"_tls_wrap\":\">= 0.11.3\",\"tls\":true,\"trace_events\":\">= 10\",\"tty\":true,\"url\":true,\"util\":true,\"util/types\":\">= 15.3\",\"v8/tools/arguments\":\">= 10 && < 12\",\"v8/tools/codemap\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/consarray\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/csvparser\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/logreader\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/profile_view\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/splaytree\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8\":\">= 1\",\"vm\":true,\"wasi\":\">= 13.4 && < 13.5\",\"worker_threads\":\">= 11.7\",\"zlib\":true}");
+module.exports = JSON.parse("{\"assert\":true,\"node:assert\":\">= 16\",\"assert/strict\":\">= 15\",\"node:assert/strict\":\">= 16\",\"async_hooks\":\">= 8\",\"node:async_hooks\":\">= 16\",\"buffer_ieee754\":\"< 0.9.7\",\"buffer\":true,\"node:buffer\":\">= 16\",\"child_process\":true,\"node:child_process\":\">= 16\",\"cluster\":true,\"node:cluster\":\">= 16\",\"console\":true,\"node:console\":\">= 16\",\"constants\":true,\"node:constants\":\">= 16\",\"crypto\":true,\"node:crypto\":\">= 16\",\"_debug_agent\":\">= 1 && < 8\",\"_debugger\":\"< 8\",\"dgram\":true,\"node:dgram\":\">= 16\",\"diagnostics_channel\":[\">= 14.17 && < 15\",\">= 15.1\"],\"node:diagnostics_channel\":\">= 16\",\"dns\":true,\"node:dns\":\">= 16\",\"dns/promises\":\">= 15\",\"node:dns/promises\":\">= 16\",\"domain\":\">= 0.7.12\",\"node:domain\":\">= 16\",\"events\":true,\"node:events\":\">= 16\",\"freelist\":\"< 6\",\"fs\":true,\"node:fs\":\">= 16\",\"fs/promises\":[\">= 10 && < 10.1\",\">= 14\"],\"node:fs/promises\":\">= 16\",\"_http_agent\":\">= 0.11.1\",\"node:_http_agent\":\">= 16\",\"_http_client\":\">= 0.11.1\",\"node:_http_client\":\">= 16\",\"_http_common\":\">= 0.11.1\",\"node:_http_common\":\">= 16\",\"_http_incoming\":\">= 0.11.1\",\"node:_http_incoming\":\">= 16\",\"_http_outgoing\":\">= 0.11.1\",\"node:_http_outgoing\":\">= 16\",\"_http_server\":\">= 0.11.1\",\"node:_http_server\":\">= 16\",\"http\":true,\"node:http\":\">= 16\",\"http2\":\">= 8.8\",\"node:http2\":\">= 16\",\"https\":true,\"node:https\":\">= 16\",\"inspector\":\">= 8\",\"node:inspector\":\">= 16\",\"_linklist\":\"< 8\",\"module\":true,\"node:module\":\">= 16\",\"net\":true,\"node:net\":\">= 16\",\"node-inspect/lib/_inspect\":\">= 7.6 && < 12\",\"node-inspect/lib/internal/inspect_client\":\">= 7.6 && < 12\",\"node-inspect/lib/internal/inspect_repl\":\">= 7.6 && < 12\",\"os\":true,\"node:os\":\">= 16\",\"path\":true,\"node:path\":\">= 16\",\"path/posix\":\">= 15.3\",\"node:path/posix\":\">= 16\",\"path/win32\":\">= 15.3\",\"node:path/win32\":\">= 16\",\"perf_hooks\":\">= 8.5\",\"node:perf_hooks\":\">= 16\",\"process\":\">= 1\",\"node:process\":\">= 16\",\"punycode\":true,\"node:punycode\":\">= 16\",\"querystring\":true,\"node:querystring\":\">= 16\",\"readline\":true,\"node:readline\":\">= 16\",\"repl\":true,\"node:repl\":\">= 16\",\"smalloc\":\">= 0.11.5 && < 3\",\"_stream_duplex\":\">= 0.9.4\",\"node:_stream_duplex\":\">= 16\",\"_stream_transform\":\">= 0.9.4\",\"node:_stream_transform\":\">= 16\",\"_stream_wrap\":\">= 1.4.1\",\"node:_stream_wrap\":\">= 16\",\"_stream_passthrough\":\">= 0.9.4\",\"node:_stream_passthrough\":\">= 16\",\"_stream_readable\":\">= 0.9.4\",\"node:_stream_readable\":\">= 16\",\"_stream_writable\":\">= 0.9.4\",\"node:_stream_writable\":\">= 16\",\"stream\":true,\"node:stream\":\">= 16\",\"stream/promises\":\">= 15\",\"node:stream/promises\":\">= 16\",\"stream/web\":\">= 16.5\",\"node:stream/web\":\">= 16.5\",\"string_decoder\":true,\"node:string_decoder\":\">= 16\",\"sys\":[\">= 0.6 && < 0.7\",\">= 0.8\"],\"node:sys\":\">= 16\",\"timers\":true,\"node:timers\":\">= 16\",\"timers/promises\":\">= 15\",\"node:timers/promises\":\">= 16\",\"_tls_common\":\">= 0.11.13\",\"node:_tls_common\":\">= 16\",\"_tls_legacy\":\">= 0.11.3 && < 10\",\"_tls_wrap\":\">= 0.11.3\",\"node:_tls_wrap\":\">= 16\",\"tls\":true,\"node:tls\":\">= 16\",\"trace_events\":\">= 10\",\"node:trace_events\":\">= 16\",\"tty\":true,\"node:tty\":\">= 16\",\"url\":true,\"node:url\":\">= 16\",\"util\":true,\"node:util\":\">= 16\",\"util/types\":\">= 15.3\",\"node:util/types\":\">= 16\",\"v8/tools/arguments\":\">= 10 && < 12\",\"v8/tools/codemap\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/consarray\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/csvparser\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/logreader\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/profile_view\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8/tools/splaytree\":[\">= 4.4 && < 5\",\">= 5.2 && < 12\"],\"v8\":\">= 1\",\"node:v8\":\">= 16\",\"vm\":true,\"node:vm\":\">= 16\",\"wasi\":\">= 13.4 && < 13.5\",\"worker_threads\":\">= 11.7\",\"node:worker_threads\":\">= 16\",\"zlib\":true,\"node:zlib\":\">= 16\"}");
 
 /***/ }),
 
@@ -81578,7 +78745,7 @@ module.exports = JSON.parse("{\"repositories\":\"'repositories' (plural) Not sup
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"assert\":true,\"assert/strict\":\">= 15\",\"async_hooks\":\">= 8\",\"buffer_ieee754\":\"< 0.9.7\",\"buffer\":true,\"child_process\":true,\"cluster\":true,\"console\":true,\"constants\":true,\"crypto\":true,\"_debug_agent\":\">= 1 && < 8\",\"_debugger\":\"< 8\",\"dgram\":true,\"diagnostics_channel\":\">= 15.1\",\"dns\":true,\"dns/promises\":\">= 15\",\"domain\":\">= 0.7.12\",\"events\":true,\"freelist\":\"< 6\",\"fs\":true,\"fs/promises\":[\">= 10 && < 10.1\",\">= 14\"],\"_http_agent\":\">= 0.11.1\",\"_http_client\":\">= 0.11.1\",\"_http_common\":\">= 0.11.1\",\"_http_incoming\":\">= 0.11.1\",\"_http_outgoing\":\">= 0.11.1\",\"_http_server\":\">= 0.11.1\",\"http\":true,\"http2\":\">= 8.8\",\"https\":true,\"inspector\":\">= 8.0.0\",\"_linklist\":\"< 8\",\"module\":true,\"net\":true,\"node-inspect/lib/_inspect\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_client\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_repl\":\">= 7.6.0 && < 12\",\"os\":true,\"path\":true,\"perf_hooks\":\">= 8.5\",\"process\":\">= 1\",\"punycode\":true,\"querystring\":true,\"readline\":true,\"repl\":true,\"smalloc\":\">= 0.11.5 && < 3\",\"_stream_duplex\":\">= 0.9.4\",\"_stream_transform\":\">= 0.9.4\",\"_stream_wrap\":\">= 1.4.1\",\"_stream_passthrough\":\">= 0.9.4\",\"_stream_readable\":\">= 0.9.4\",\"_stream_writable\":\">= 0.9.4\",\"stream\":true,\"stream/promises\":\">= 15\",\"string_decoder\":true,\"sys\":[\">= 0.6 && < 0.7\",\">= 0.8\"],\"timers\":true,\"timers/promises\":\">= 15\",\"_tls_common\":\">= 0.11.13\",\"_tls_legacy\":\">= 0.11.3 && < 10\",\"_tls_wrap\":\">= 0.11.3\",\"tls\":true,\"trace_events\":\">= 10\",\"tty\":true,\"url\":true,\"util\":true,\"v8/tools/arguments\":\">= 10 && < 12\",\"v8/tools/codemap\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/consarray\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/csvparser\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/logreader\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/profile_view\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/splaytree\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8\":\">= 1\",\"vm\":true,\"wasi\":\">= 13.4 && < 13.5\",\"worker_threads\":\">= 11.7\",\"zlib\":true}");
+module.exports = JSON.parse("{\"assert\":true,\"assert/strict\":\">= 15\",\"async_hooks\":\">= 8\",\"buffer_ieee754\":\"< 0.9.7\",\"buffer\":true,\"child_process\":true,\"cluster\":true,\"console\":true,\"constants\":true,\"crypto\":true,\"_debug_agent\":\">= 1 && < 8\",\"_debugger\":\"< 8\",\"dgram\":true,\"diagnostics_channel\":\">= 15.1\",\"dns\":true,\"dns/promises\":\">= 15\",\"domain\":\">= 0.7.12\",\"events\":true,\"freelist\":\"< 6\",\"fs\":true,\"fs/promises\":[\">= 10 && < 10.1\",\">= 14\"],\"_http_agent\":\">= 0.11.1\",\"_http_client\":\">= 0.11.1\",\"_http_common\":\">= 0.11.1\",\"_http_incoming\":\">= 0.11.1\",\"_http_outgoing\":\">= 0.11.1\",\"_http_server\":\">= 0.11.1\",\"http\":true,\"http2\":\">= 8.8\",\"https\":true,\"inspector\":\">= 8.0.0\",\"_linklist\":\"< 8\",\"module\":true,\"net\":true,\"node-inspect/lib/_inspect\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_client\":\">= 7.6.0 && < 12\",\"node-inspect/lib/internal/inspect_repl\":\">= 7.6.0 && < 12\",\"os\":true,\"path\":true,\"path/posix\":\">= 15.3\",\"path/win32\":\">= 15.3\",\"perf_hooks\":\">= 8.5\",\"process\":\">= 1\",\"punycode\":true,\"querystring\":true,\"readline\":true,\"repl\":true,\"smalloc\":\">= 0.11.5 && < 3\",\"_stream_duplex\":\">= 0.9.4\",\"_stream_transform\":\">= 0.9.4\",\"_stream_wrap\":\">= 1.4.1\",\"_stream_passthrough\":\">= 0.9.4\",\"_stream_readable\":\">= 0.9.4\",\"_stream_writable\":\">= 0.9.4\",\"stream\":true,\"stream/promises\":\">= 15\",\"string_decoder\":true,\"sys\":[\">= 0.6 && < 0.7\",\">= 0.8\"],\"timers\":true,\"timers/promises\":\">= 15\",\"_tls_common\":\">= 0.11.13\",\"_tls_legacy\":\">= 0.11.3 && < 10\",\"_tls_wrap\":\">= 0.11.3\",\"tls\":true,\"trace_events\":\">= 10\",\"tty\":true,\"url\":true,\"util\":true,\"util/types\":\">= 15.3\",\"v8/tools/arguments\":\">= 10 && < 12\",\"v8/tools/codemap\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/consarray\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/csvparser\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/logreader\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/profile_view\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8/tools/splaytree\":[\">= 4.4.0 && < 5\",\">= 5.2.0 && < 12\"],\"v8\":\">= 1\",\"vm\":true,\"wasi\":\">= 13.4 && < 13.5\",\"worker_threads\":\">= 11.7\",\"zlib\":true}");
 
 /***/ }),
 
@@ -81610,7 +78777,7 @@ module.exports = JSON.parse("[\"AGPL-1.0\",\"AGPL-3.0\",\"BSD-2-Clause-FreeBSD\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("[\"0BSD\",\"AAL\",\"ADSL\",\"AFL-1.1\",\"AFL-1.2\",\"AFL-2.0\",\"AFL-2.1\",\"AFL-3.0\",\"AGPL-1.0-only\",\"AGPL-1.0-or-later\",\"AGPL-3.0-only\",\"AGPL-3.0-or-later\",\"AMDPLPA\",\"AML\",\"AMPAS\",\"ANTLR-PD\",\"ANTLR-PD-fallback\",\"APAFML\",\"APL-1.0\",\"APSL-1.0\",\"APSL-1.1\",\"APSL-1.2\",\"APSL-2.0\",\"Abstyles\",\"Adobe-2006\",\"Adobe-Glyph\",\"Afmparse\",\"Aladdin\",\"Apache-1.0\",\"Apache-1.1\",\"Apache-2.0\",\"Artistic-1.0\",\"Artistic-1.0-Perl\",\"Artistic-1.0-cl8\",\"Artistic-2.0\",\"BSD-1-Clause\",\"BSD-2-Clause\",\"BSD-2-Clause-Patent\",\"BSD-2-Clause-Views\",\"BSD-3-Clause\",\"BSD-3-Clause-Attribution\",\"BSD-3-Clause-Clear\",\"BSD-3-Clause-LBNL\",\"BSD-3-Clause-No-Nuclear-License\",\"BSD-3-Clause-No-Nuclear-License-2014\",\"BSD-3-Clause-No-Nuclear-Warranty\",\"BSD-3-Clause-Open-MPI\",\"BSD-4-Clause\",\"BSD-4-Clause-UC\",\"BSD-Protection\",\"BSD-Source-Code\",\"BSL-1.0\",\"BUSL-1.1\",\"Bahyph\",\"Barr\",\"Beerware\",\"BitTorrent-1.0\",\"BitTorrent-1.1\",\"BlueOak-1.0.0\",\"Borceux\",\"CAL-1.0\",\"CAL-1.0-Combined-Work-Exception\",\"CATOSL-1.1\",\"CC-BY-1.0\",\"CC-BY-2.0\",\"CC-BY-2.5\",\"CC-BY-3.0\",\"CC-BY-3.0-AT\",\"CC-BY-3.0-US\",\"CC-BY-4.0\",\"CC-BY-NC-1.0\",\"CC-BY-NC-2.0\",\"CC-BY-NC-2.5\",\"CC-BY-NC-3.0\",\"CC-BY-NC-4.0\",\"CC-BY-NC-ND-1.0\",\"CC-BY-NC-ND-2.0\",\"CC-BY-NC-ND-2.5\",\"CC-BY-NC-ND-3.0\",\"CC-BY-NC-ND-3.0-IGO\",\"CC-BY-NC-ND-4.0\",\"CC-BY-NC-SA-1.0\",\"CC-BY-NC-SA-2.0\",\"CC-BY-NC-SA-2.5\",\"CC-BY-NC-SA-3.0\",\"CC-BY-NC-SA-4.0\",\"CC-BY-ND-1.0\",\"CC-BY-ND-2.0\",\"CC-BY-ND-2.5\",\"CC-BY-ND-3.0\",\"CC-BY-ND-4.0\",\"CC-BY-SA-1.0\",\"CC-BY-SA-2.0\",\"CC-BY-SA-2.0-UK\",\"CC-BY-SA-2.5\",\"CC-BY-SA-3.0\",\"CC-BY-SA-3.0-AT\",\"CC-BY-SA-4.0\",\"CC-PDDC\",\"CC0-1.0\",\"CDDL-1.0\",\"CDDL-1.1\",\"CDLA-Permissive-1.0\",\"CDLA-Sharing-1.0\",\"CECILL-1.0\",\"CECILL-1.1\",\"CECILL-2.0\",\"CECILL-2.1\",\"CECILL-B\",\"CECILL-C\",\"CERN-OHL-1.1\",\"CERN-OHL-1.2\",\"CERN-OHL-P-2.0\",\"CERN-OHL-S-2.0\",\"CERN-OHL-W-2.0\",\"CNRI-Jython\",\"CNRI-Python\",\"CNRI-Python-GPL-Compatible\",\"CPAL-1.0\",\"CPL-1.0\",\"CPOL-1.02\",\"CUA-OPL-1.0\",\"Caldera\",\"ClArtistic\",\"Condor-1.1\",\"Crossword\",\"CrystalStacker\",\"Cube\",\"D-FSL-1.0\",\"DOC\",\"DSDP\",\"Dotseqn\",\"ECL-1.0\",\"ECL-2.0\",\"EFL-1.0\",\"EFL-2.0\",\"EPICS\",\"EPL-1.0\",\"EPL-2.0\",\"EUDatagrid\",\"EUPL-1.0\",\"EUPL-1.1\",\"EUPL-1.2\",\"Entessa\",\"ErlPL-1.1\",\"Eurosym\",\"FSFAP\",\"FSFUL\",\"FSFULLR\",\"FTL\",\"Fair\",\"Frameworx-1.0\",\"FreeImage\",\"GFDL-1.1-invariants-only\",\"GFDL-1.1-invariants-or-later\",\"GFDL-1.1-no-invariants-only\",\"GFDL-1.1-no-invariants-or-later\",\"GFDL-1.1-only\",\"GFDL-1.1-or-later\",\"GFDL-1.2-invariants-only\",\"GFDL-1.2-invariants-or-later\",\"GFDL-1.2-no-invariants-only\",\"GFDL-1.2-no-invariants-or-later\",\"GFDL-1.2-only\",\"GFDL-1.2-or-later\",\"GFDL-1.3-invariants-only\",\"GFDL-1.3-invariants-or-later\",\"GFDL-1.3-no-invariants-only\",\"GFDL-1.3-no-invariants-or-later\",\"GFDL-1.3-only\",\"GFDL-1.3-or-later\",\"GL2PS\",\"GLWTPL\",\"GPL-1.0-only\",\"GPL-1.0-or-later\",\"GPL-2.0-only\",\"GPL-2.0-or-later\",\"GPL-3.0-only\",\"GPL-3.0-or-later\",\"Giftware\",\"Glide\",\"Glulxe\",\"HPND\",\"HPND-sell-variant\",\"HTMLTIDY\",\"HaskellReport\",\"Hippocratic-2.1\",\"IBM-pibs\",\"ICU\",\"IJG\",\"IPA\",\"IPL-1.0\",\"ISC\",\"ImageMagick\",\"Imlib2\",\"Info-ZIP\",\"Intel\",\"Intel-ACPI\",\"Interbase-1.0\",\"JPNIC\",\"JSON\",\"JasPer-2.0\",\"LAL-1.2\",\"LAL-1.3\",\"LGPL-2.0-only\",\"LGPL-2.0-or-later\",\"LGPL-2.1-only\",\"LGPL-2.1-or-later\",\"LGPL-3.0-only\",\"LGPL-3.0-or-later\",\"LGPLLR\",\"LPL-1.0\",\"LPL-1.02\",\"LPPL-1.0\",\"LPPL-1.1\",\"LPPL-1.2\",\"LPPL-1.3a\",\"LPPL-1.3c\",\"Latex2e\",\"Leptonica\",\"LiLiQ-P-1.1\",\"LiLiQ-R-1.1\",\"LiLiQ-Rplus-1.1\",\"Libpng\",\"Linux-OpenIB\",\"MIT\",\"MIT-0\",\"MIT-CMU\",\"MIT-advertising\",\"MIT-enna\",\"MIT-feh\",\"MIT-open-group\",\"MITNFA\",\"MPL-1.0\",\"MPL-1.1\",\"MPL-2.0\",\"MPL-2.0-no-copyleft-exception\",\"MS-PL\",\"MS-RL\",\"MTLL\",\"MakeIndex\",\"MirOS\",\"Motosoto\",\"MulanPSL-1.0\",\"MulanPSL-2.0\",\"Multics\",\"Mup\",\"NASA-1.3\",\"NBPL-1.0\",\"NCGL-UK-2.0\",\"NCSA\",\"NGPL\",\"NIST-PD\",\"NIST-PD-fallback\",\"NLOD-1.0\",\"NLPL\",\"NOSL\",\"NPL-1.0\",\"NPL-1.1\",\"NPOSL-3.0\",\"NRL\",\"NTP\",\"NTP-0\",\"Naumen\",\"Net-SNMP\",\"NetCDF\",\"Newsletr\",\"Nokia\",\"Noweb\",\"O-UDA-1.0\",\"OCCT-PL\",\"OCLC-2.0\",\"ODC-By-1.0\",\"ODbL-1.0\",\"OFL-1.0\",\"OFL-1.0-RFN\",\"OFL-1.0-no-RFN\",\"OFL-1.1\",\"OFL-1.1-RFN\",\"OFL-1.1-no-RFN\",\"OGC-1.0\",\"OGL-Canada-2.0\",\"OGL-UK-1.0\",\"OGL-UK-2.0\",\"OGL-UK-3.0\",\"OGTSL\",\"OLDAP-1.1\",\"OLDAP-1.2\",\"OLDAP-1.3\",\"OLDAP-1.4\",\"OLDAP-2.0\",\"OLDAP-2.0.1\",\"OLDAP-2.1\",\"OLDAP-2.2\",\"OLDAP-2.2.1\",\"OLDAP-2.2.2\",\"OLDAP-2.3\",\"OLDAP-2.4\",\"OLDAP-2.5\",\"OLDAP-2.6\",\"OLDAP-2.7\",\"OLDAP-2.8\",\"OML\",\"OPL-1.0\",\"OSET-PL-2.1\",\"OSL-1.0\",\"OSL-1.1\",\"OSL-2.0\",\"OSL-2.1\",\"OSL-3.0\",\"OpenSSL\",\"PDDL-1.0\",\"PHP-3.0\",\"PHP-3.01\",\"PSF-2.0\",\"Parity-6.0.0\",\"Parity-7.0.0\",\"Plexus\",\"PolyForm-Noncommercial-1.0.0\",\"PolyForm-Small-Business-1.0.0\",\"PostgreSQL\",\"Python-2.0\",\"QPL-1.0\",\"Qhull\",\"RHeCos-1.1\",\"RPL-1.1\",\"RPL-1.5\",\"RPSL-1.0\",\"RSA-MD\",\"RSCPL\",\"Rdisc\",\"Ruby\",\"SAX-PD\",\"SCEA\",\"SGI-B-1.0\",\"SGI-B-1.1\",\"SGI-B-2.0\",\"SHL-0.5\",\"SHL-0.51\",\"SISSL\",\"SISSL-1.2\",\"SMLNJ\",\"SMPPL\",\"SNIA\",\"SPL-1.0\",\"SSH-OpenSSH\",\"SSH-short\",\"SSPL-1.0\",\"SWL\",\"Saxpath\",\"Sendmail\",\"Sendmail-8.23\",\"SimPL-2.0\",\"Sleepycat\",\"Spencer-86\",\"Spencer-94\",\"Spencer-99\",\"SugarCRM-1.1.3\",\"TAPR-OHL-1.0\",\"TCL\",\"TCP-wrappers\",\"TMate\",\"TORQUE-1.1\",\"TOSL\",\"TU-Berlin-1.0\",\"TU-Berlin-2.0\",\"UCL-1.0\",\"UPL-1.0\",\"Unicode-DFS-2015\",\"Unicode-DFS-2016\",\"Unicode-TOU\",\"Unlicense\",\"VOSTROM\",\"VSL-1.0\",\"Vim\",\"W3C\",\"W3C-19980720\",\"W3C-20150513\",\"WTFPL\",\"Watcom-1.0\",\"Wsuipa\",\"X11\",\"XFree86-1.1\",\"XSkat\",\"Xerox\",\"Xnet\",\"YPL-1.0\",\"YPL-1.1\",\"ZPL-1.1\",\"ZPL-2.0\",\"ZPL-2.1\",\"Zed\",\"Zend-2.0\",\"Zimbra-1.3\",\"Zimbra-1.4\",\"Zlib\",\"blessing\",\"bzip2-1.0.5\",\"bzip2-1.0.6\",\"copyleft-next-0.3.0\",\"copyleft-next-0.3.1\",\"curl\",\"diffmark\",\"dvipdfm\",\"eGenix\",\"etalab-2.0\",\"gSOAP-1.3b\",\"gnuplot\",\"iMatix\",\"libpng-2.0\",\"libselinux-1.0\",\"libtiff\",\"mpich2\",\"psfrag\",\"psutils\",\"xinetd\",\"xpp\",\"zlib-acknowledgement\"]");
+module.exports = JSON.parse("[\"0BSD\",\"AAL\",\"ADSL\",\"AFL-1.1\",\"AFL-1.2\",\"AFL-2.0\",\"AFL-2.1\",\"AFL-3.0\",\"AGPL-1.0-only\",\"AGPL-1.0-or-later\",\"AGPL-3.0-only\",\"AGPL-3.0-or-later\",\"AMDPLPA\",\"AML\",\"AMPAS\",\"ANTLR-PD\",\"ANTLR-PD-fallback\",\"APAFML\",\"APL-1.0\",\"APSL-1.0\",\"APSL-1.1\",\"APSL-1.2\",\"APSL-2.0\",\"Abstyles\",\"Adobe-2006\",\"Adobe-Glyph\",\"Afmparse\",\"Aladdin\",\"Apache-1.0\",\"Apache-1.1\",\"Apache-2.0\",\"Artistic-1.0\",\"Artistic-1.0-Perl\",\"Artistic-1.0-cl8\",\"Artistic-2.0\",\"BSD-1-Clause\",\"BSD-2-Clause\",\"BSD-2-Clause-Patent\",\"BSD-2-Clause-Views\",\"BSD-3-Clause\",\"BSD-3-Clause-Attribution\",\"BSD-3-Clause-Clear\",\"BSD-3-Clause-LBNL\",\"BSD-3-Clause-Modification\",\"BSD-3-Clause-No-Military-License\",\"BSD-3-Clause-No-Nuclear-License\",\"BSD-3-Clause-No-Nuclear-License-2014\",\"BSD-3-Clause-No-Nuclear-Warranty\",\"BSD-3-Clause-Open-MPI\",\"BSD-4-Clause\",\"BSD-4-Clause-Shortened\",\"BSD-4-Clause-UC\",\"BSD-Protection\",\"BSD-Source-Code\",\"BSL-1.0\",\"BUSL-1.1\",\"Bahyph\",\"Barr\",\"Beerware\",\"BitTorrent-1.0\",\"BitTorrent-1.1\",\"BlueOak-1.0.0\",\"Borceux\",\"C-UDA-1.0\",\"CAL-1.0\",\"CAL-1.0-Combined-Work-Exception\",\"CATOSL-1.1\",\"CC-BY-1.0\",\"CC-BY-2.0\",\"CC-BY-2.5\",\"CC-BY-3.0\",\"CC-BY-3.0-AT\",\"CC-BY-3.0-US\",\"CC-BY-4.0\",\"CC-BY-NC-1.0\",\"CC-BY-NC-2.0\",\"CC-BY-NC-2.5\",\"CC-BY-NC-3.0\",\"CC-BY-NC-4.0\",\"CC-BY-NC-ND-1.0\",\"CC-BY-NC-ND-2.0\",\"CC-BY-NC-ND-2.5\",\"CC-BY-NC-ND-3.0\",\"CC-BY-NC-ND-3.0-IGO\",\"CC-BY-NC-ND-4.0\",\"CC-BY-NC-SA-1.0\",\"CC-BY-NC-SA-2.0\",\"CC-BY-NC-SA-2.5\",\"CC-BY-NC-SA-3.0\",\"CC-BY-NC-SA-4.0\",\"CC-BY-ND-1.0\",\"CC-BY-ND-2.0\",\"CC-BY-ND-2.5\",\"CC-BY-ND-3.0\",\"CC-BY-ND-4.0\",\"CC-BY-SA-1.0\",\"CC-BY-SA-2.0\",\"CC-BY-SA-2.0-UK\",\"CC-BY-SA-2.1-JP\",\"CC-BY-SA-2.5\",\"CC-BY-SA-3.0\",\"CC-BY-SA-3.0-AT\",\"CC-BY-SA-4.0\",\"CC-PDDC\",\"CC0-1.0\",\"CDDL-1.0\",\"CDDL-1.1\",\"CDL-1.0\",\"CDLA-Permissive-1.0\",\"CDLA-Sharing-1.0\",\"CECILL-1.0\",\"CECILL-1.1\",\"CECILL-2.0\",\"CECILL-2.1\",\"CECILL-B\",\"CECILL-C\",\"CERN-OHL-1.1\",\"CERN-OHL-1.2\",\"CERN-OHL-P-2.0\",\"CERN-OHL-S-2.0\",\"CERN-OHL-W-2.0\",\"CNRI-Jython\",\"CNRI-Python\",\"CNRI-Python-GPL-Compatible\",\"CPAL-1.0\",\"CPL-1.0\",\"CPOL-1.02\",\"CUA-OPL-1.0\",\"Caldera\",\"ClArtistic\",\"Condor-1.1\",\"Crossword\",\"CrystalStacker\",\"Cube\",\"D-FSL-1.0\",\"DOC\",\"DRL-1.0\",\"DSDP\",\"Dotseqn\",\"ECL-1.0\",\"ECL-2.0\",\"EFL-1.0\",\"EFL-2.0\",\"EPICS\",\"EPL-1.0\",\"EPL-2.0\",\"EUDatagrid\",\"EUPL-1.0\",\"EUPL-1.1\",\"EUPL-1.2\",\"Entessa\",\"ErlPL-1.1\",\"Eurosym\",\"FSFAP\",\"FSFUL\",\"FSFULLR\",\"FTL\",\"Fair\",\"Frameworx-1.0\",\"FreeBSD-DOC\",\"FreeImage\",\"GD\",\"GFDL-1.1-invariants-only\",\"GFDL-1.1-invariants-or-later\",\"GFDL-1.1-no-invariants-only\",\"GFDL-1.1-no-invariants-or-later\",\"GFDL-1.1-only\",\"GFDL-1.1-or-later\",\"GFDL-1.2-invariants-only\",\"GFDL-1.2-invariants-or-later\",\"GFDL-1.2-no-invariants-only\",\"GFDL-1.2-no-invariants-or-later\",\"GFDL-1.2-only\",\"GFDL-1.2-or-later\",\"GFDL-1.3-invariants-only\",\"GFDL-1.3-invariants-or-later\",\"GFDL-1.3-no-invariants-only\",\"GFDL-1.3-no-invariants-or-later\",\"GFDL-1.3-only\",\"GFDL-1.3-or-later\",\"GL2PS\",\"GLWTPL\",\"GPL-1.0-only\",\"GPL-1.0-or-later\",\"GPL-2.0-only\",\"GPL-2.0-or-later\",\"GPL-3.0-only\",\"GPL-3.0-or-later\",\"Giftware\",\"Glide\",\"Glulxe\",\"HPND\",\"HPND-sell-variant\",\"HTMLTIDY\",\"HaskellReport\",\"Hippocratic-2.1\",\"IBM-pibs\",\"ICU\",\"IJG\",\"IPA\",\"IPL-1.0\",\"ISC\",\"ImageMagick\",\"Imlib2\",\"Info-ZIP\",\"Intel\",\"Intel-ACPI\",\"Interbase-1.0\",\"JPNIC\",\"JSON\",\"JasPer-2.0\",\"LAL-1.2\",\"LAL-1.3\",\"LGPL-2.0-only\",\"LGPL-2.0-or-later\",\"LGPL-2.1-only\",\"LGPL-2.1-or-later\",\"LGPL-3.0-only\",\"LGPL-3.0-or-later\",\"LGPLLR\",\"LPL-1.0\",\"LPL-1.02\",\"LPPL-1.0\",\"LPPL-1.1\",\"LPPL-1.2\",\"LPPL-1.3a\",\"LPPL-1.3c\",\"Latex2e\",\"Leptonica\",\"LiLiQ-P-1.1\",\"LiLiQ-R-1.1\",\"LiLiQ-Rplus-1.1\",\"Libpng\",\"Linux-OpenIB\",\"MIT\",\"MIT-0\",\"MIT-CMU\",\"MIT-Modern-Variant\",\"MIT-advertising\",\"MIT-enna\",\"MIT-feh\",\"MIT-open-group\",\"MITNFA\",\"MPL-1.0\",\"MPL-1.1\",\"MPL-2.0\",\"MPL-2.0-no-copyleft-exception\",\"MS-PL\",\"MS-RL\",\"MTLL\",\"MakeIndex\",\"MirOS\",\"Motosoto\",\"MulanPSL-1.0\",\"MulanPSL-2.0\",\"Multics\",\"Mup\",\"NAIST-2003\",\"NASA-1.3\",\"NBPL-1.0\",\"NCGL-UK-2.0\",\"NCSA\",\"NGPL\",\"NIST-PD\",\"NIST-PD-fallback\",\"NLOD-1.0\",\"NLPL\",\"NOSL\",\"NPL-1.0\",\"NPL-1.1\",\"NPOSL-3.0\",\"NRL\",\"NTP\",\"NTP-0\",\"Naumen\",\"Net-SNMP\",\"NetCDF\",\"Newsletr\",\"Nokia\",\"Noweb\",\"O-UDA-1.0\",\"OCCT-PL\",\"OCLC-2.0\",\"ODC-By-1.0\",\"ODbL-1.0\",\"OFL-1.0\",\"OFL-1.0-RFN\",\"OFL-1.0-no-RFN\",\"OFL-1.1\",\"OFL-1.1-RFN\",\"OFL-1.1-no-RFN\",\"OGC-1.0\",\"OGDL-Taiwan-1.0\",\"OGL-Canada-2.0\",\"OGL-UK-1.0\",\"OGL-UK-2.0\",\"OGL-UK-3.0\",\"OGTSL\",\"OLDAP-1.1\",\"OLDAP-1.2\",\"OLDAP-1.3\",\"OLDAP-1.4\",\"OLDAP-2.0\",\"OLDAP-2.0.1\",\"OLDAP-2.1\",\"OLDAP-2.2\",\"OLDAP-2.2.1\",\"OLDAP-2.2.2\",\"OLDAP-2.3\",\"OLDAP-2.4\",\"OLDAP-2.5\",\"OLDAP-2.6\",\"OLDAP-2.7\",\"OLDAP-2.8\",\"OML\",\"OPL-1.0\",\"OSET-PL-2.1\",\"OSL-1.0\",\"OSL-1.1\",\"OSL-2.0\",\"OSL-2.1\",\"OSL-3.0\",\"OpenSSL\",\"PDDL-1.0\",\"PHP-3.0\",\"PHP-3.01\",\"PSF-2.0\",\"Parity-6.0.0\",\"Parity-7.0.0\",\"Plexus\",\"PolyForm-Noncommercial-1.0.0\",\"PolyForm-Small-Business-1.0.0\",\"PostgreSQL\",\"Python-2.0\",\"QPL-1.0\",\"Qhull\",\"RHeCos-1.1\",\"RPL-1.1\",\"RPL-1.5\",\"RPSL-1.0\",\"RSA-MD\",\"RSCPL\",\"Rdisc\",\"Ruby\",\"SAX-PD\",\"SCEA\",\"SGI-B-1.0\",\"SGI-B-1.1\",\"SGI-B-2.0\",\"SHL-0.5\",\"SHL-0.51\",\"SISSL\",\"SISSL-1.2\",\"SMLNJ\",\"SMPPL\",\"SNIA\",\"SPL-1.0\",\"SSH-OpenSSH\",\"SSH-short\",\"SSPL-1.0\",\"SWL\",\"Saxpath\",\"Sendmail\",\"Sendmail-8.23\",\"SimPL-2.0\",\"Sleepycat\",\"Spencer-86\",\"Spencer-94\",\"Spencer-99\",\"SugarCRM-1.1.3\",\"TAPR-OHL-1.0\",\"TCL\",\"TCP-wrappers\",\"TMate\",\"TORQUE-1.1\",\"TOSL\",\"TU-Berlin-1.0\",\"TU-Berlin-2.0\",\"UCL-1.0\",\"UPL-1.0\",\"Unicode-DFS-2015\",\"Unicode-DFS-2016\",\"Unicode-TOU\",\"Unlicense\",\"VOSTROM\",\"VSL-1.0\",\"Vim\",\"W3C\",\"W3C-19980720\",\"W3C-20150513\",\"WTFPL\",\"Watcom-1.0\",\"Wsuipa\",\"X11\",\"XFree86-1.1\",\"XSkat\",\"Xerox\",\"Xnet\",\"YPL-1.0\",\"YPL-1.1\",\"ZPL-1.1\",\"ZPL-2.0\",\"ZPL-2.1\",\"Zed\",\"Zend-2.0\",\"Zimbra-1.3\",\"Zimbra-1.4\",\"Zlib\",\"blessing\",\"bzip2-1.0.5\",\"bzip2-1.0.6\",\"copyleft-next-0.3.0\",\"copyleft-next-0.3.1\",\"curl\",\"diffmark\",\"dvipdfm\",\"eGenix\",\"etalab-2.0\",\"gSOAP-1.3b\",\"gnuplot\",\"iMatix\",\"libpng-2.0\",\"libselinux-1.0\",\"libtiff\",\"mpich2\",\"psfrag\",\"psutils\",\"xinetd\",\"xpp\",\"zlib-acknowledgement\"]");
 
 /***/ }),
 
@@ -81618,7 +78785,7 @@ module.exports = JSON.parse("[\"0BSD\",\"AAL\",\"ADSL\",\"AFL-1.1\",\"AFL-1.2\",
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"name\":\"aegir\",\"version\":\"30.3.0\",\"description\":\"JavaScript project management\",\"keywords\":[\"webpack\",\"standard\",\"lint\",\"build\"],\"homepage\":\"https://github.com/ipfs/aegir\",\"bugs\":\"https://github.com/ipfs/aegir/issues\",\"license\":\"MIT\",\"leadMaintainer\":\"Hugo Dias <hugomrdias@gmail.com>\",\"files\":[\"dist/utils\",\"cmds\",\"utils\",\"src\",\"cli.js\",\"fixtures.js\"],\"main\":\"cli.js\",\"browser\":{\"fs\":false,\"./src/fixtures.js\":\"./src/fixtures.browser.js\"},\"bin\":{\"aegir\":\"cli.js\"},\"typesVersions\":{\"*\":{\"utils/*\":[\"dist/utils/*\"]}},\"repository\":\"github:ipfs/aegir\",\"scripts\":{\"prepare\":\"tsc -p tsconfig-types.json\",\"lint\":\"node cli.js lint\",\"test:node\":\"node cli.js test -t node\",\"test:browser\":\"node cli.js test -t browser webworker\",\"test:acceptance\":\"./test/acceptance.sh\",\"test\":\"npm run test:node && npm run test:browser\",\"coverage\":\"node cli.js coverage -t node\",\"watch\":\"node cli.js test -t node --watch\",\"release\":\"node cli.js release --no-docs --no-test --no-build\",\"release-minor\":\"node cli.js release --no-docs --no-build --no-test --type minor\",\"release-major\":\"node cli.js release --no-docs --no-build --no-test --type major\"},\"dependencies\":{\"@achingbrain/dependency-check\":\"^4.1.0\",\"@commitlint/cli\":\"^11.0.0\",\"@commitlint/config-conventional\":\"^11.0.0\",\"@commitlint/lint\":\"^11.0.0\",\"@commitlint/load\":\"^11.0.0\",\"@commitlint/read\":\"^11.0.0\",\"@commitlint/travis-cli\":\"^11.0.0\",\"@electron/get\":\"^1.12.3\",\"@polka/send-type\":\"^0.5.2\",\"@types/chai\":\"^4.2.15\",\"@types/chai-as-promised\":\"^7.1.3\",\"@types/chai-subset\":\"^1.3.3\",\"@types/dirty-chai\":\"^2.0.2\",\"@types/mocha\":\"^8.2.0\",\"@types/node\":\"^14.14.27\",\"@types/sinon\":\"^9.0.10\",\"buffer\":\"^6.0.3\",\"bytes\":\"^3.1.0\",\"c8\":\"^7.5.0\",\"camelcase\":\"^6.2.0\",\"chai\":\"^4.2.0\",\"chai-as-promised\":\"^7.1.1\",\"chai-subset\":\"^1.6.0\",\"conventional-changelog\":\"^3.1.24\",\"conventional-github-releaser\":\"^3.1.5\",\"copyfiles\":\"^2.4.1\",\"cors\":\"^2.8.5\",\"dirty-chai\":\"^2.0.1\",\"electron-mocha\":\"^10.0.0\",\"env-paths\":\"^2.2.0\",\"esbuild\":\"^0.8.44\",\"esbuild-register\":\"^2.0.0\",\"eslint\":\"^7.18.0\",\"eslint-config-ipfs\":\"^2.0.0\",\"execa\":\"^5.0.0\",\"extract-zip\":\"^2.0.1\",\"fs-extra\":\"^9.1.0\",\"gh-pages\":\"^3.1.0\",\"git-authors-cli\":\"^1.0.33\",\"git-validate\":\"^2.2.4\",\"globby\":\"^11.0.2\",\"ipfs-utils\":\"^6.0.0\",\"it-glob\":\"~0.0.10\",\"kleur\":\"^4.1.4\",\"lilconfig\":\"^2.0.2\",\"listr\":\"~0.14.2\",\"merge-options\":\"^3.0.4\",\"mocha\":\"^8.3.0\",\"npm-package-json-lint\":\"^5.1.0\",\"nyc\":\"^15.1.0\",\"ora\":\"^5.3.0\",\"p-map\":\"^4.0.0\",\"pascalcase\":\"^1.0.0\",\"playwright-test\":\"hugomrdias/playwright-test#feat/esbuild\",\"polka\":\"^0.5.2\",\"premove\":\"^3.0.1\",\"prompt-promise\":\"^1.0.3\",\"proper-lockfile\":\"^4.1.2\",\"read-pkg-up\":\"^7.0.1\",\"semver\":\"^7.3.4\",\"simple-git\":\"^2.28.0\",\"strip-bom\":\"^4.0.0\",\"strip-json-comments\":\"^3.1.1\",\"tempy\":\"^1.0.0\",\"typedoc\":\"^0.20.24\",\"typescript\":\"4.1.5\",\"update-notifier\":\"^5.0.0\",\"yargs\":\"^16.2.0\",\"yargs-parser\":\"^20.2.3\"},\"devDependencies\":{\"@types/bytes\":\"^3.1.0\",\"@types/eslint\":\"^7.2.6\",\"@types/fs-extra\":\"^9.0.7\",\"@types/gh-pages\":\"^3.0.0\",\"@types/listr\":\"^0.14.2\",\"@types/polka\":\"^0.5.2\",\"@types/proper-lockfile\":\"^4.1.1\",\"@types/semver\":\"^7.3.4\",\"@types/yargs\":\"^16.0.0\",\"electron\":\"^11.2.0\",\"iso-url\":\"^1.0.0\",\"sinon\":\"^9.2.3\"},\"engines\":{\"node\":\">=12.0.0\",\"npm\":\">=6.0.0\"},\"browserslist\":[\">1%\",\"last 2 versions\",\"Firefox ESR\",\"not ie < 11\"],\"eslintConfig\":{\"extends\":\"ipfs\"},\"contributors\":[\"dignifiedquire <dignifiedquire@gmail.com>\",\"Hugo Dias <hugomrdias@gmail.com>\",\"victorbjelkholm <victorbjelkholm@gmail.com>\",\"David Dias <daviddias.p@gmail.com>\",\"Alex Potsides <alex@achingbrain.net>\",\"Volker Mische <volker.mische@gmail.com>\",\"Alan Shaw <alan.shaw@protocol.ai>\",\"Jacob Heun <jacobheun@gmail.com>\",\"Dmitriy Ryajov <dryajov@gmail.com>\",\"Irakli Gozalishvili <contact@gozala.io>\",\"ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>\",\"Henrique Dias <hacdias@gmail.com>\",\"Francis Yuen <fyuen@godaddy.com>\",\"Maciej Krüger <mkg20001@gmail.com>\",\"Adam Uhlíř <adam@uhlir.dev>\",\"Alberto Elias <hi@albertoelias.me>\",\"Diogo Silva <fsdiogo@gmail.com>\",\"Garren Smith <garren.smith@gmail.com>\",\"Hector Sanjuan <code@hector.link>\",\"JGAntunes <j.goncalo.antunes@gmail.com>\",\"Jakub Sztandera <kubuxu@protonmail.ch>\",\"Marcin Rataj <lidel@lidel.org>\",\"Michael Garvin <gar+gh@danger.computer>\",\"Mikeal Rogers <mikeal.rogers@gmail.com>\",\"Stephen Whitmore <stephen.whitmore@gmail.com>\",\"Vasco Santos <vasco.santos@ua.pt>\",\"0xflotus <0xflotus@gmail.com>\"]}");
+module.exports = JSON.parse("{\"name\":\"aegir\",\"version\":\"34.0.3\",\"description\":\"JavaScript project management\",\"keywords\":[\"standard\",\"lint\",\"build\"],\"homepage\":\"https://github.com/ipfs/aegir\",\"bugs\":\"https://github.com/ipfs/aegir/issues\",\"license\":\"MIT\",\"leadMaintainer\":\"Hugo Dias <hugomrdias@gmail.com>\",\"files\":[\"dist\",\"cmds\",\"utils\",\"src\",\"cli.js\"],\"main\":\"cli.js\",\"browser\":{\"fs\":false,\"./utils/fixtures.js\":\"./utils/fixtures.browser.js\"},\"bin\":{\"aegir\":\"cli.js\"},\"types\":\"dist/src/index\",\"typesVersions\":{\"*\":{\"utils/*\":[\"dist/utils/*\"],\"src/*\":[\"dist/src/*\",\"dist/src/*/index\"],\"src/\":[\"dist/src/index\"],\"src/config/tsconfig.aegir.json\":[\"src/config/tsconfig.aegir.json\"]}},\"repository\":\"github:ipfs/aegir\",\"scripts\":{\"prepare\":\"node cli.js ts -p types\",\"lint\":\"node cli.js lint\",\"test\":\"node cli.js ts -p check && node cli.js test\",\"test:node\":\"node cli.js test -t node\",\"test:browser\":\"node cli.js test -t browser -t webworker\",\"release\":\"node cli.js release\",\"release-minor\":\"node cli.js release --type minor\",\"release-major\":\"node cli.js release --type major\"},\"dependencies\":{\"@achingbrain/dependency-check\":\"^4.1.0\",\"@electron/get\":\"^1.12.3\",\"@polka/send-type\":\"^0.5.2\",\"@types/chai\":\"^4.2.16\",\"@types/chai-as-promised\":\"^7.1.3\",\"@types/chai-string\":\"^1.4.2\",\"@types/chai-subset\":\"^1.3.3\",\"@types/mocha\":\"^8.2.2\",\"@types/node\":\"^16.3.0\",\"@types/sinon\":\"^10.0.0\",\"buffer\":\"^6.0.3\",\"bytes\":\"^3.1.0\",\"c8\":\"^7.7.0\",\"camelcase\":\"^6.2.0\",\"chai\":\"^4.3.4\",\"chai-as-promised\":\"^7.1.1\",\"chai-bytes\":\"^0.1.2\",\"chai-parentheses\":\"^0.0.2\",\"chai-string\":\"^1.5.0\",\"chai-subset\":\"^1.6.0\",\"conventional-changelog\":\"^3.1.24\",\"conventional-github-releaser\":\"^3.1.5\",\"copyfiles\":\"^2.4.1\",\"cors\":\"^2.8.5\",\"electron-mocha\":\"^10.0.0\",\"env-paths\":\"^2.2.1\",\"esbuild\":\"^0.12.15\",\"esbuild-register\":\"^2.3.0\",\"eslint\":\"^7.23.0\",\"eslint-config-ipfs\":\"^2.0.0\",\"execa\":\"^5.0.0\",\"extract-zip\":\"^2.0.1\",\"fs-extra\":\"^10.0.0\",\"gh-pages\":\"^3.1.0\",\"git-authors-cli\":\"^1.0.33\",\"globby\":\"^11.0.3\",\"ipfs-utils\":\"^8.1.0\",\"it-glob\":\"~0.0.10\",\"kleur\":\"^4.1.4\",\"lilconfig\":\"^2.0.2\",\"listr\":\"~0.14.2\",\"merge-options\":\"^3.0.4\",\"mocha\":\"^9.0.2\",\"npm-package-json-lint\":\"^5.1.0\",\"nyc\":\"^15.1.0\",\"ora\":\"^5.4.0\",\"p-map\":\"4.0.0\",\"pascalcase\":\"^1.0.0\",\"playwright-test\":\"^7.0.2\",\"polka\":\"^0.5.2\",\"premove\":\"^3.0.1\",\"proper-lockfile\":\"^4.1.2\",\"react-native-test-runner\":\"^5.0.0\",\"read-pkg-up\":\"7.0.1\",\"semver\":\"^7.3.5\",\"simple-git\":\"^2.37.0\",\"strip-bom\":\"4.0.0\",\"strip-json-comments\":\"^3.1.1\",\"tempy\":\"^1.0.1\",\"typedoc\":\"^0.21.2\",\"typescript\":\"^4.3.5\",\"update-notifier\":\"^5.0.0\",\"yargs\":\"^17.0.1\"},\"devDependencies\":{\"@types/bytes\":\"^3.1.0\",\"@types/conventional-changelog\":\"^3.1.0\",\"@types/cors\":\"^2.8.10\",\"@types/eslint\":\"^7.2.8\",\"@types/fs-extra\":\"^9.0.10\",\"@types/gh-pages\":\"^3.0.0\",\"@types/listr\":\"^0.14.2\",\"@types/pascalcase\":\"^1.0.0\",\"@types/polka\":\"^0.5.2\",\"@types/proper-lockfile\":\"^4.1.1\",\"@types/semver\":\"^7.3.4\",\"@types/update-notifier\":\"^5.0.0\",\"@types/yargs\":\"^17.0.0\",\"electron\":\"^13.1.6\",\"iso-url\":\"^1.1.5\",\"sinon\":\"^11.1.1\",\"util\":\"^0.12.4\"},\"engines\":{\"node\":\">=14.0.0\",\"npm\":\">=6.0.0\"},\"eslintConfig\":{\"extends\":\"ipfs\"},\"contributors\":[\"dignifiedquire <dignifiedquire@gmail.com>\",\"Hugo Dias <hugomrdias@gmail.com>\",\"achingbrain <alex@achingbrain.net>\",\"victorbjelkholm <victorbjelkholm@gmail.com>\",\"David Dias <daviddias.p@gmail.com>\",\"Volker Mische <volker.mische@gmail.com>\",\"Alan Shaw <alan.shaw@protocol.ai>\",\"Jacob Heun <jacobheun@gmail.com>\",\"Dmitriy Ryajov <dryajov@gmail.com>\",\"Irakli Gozalishvili <contact@gozala.io>\",\"Francis Yuen <fyuen@godaddy.com>\",\"ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>\",\"Henrique Dias <hacdias@gmail.com>\",\"Vasco Santos <vasco.santos@moxy.studio>\",\"mkg20001 <mkg20001@gmail.com>\",\"Stephen Whitmore <stephen.whitmore@gmail.com>\",\"Diogo Silva <fsdiogo@gmail.com>\",\"0xflotus <0xflotus@gmail.com>\",\"Alberto Elias <hi@albertoelias.me>\",\"kumavis <kumavis@users.noreply.github.com>\",\"Adam Uhlíř <adam@uhlir.dev>\",\"Haad <haadcode@users.noreply.github.com>\",\"Hector Sanjuan <code@hector.link>\",\"Garren Smith <garren.smith@gmail.com>\",\"JGAntunes <j.goncalo.antunes@gmail.com>\",\"Jakub Sztandera <kubuxu@protonmail.ch>\",\"Lars Gierth <lgierth@users.noreply.github.com>\",\"Marcin Rataj <lidel@lidel.org>\",\"Michael Garvin <gar+gh@danger.computer>\",\"Mikeal Rogers <mikeal.rogers@gmail.com>\"]}");
 
 /***/ }),
 

@@ -38,10 +38,10 @@ const check = (argv, execaOptions) => {
   const args = [...input, '--missing', ...noDev, ...ignore]
 
   if (pkg.type === 'module') {
-    // use detective-es6
+    // use detective-es6 for js, regular detective for cjs
     args.push(
-      '--detective',
-      require.resolve('detective-es6')
+      '--extensions', 'cjs:detective',
+      '--extensions', 'js:detective-es6'
     )
   }
 

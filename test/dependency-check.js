@@ -20,7 +20,10 @@ describe('dependency check', () => {
       execa(bin, ['dependency-check'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/esm-fail')
       })
-    ).to.eventually.be.rejectedWith('execa')
+    ).to.eventually.be.rejected()
+      .with.property('message')
+      .that.include('execa')
+      .and.include('pico')
   })
 
   it('should pass when there are no missing deps', async () => {

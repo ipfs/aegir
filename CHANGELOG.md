@@ -1,3 +1,12 @@
+# [34.1.0](https://github.com/ipfs/aegir/compare/v34.0.3...v34.1.0) (2021-07-29)
+
+
+### Features
+
+* support dependency check in esm modules ([#869](https://github.com/ipfs/aegir/issues/869)) ([48712b1](https://github.com/ipfs/aegir/commit/48712b1f1f35d5aa6a39bf698a7cb30b9a523c5e))
+
+
+
 ## [34.0.3](https://github.com/ipfs/aegir/compare/v34.0.2...v34.0.3) (2021-07-15)
 
 

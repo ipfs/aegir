@@ -66,13 +66,23 @@ const buildEsm = async (argv) => {
   // @ts-ignore no types
   const ipjs = await import('ipjs')
 
-  await ipjs.default({
-    dist,
-    onConsole: (/** @type {any[]} */...args) => console.info.apply(console, args),
-    cwd: process.cwd(),
-    main: argv.esmMain,
-    tests: argv.esmTests
-  })
+  // eslint-disable-next-line
+  console.log('go IPJS start')
+  try {
+    await ipjs.default({
+      dist,
+      onConsole: (/** @type {any[]} */...args) => console.info.apply(console, args),
+      cwd: process.cwd(),
+      main: argv.esmMain,
+      tests: argv.esmTests
+    })
+  } catch (err) {
+    // eslint-disable-next-line
+    console.log('err', err)
+    throw err
+  }
+  // eslint-disable-next-line
+  console.log('go IPJS end')
 }
 
 const tasks = new Listr([

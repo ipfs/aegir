@@ -10,31 +10,39 @@ const bin = require.resolve('../')
 const tempy = require('tempy')
 
 describe('build', () => {
-  if (process.platform !== 'win32') {
-    describe('esm', () => {
-      let projectDir = ''
+  // if (process.platform !== 'win32') {
+  describe('esm', () => {
+    let projectDir = ''
 
-      before(async () => {
-        projectDir = tempy.directory()
+    before(async () => {
+      projectDir = tempy.directory()
 
-        await copy(join(__dirname, 'fixtures', 'esm', 'an-esm-project'), projectDir)
-      })
+      await copy(join(__dirname, 'fixtures', 'esm', 'an-esm-project'), projectDir)
+    })
 
-      it('should build an esm project', async function () {
-        this.timeout(20 * 1000) // slow ci is slow
+    it('should build an esm project', async function () {
+      this.timeout(20 * 1000) // slow ci is slow
 
-        await execa(bin, ['build'], {
+      try {
+        const run = execa(bin, ['build'], {
           cwd: projectDir
         })
+        // @ts-ignore
+        run.stdout.pipe(process.stdout)
+        await run
+      } catch (err) {
+        // eslint-disable-next-line
+        console.log('err', err)
+      }
 
-        expect(existsSync(join(projectDir, 'dist', 'esm'))).to.be.true()
-        expect(existsSync(join(projectDir, 'dist', 'cjs'))).to.be.true()
+      expect(existsSync(join(projectDir, 'dist', 'esm'))).to.be.true()
+      expect(existsSync(join(projectDir, 'dist', 'cjs'))).to.be.true()
 
-        const module = require(join(projectDir, 'dist'))
+      const module = require(join(projectDir, 'dist'))
 
-        expect(module).to.have.property('useHerp').that.is.a('function')
-        expect(module).to.have.property('useDerp').that.is.a('function')
-      })
+      expect(module).to.have.property('useHerp').that.is.a('function')
+      expect(module).to.have.property('useDerp').that.is.a('function')
     })
-  }
+  })
+  // }
 })

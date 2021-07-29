@@ -56,7 +56,6 @@
     "release-major": "node cli.js release --type major"
   },
   "dependencies": {
-    "@achingbrain/dependency-check": "^4.1.0",
     "@electron/get": "^1.12.3",
     "@polka/send-type": "^0.5.2",
     "@types/chai": "^4.2.16",
@@ -80,6 +79,8 @@
     "conventional-github-releaser": "^3.1.5",
     "copyfiles": "^2.4.1",
     "cors": "^2.8.5",
+    "dependency-check": "^5.0.0-1",
+    "detective-es6": "^2.2.0",
     "electron-mocha": "^10.0.0",
     "env-paths": "^2.2.1",
     "esbuild": "^0.12.15",

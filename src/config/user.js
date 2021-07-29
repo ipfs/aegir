@@ -96,16 +96,23 @@ const defaults = {
     input: [
       'package.json',
       '.aegir.js',
+      '.aegir.cjs',
       'src/**/*.js',
+      'src/**/*.cjs',
       'test/**/*.js',
+      'test/**/*.cjs',
       'benchmarks/**/*.js',
+      'benchmarks/**/*.cjs',
       'utils/**/*.js',
-      '!./test/fixtures/**/*.js'
+      'utils/**/*.cjs',
+      '!./test/fixtures/**/*.js',
+      '!./test/fixtures/**/*.cjs'
     ],
     productionOnly: false,
     productionInput: [
       'package.json',
-      'src/**/*.js'
+      'src/**/*.js',
+      'src/**/*.cjs'
     ],
     ignore: [
       '@types/*'

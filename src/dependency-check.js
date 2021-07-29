@@ -3,6 +3,7 @@
 const path = require('path')
 const execa = require('execa')
 const merge = require('merge-options')
+const { pkg } = require('./utils')
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -34,9 +35,19 @@ const check = (argv, execaOptions) => {
     .concat(argv.fileConfig.dependencyCheck.ignore)
     .reduce((acc, i) => acc.concat('-i', i), /** @type {string[]} */ ([]))
 
+  const args = [...input, '--missing', ...noDev, ...ignore]
+
+  if (pkg.type === 'module') {
+    // use detective-es6 for js, regular detective for cjs
+    args.push(
+      '--extensions', 'cjs:detective',
+      '--extensions', 'js:detective-es6'
+    )
+  }
+
   return execa(
     'dependency-check',
-    [...input, '--missing', ...noDev, ...ignore, ...forwardOptions],
+    [...args, ...forwardOptions],
     merge(
       {
         localDir: path.join(__dirname, '..'),

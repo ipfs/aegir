@@ -3,14 +3,12 @@
 
 const { expect } = require('../utils/chai')
 const execa = require('execa')
-const process = require('process')
 const { copy, existsSync } = require('fs-extra')
 const { join } = require('path')
 const bin = require.resolve('../')
 const tempy = require('tempy')
 
 describe('build', () => {
-  // if (process.platform !== 'win32') {
   describe('esm', () => {
     let projectDir = ''
 
@@ -23,17 +21,9 @@ describe('build', () => {
     it('should build an esm project', async function () {
       this.timeout(20 * 1000) // slow ci is slow
 
-      try {
-        const run = execa(bin, ['build'], {
-          cwd: projectDir
-        })
-        // @ts-ignore
-        run.stdout.pipe(process.stdout)
-        await run
-      } catch (err) {
-        // eslint-disable-next-line
-        console.log('err', err)
-      }
+      await execa(bin, ['build'], {
+        cwd: projectDir
+      })
 
       expect(existsSync(join(projectDir, 'dist', 'esm'))).to.be.true()
       expect(existsSync(join(projectDir, 'dist', 'cjs'))).to.be.true()
@@ -44,5 +34,4 @@ describe('build', () => {
       expect(module).to.have.property('useDerp').that.is.a('function')
     })
   })
-  // }
 })

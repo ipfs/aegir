@@ -1,0 +1,1 @@
+{"version":3,"file":"dependency-check.d.ts","sourceRoot":"","sources":["../../src/dependency-check.js"],"names":[],"mappings":"2BAQa,OAAO,OAAO,EAAE,OAAO;4BACvB,OAAO,SAAS,EAAE,aAAa;qCAC/B,OAAO,SAAS,EAAE,sBAAsB;AASrD;;;;;GAKG;AACH,4BAHW,aAAa,GAAG,sBAAsB,qFAoChD"}

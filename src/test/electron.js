@@ -2,6 +2,7 @@
 const path = require('path')
 const execa = require('execa')
 const { getElectron } = require('../utils')
+const { pkg } = require('./../utils')
 const merge = require('merge-options')
 
 /**
@@ -30,6 +31,11 @@ module.exports = async (argv, execaOptions) => {
   const beforeEnv = before && before.env ? before.env : {}
   const electronPath = await getElectron()
 
+  const esmOptions = []
+  if (pkg.type === 'module') {
+    esmOptions.push('--require esm')
+  }
+
   await execa('electron-mocha',
     [
       ...files,
@@ -42,7 +48,8 @@ module.exports = async (argv, execaOptions) => {
       '--colors',
       '--full-trace',
       ...renderer,
-      ...forwardOptions
+      ...forwardOptions,
+      ...esmOptions
     ],
     merge({
       localDir: path.join(__dirname, '../..'),

@@ -60,7 +60,7 @@ describe('dependency check', () => {
     ).to.eventually.be.rejectedWith('execa')
   })
 
-  it('should pass for passed files', async () => {
+  it.skip('should pass for passed files', async () => {
     const file = 'derp/foo.js'
 
     await expect(
@@ -74,7 +74,7 @@ describe('dependency check', () => {
     ).to.eventually.be.fulfilled()
   })
 
-  it('should pass for passed production files', async () => {
+  it.skip('should pass for passed production files', async () => {
     const file = 'derp/foo.js'
 
     await expect(

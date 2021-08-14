@@ -1,7 +1,7 @@
 'use strict'
 
 const execa = require('execa')
-const { otp } = require('../utils')
+const { otp, pkg, repoDirectory } = require('../utils')
 /**
  * @typedef {import('./../types').ReleaseOptions} ReleaseOptions
  * @typedef {import('listr').ListrTaskWrapper} ListrTask
@@ -25,16 +25,22 @@ function publish (ctx, task) {
     task.title += ` (npm ${publishArgs.join(' ')})`
   }
 
-  return execa('npm', publishArgs)
-    .catch(async (error) => {
-      if (error.toString().includes('provide a one-time password')) {
-        const code = await otp()
-        task.title += '. Trying again with OTP.'
-        return await execa('npm', publishArgs.concat('--otp', code))
+  // Publish from dist if ESM
+  const execaOptions = pkg.type === 'module'
+    ? {
+        cwd: `${repoDirectory}/dist`
       }
+    : {}
 
-      throw error
-    })
+  return execa('npm', publishArgs, execaOptions).catch(async (error) => {
+    if (error.toString().includes('provide a one-time password')) {
+      const code = await otp()
+      task.title += '. Trying again with OTP.'
+      return await execa('npm', publishArgs.concat('--otp', code), execaOptions)
+    }
+
+    throw error
+  })
 }
 
 module.exports = publish

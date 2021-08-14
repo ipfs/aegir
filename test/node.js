@@ -1,5 +1,6 @@
 'use strict'
 
+require('./build')
 require('./lint')
 require('./fixtures')
 require('./dependants')

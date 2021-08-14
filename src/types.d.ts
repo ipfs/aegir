@@ -99,6 +99,13 @@ interface GlobalOptions {
   fileConfig: Options
 }
 
+interface ESMHooks {
+  onParse: () => {}
+  onParsed: () => {}
+  onDeflateStart: () => {}
+  onDeflateEnd: () => {}
+}
+
 interface BuildOptions {
   /**
    * Build the JS standalone bundle.
@@ -120,6 +127,14 @@ interface BuildOptions {
    * esbuild build options
    */
   config: esbuild.BuildOptions
+  /**
+   * Include tests in the ipjs output directory
+   */
+  esmTests: boolean
+  /**
+   * Include a main field in the ipjs output package.json
+   */
+  esmMain: boolean
 }
 
 interface TSOptions {

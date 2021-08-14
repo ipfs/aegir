@@ -8,5 +8,9 @@ inputs:
     description: A directory to run the bundle check in
     required: false
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  # TODO: we need node14.14 minimum.
+  # https://github.com/actions/runner/issues/772
+  # using: 'node12'
+  # main: 'dist/index.js'
+  using: 'docker'
+  image: 'Dockerfile'

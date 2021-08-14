@@ -35,4 +35,6 @@ const plugin = function (Application) {
   app.converter.on(Converter.EVENT_CREATE_DECLARATION, cb)
 }
 
-module.exports = plugin
+module.exports = {
+  load: plugin
+}

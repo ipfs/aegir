@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "34.1.0",
+  "version": "35.0.0",
   "description": "JavaScript project management",
   "keywords": [
     "standard",
@@ -156,15 +156,14 @@
     "David Dias <daviddias.p@gmail.com>",
     "Volker Mische <volker.mische@gmail.com>",
     "Alan Shaw <alan.shaw@protocol.ai>",
-    "Jacob Heun <jacobheun@gmail.com>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
+    "Jacob Heun <jacobheun@gmail.com>",
     "Irakli Gozalishvili <contact@gozala.io>",
-    "Francis Yuen <fyuen@godaddy.com>",
-    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
-    "Henrique Dias <hacdias@gmail.com>",
     "Vasco Santos <vasco.santos@moxy.studio>",
+    "Henrique Dias <hacdias@gmail.com>",
+    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
+    "Francis Yuen <fyuen@godaddy.com>",
     "mkg20001 <mkg20001@gmail.com>",
-    "Stephen Whitmore <stephen.whitmore@gmail.com>",
     "Diogo Silva <fsdiogo@gmail.com>",
     "0xflotus <0xflotus@gmail.com>",
     "Alberto Elias <hi@albertoelias.me>",
@@ -178,6 +177,7 @@
     "Lars Gierth <lgierth@users.noreply.github.com>",
     "Marcin Rataj <lidel@lidel.org>",
     "Michael Garvin <gar+gh@danger.computer>",
-    "Mikeal Rogers <mikeal.rogers@gmail.com>"
+    "Mikeal Rogers <mikeal.rogers@gmail.com>",
+    "Stephen Whitmore <stephen.whitmore@gmail.com>"
   ]
 }

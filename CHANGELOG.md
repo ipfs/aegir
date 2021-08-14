@@ -1,3 +1,17 @@
+# [35.0.0](https://github.com/ipfs/aegir/compare/v34.1.0...v35.0.0) (2021-08-14)
+
+
+### Bug Fixes
+
+* replace type: 'array' with array: true ([#872](https://github.com/ipfs/aegir/issues/872)) ([4608c85](https://github.com/ipfs/aegir/commit/4608c8587f7fb4bf519ebdcd7bc75a38dda008f3))
+
+
+### Features
+
+* build esm modules using ipjs ([#865](https://github.com/ipfs/aegir/issues/865)) ([fa70ff7](https://github.com/ipfs/aegir/commit/fa70ff784db0fd75065fc78ee95a87a613201db6)), closes [/github.com/actions/runner/issues/772#issuecomment-883419149](https://github.com//github.com/actions/runner/issues/772/issues/issuecomment-883419149)
+
+
+
 # [34.1.0](https://github.com/ipfs/aegir/compare/v34.0.3...v34.1.0) (2021-07-29)
 
 

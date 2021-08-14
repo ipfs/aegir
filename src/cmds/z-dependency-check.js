@@ -25,8 +25,8 @@ module.exports = {
       .example('aegir dependency-check -- --unused --ignore typescript', 'To check unused packages in your repo, ignoring typescript.')
       .positional('input', {
         describe: 'Files to check',
-        // @ts-ignore
-        type: 'array',
+        type: 'string',
+        array: true,
         default: userConfig.dependencyCheck.input
       })
       .option('p', {
@@ -38,7 +38,7 @@ module.exports = {
       .option('i', {
         alias: 'ignore',
         describe: 'Ignore these dependencies when considering which are used and which are not',
-        type: 'array',
+        array: true,
         default: userConfig.dependencyCheck.ignore
       })
   },

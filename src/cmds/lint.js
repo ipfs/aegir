@@ -28,7 +28,7 @@ module.exports = {
           default: userConfig.lint.fix
         },
         files: {
-          type: 'array',
+          array: true,
           describe: 'Files to lint.',
           default: userConfig.lint.files
         },

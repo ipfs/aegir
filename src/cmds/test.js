@@ -42,7 +42,7 @@ module.exports = {
         target: {
           alias: 't',
           describe: 'In which target environment to execute the tests',
-          type: 'array',
+          array: true,
           choices: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer', 'react-native-android', 'react-native-ios'],
           default: userConfig.test.target
         },
@@ -55,7 +55,7 @@ module.exports = {
         files: {
           alias: 'f',
           describe: 'Custom globs for files to test',
-          type: 'array',
+          array: true,
           default: userConfig.test.files
         },
         timeout: {

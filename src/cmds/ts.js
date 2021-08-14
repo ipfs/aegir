@@ -7,11 +7,11 @@ const { userConfig } = require('../config/user')
 
 const EPILOG = `
 Presets:
-\`check\`       Runs the type checker with your local config (without writing any files). . 
+\`check\`       Runs the type checker with your local config (without writing any files). .
 \`types\`       Emits type declarations, copies a any .d.ts files or a types folder to \`dist\` folder.
 \`config\`      Prints base config to stdout.
 
-Note: 
+Note:
 Check out the documentation for JSDoc based TS types here: https://github.com/ipfs/aegir/blob/master/md/ts-jsdoc.md
 
 Supports options forwarding with '--' for more info check https://www.typescriptlang.org/docs/handbook/compiler-options.html
@@ -35,7 +35,7 @@ module.exports = {
           default: userConfig.ts.preset
         },
         include: {
-          type: 'array',
+          array: true,
           describe: 'Values are merged into the local TS config include property.',
           default: userConfig.ts.include
         },

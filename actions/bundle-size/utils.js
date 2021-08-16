@@ -62,7 +62,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
     }
 
     await artifact.create().uploadArtifact(
-      `${pkgName}-size`,
+      `${pkgName.replace('/', '-')}-size`,
       await globby(['dist/*'], { cwd: baseDir, absolute: true }),
       baseDir,
       {

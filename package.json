@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "35.0.0",
+  "version": "35.0.1",
   "description": "JavaScript project management",
   "keywords": [
     "standard",
@@ -156,12 +156,12 @@
     "David Dias <daviddias.p@gmail.com>",
     "Volker Mische <volker.mische@gmail.com>",
     "Alan Shaw <alan.shaw@protocol.ai>",
-    "Dmitriy Ryajov <dryajov@gmail.com>",
     "Jacob Heun <jacobheun@gmail.com>",
+    "Dmitriy Ryajov <dryajov@gmail.com>",
     "Irakli Gozalishvili <contact@gozala.io>",
     "Vasco Santos <vasco.santos@moxy.studio>",
-    "Henrique Dias <hacdias@gmail.com>",
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
+    "Henrique Dias <hacdias@gmail.com>",
     "Francis Yuen <fyuen@godaddy.com>",
     "mkg20001 <mkg20001@gmail.com>",
     "Diogo Silva <fsdiogo@gmail.com>",
@@ -176,6 +176,7 @@
     "Jakub Sztandera <kubuxu@protonmail.ch>",
     "Lars Gierth <lgierth@users.noreply.github.com>",
     "Marcin Rataj <lidel@lidel.org>",
+    "Marin Petrunić <mpetrunic@users.noreply.github.com>",
     "Michael Garvin <gar+gh@danger.computer>",
     "Mikeal Rogers <mikeal.rogers@gmail.com>",
     "Stephen Whitmore <stephen.whitmore@gmail.com>"

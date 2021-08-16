@@ -1,3 +1,12 @@
+## [35.0.1](https://github.com/ipfs/aegir/compare/v35.0.0...v35.0.1) (2021-08-16)
+
+
+### Bug Fixes
+
+* uploading bundlesize artifact uses invalid character with namespaced modules ([#868](https://github.com/ipfs/aegir/issues/868)) ([a47ada6](https://github.com/ipfs/aegir/commit/a47ada6f29ae0e2d904e024f58d349b68beb83ff))
+
+
+
 # [35.0.0](https://github.com/ipfs/aegir/compare/v34.1.0...v35.0.0) (2021-08-14)
 
 

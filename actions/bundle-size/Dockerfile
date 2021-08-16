@@ -2,5 +2,4 @@
 # see: https://github.com/actions/runner/issues/772
 FROM node:16-alpine
 WORKDIR /usr/src/app
-COPY dist/index.js .
-CMD [ "node", "index.js" ]
+CMD [ "node", "dist/index.js" ]

@@ -32,6 +32,8 @@ const sizeCheck = async (octokit, context, baseDir) => {
   const pkgName = packageJson.name
   const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` : 'size'
 
+  console.info('building', pkgName)
+
   try {
     check = await checkCreate(octokit, context, checkName)
 

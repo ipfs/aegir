@@ -30346,8 +30346,6 @@ const sizeCheck = async (octokit, context, baseDir) => {
   const pkgName = packageJson.name
   const checkName = process.cwd() !== baseDir ? `size: ${pkgName}` : 'size'
 
-  console.info('aegirExec', aegirExec)
-
   try {
     check = await checkCreate(octokit, context, checkName)
 

@@ -1,0 +1,16 @@
+name: 'Bundle Size'
+description: 'Bundle size action for IPFS repos'
+inputs:
+  github_token:
+    description: The GITHUB_TOKEN secret
+    required: true
+  project:
+    description: A directory to run the bundle check in
+    required: false
+runs:
+  # TODO: we need node14.14 minimum.
+  # https://github.com/actions/runner/issues/772
+  # using: 'node12'
+  # main: 'dist/index.js'
+  using: 'docker'
+  image: 'Dockerfile'

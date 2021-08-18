@@ -9,4 +9,4 @@ inputs:
     required: false
 runs:
   using: 'node12'
-  main: 'dist/index.js --experimental-modules'
+  main: 'dist/index.js'

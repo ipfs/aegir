@@ -3,5 +3,4 @@
 FROM node:16-alpine
 WORKDIR /github/workspace
 COPY ./dist/index.js /bundle_size.js
-RUN ls -la /
 CMD [ "node", "/bundle_size.js" ]

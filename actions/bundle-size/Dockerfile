@@ -4,4 +4,4 @@ FROM node:16-alpine
 WORKDIR /github/workspace
 ADD dist /github/workspace/bundle_size_dist
 #CMD [ "node", "bundle_size_dist/index.js" ]
-CMD [ "ls", "-la", "/" ]
+CMD [ "find", "/", "-type", "d", "-name", "bundle_size_dist" ]

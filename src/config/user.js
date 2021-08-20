@@ -135,7 +135,8 @@ const config = (searchFrom) => {
 
       searchPlaces: [
         'package.json',
-        '.aegir.js'
+        '.aegir.js',
+        '.aegir.cjs'
       ]
     })
     const lilconfig = configExplorer.search(searchFrom)

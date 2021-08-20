@@ -1,3 +1,13 @@
+## [35.0.2](https://github.com/ipfs/aegir/compare/v35.0.1...v35.0.2) (2021-08-20)
+
+
+### Bug Fixes
+
+* bundle size action cmd ([#874](https://github.com/ipfs/aegir/issues/874)) ([9be848d](https://github.com/ipfs/aegir/commit/9be848d1a416ebbe1fc62b3bd9fbfe8950f7b7b9))
+* search for aegir.cjs ([#879](https://github.com/ipfs/aegir/issues/879)) ([f7d9c27](https://github.com/ipfs/aegir/commit/f7d9c27f4b8c14d7ab9ad904c579980225e5d099))
+
+
+
 ## [35.0.1](https://github.com/ipfs/aegir/compare/v35.0.0...v35.0.1) (2021-08-16)
 
 

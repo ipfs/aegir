@@ -38,10 +38,14 @@ module.exports = {
         return deps
       },
       default: {}
+    },
+    scriptName: {
+      describe: 'The script name to run',
+      type: 'string'
     }
   },
   /**
-   * @param {{ repo: string; branch: string; deps: any; }} argv
+   * @param {{ repo: string; branch: string; deps: any; scriptName: string}} argv
    */
   handler (argv) {
     const cmd = require('../test-dependant')

@@ -41,7 +41,8 @@ module.exports = {
     },
     scriptName: {
       describe: 'The script name to run',
-      type: 'string'
+      type: 'string',
+      default: 'test'
     }
   },
   /**

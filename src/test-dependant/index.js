@@ -246,10 +246,6 @@ async function testDependant (opts) {
     })
   }
 
-  if (!opts.scriptName) {
-    opts.scriptName = 'test'
-  }
-
   if (isMonoRepo(targetDir)) {
     await testMonoRepo(targetDir, opts.deps, opts.scriptName)
   } else {

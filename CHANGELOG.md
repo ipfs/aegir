@@ -1,3 +1,12 @@
+## [35.0.3](https://github.com/ipfs/aegir/compare/v35.0.2...v35.0.3) (2021-08-31)
+
+
+### Bug Fixes
+
+* pin ts version ([#886](https://github.com/ipfs/aegir/issues/886)) ([244ab4c](https://github.com/ipfs/aegir/commit/244ab4cf1f76bc461126a97f67bee388899cde1a))
+
+
+
 ## [35.0.2](https://github.com/ipfs/aegir/compare/v35.0.1...v35.0.2) (2021-08-20)
 
 

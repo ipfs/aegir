@@ -86,6 +86,16 @@ describe('dependants', function () {
       expect(output.stdout).to.include(`${diff}-dependency-version=1.0.0`)
       expect(output.stdout).to.include(`${diff}-dependency-version=1.0.1`)
     })
+
+    it('should fail to test a project that does not depend on the deps we are overridding', async () => {
+      const diff = `derp-${Math.random()}`
+
+      await expect(execa(bin, ['test-dependant', dirs.project, '--deps=it-derp@1.0.1'], {
+        env: {
+          DISAMBIGUATOR: diff
+        }
+      })).to.eventually.be.rejectedWith(/Module project does not depend on it-derp/)
+    })
   })
 
   describe('monorepo', () => {

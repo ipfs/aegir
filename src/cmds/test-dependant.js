@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict'
 
 module.exports = {
@@ -43,8 +44,21 @@ module.exports = {
   /**
    * @param {{ repo: string; branch: string; deps: any; }} argv
    */
-  handler (argv) {
+  async handler (argv) {
     const cmd = require('../test-dependant')
-    return cmd(argv)
+
+    try {
+      await cmd(argv)
+    } catch (/** @type {any} */ err) {
+      console.info('-------------------------------------------------------------------')
+      console.info('')
+      console.info(err.message)
+      console.info('')
+      console.info('Dependant project has not been tested with updated dependencies')
+      console.info('')
+      console.info('-------------------------------------------------------------------')
+
+      throw err
+    }
   }
 }

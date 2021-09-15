@@ -64,19 +64,6 @@ const hasYarnLock = (targetDir) => {
 }
 
 /**
- * @param {string} message
- */
-const printFailureMessage = (message) => {
-  console.info('-------------------------------------------------------------------')
-  console.info('')
-  console.info(message)
-  console.info('')
-  console.info('Dependant project has not been tested with updated dependencies')
-  console.info('')
-  console.info('-------------------------------------------------------------------')
-}
-
-/**
  * @param {string} targetDir
  */
 const installDependencies = async (targetDir) => {
@@ -97,8 +84,18 @@ const installDependencies = async (targetDir) => {
 }
 
 /**
+ * Deps take the form:
+ *
+ * ```js
+ * {
+ *   "aegir": "^1.0.0",
+ *   "ipfs": "/path/to/local/install",
+ *   // etc
+ * }
+ * ```
+ *
  * @param {string} targetDir
- * @param {{ [x: string]: any; }} deps
+ * @param {Record<string, string>} deps
  */
 const upgradeDependenciesInDir = async (targetDir, deps) => {
   const modulePkgPath = path.join(targetDir, 'package.json')
@@ -137,25 +134,19 @@ const testModule = async (targetDir, deps) => {
   const pkgPath = path.join(targetDir, 'package.json')
 
   if (!fs.existsSync(pkgPath)) {
-    printFailureMessage(`No package.json found at ${pkgPath}`)
-
-    return
+    throw new Error(`No package.json found at ${pkgPath}`)
   }
 
   const modulePkg = require(pkgPath)
 
   for (const dep of Object.keys(deps)) {
     if (!dependsOn(dep, modulePkg)) {
-      printFailureMessage(`Module ${modulePkg.name} does not depend on ${dep}`)
-
-      return
+      throw new Error(`Module ${modulePkg.name} does not depend on ${dep}`)
     }
   }
 
   if (!modulePkg.scripts || !modulePkg.scripts.test) {
-    printFailureMessage(`Module ${modulePkg.name} has no tests`)
-
-    return
+    throw new Error(`Module ${modulePkg.name} has no tests`)
   }
 
   try {
@@ -163,10 +154,8 @@ const testModule = async (targetDir, deps) => {
     await exec('npm', ['test'], {
       cwd: targetDir
     })
-  } catch (err) {
-    printFailureMessage(`Failed to run the tests of ${modulePkg.name}, aborting ${err.message}`)
-
-    return
+  } catch (/** @type {any} */ err) {
+    throw new Error(`Failed to run the tests of ${modulePkg.name}, aborting ${err.message}`)
   }
 
   // upgrade passed dependencies

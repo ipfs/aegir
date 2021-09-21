@@ -1,3 +1,12 @@
+# [35.1.0](https://github.com/ipfs/aegir/compare/v35.0.4...v35.1.0) (2021-09-21)
+
+
+### Features
+
+* add resolve command ([#892](https://github.com/ipfs/aegir/issues/892)) ([2f4370b](https://github.com/ipfs/aegir/commit/2f4370b0def4f6c43596fbfda5d393ac93ac39a7))
+
+
+
 ## [35.0.4](https://github.com/ipfs/aegir/compare/v35.0.3...v35.0.4) (2021-09-21)
 
 

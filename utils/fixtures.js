@@ -40,6 +40,19 @@ function loadFixtures (filePath, module = '') {
     resolve(filePath)
   ]
 
+  if (module) {
+    // simulate node's node_modules lookup
+    for (let i = 0; i < process.cwd().split(path.sep).length; i++) {
+      const dots = new Array(i).fill('..')
+
+      paths.push(
+        path.resolve(
+          path.join(process.cwd(), ...dots, 'node_modules', filePath)
+        )
+      )
+    }
+  }
+
   const resourcePath = paths.find(path => fs.existsSync(path))
 
   if (!resourcePath) {

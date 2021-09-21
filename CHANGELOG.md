@@ -1,3 +1,12 @@
+## [35.0.4](https://github.com/ipfs/aegir/compare/v35.0.3...v35.0.4) (2021-09-21)
+
+
+### Bug Fixes
+
+* simulate node_modules lookup when loading fixtures ([#891](https://github.com/ipfs/aegir/issues/891)) ([8284c4f](https://github.com/ipfs/aegir/commit/8284c4fb5de811e94e49366a867c1d11b9df809c))
+
+
+
 ## [35.0.3](https://github.com/ipfs/aegir/compare/v35.0.2...v35.0.3) (2021-08-31)
 
 

@@ -94,7 +94,7 @@
     "gh-pages": "^3.1.0",
     "git-authors-cli": "^1.0.33",
     "globby": "^11.0.3",
-    "ipfs-utils": "^8.1.0",
+    "ipfs-utils": "^9.0.1",
     "ipjs": "^5.0.5",
     "it-glob": "^1.0.1",
     "kleur": "^4.1.4",

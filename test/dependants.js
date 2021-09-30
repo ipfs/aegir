@@ -86,6 +86,22 @@ describe('dependants', function () {
       expect(output.stdout).to.include(`${diff}-dependency-version=1.0.0`)
       expect(output.stdout).to.include(`${diff}-dependency-version=1.0.1`)
     })
+
+    it('should run a given script in a regular project', async () => {
+      const diff = `derp-${Math.random()}`
+
+      const output = await execa(
+        bin,
+        ['test-dependant', dirs.project, '--deps=it-all@1.0.1 --script-name=another-test'],
+        {
+          env: {
+            DISAMBIGUATOR: diff
+          }
+        }
+      )
+      expect(output.stdout).to.include(`${diff}-dependency-version=1.0.0`)
+      expect(output.stdout).to.include(`${diff}-dependency-version=1.0.1`)
+    })
   })
 
   describe('monorepo', () => {
@@ -96,6 +112,18 @@ describe('dependants', function () {
     it('should test a monorepo', async () => {
       const diff = `derp-${Math.random()}`
       const output = await execa(bin, ['test-dependant', dirs.monorepo, '--deps=it-all@1.0.1'], {
+        env: {
+          DISAMBIGUATOR: diff
+        }
+      })
+
+      expect(output.stdout).to.include(`${diff}-dependency-version=1.0.0`)
+      expect(output.stdout).to.include(`${diff}-dependency-version=1.0.1`)
+    })
+
+    it('should run a given script in a monorepo project', async () => {
+      const diff = `derp-${Math.random()}`
+      const output = await execa(bin, ['test-dependant', dirs.monorepo, '--deps=it-all@1.0.1 --script-name=another-test'], {
         env: {
           DISAMBIGUATOR: diff
         }

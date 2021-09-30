@@ -129,8 +129,9 @@ const upgradeDependenciesInDir = async (targetDir, deps) => {
 /**
  * @param {string} targetDir
  * @param {{}} deps
+ * @param {string} scriptName
  */
-const testModule = async (targetDir, deps) => {
+const testModule = async (targetDir, deps, scriptName) => {
   const pkgPath = path.join(targetDir, 'package.json')
 
   if (!fs.existsSync(pkgPath)) {
@@ -145,13 +146,13 @@ const testModule = async (targetDir, deps) => {
     }
   }
 
-  if (!modulePkg.scripts || !modulePkg.scripts.test) {
-    throw new Error(`Module ${modulePkg.name} has no tests`)
+  if (!modulePkg.scripts || !(scriptName in modulePkg.scripts)) {
+    throw new Error(`Module ${modulePkg.name} does not have the script ${scriptName} to run`)
   }
 
   try {
     // run the tests without our upgrade - if they are failing, no point in continuing
-    await exec('npm', ['test'], {
+    await exec('npm', [scriptName], {
       cwd: targetDir
     })
   } catch (/** @type {any} */ err) {
@@ -162,7 +163,7 @@ const testModule = async (targetDir, deps) => {
   await upgradeDependenciesInDir(targetDir, deps)
 
   // run the tests with the new deps
-  await exec('npm', ['test'], {
+  await exec('npm', [scriptName], {
     cwd: targetDir
   })
 }
@@ -170,23 +171,25 @@ const testModule = async (targetDir, deps) => {
 /**
  * @param {string} targetDir
  * @param {any} deps
+ * @param {string} scriptName
  */
-const testRepo = async (targetDir, deps) => {
+const testRepo = async (targetDir, deps, scriptName) => {
   await installDependencies(targetDir)
-  await testModule(targetDir, deps)
+  await testModule(targetDir, deps, scriptName)
 }
 
 /**
  * @param {string} targetDir
  * @param {any} deps
+ * @param {string} scriptName
  */
-const testMonoRepo = async (targetDir, deps) => {
+const testMonoRepo = async (targetDir, deps, scriptName) => {
   await installDependencies(targetDir)
 
   let lerna = path.join('node_modules', '.bin', 'lerna')
 
   if (!fs.existsSync(lerna)) {
-    // no lerna in project depenencies :(
+    // no lerna in project dependencies :(
     await exec('npm', ['install', '-g', 'lerna'], {
       cwd: targetDir
     })
@@ -210,13 +213,13 @@ const testMonoRepo = async (targetDir, deps) => {
   // test each package that depends on ipfs/http client
   for (const pattern of packages) {
     for await (const match of glob(targetDir, pattern)) {
-      await testModule(path.join(targetDir, match), deps)
+      await testModule(path.join(targetDir, match), deps, scriptName)
     }
   }
 }
 
 /**
- * @param {{ repo: string; branch: string; deps: any; }} opts
+ * @param {{ repo: string; branch: string; deps: any; scriptName: string; }} opts
  */
 async function testDependant (opts) {
   const targetDir = path.join(os.tmpdir(), `test-dependant-${Date.now()}`)
@@ -233,9 +236,9 @@ async function testDependant (opts) {
   }
 
   if (isMonoRepo(targetDir)) {
-    await testMonoRepo(targetDir, opts.deps)
+    await testMonoRepo(targetDir, opts.deps, opts.scriptName)
   } else {
-    await testRepo(targetDir, opts.deps)
+    await testRepo(targetDir, opts.deps, opts.scriptName)
   }
 
   console.info(`Removing ${targetDir}`)

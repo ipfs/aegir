@@ -1,3 +1,25 @@
+## [35.1.1](https://github.com/ipfs/aegir/compare/v35.1.0...v35.1.1) (2021-09-28)
+
+
+
+# [35.1.0](https://github.com/ipfs/aegir/compare/v35.0.4...v35.1.0) (2021-09-21)
+
+
+### Features
+
+* add resolve command ([#892](https://github.com/ipfs/aegir/issues/892)) ([2f4370b](https://github.com/ipfs/aegir/commit/2f4370b0def4f6c43596fbfda5d393ac93ac39a7))
+
+
+
+## [35.0.4](https://github.com/ipfs/aegir/compare/v35.0.3...v35.0.4) (2021-09-21)
+
+
+### Bug Fixes
+
+* simulate node_modules lookup when loading fixtures ([#891](https://github.com/ipfs/aegir/issues/891)) ([8284c4f](https://github.com/ipfs/aegir/commit/8284c4fb5de811e94e49366a867c1d11b9df809c))
+
+
+
 ## [35.0.3](https://github.com/ipfs/aegir/compare/v35.0.2...v35.0.3) (2021-08-31)
 
 

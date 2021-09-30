@@ -1,7 +1,7 @@
 'use strict'
 
-const path = require('path')
 const fs = require('fs')
+const resolve = require('./resolve')
 
 /**
  * Loading fixture files in node and the browser can be painful, that's why aegir provides a method to do this.
@@ -30,34 +30,7 @@ const fs = require('fs')
  * @param {string} [module]
  */
 function loadFixtures (filePath, module = '') {
-  if (module) {
-    filePath = path.join(module, filePath)
-  }
-
-  const paths = [
-    path.join(process.cwd(), filePath),
-    path.join(process.cwd(), 'node_modules', filePath),
-    resolve(filePath)
-  ]
-
-  const resourcePath = paths.find(path => fs.existsSync(path))
-
-  if (!resourcePath) {
-    throw new Error(`Could not load ${filePath}`)
-  }
-
-  return fs.readFileSync(resourcePath)
+  return fs.readFileSync(resolve(filePath, module))
 }
 
-/**
- * @param {string} filePath
- */
-function resolve (filePath) {
-  try {
-    return require.resolve(filePath)
-  } catch (error) {
-    // ignore error
-    return filePath
-  }
-}
 module.exports = loadFixtures

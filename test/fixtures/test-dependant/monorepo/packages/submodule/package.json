@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "node ./test.js"
+    "test": "node ./test.js",
+    "another-test": "node ./test.js"
   },
   "author": "",
   "license": "ISC",

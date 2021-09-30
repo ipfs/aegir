@@ -92,7 +92,7 @@ describe('dependants', function () {
 
       const output = await execa(
         bin,
-        ['test-dependant', dirs.project, '--deps=it-all@1.0.1 --scriptName=another-test'],
+        ['test-dependant', dirs.project, '--deps=it-all@1.0.1 --script-name=another-test'],
         {
           env: {
             DISAMBIGUATOR: diff
@@ -123,7 +123,7 @@ describe('dependants', function () {
 
     it('should run a given script in a monorepo project', async () => {
       const diff = `derp-${Math.random()}`
-      const output = await execa(bin, ['test-dependant', dirs.monorepo, '--deps=it-all@1.0.1 --scriptName=another-test'], {
+      const output = await execa(bin, ['test-dependant', dirs.monorepo, '--deps=it-all@1.0.1 --script-name=another-test'], {
         env: {
           DISAMBIGUATOR: diff
         }

@@ -40,6 +40,7 @@ async function testNode (argv, execaOptions) {
     ...files,
     ...progress,
     '--ui', 'bdd',
+    '--require', 'source-map-support/register',
     `--timeout=${argv.timeout}`
   ]
 

@@ -1,3 +1,21 @@
+# [35.2.0](https://github.com/ipfs/aegir/compare/v35.1.1...v35.2.0) (2021-11-05)
+
+
+### Bug Fixes
+
+* add detective-cjs dependency to fix depcheck command ([#903](https://github.com/ipfs/aegir/issues/903)) ([48ed6b5](https://github.com/ipfs/aegir/commit/48ed6b5389c19a93405363fd773a7d7f6144c664))
+* doc generation ([#904](https://github.com/ipfs/aegir/issues/904)) ([492b06f](https://github.com/ipfs/aegir/commit/492b06f913c276772c2ff226c7beaf52e84ab013)), closes [#881](https://github.com/ipfs/aegir/issues/881)
+* exit with an error when testing dependants fails ([#890](https://github.com/ipfs/aegir/issues/890)) ([27774d1](https://github.com/ipfs/aegir/commit/27774d1bf70ce41dfc56f27fe6f8f3d249a4ed58))
+
+
+### Features
+
+* add chai-checkmark ([#905](https://github.com/ipfs/aegir/issues/905)) ([69ea2fc](https://github.com/ipfs/aegir/commit/69ea2fcbffc3086b7ce8cd4228731bedead7143d))
+* add option to choose the script to run to test dependent ([#882](https://github.com/ipfs/aegir/issues/882)) ([46392fa](https://github.com/ipfs/aegir/commit/46392fae9189d26c31bc3eb3bf0ec7072172ee6e))
+* support source maps for ts ([#902](https://github.com/ipfs/aegir/issues/902)) ([1bc8bd5](https://github.com/ipfs/aegir/commit/1bc8bd5ac73fd8518aaab2abebed25a98c2a248a))
+
+
+
 ## [35.1.1](https://github.com/ipfs/aegir/compare/v35.1.0...v35.1.1) (2021-09-28)
 
 

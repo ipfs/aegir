@@ -88,7 +88,7 @@
     "esbuild": "^0.12.15",
     "esbuild-register": "^2.3.0",
     "eslint": "^7.23.0",
-    "eslint-config-ipfs": "^2.0.1",
+    "eslint-config-ipfs": "^2.1.0",
     "eslint-plugin-etc": "^1.1.7",
     "execa": "^5.1.1",
     "extract-zip": "^2.0.1",

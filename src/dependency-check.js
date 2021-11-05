@@ -40,7 +40,7 @@ const check = (argv, execaOptions) => {
   if (pkg.type === 'module') {
     // use detective-es6 for js, regular detective for cjs
     args.push(
-      '--extensions', 'cjs:detective',
+      '--extensions', 'cjs:detective-cjs',
       '--extensions', 'js:detective-es6'
     )
   }

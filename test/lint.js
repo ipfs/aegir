@@ -58,7 +58,7 @@ const projectShouldFailLint = async (project) => {
       tsRepo: false,
       ...userConfig.lint
     })
-  } catch (error) {
+  } catch (/** @type {any} */ error) {
     failed = true
     expect(error.message).to.contain('Lint errors')
   }

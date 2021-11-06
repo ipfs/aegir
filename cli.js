@@ -55,7 +55,7 @@ cli
 async function main () {
   try {
     await cli.parse()
-  } catch (err) {
+  } catch (/** @type {any} */ err) {
     if (cli.parsed && cli.parsed.argv.debug) {
       console.error('\n', err)
     } else {

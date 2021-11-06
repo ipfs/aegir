@@ -1,3 +1,17 @@
+# [36.0.0](https://github.com/ipfs/aegir/compare/v35.2.1...v36.0.0) (2021-11-06)
+
+
+### chore
+
+* update typescript ([#908](https://github.com/ipfs/aegir/issues/908)) ([013dfec](https://github.com/ipfs/aegir/commit/013dfecf13418b196bef6a8f079385d5573028c8))
+
+
+### BREAKING CHANGES
+
+* new typescript minor, caught errors have changed type among other things
+
+
+
 ## [35.2.1](https://github.com/ipfs/aegir/compare/v35.2.0...v35.2.1) (2021-11-06)
 
 

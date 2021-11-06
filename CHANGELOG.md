@@ -1,3 +1,12 @@
+## [35.2.1](https://github.com/ipfs/aegir/compare/v35.2.0...v35.2.1) (2021-11-06)
+
+
+### Bug Fixes
+
+* configure source maps ([#907](https://github.com/ipfs/aegir/issues/907)) ([c444787](https://github.com/ipfs/aegir/commit/c444787c897eedd9e7b903b0f90b8dc6340a1073)), closes [#902](https://github.com/ipfs/aegir/issues/902)
+
+
+
 # [35.2.0](https://github.com/ipfs/aegir/compare/v35.1.1...v35.2.0) (2021-11-05)
 
 

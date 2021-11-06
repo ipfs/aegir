@@ -16,6 +16,7 @@
         "composite": true,
         "isolatedModules": true,
         "removeComments": false,
+        "sourceMap": true,
         // module resolution
         "esModuleInterop": true,
         "moduleResolution": "node",

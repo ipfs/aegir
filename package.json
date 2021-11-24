@@ -51,9 +51,9 @@
     "test": "node cli.js ts -p check && node cli.js test",
     "test:node": "node cli.js test -t node",
     "test:browser": "node cli.js test -t browser -t webworker",
-    "release": "node cli.js release",
-    "release-minor": "node cli.js release --type minor",
-    "release-major": "node cli.js release --type major"
+    "release": "node cli.js release --docs false",
+    "release-minor": "node cli.js release --type minor --docs false",
+    "release-major": "node cli.js release --type major --docs false"
   },
   "dependencies": {
     "@electron/get": "^1.12.3",

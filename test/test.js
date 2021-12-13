@@ -18,7 +18,7 @@ describe('test', () => {
     })
 
     it('should test an esm project', async function () {
-      this.timeout(20 * 1000) // slow ci is slow
+      this.timeout(60 * 1000) // slow ci is slow
 
       await execa(bin, ['test'], {
         cwd: projectDir

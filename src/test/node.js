@@ -31,8 +31,8 @@ async function testNode (argv, execaOptions) {
   const files = argv.files.length > 0
     ? argv.files
     : [
-        'test/node.{js,ts}',
-        'test/**/*.spec.{js,ts}'
+        'test/node.{js,ts,cjs,mjs}',
+        'test/**/*.spec.{js,ts,cjs,mjs}'
       ]
 
   const args = [

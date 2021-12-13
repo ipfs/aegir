@@ -28,8 +28,8 @@ module.exports = async (argv, execaOptions) => {
   const files = argv.files.length > 0
     ? argv.files
     : [
-        '**/*.spec.{js,ts}',
-        'test/browser.{js,ts}'
+        '**/*.spec.{js,ts,cjs,mjs}',
+        'test/browser.{js,ts,cjs,mjs}'
       ]
 
   // before hook

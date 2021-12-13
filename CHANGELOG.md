@@ -1,3 +1,17 @@
+# [36.1.0](https://github.com/ipfs/aegir/compare/v36.0.2...v36.1.0) (2021-12-13)
+
+
+### Bug Fixes
+
+* use node 16 for bundle size action ([#920](https://github.com/ipfs/aegir/issues/920)) ([670714d](https://github.com/ipfs/aegir/commit/670714dd2aaecb23666dd2ee9a6a2cdb2f95749f))
+
+
+### Features
+
+* support esm tests in electron main thread ([#921](https://github.com/ipfs/aegir/issues/921)) ([fe9c95c](https://github.com/ipfs/aegir/commit/fe9c95cd0cd0c05cd7550e4739ef95526674fb4a)), closes [#918](https://github.com/ipfs/aegir/issues/918)
+
+
+
 ## [36.0.2](https://github.com/ipfs/aegir/compare/v36.0.1...v36.0.2) (2021-11-27)
 
 

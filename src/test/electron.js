@@ -17,7 +17,7 @@ const merge = require('merge-options')
 module.exports = async (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   const watch = argv.watch ? ['--watch'] : []
-  const files = argv.files.length > 0 ? [...argv.files] : ['test/**/*.spec.{js,ts}']
+  const files = argv.files.length > 0 ? [...argv.files] : ['test/**/*.spec.{js,ts,mjs,cjs}']
   const grep = argv.grep ? ['--grep', argv.grep] : []
   const progress = argv.progress ? ['--reporter=progress'] : []
   const bail = argv.bail ? ['--bail'] : []

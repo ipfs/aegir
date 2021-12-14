@@ -4,14 +4,14 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const chaiParentheses = require('chai-parentheses')
 const chaiSubset = require('chai-subset')
-const chaiBytes = require('chai-bytes')
+const chaiBites = require('chai-bites')
 const chaiString = require('chai-string')
 
 // Do not reorder these statements - https://github.com/chaijs/chai/issues/1298
 chai.use(chaiAsPromised)
 chai.use(chaiParentheses)
 chai.use(chaiSubset)
-chai.use(chaiBytes)
+chai.use(chaiBites)
 chai.use(chaiString)
 
 const expect = chai.expect
@@ -27,7 +27,7 @@ module.exports = {
     chaiAsPromised,
     chaiParentheses,
     chaiSubset,
-    chaiBytes,
+    chaiBites,
     chaiString
   }
 }

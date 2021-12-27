@@ -85,7 +85,7 @@
     "electron-mocha-main": "^11.0.3",
     "env-paths": "^2.2.1",
     "esbuild": "^0.12.15",
-    "esbuild-register": "^2.3.0",
+    "esbuild-register": "^3.3.0",
     "eslint": "^7.23.0",
     "eslint-config-ipfs": "^2.1.0",
     "eslint-plugin-etc": "^1.1.7",

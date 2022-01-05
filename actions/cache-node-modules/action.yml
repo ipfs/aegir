@@ -1,0 +1,21 @@
+name: 'Cache node modules'
+description: 'Cache node modules and dist files'
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v2
+      id: cache
+      env:
+        CACHE_NAME: cache-node-modules
+      with:
+        path: |
+          ~/.npm
+          ./dist
+          ./node_modules
+          ./packages/*/dist
+          ./packages/*/node_modules
+        key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ github.sha }}
+    - if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+          npm install
+          npm run --if-present build

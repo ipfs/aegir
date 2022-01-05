@@ -19,3 +19,4 @@ runs:
       run: |
           npm install
           npm run --if-present build
+      shell: bash

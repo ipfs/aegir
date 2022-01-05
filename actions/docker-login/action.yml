@@ -1,0 +1,17 @@
+name: 'Docker login'
+description: 'Log in to docker'
+inputs:
+  docker-token:
+    description: 'Docker token'
+    required: false
+  docker-username:
+    description: 'Docker username'
+    required: false
+runs:
+  using: composite
+  steps:
+    - run: |
+          if [[ -n "${{ inputs.docker-token }}" ]] && [[ -n "${{ inputs.docker-username }}" ]]; then
+            echo "${{ inputs.docker-token }}" | docker login -u "${{ inputs.docker-username }}" --password-stdin
+          fi
+      shell: bash

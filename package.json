@@ -122,6 +122,7 @@
     "react-native-test-runner": "^5.0.0",
     "read-pkg-up": "7.0.1",
     "semantic-release": "^18.0.1",
+    "semantic-release-monorepo": "^7.0.5",
     "semver": "^7.3.5",
     "simple-git": "^2.37.0",
     "source-map-support": "^0.5.20",

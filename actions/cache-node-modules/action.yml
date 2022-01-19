@@ -4,6 +4,9 @@ inputs:
   directories:
     description: 'Directories to cache'
     required: false
+  build:
+    description: 'Extra commands to run if nothing is cached'
+    required: false
 runs:
   using: composite
   steps:
@@ -24,4 +27,5 @@ runs:
       run: |
           npm install
           npm run --if-present build
+          ${{ inputs.build }}
       shell: bash

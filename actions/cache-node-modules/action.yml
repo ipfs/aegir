@@ -32,4 +32,5 @@ runs:
           npm install
           npm run --if-present build
           ${{ inputs.build }}
+          echo ${{ runner.os }}
       shell: bash

@@ -7,13 +7,15 @@ inputs:
   build:
     description: 'Extra commands to run if nothing is cached'
     required: false
+  cache_name:
+    description: 'Cache name'
+    required: false
+    default: 'cache-node-modules'
 runs:
   using: composite
   steps:
     - uses: actions/cache@v2
       id: cache
-      env:
-        CACHE_NAME: cache-node-modules
       with:
         path: |
           ~/.npm
@@ -22,7 +24,7 @@ runs:
           ./packages/*/dist
           ./packages/*/node_modules
           ${{ inputs.directories }}
-        key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ github.sha }}
+        key: ${{ runner.os }}-build-${{ inputs.cache_name }}-${{ github.sha }}
     - if: steps.cache.outputs.cache-hit != 'true'
       run: |
           npm install

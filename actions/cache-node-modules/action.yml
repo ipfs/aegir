@@ -15,7 +15,7 @@ runs:
   using: composite
   steps:
     # Windows I/O is so slow it's faster to just install the deps every time
-    - if: ${{ runner.os }} != 'Windows'
+    - if: ${{ runner.os }} == 'Linux'
       uses: actions/cache@v2
       id: cache
       with:
@@ -32,5 +32,5 @@ runs:
           npm install
           npm run --if-present build
           ${{ inputs.build }}
-          echo ${{ runner.os }}
+          echo ${{ runner.os }} == 'Linux'
       shell: bash

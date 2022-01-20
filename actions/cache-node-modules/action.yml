@@ -16,6 +16,8 @@ runs:
   steps:
     - uses: actions/cache@v2
       id: cache
+      # Windows I/O is so slow it's faster to just install the deps every time
+      if: ${{ runner.os }} != 'Windows'
       with:
         path: |
           ~/.npm

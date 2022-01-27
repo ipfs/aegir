@@ -23,8 +23,10 @@ runs:
           ~/.npm
           ~/.cache
           ./dist
+          ./types
           ./node_modules
           ./packages/*/dist
+          ./packages/*/types
           ./packages/*/node_modules
           ${{ inputs.directories }}
         key: ${{ runner.os }}-build-${{ inputs.cache_name }}-${{ github.sha }}

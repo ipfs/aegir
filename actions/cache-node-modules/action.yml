@@ -31,7 +31,6 @@ runs:
     - if: steps.cache.outputs.cache-hit != 'true'
       run: |
           npm install
-          npx -y playwright install-deps || true
           npm run --if-present build
           ${{ inputs.build }}
       shell: bash

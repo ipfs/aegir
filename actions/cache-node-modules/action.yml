@@ -21,6 +21,7 @@ runs:
       with:
         path: |
           ~/.npm
+          ~/.cache
           ./dist
           ./node_modules
           ./packages/*/dist

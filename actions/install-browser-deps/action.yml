@@ -1,0 +1,11 @@
+name: 'Install browser deps'
+description: 'Installs dependencies necessary to run browsers'
+inputs:
+  browser:
+    description: 'Specific browser to install dependencies for'
+    required: false
+runs:
+  using: composite
+  steps:
+    - run: npx playwright install-deps ${{ inputs.browser }} || true
+      shell: bash

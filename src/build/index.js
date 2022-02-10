@@ -130,9 +130,7 @@ const tasks = new Listr([
      */
     task: async (ctx, task) => {
       await tsCmd({
-        debug: ctx.debug,
-        tsRepo: ctx.tsRepo,
-        fileConfig: ctx.fileConfig,
+        ...ctx,
         preset: 'types',
         include: ctx.fileConfig.ts.include,
         copyTo: ctx.fileConfig.ts.copyTo,

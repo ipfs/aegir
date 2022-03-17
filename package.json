@@ -36,6 +36,11 @@
         "*",
         "dist/*",
         "dist/src/*"
+      ],
+      "utils/*": [
+        "*",
+        "dist/*",
+        "dist/utils/*"
       ]
     }
   },

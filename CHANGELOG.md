@@ -1,3 +1,37 @@
+## [36.2.0](https://github.com/ipfs/aegir/compare/v36.1.3...v36.2.0) (2022-03-17)
+
+
+### Features
+
+* allow extending build command ([#930](https://github.com/ipfs/aegir/issues/930)) ([7788caf](https://github.com/ipfs/aegir/commit/7788cafb157825cd9ffeb71c08e87fdafeadb55e))
+
+
+### Bug Fixes
+
+* cache playwright browsers ([40a49f6](https://github.com/ipfs/aegir/commit/40a49f6ec89258734f7782b7b46fd6ee0acde99d))
+* cache types dir ([d3dc7cd](https://github.com/ipfs/aegir/commit/d3dc7cde668a5837d25e74fb7b0f325644a92237))
+* remove playwright ([d8111a2](https://github.com/ipfs/aegir/commit/d8111a23676444ae6830b6b41b43509735671cc3))
+* run playwright install-deps ([7f83b6c](https://github.com/ipfs/aegir/commit/7f83b6c4c14d240e73347491fc96f020726f65fe))
+* tsc receives forward args ([#939](https://github.com/ipfs/aegir/issues/939)) ([feeeb54](https://github.com/ipfs/aegir/commit/feeeb541e3413221e630d1ff1d5c9b17788c07e9))
+
+
+### Trivial Changes
+
+* add auto-release ([3defb4f](https://github.com/ipfs/aegir/commit/3defb4fdd7908fb3dccf099eec2737a6c2d4a322))
+* add build cache action ([9a11cb0](https://github.com/ipfs/aegir/commit/9a11cb022ba8fb22ee2272b59d2aeb57e76b0f72))
+* add cache_name prop to cache action ([4ebf825](https://github.com/ipfs/aegir/commit/4ebf825915bf38dcc25970811460212c33780c86))
+* add docker login action ([9022bc6](https://github.com/ipfs/aegir/commit/9022bc6d16218b7d595752a5d740f4728c5f09e3))
+* add install browser deps action ([6136719](https://github.com/ipfs/aegir/commit/61367198b14a3367715a834cbc39f61f64d94682))
+* add path dep ([dcb5be6](https://github.com/ipfs/aegir/commit/dcb5be658eb3f170eac6969cd95658f63024b51a))
+* add shell ([8c4e887](https://github.com/ipfs/aegir/commit/8c4e887d702653b46762f714b2650c09cc8b2c29))
+* change if clause ([ad2f33b](https://github.com/ipfs/aegir/commit/ad2f33bbfc72dc0a36aed9c185867e66a130606d))
+* print os runner ([55f77f3](https://github.com/ipfs/aegir/commit/55f77f3c1a17af68261342e191dbae0f8169da81))
+* remove unused dep ([3fec2e3](https://github.com/ipfs/aegir/commit/3fec2e353ed68892d56a19fd2a76cd0d519c1f72))
+* skip cache on windows ([fb41e56](https://github.com/ipfs/aegir/commit/fb41e5650fc688347ff17cb87b399c534b629333))
+* skip cache on windows ([3681fdd](https://github.com/ipfs/aegir/commit/3681fdd69771e5a373730faa979ba645e56b50c1))
+* test on supported nodes ([#931](https://github.com/ipfs/aegir/issues/931)) ([a908372](https://github.com/ipfs/aegir/commit/a908372cc2b6a7c58ce8890f3823c01b9726633c))
+* update clause ([f261653](https://github.com/ipfs/aegir/commit/f261653f176f8aa88587e6993d35359582ee2fe4))
+
 ## [36.1.3](https://github.com/ipfs/aegir/compare/v36.1.2...v36.1.3) (2022-01-05)
 
 
@@ -2303,6 +2337,3 @@ carefully when upgrading.
 
 <a name="1.0.0-beta.0"></a>
 # 1.0.0-beta.0 (2016-03-21)
-
-
-

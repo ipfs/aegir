@@ -1,3 +1,16 @@
+### [36.2.2](https://github.com/ipfs/aegir/compare/v36.2.1...v36.2.2) (2022-03-17)
+
+
+### Bug Fixes
+
+* restore typesversions for ts config file ([2f88c95](https://github.com/ipfs/aegir/commit/2f88c95c203246fce0bc2b1ea54b279e4b7ea00c))
+
+
+### Trivial Changes
+
+* fix linting ([cdd0ad1](https://github.com/ipfs/aegir/commit/cdd0ad11d9b981e284c9819ff524331333d60614))
+* slow ci is slow ([677efd7](https://github.com/ipfs/aegir/commit/677efd7ea684fb17a04a53a335ebe1f4838437a1))
+
 ### [36.2.1](https://github.com/ipfs/aegir/compare/v36.2.0...v36.2.1) (2022-03-17)
 
 

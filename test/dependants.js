@@ -57,7 +57,7 @@ const git =
  }
 
 describe('dependants', function () {
-  this.timeout(300000)
+  this.timeout(900000)
 
   if (os.platform() === 'win32') {
     // TODO: travis windows builds can't clone git repos from the local
@@ -120,6 +120,8 @@ describe('dependants', function () {
     })
 
     it('should test a monorepo', async () => {
+
+
       const diff = `derp-${Math.random()}`
       const output = await execa(bin, ['test-dependant', dirs.monorepo, '--deps=it-all@1.0.1'], {
         env: {

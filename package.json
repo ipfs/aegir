@@ -40,9 +40,9 @@
     }
   },
   "files": [
-    "src",
     "dist",
-    "utils"
+    "utils",
+    "src"
   ],
   "eslintConfig": {
     "extends": "ipfs"

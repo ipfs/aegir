@@ -5,7 +5,6 @@
     },
     "include": [
       "package.json",
-      "cli.js",
       "src",
       "test",
       "utils"

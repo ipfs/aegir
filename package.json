@@ -2,58 +2,142 @@
   "name": "aegir",
   "version": "36.1.3",
   "description": "JavaScript project management",
+  "license": "Apache-2.0 OR MIT",
+  "homepage": "https://github.com/ipfs/aegir#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ipfs/aegir.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ipfs/aegir/issues"
+  },
   "keywords": [
-    "standard",
+    "build",
     "lint",
-    "build"
+    "standard"
   ],
-  "homepage": "https://github.com/ipfs/aegir",
-  "bugs": "https://github.com/ipfs/aegir/issues",
-  "license": "MIT",
-  "leadMaintainer": "Hugo Dias <hugomrdias@gmail.com>",
-  "files": [
-    "dist",
-    "cmds",
-    "utils",
-    "src",
-    "cli.js"
-  ],
-  "main": "cli.js",
-  "browser": {
-    "fs": false,
-    "./utils/fixtures.js": "./utils/fixtures.browser.js"
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
   },
   "bin": {
-    "aegir": "cli.js"
+    "aegir": "src/index.js"
   },
-  "types": "dist/src/index",
+  "main": "src/index.js",
+  "types": "dist/src/index.d.ts",
   "typesVersions": {
     "*": {
-      "utils/*": [
-        "dist/utils/*"
+      "*": [
+        "*",
+        "dist/*",
+        "dist/src/*"
       ],
       "src/*": [
-        "dist/src/*",
-        "dist/src/*/index"
-      ],
-      "src/": [
-        "dist/src/index"
-      ],
-      "src/config/tsconfig.aegir.json": [
-        "src/config/tsconfig.aegir.json"
+        "*",
+        "dist/*",
+        "dist/src/*"
       ]
     }
   },
-  "repository": "github:ipfs/aegir",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "eslintConfig": {
+    "extends": "ipfs"
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "breaking": true,
+              "release": "major"
+            },
+            {
+              "revert": true,
+              "release": "patch"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "chore",
+              "release": "patch"
+            },
+            {
+              "type": "docs",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
+              "scope": "no-release",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "chore",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "docs",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "test",
+                "section": "Tests"
+              }
+            ]
+          }
+        }
+      ],
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
+  },
   "scripts": {
-    "prepare": "node cli.js ts -p types",
-    "lint": "node cli.js lint",
-    "test": "node cli.js ts -p check && node cli.js test",
-    "test:node": "node cli.js test -t node",
-    "test:browser": "node cli.js test -t browser -t webworker",
-    "release": "node cli.js release --docs false",
-    "release-minor": "node cli.js release --type minor --docs false",
-    "release-major": "node cli.js release --type major --docs false"
+    "prepare": "node . ts -p types",
+    "lint": "node . lint",
+    "test": "node . ts -p check && node . test",
+    "test:node": "node . test -t node",
+    "test:chrome": "node . test -t browser",
+    "test:chrome-webworker": "node . test -t webworker",
+    "test:firefox": "node . test -t browser --browser firefox",
+    "test:firefox-webworker": "node . test -t webworker --browser firefox",
+    "test:electron-main": "node . test -t electron-main",
+    "release": "semantic-release"
   },
   "dependencies": {
     "@electron/get": "^1.12.3",
@@ -153,45 +237,8 @@
     "sinon": "^11.1.1",
     "util": "^0.12.4"
   },
-  "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=6.0.0"
-  },
-  "eslintConfig": {
-    "extends": "ipfs"
-  },
-  "contributors": [
-    "dignifiedquire <dignifiedquire@gmail.com>",
-    "Hugo Dias <hugomrdias@gmail.com>",
-    "achingbrain <alex@achingbrain.net>",
-    "victorbjelkholm <victorbjelkholm@gmail.com>",
-    "David Dias <daviddias.p@gmail.com>",
-    "Volker Mische <volker.mische@gmail.com>",
-    "Alan Shaw <alan.shaw@protocol.ai>",
-    "Jacob Heun <jacobheun@gmail.com>",
-    "Dmitriy Ryajov <dryajov@gmail.com>",
-    "Irakli Gozalishvili <contact@gozala.io>",
-    "Vasco Santos <vasco.santos@moxy.studio>",
-    "Francis Yuen <fyuen@godaddy.com>",
-    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victor@protocol.ai>",
-    "Henrique Dias <hacdias@gmail.com>",
-    "mkg20001 <mkg20001@gmail.com>",
-    "Stephen Whitmore <stephen.whitmore@gmail.com>",
-    "Diogo Silva <fsdiogo@gmail.com>",
-    "0xflotus <0xflotus@gmail.com>",
-    "Alberto Elias <hi@albertoelias.me>",
-    "kumavis <kumavis@users.noreply.github.com>",
-    "Adam Uhlíř <adam@uhlir.dev>",
-    "Haad <haadcode@users.noreply.github.com>",
-    "Hector Sanjuan <code@hector.link>",
-    "Garren Smith <garren.smith@gmail.com>",
-    "JGAntunes <j.goncalo.antunes@gmail.com>",
-    "Jakub Sztandera <kubuxu@protonmail.ch>",
-    "Lars Gierth <lgierth@users.noreply.github.com>",
-    "Marcin Rataj <lidel@lidel.org>",
-    "Marin Petrunić <mpetrunic@users.noreply.github.com>",
-    "Michael Garvin <gar+gh@danger.computer>",
-    "Mikeal Rogers <mikeal.rogers@gmail.com>",
-    "Olivério Sousa <47525443+oliveriosousa@users.noreply.github.com>"
-  ]
+  "browser": {
+    "fs": false,
+    "./utils/fixtures.js": "./utils/fixtures.browser.js"
+  }
 }

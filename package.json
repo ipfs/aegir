@@ -41,6 +41,9 @@
         "*",
         "dist/*",
         "dist/utils/*"
+      ],
+      "src/config/tsconfig.aegir.json": [
+        "src/config/tsconfig.aegir.json"
       ]
     }
   },

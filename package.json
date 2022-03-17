@@ -115,6 +115,7 @@
     "ora": "^5.4.0",
     "p-map": "4.0.0",
     "pascalcase": "^1.0.0",
+    "path": "^0.12.7",
     "playwright-test": "^7.0.2",
     "polka": "^0.5.2",
     "premove": "^3.0.1",

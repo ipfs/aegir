@@ -1,3 +1,12 @@
+### [36.2.1](https://github.com/ipfs/aegir/compare/v36.2.0...v36.2.1) (2022-03-17)
+
+
+### Bug Fixes
+
+* publish utils dir ([a849765](https://github.com/ipfs/aegir/commit/a8497658541ecfc788437ee3a652e809c0fab566))
+* types for test utils ([d03bb03](https://github.com/ipfs/aegir/commit/d03bb036f1015cede43dde38f20b3d8702763567))
+* update config ([539f597](https://github.com/ipfs/aegir/commit/539f5979c53eb12b23d57c490f79ab61c75716bc))
+
 ## [36.2.0](https://github.com/ipfs/aegir/compare/v36.1.3...v36.2.0) (2022-03-17)
 
 

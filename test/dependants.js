@@ -120,8 +120,6 @@ describe('dependants', function () {
     })
 
     it('should test a monorepo', async () => {
-
-
       const diff = `derp-${Math.random()}`
       const output = await execa(bin, ['test-dependant', dirs.monorepo, '--deps=it-all@1.0.1'], {
         env: {

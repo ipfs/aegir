@@ -1,6 +1,6 @@
 'use strict'
 
-const git = require('simple-git/promise')(process.cwd())
+const git = require('simple-git').default(process.cwd())
 const execa = require('execa')
 const { paths, fromAegir } = require('../utils')
 

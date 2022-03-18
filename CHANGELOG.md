@@ -1,3 +1,10 @@
+### [36.2.3](https://github.com/ipfs/aegir/compare/v36.2.2...v36.2.3) (2022-03-18)
+
+
+### Trivial Changes
+
+* **deps:** bump simple-git from 2.37.0 to 3.3.0 ([#944](https://github.com/ipfs/aegir/issues/944)) ([a4123d5](https://github.com/ipfs/aegir/commit/a4123d56c5faa770367041643060954371c0e157))
+
 ### [36.2.2](https://github.com/ipfs/aegir/compare/v36.2.1...v36.2.2) (2022-03-17)
 
 

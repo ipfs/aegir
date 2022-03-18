@@ -1,6 +1,6 @@
 'use strict'
 
-const git = require('simple-git/promise')(process.cwd())
+const git = require('simple-git').default(process.cwd())
 const { readJson, paths } = require('../utils')
 
 const files = ['package.json', 'CHANGELOG.md']

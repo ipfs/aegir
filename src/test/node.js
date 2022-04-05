@@ -4,6 +4,7 @@ const execa = require('execa')
 const path = require('path')
 const tempy = require('tempy')
 const merge = require('merge-options')
+const { hasTsconfig } = require('../utils')
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -56,7 +57,7 @@ async function testNode (argv, execaOptions) {
     args.push('--bail')
   }
 
-  if (argv.tsRepo) {
+  if (hasTsconfig) {
     args.push(...['--require', require.resolve('esbuild-register')])
   }
 

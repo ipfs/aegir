@@ -40,7 +40,6 @@ const projectShouldPassLint = async (project) => {
   await lint.run({
     fileConfig: userConfig,
     debug: false,
-    tsRepo: false,
     ...userConfig.lint
   })
 }
@@ -55,7 +54,6 @@ const projectShouldFailLint = async (project) => {
     await lint.run({
       fileConfig: userConfig,
       debug: false,
-      tsRepo: false,
       ...userConfig.lint
     })
   } catch (/** @type {any} */ error) {
@@ -82,7 +80,6 @@ describe('lint', () => {
     return lint.run({
       fileConfig: userConfig,
       debug: false,
-      tsRepo: false,
       fix: false,
       silent: true,
       files: userConfig.lint.files
@@ -101,7 +98,6 @@ describe('lint', () => {
       .then(() => lint.run({
         fileConfig: userConfig,
         debug: false,
-        tsRepo: false,
         fix: false,
         silent: true,
         files: [`${dir}/*.js`]
@@ -119,7 +115,6 @@ describe('lint', () => {
     await expect(lint.run({
       fileConfig: userConfig,
       debug: false,
-      tsRepo: false,
       fix: false,
       silent: true,
       files: [`${dir}/*.js`]
@@ -132,7 +127,6 @@ describe('lint', () => {
     await lint.run({
       fileConfig: userConfig,
       debug: false,
-      tsRepo: false,
       ...userConfig.lint
     })
   })

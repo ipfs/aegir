@@ -1,5 +1,7 @@
 'use strict'
+
 const { userConfig } = require('../config/user')
+
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
@@ -35,20 +37,8 @@ module.exports = {
         },
         types: {
           type: 'boolean',
-          describe: 'Build the Typescripts type declarations.',
+          describe: 'If a tsconfig.json is present in the project, run tsc.',
           default: userConfig.build.types
-        },
-        esmMain: {
-          alias: 'esm-main',
-          type: 'boolean',
-          describe: 'Include a main field in a built esm project',
-          default: userConfig.build.esmMain
-        },
-        esmTests: {
-          alias: 'esm-tests',
-          type: 'boolean',
-          describe: 'Include tests in a built esm project',
-          default: userConfig.build.esmTests
         }
       })
   },

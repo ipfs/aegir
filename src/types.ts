@@ -1,4 +1,5 @@
 import type esbuild from 'esbuild'
+
 /**
  * Options for CLI and local file config
  */
@@ -42,10 +43,6 @@ interface PartialOptions {
    */
   debug?: boolean
   /**
-   * Enable support for Typescript repos.
-   */
-  tsRepo?: boolean
-  /**
    * Options for the `build` command
    */
   build?: Partial<BuildOptions>
@@ -81,11 +78,6 @@ interface GlobalOptions {
    */
   debug: boolean
   /**
-   * Enable support for Typescript repos.
-   */
-  tsRepo: boolean
-
-  /**
    * Forward options to pass to the backend command populated by yargs parser
    */
   '--'?: string[]
@@ -97,13 +89,6 @@ interface GlobalOptions {
    * Full config from configuration file
    */
   fileConfig: Options
-}
-
-interface ESMHooks {
-  onParse: () => {}
-  onParsed: () => {}
-  onDeflateStart: () => {}
-  onDeflateEnd: () => {}
 }
 
 interface BuildOptions {
@@ -127,14 +112,6 @@ interface BuildOptions {
    * esbuild build options
    */
   config: esbuild.BuildOptions
-  /**
-   * Include tests in the ipjs output directory
-   */
-  esmTests: boolean
-  /**
-   * Include a main field in the ipjs output package.json
-   */
-  esmMain: boolean
 }
 
 interface TSOptions {

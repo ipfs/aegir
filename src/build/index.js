@@ -6,9 +6,8 @@ const path = require('path')
 const fs = require('fs-extra')
 const pascalcase = require('pascalcase')
 const bytes = require('bytes')
-const { premove: del } = require('premove')
-const { gzipSize, pkg, hasTsconfig, fromRoot, paths } = require('./../utils')
-const tsCmd = require('../ts')
+const { gzipSize, pkg, hasTsconfig, hasFile, fromRoot, paths } = require('./../utils')
+const execa = require('execa')
 const merge = require('merge-options').bind({
   ignoreUndefined: true
 })
@@ -29,9 +28,14 @@ const build = async (argv) => {
   const globalName = pascalcase(pkg.name)
   const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
   const umdPost = `return ${globalName}}));`
+
+  const tsIndex = fromRoot('src', 'index.ts')
+  const jsIndex = fromRoot('src', 'index.js')
+  const entryPoint = hasFile(tsIndex) ? tsIndex : jsIndex
+
   const result = await esbuild.build(merge(
     {
-      entryPoints: [fromRoot('src', argv.tsRepo ? 'index.ts' : 'index.js')],
+      entryPoints: [entryPoint],
       bundle: true,
       format: 'iife',
       conditions: ['production'],
@@ -49,6 +53,7 @@ const build = async (argv) => {
     },
     argv.fileConfig.build.config
   ))
+
   if (result.metafile) {
     fs.writeJSONSync(path.join(paths.dist, 'stats.json'), result.metafile)
   }
@@ -56,46 +61,23 @@ const build = async (argv) => {
   return outfile
 }
 
-/**
- * Build command
- *
- * @param {GlobalOptions & BuildOptions} argv
- */
-const buildEsm = async (argv) => {
-  const dist = path.join(process.cwd(), 'dist')
-  // @ts-ignore no types
-  const ipjs = await import('ipjs')
-
-  await ipjs.default({
-    dist,
-    onConsole: (/** @type {any[]} */...args) => console.info.apply(console, args),
-    cwd: process.cwd(),
-    main: argv.esmMain,
-    tests: argv.esmTests
-  })
-}
-
 const tasks = new Listr([
   {
-    title: 'Clean ./dist',
-    task: async () => del(path.join(process.cwd(), 'dist'))
-  },
-  {
-    title: 'Build ESM',
-    enabled: ctx => {
-      return pkg.type === 'module'
-    },
+    title: 'tsc',
+    enabled: ctx => ctx.types && hasTsconfig,
     /**
-     *
      * @param {GlobalOptions & BuildOptions} ctx
      * @param {Task} task
      */
     task: async (ctx, task) => {
-      await buildEsm(ctx)
+      await execa('tsc', {
+        preferLocal: true,
+        stdio: 'inherit'
+      })
     }
   },
   {
-    title: 'Bundle',
+    title: 'esbuild',
     enabled: ctx => ctx.bundle,
     /**
      *
@@ -119,23 +101,6 @@ const tasks = new Listr([
           task.output = `${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxsize)})`
         }
       }
-    }
-  },
-  {
-    title: 'Generate types',
-    enabled: ctx => ctx.types && hasTsconfig,
-    /**
-     * @param {GlobalOptions & BuildOptions} ctx
-     * @param {Task} task
-     */
-    task: async (ctx, task) => {
-      await tsCmd({
-        ...ctx,
-        preset: 'types',
-        include: ctx.fileConfig.ts.include,
-        copyTo: ctx.fileConfig.ts.copyTo,
-        copyFrom: ctx.fileConfig.ts.copyFrom
-      })
     }
   }
 ], { renderer: 'verbose' })

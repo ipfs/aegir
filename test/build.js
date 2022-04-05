@@ -25,13 +25,7 @@ describe('build', () => {
         cwd: projectDir
       })
 
-      expect(existsSync(join(projectDir, 'dist', 'esm'))).to.be.true()
-      expect(existsSync(join(projectDir, 'dist', 'cjs'))).to.be.true()
-
-      const module = require(join(projectDir, 'dist'))
-
-      expect(module).to.have.property('useHerp').that.is.a('function')
-      expect(module).to.have.property('useDerp').that.is.a('function')
+      expect(existsSync(join(projectDir, 'dist', 'index.min.js'))).to.be.true()
     })
   })
 })

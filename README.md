@@ -1,27 +1,24 @@
-# AEgir 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](https://protocol.ai) 
-[![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.io/) 
+# AEgir
+[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](https://protocol.ai)
+[![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.io/)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ipfs/aegir/ci/master?style=flat-square)
 
 > Automated JavaScript project management.
 
-## Lead Maintainer 
+## Lead Maintainer
 
 [Hugo Dias](https://github.com/hugomrdias)
 
 ## Project Structure
 
-The project structure when using this is quite strict, to ease
-replication and configuration overhead.
+The project structure when using this is quite strict, to ease replication and configuration overhead.
 
-All source code should be placed under `src`, with the main entry
-point being `src/index.js`.
+All source code should be placed under `src`, with the main entry point being `src/index.js` or `src/index.ts`.
 
-All test files should be placed under `test`. Individual test files should end in `.spec.js` and will be ran in all environments (node, browser, webworker, electron-main and electron-renderer). To run node specific tests a file named `test/node.js` should be used to require all node test files and the same thing for the other environments with a file named `test/browser.js`.
+All test files should be placed under `test`. Individual test files should end in `.spec.js` or `.spec.ts` and will be ran in all environments (node, browser, webworker, electron-main and electron-renderer). To run node specific tests a file named `test/node.js` or `test/node.ts` should be used to require all node test files and the same thing for the other environments with a file named `test/browser.js` or `test/browser.ts`.
 
 Your `package.json` should have the following entries and should pass `aegir lint-package-json`.
-
 
 ```json
 "main": "src/index.js",

@@ -9,7 +9,6 @@ describe('config - user', () => {
   it('custom config', async () => {
     const conf = config(path.join(__dirname, 'fixtures/custom-config'))
     expect(conf).to.have.property('debug').eql(false)
-    expect(conf).to.have.property('tsRepo').eql(false)
     expect(conf).to.have.nested.property('test.before')
     expect(conf).to.have.nested.property('test.after')
 

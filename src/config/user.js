@@ -12,7 +12,6 @@ const merge = require('merge-options')
 const defaults = {
   // global options
   debug: false,
-  tsRepo: false,
   // test cmd options
   test: {
     runner: 'node',
@@ -40,9 +39,7 @@ const defaults = {
     bundlesize: false,
     bundlesizeMax: '100kB',
     types: true,
-    config: {},
-    esmMain: true,
-    esmTests: false
+    config: {}
   },
   // linter cmd options
   lint: {

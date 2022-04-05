@@ -2,25 +2,13 @@
 
 ## Setup
 
-`aegir` leverages [ipjs](https://github.com/mikeal/ipjs) to output a build with `cjs` and `esm` for maximum compatibility. The general guidelines for writing a module in `esm` are detailed on the `ipjs` README. `aegir` will automatically identify a `esm` repo by the `module` property in `package.json`.
+`aegir` will automatically identify a `esm` repo by the `module` property in `package.json`.
 
 ## Electron testing
 
-Electron does [not support ESM](https://github.com/electron/electron/issues/21457) at the time of writing. When writing a module using ESM, we need to compile the tests to `cjs` and rely on them. For generating the build including the tests:
+Electron supports ESM but [electron-mocha does not](https://github.com/jprichardson/electron-mocha/pull/187).  It's capable of supporting it in the main thread but since Chrome does not provide any way to intercept calls to `import` it's unlikely to work with the renderer thread for the foreseeable future.
 
-```bash
-aegir build --esm-tests
-```
-
-## Lerna Monorepo
-
-When using a lerna monorepo, local dependencies are symlinked by lerna on install. This means that an `esm` module will not use the resulting `dist` folder as symlink. This can become a problem if we are testing the `cjs` build of a module.
-
-To work around the above problem, we can use `publishConfig.directory = "dist"` in `package.json` to notice lerna about the symlink path. After running the `aegir build` command, it is necessary to run `lerna link` to update the symlinks.
-
-## Release
-
-When releasing an `esm` module, the published content will be the generated `dist` folder content, as indicated by [ipjs](https://github.com/mikeal/ipjs).
+We currently use a [fork of electron-mocha](https://www.npmjs.com/package/electron-mocha-main) that allows running ESM tests on the main thread but we have no support for running them on the renderer thread until the issues with Chrome and intercepting `import` above are resolved.
 
 ## Examples
 

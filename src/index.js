@@ -38,11 +38,6 @@ cli
     alias: 'd',
     default: userConfig.debug
   })
-  .options('ts-repo', {
-    type: 'boolean',
-    describe: 'Enable support for Typescript repos.',
-    default: userConfig.tsRepo
-  })
   .group(['help', 'version', 'debug', 'ts-repo'], 'Global Options:')
   .demandCommand(1, 'You need at least one command.')
   .wrap(cli.terminalWidth())

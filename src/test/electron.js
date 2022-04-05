@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const execa = require('execa')
-const { getElectron } = require('../utils')
+const { getElectron, hasTsconfig } = require('../utils')
 const merge = require('merge-options')
 
 /**
@@ -23,7 +23,7 @@ module.exports = async (argv, execaOptions) => {
   const bail = argv.bail ? ['--bail'] : []
   const timeout = argv.timeout ? [`--timeout=${argv.timeout}`] : []
   const renderer = argv.runner === 'electron-renderer' ? ['--renderer'] : []
-  const ts = argv.tsRepo ? ['--require', require.resolve('esbuild-register')] : []
+  const ts = hasTsconfig ? ['--require', require.resolve('esbuild-register')] : []
 
   // before hook
   const before = await argv.fileConfig.test.before(argv)

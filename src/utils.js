@@ -133,8 +133,7 @@ function getPlatformPath () {
 }
 
 export const getElectron = async () => {
-  // @ts-ignore
-  const pkg = require('./../package.json')
+  const pkg = await fs.readJSON('./package.json')
 
   const lockfilePath = path.join(EnvPaths.cache, '__electron-lock')
   fs.mkdirpSync(EnvPaths.cache)

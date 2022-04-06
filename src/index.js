@@ -7,6 +7,7 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { loadUserConfig } from './config/user.js'
 import buildCmd from './cmds/build.js'
+import checkProjectCmd from './cmds/check-project.js'
 import checkCmd from './cmds/check.js'
 import cleanCmd from './cmds/clean.js'
 import dependencyCheckCmd from './cmds/dependency-check.js'
@@ -64,6 +65,7 @@ async function main () {
     .fail(false)
 
   res.command(buildCmd)
+  res.command(checkProjectCmd)
   res.command(checkCmd)
   res.command(cleanCmd)
   res.command(dependencyCheckCmd)

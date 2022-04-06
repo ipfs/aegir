@@ -2,6 +2,7 @@
 
 import { lilconfig } from 'lilconfig'
 import merge from 'merge-options'
+import { pathToFileURL } from 'url'
 
 /**
  * @typedef {import("./../types").Options} Options
@@ -128,7 +129,7 @@ export const config = async (searchFrom) => {
   try {
     const loadEsm = async (/** @type {string} */ filepath) => {
       /** @type {any} */
-      const res = await import(filepath)
+      const res = await import(pathToFileURL(filepath).toString())
 
       if (res.default != null) {
         return res.default

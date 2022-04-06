@@ -1,5 +1,5 @@
 /** @type {import("./src/types").PartialOptions} */
-module.exports = {
+export default {
     docs: {
         entryPoint: 'utils'
     }

@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
-'use strict'
 
-const Listr = require('listr')
-const execa = require('execa')
-const cleanCmd = require('./clean')
-const buildCmd = require('./build')
+import Listr from 'listr'
+import { execa } from 'execa'
+import cleanCmd from './clean.js'
+import buildCmd from './build/index.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -45,4 +44,4 @@ const tasks = new Listr([
   }
 ], { renderer: 'verbose' })
 
-module.exports = tasks
+export default tasks

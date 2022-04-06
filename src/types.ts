@@ -123,14 +123,6 @@ interface TSOptions {
    * Values are merged into the local TS config include property.
    */
   include: string[]
-  /**
-   * Copy .d.ts files from
-   */
-  copyFrom: string
-  /**
-   * Copy .d.ts files to
-   */
-  copyTo: string
 }
 
 interface DocsOptions {
@@ -160,6 +152,10 @@ interface LintOptions {
 }
 
 interface TestOptions {
+  /**
+   * Build the project before running the tests
+   */
+  build: boolean
   /**
    * In which target environment to execute the tests
    */

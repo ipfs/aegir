@@ -1,12 +1,16 @@
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('../utils/chai')
-const execa = require('execa')
-const { copy, existsSync } = require('fs-extra')
-const { join } = require('path')
+import { expect } from '../utils/chai.js'
+import { execa } from 'execa'
+import { copy, existsSync } from 'fs-extra'
+import path, { join } from 'path'
+import tempy from 'tempy'
+import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const bin = require.resolve('../')
-const tempy = require('tempy')
 
 describe('build', () => {
   describe('esm', () => {

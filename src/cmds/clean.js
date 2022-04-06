@@ -1,28 +1,30 @@
-'use strict'
+import cleanCmd from '../clean.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
+ * @typedef {import("yargs").CommandModule} CommandModule
  */
 
 const EPILOG = `
 Removes the ./dist folder
 `
-module.exports = {
+
+/** @type {CommandModule} */
+export default {
   command: 'clean',
-  desc: 'Remove created build artifacts.',
+  describe: 'Remove created build artifacts.',
   /**
    * @param {Argv} yargs
    */
   builder: (yargs) => {
-    yargs
+    return yargs
       .epilog(EPILOG)
   },
   /**
-   * @param {import("../types").GlobalOptions | undefined} argv
+   * @param {any} argv
    */
-  handler (argv) {
-    const build = require('../clean')
-    return build.run(argv)
+  async handler (argv) {
+    await cleanCmd.run(argv)
   }
 }

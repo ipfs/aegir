@@ -1,14 +1,16 @@
 /* eslint-disable no-console */
-'use strict'
 
-const globby = require('globby')
-const { ESLint } = require('eslint')
-const Listr = require('listr')
-const path = require('path')
-const execa = require('execa')
-const fs = require('fs-extra')
-const merge = require('merge-options')
-const { fromRoot, readJson, hasTsconfig } = require('./utils')
+import { globby } from 'globby'
+import { ESLint } from 'eslint'
+import Listr from 'listr'
+import path from 'path'
+import { execa } from 'execa'
+import fs from 'fs-extra'
+import merge from 'merge-options'
+import { fromRoot, readJson, hasTsconfig } from './utils.js'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -93,4 +95,4 @@ const tasks = new Listr(
   }
 )
 
-module.exports = tasks
+export default tasks

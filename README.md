@@ -77,7 +77,7 @@ Aegir can be fully configured using a config file named `.aegir.js` or the packa
 ```js
 // file: .aegir.js
 
-'use strict'
+
 
 /** @type {import('aegir').PartialOptions} */
 module.exports = {

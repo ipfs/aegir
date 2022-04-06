@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
-'use strict'
 
-const { lilconfigSync } = require('lilconfig')
-const merge = require('merge-options')
+import { lilconfig } from 'lilconfig'
+import merge from 'merge-options'
 
 /**
  * @typedef {import("./../types").Options} Options
@@ -14,6 +13,7 @@ const defaults = {
   debug: false,
   // test cmd options
   test: {
+    build: true,
     runner: 'node',
     target: ['node', 'browser', 'webworker'],
     watch: false,
@@ -65,9 +65,7 @@ const defaults = {
   // ts cmd options
   ts: {
     preset: undefined,
-    include: [],
-    copyFrom: 'src/**/*.d.ts',
-    copyTo: 'dist'
+    include: []
   },
   // release cmd options
   release: {
@@ -123,22 +121,36 @@ const defaults = {
  * Search for local user config
  *
  * @param {string | undefined} [searchFrom]
- * @returns {Options}
+ * @returns {Promise<Options>}
  */
-const config = (searchFrom) => {
+export const config = async (searchFrom) => {
   let userConfig
   try {
-    const configExplorer = lilconfigSync('aegir', {
+    const loadEsm = async (/** @type {string} */ filepath) => {
+      /** @type {any} */
+      const res = await import(filepath)
 
+      if (res.default != null) {
+        return res.default
+      }
+
+      return res
+    }
+    const loadedConfig = await lilconfig('aegir', {
+      loaders: {
+        '.js': loadEsm,
+        '.mjs': loadEsm
+      },
       searchPlaces: [
         'package.json',
         '.aegir.js',
         '.aegir.cjs'
       ]
     })
-    const lilconfig = configExplorer.search(searchFrom)
-    if (lilconfig) {
-      userConfig = lilconfig.config
+      .search(searchFrom)
+
+    if (loadedConfig) {
+      userConfig = loadedConfig.config
     } else {
       userConfig = {}
     }
@@ -155,7 +167,4 @@ const config = (searchFrom) => {
   return conf
 }
 
-module.exports = {
-  userConfig: config(),
-  config
-}
+export const loadUserConfig = () => config()

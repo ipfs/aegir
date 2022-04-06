@@ -1,9 +1,10 @@
-'use strict'
+import path from 'path'
+import { execa } from 'execa'
+import merge from 'merge-options'
+import { pkg } from './utils.js'
+import { fileURLToPath } from 'url'
 
-const path = require('path')
-const execa = require('execa')
-const merge = require('merge-options')
-const { pkg } = require('./utils')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -23,7 +24,7 @@ const isDefaultInput = (arr1, arr2) =>
  * @param {GlobalOptions & DependencyCheckOptions} argv - Command line arguments passed to the process.
  * @param {ExecaOptions} [execaOptions] - execa options.
  */
-const check = (argv, execaOptions) => {
+export default (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   const input =
         argv.productionOnly &&
@@ -56,8 +57,4 @@ const check = (argv, execaOptions) => {
       execaOptions
     )
   )
-}
-
-module.exports = {
-  check
 }

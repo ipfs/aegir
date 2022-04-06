@@ -1,13 +1,14 @@
 /* eslint-env mocha */
-'use strict'
 
-const lint = require('../src/lint')
-const { expect } = require('../utils/chai')
-const path = require('path')
-const fs = require('fs')
-const { premove: del } = require('premove/sync')
-const { userConfig } = require('../src/config/user')
+import lint from '../src/lint.js'
+import { expect } from '../utils/chai.js'
+import path from 'path'
+import fs from 'fs'
+import { premove as del } from 'premove/sync'
+import { loadUserConfig } from '../src/config/user.js'
+import { fileURLToPath } from 'url'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const TEMP_FOLDER = path.join(__dirname, '../node_modules/.temp-test')
 
 /**
@@ -36,6 +37,7 @@ const setupProjectWithDeps = deps => setupProject({
  * @param {{ [s: string]: any; } | ArrayLike<any>} project
  */
 const projectShouldPassLint = async (project) => {
+  const userConfig = await loadUserConfig()
   await setupProject(project)
   await lint.run({
     fileConfig: userConfig,
@@ -48,6 +50,7 @@ const projectShouldPassLint = async (project) => {
  * @param {{ [s: string]: any; } | ArrayLike<any>} project
  */
 const projectShouldFailLint = async (project) => {
+  const userConfig = await loadUserConfig()
   await setupProject(project)
   let failed = false
   try {
@@ -75,8 +78,9 @@ describe('lint', () => {
     del(TEMP_FOLDER)
   })
 
-  it('lint itself (aegir)', function () {
+  it('lint itself (aegir)', async function () {
     this.timeout(20 * 1000) // slow ci is slow
+    const userConfig = await loadUserConfig()
     return lint.run({
       fileConfig: userConfig,
       debug: false,
@@ -86,8 +90,9 @@ describe('lint', () => {
     })
   })
 
-  it('should pass in user defined path globs', () => {
+  it('should pass in user defined path globs', async () => {
     const dir = `test-${Date.now()}`
+    const userConfig = await loadUserConfig()
     return setupProjectWithDeps([])
       .then(() => {
         // Directory not included in the default globs
@@ -106,6 +111,7 @@ describe('lint', () => {
 
   it('should fail in user defined path globs', async () => {
     const dir = `test-${Date.now()}`
+    const userConfig = await loadUserConfig()
     await setupProjectWithDeps([])
     // Directory not included in the default globs
 
@@ -124,6 +130,7 @@ describe('lint', () => {
 
   it('should lint ts and js with different parsers rules', async () => {
     process.chdir(path.join(__dirname, './fixtures/js+ts/'))
+    const userConfig = await loadUserConfig()
     await lint.run({
       fileConfig: userConfig,
       debug: false,

@@ -1,7 +1,9 @@
-'use strict'
-const path = require('path')
-const execa = require('execa')
-const merge = require('merge-options')
+import path from 'path'
+import { execa } from 'execa'
+import merge from 'merge-options'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -14,7 +16,7 @@ const merge = require('merge-options')
  * @param {TestOptions & GlobalOptions} argv
  * @param {ExecaOptions} execaOptions
  */
-module.exports = async (argv, execaOptions) => {
+export default async (argv, execaOptions) => {
   const AVDName = 'aegir-android-29'
   const extra = argv['--'] ? argv['--'] : []
   const emulator = process.env.CI ? [] : ['--emulator', AVDName]

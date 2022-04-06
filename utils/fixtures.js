@@ -1,7 +1,5 @@
-'use strict'
-
-const fs = require('fs')
-const resolve = require('./resolve')
+import fs from 'fs'
+import resolve from './resolve.js'
 
 /**
  * Loading fixture files in node and the browser can be painful, that's why aegir provides a method to do this.
@@ -28,9 +26,8 @@ const resolve = require('./resolve')
  *
  * @param {string} filePath
  * @param {string} [module]
+ * @returns {Uint8Array}
  */
-function loadFixtures (filePath, module = '') {
+export default function loadFixtures (filePath, module = '') {
   return fs.readFileSync(resolve(filePath, module))
 }
-
-module.exports = loadFixtures

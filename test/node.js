@@ -1,11 +1,9 @@
-'use strict'
-
-require('./build')
-require('./lint')
-require('./fixtures')
-require('./dependants')
-require('./dependency-check')
-require('./utils/echo-server')
-require('./utils/get-port')
-require('./config/user')
-require('./test')
+import './build.js'
+import './lint.js'
+import './fixtures.js'
+import './dependants.js'
+import './dependency-check.js'
+import './utils/echo-server.js'
+import './utils/get-port.js'
+import './config/user.js'
+import './test.js'

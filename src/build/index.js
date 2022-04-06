@@ -1,14 +1,16 @@
 /* eslint-disable no-console */
-'use strict'
-const Listr = require('listr')
-const esbuild = require('esbuild')
-const path = require('path')
-const fs = require('fs-extra')
-const pascalcase = require('pascalcase')
-const bytes = require('bytes')
-const { gzipSize, pkg, hasTsconfig, hasFile, fromRoot, paths } = require('./../utils')
-const execa = require('execa')
-const merge = require('merge-options').bind({
+
+import Listr from 'listr'
+import esbuild from 'esbuild'
+import path from 'path'
+import fs from 'fs-extra'
+import pascalcase from 'pascalcase'
+import bytes from 'bytes'
+import { gzipSize, pkg, hasTsconfig, hasFile, fromRoot, paths } from './../utils.js'
+import { execa } from 'execa'
+import merge from 'merge-options'
+
+const defaults = merge.bind({
   ignoreUndefined: true
 })
 
@@ -33,7 +35,7 @@ const build = async (argv) => {
   const jsIndex = fromRoot('src', 'index.js')
   const entryPoint = hasFile(tsIndex) ? tsIndex : jsIndex
 
-  const result = await esbuild.build(merge(
+  const result = await esbuild.build(defaults(
     {
       entryPoints: [entryPoint],
       bundle: true,
@@ -105,4 +107,4 @@ const tasks = new Listr([
   }
 ], { renderer: 'verbose' })
 
-module.exports = tasks
+export default tasks

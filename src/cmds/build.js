@@ -1,22 +1,27 @@
-'use strict'
-
-const { userConfig } = require('../config/user')
+import { loadUserConfig } from '../config/user.js'
+import buildCmd from '../build/index.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
+ * @typedef {import("yargs").CommandModule} CommandModule
  */
+
 const EPILOG = `
 Output files will go into a "./dist" folder.
 `
-module.exports = {
+
+/** @type {CommandModule} */
+export default {
   command: 'build',
-  desc: 'Builds a browser bundle and TS type declarations from the `src` folder.',
+  describe: 'Builds a browser bundle and TS type declarations from the `src` folder.',
   /**
    * @param {Argv} yargs
    */
-  builder: (yargs) => {
-    yargs
+  builder: async (yargs) => {
+    const userConfig = await loadUserConfig()
+
+    return yargs
       .epilog(EPILOG)
       .options({
         bundle: {
@@ -42,11 +47,11 @@ module.exports = {
         }
       })
   },
+
   /**
-   * @param {(import("../types").GlobalOptions & import("../types").BuildOptions) | undefined} argv
+   * @param {any} argv
    */
-  handler (argv) {
-    const build = require('../build')
-    return build.run(argv)
+  async handler (argv) {
+    await buildCmd.run(argv)
   }
 }

@@ -1,10 +1,14 @@
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('../utils/chai')
-const path = require('path')
+import { expect } from '../utils/chai.js'
+import path from 'path'
+import { execa } from 'execa'
+import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const bin = require.resolve('../')
-const execa = require('execa')
 
 describe('dependency check', () => {
   it('should fail for missing deps', async () => {

@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
-'use strict'
 
-const path = require('path')
-const os = require('os')
-const {
+import path from 'path'
+import os from 'os'
+import {
   exec
-} = require('../utils')
-const fs = require('fs-extra')
-const glob = require('it-glob')
+} from '../utils.js'
+import fs from 'fs-extra'
+import glob from 'it-glob'
 
 /**
  * @param {string} name
@@ -221,7 +220,7 @@ const testMonoRepo = async (targetDir, deps, scriptName) => {
 /**
  * @param {{ repo: string; branch: string; deps: any; scriptName: string; }} opts
  */
-async function testDependant (opts) {
+export default async function testDependant (opts) {
   const targetDir = path.join(os.tmpdir(), `test-dependant-${Date.now()}`)
 
   console.info(`Cloning ${opts.repo} into ${targetDir}`)
@@ -244,5 +243,3 @@ async function testDependant (opts) {
   console.info(`Removing ${targetDir}`)
   await fs.remove(targetDir)
 }
-
-module.exports = testDependant

@@ -1,11 +1,15 @@
 /* eslint-env mocha */
-'use strict'
 
-const execa = require('execa')
-const { copy } = require('fs-extra')
-const { join } = require('path')
+import { execa } from 'execa'
+import { copy } from 'fs-extra'
+import path, { join } from 'path'
+import tempy from 'tempy'
+import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const bin = require.resolve('../')
-const tempy = require('tempy')
 
 describe('test', () => {
   describe('esm', function () {

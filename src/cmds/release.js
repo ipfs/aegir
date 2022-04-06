@@ -1,24 +1,27 @@
-'use strict'
-
-const { userConfig } = require('../config/user')
+import { loadUserConfig } from '../config/user.js'
+import releaseCmd from '../release.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
+ * @typedef {import("yargs").CommandModule} CommandModule
  */
 
 const EPILOG = `
 Release uses semantic-release (https://github.com/semantic-release/semantic-release#readme.
 `
 
-module.exports = {
+/** @type {CommandModule} */
+export default {
   command: 'release',
-  desc: 'Release using semantic-release',
+  describe: 'Release using semantic-release',
   /**
    * @param {Argv} yargs
    */
-  builder: (yargs) => {
-    yargs
+  builder: async (yargs) => {
+    const userConfig = await loadUserConfig()
+
+    return yargs
       .epilog(EPILOG)
       .options({
         bundle: {
@@ -45,10 +48,9 @@ module.exports = {
       })
   },
   /**
-   * @param {(import("../types").GlobalOptions & import("../types").BuildOptions) | undefined} argv
+   * @param {any} argv
    */
-  handler (argv) {
-    const release = require('../release')
-    return release.run(argv)
+  async handler (argv) {
+    await releaseCmd.run(argv)
   }
 }

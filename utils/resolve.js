@@ -1,7 +1,8 @@
-'use strict'
+import path from 'path'
+import fs from 'fs'
+import { createRequire } from 'module'
 
-const path = require('path')
-const fs = require('fs')
+const require = createRequire(import.meta.url)
 
 /**
  * Returns the full path to the requested resource, if available
@@ -9,7 +10,7 @@ const fs = require('fs')
  * @param {string} filePath
  * @param {string} [module]
  */
-function resolve (filePath, module = '') {
+export default function resolve (filePath, module = '') {
   if (module) {
     filePath = path.join(module, filePath)
   }
@@ -53,5 +54,3 @@ function requireResolve (filePath) {
     return filePath
   }
 }
-
-module.exports = resolve

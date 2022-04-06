@@ -1,14 +1,12 @@
 /* eslint-disable no-console */
-'use strict'
-const Listr = require('listr')
-const path = require('path')
-const { premove: del } = require('premove')
 
-const tasks = new Listr([
+import Listr from 'listr'
+import path from 'path'
+import { premove as del } from 'premove'
+
+export default new Listr([
   {
     title: 'clean ./dist',
     task: async () => del(path.join(process.cwd(), 'dist'))
   }
 ], { renderer: 'verbose' })
-
-module.exports = tasks

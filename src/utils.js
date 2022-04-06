@@ -4,53 +4,58 @@
  *
  * @module aegir/utils
  */
-'use strict'
-const { constants, createBrotliCompress, createGzip } = require('zlib')
-const os = require('os')
-const ora = require('ora')
-const extract = require('extract-zip')
-const stripComments = require('strip-json-comments')
-const stripBom = require('strip-bom')
-const { download } = require('@electron/get')
-const path = require('path')
-const readline = require('readline')
-const readPkgUp = require('read-pkg-up')
-const fs = require('fs-extra')
-const execa = require('execa')
-const envPaths = require('env-paths')('aegir', { suffix: '' })
-const lockfile = require('proper-lockfile')
+
+import { constants, createBrotliCompress, createGzip } from 'zlib'
+import os from 'os'
+import ora from 'ora'
+import extract from 'extract-zip'
+import stripComments from 'strip-json-comments'
+import stripBom from 'strip-bom'
+import { download } from '@electron/get'
+import path from 'path'
+import readline from 'readline'
+import { readPackageUpSync } from 'read-pkg-up'
+import fs from 'fs-extra'
+import { execa } from 'execa'
+import envPaths from 'env-paths'
+import lockfile from 'proper-lockfile'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const EnvPaths = envPaths('aegir', { suffix: '' })
+
 const {
   // @ts-ignore
   packageJson: pkg,
   // @ts-ignore
   path: pkgPath
-} = readPkgUp.sync({
+} = readPackageUpSync({
   cwd: fs.realpathSync(process.cwd())
 })
 const DIST_FOLDER = 'dist'
 const SRC_FOLDER = 'src'
 const TEST_FOLDER = 'test'
 
-exports.pkg = pkg
-exports.repoDirectory = path.dirname(pkgPath)
+export { pkg }
+export const repoDirectory = path.dirname(pkgPath)
 /**
  * @param {string[]} p
  */
-exports.fromRoot = (...p) => path.join(exports.repoDirectory, ...p)
+export const fromRoot = (...p) => path.join(repoDirectory, ...p)
 /**
  * @param {string[]} p
  */
-exports.hasFile = (...p) => fs.existsSync(exports.fromRoot(...p))
+export const hasFile = (...p) => fs.existsSync(fromRoot(...p))
 /**
  * @param {string[]} p
  */
-exports.fromAegir = (...p) => path.join(__dirname, '..', ...p)
-exports.hasTsconfig = exports.hasFile('tsconfig.json')
+export const fromAegir = (...p) => path.join(__dirname, '..', ...p)
+export const hasTsconfig = hasFile('tsconfig.json')
 
-exports.paths = {
-  dist: this.fromRoot(DIST_FOLDER),
-  src: this.fromRoot(SRC_FOLDER),
-  test: this.fromRoot(TEST_FOLDER),
+export const paths = {
+  dist: fromRoot(DIST_FOLDER),
+  src: fromRoot(SRC_FOLDER),
+  test: fromRoot(TEST_FOLDER),
   package: pkgPath
 }
 
@@ -59,7 +64,7 @@ exports.paths = {
  *
  * @param {string} contents
  */
-exports.parseJson = (contents) => {
+export const parseJson = (contents) => {
   const data = stripComments(stripBom(contents))
 
   // A tsconfig.json file is permitted to be completely empty.
@@ -75,8 +80,8 @@ exports.parseJson = (contents) => {
  *
  * @param {string | number | Buffer | import("url").URL} filePath
  */
-exports.readJson = (filePath) => {
-  return exports.parseJson(fs.readFileSync(filePath, { encoding: 'utf-8' }))
+export const readJson = (filePath) => {
+  return parseJson(fs.readFileSync(filePath, { encoding: 'utf-8' }))
 }
 
 /**
@@ -84,7 +89,7 @@ exports.readJson = (filePath) => {
  *
  * @returns {{renderer: 'verbose'}} - config for Listr
  */
-exports.getListrConfig = () => {
+export const getListrConfig = () => {
   return {
     renderer: 'verbose'
   }
@@ -95,7 +100,7 @@ exports.getListrConfig = () => {
  * @param {string[] | undefined} args
  * @param {any} options
  */
-exports.exec = (command, args, options = {}) => {
+export const exec = (command, args, options = {}) => {
   const result = execa(command, args, options)
 
   if (!options.quiet) {
@@ -127,13 +132,13 @@ function getPlatformPath () {
   }
 }
 
-exports.getElectron = async () => {
+export const getElectron = async () => {
   // @ts-ignore
   const pkg = require('./../package.json')
 
-  const lockfilePath = path.join(envPaths.cache, '__electron-lock')
-  fs.mkdirpSync(envPaths.cache)
-  const releaseLock = await lockfile.lock(envPaths.cache, {
+  const lockfilePath = path.join(EnvPaths.cache, '__electron-lock')
+  fs.mkdirpSync(EnvPaths.cache)
+  const releaseLock = await lockfile.lock(EnvPaths.cache, {
     retries: {
       retries: 10,
       // Retry 20 times during 10 minutes with
@@ -163,7 +168,7 @@ exports.getElectron = async () => {
 /**
  * @param {fs.PathLike} path
  */
-exports.brotliSize = (path) => {
+export const brotliSize = (path) => {
   return new Promise((resolve, reject) => {
     let size = 0
     const pipe = fs.createReadStream(path).pipe(createBrotliCompress({
@@ -184,7 +189,7 @@ exports.brotliSize = (path) => {
 /**
  * @param {fs.PathLike} path
  */
-exports.gzipSize = (path) => {
+export const gzipSize = (path) => {
   return new Promise((resolve, reject) => {
     let size = 0
     const pipe = fs.createReadStream(path).pipe(createGzip({ level: 9 }))
@@ -198,7 +203,7 @@ exports.gzipSize = (path) => {
   })
 }
 
-exports.otp = () => {
+export const otp = () => {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout

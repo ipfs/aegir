@@ -1,8 +1,10 @@
-'use strict'
-const path = require('path')
-const execa = require('execa')
-const { fromAegir } = require('../utils')
-const merge = require('merge-options')
+import path from 'path'
+import { execa } from 'execa'
+import { fromAegir } from '../utils.js'
+import merge from 'merge-options'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -15,7 +17,7 @@ const merge = require('merge-options')
  * @param {TestOptions & GlobalOptions} argv
  * @param {ExecaOptions} execaOptions
  */
-module.exports = async (argv, execaOptions) => {
+export default async (argv, execaOptions) => {
   const extra = argv['--'] ? argv['--'] : []
   const forwardOptions = /** @type {string[]} */([
     ...extra,

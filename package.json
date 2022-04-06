@@ -149,6 +149,7 @@
     ]
   },
   "scripts": {
+    "clean": "node src/index.js clean",
     "build": "node src/index.js build --no-bundle",
     "lint": "node src/index.js lint",
     "test": "node src/index.js test",

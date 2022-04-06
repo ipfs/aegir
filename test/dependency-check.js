@@ -8,7 +8,7 @@ import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const bin = require.resolve('../')
+const bin = require.resolve('../src/index.js')
 
 describe('dependency check', () => {
   it('should fail for missing deps', async () => {
@@ -108,8 +108,7 @@ describe('dependency check', () => {
           __dirname,
           'fixtures/dependency-check/with-aegir-config'
         )
-      }
-      )
+      })
     ).to.eventually.be.fulfilled()
   })
 })

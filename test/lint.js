@@ -98,7 +98,7 @@ describe('lint', () => {
         // Directory not included in the default globs
 
         fs.mkdirSync(dir)
-        fs.writeFileSync(`${dir}/test-pass.js`, '\'use strict\'\n\nmodule.exports = {}\n')
+        fs.writeFileSync(`${dir}/test-pass.js`, 'export default {}\n')
       })
       .then(() => lint.run({
         fileConfig: userConfig,
@@ -154,7 +154,7 @@ describe('lint', () => {
         name: 'no-config-fail',
         main: 'index.js'
       }),
-      'index.js': '\'use strict\'\nmodule.exports = () => {}\n'
+      'index.js': 'module.exports = () => {}\n'
     })
   })
 
@@ -162,7 +162,8 @@ describe('lint', () => {
     await projectShouldFailLint({
       'package.json': JSON.stringify({
         name: 'with-config-fail',
-        main: 'index.js'
+        main: 'index.js',
+        type: 'commonjs'
       }),
       'index.js': '\'use strict\'\nmodule.exports = () => {}\n',
       '.eslintrc': JSON.stringify({
@@ -181,7 +182,8 @@ describe('lint', () => {
     await projectShouldPassLint({
       'package.json': JSON.stringify({
         name: 'with-config-fail',
-        main: 'index.js'
+        main: 'index.js',
+        type: 'commonjs'
       }),
       'index.js': '"use strict"\nmodule.exports = () => {}\n',
       '.eslintrc': JSON.stringify({

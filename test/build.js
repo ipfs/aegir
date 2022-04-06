@@ -2,7 +2,7 @@
 
 import { expect } from '../utils/chai.js'
 import { execa } from 'execa'
-import { copy, existsSync } from 'fs-extra'
+import fs from 'fs-extra'
 import path, { join } from 'path'
 import tempy from 'tempy'
 import { fileURLToPath } from 'url'
@@ -10,7 +10,7 @@ import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const bin = require.resolve('../')
+const bin = require.resolve('../src/index.js')
 
 describe('build', () => {
   describe('esm', () => {
@@ -19,7 +19,7 @@ describe('build', () => {
     before(async () => {
       projectDir = tempy.directory()
 
-      await copy(join(__dirname, 'fixtures', 'esm', 'an-esm-project'), projectDir)
+      await fs.copy(join(__dirname, 'fixtures', 'esm', 'an-esm-project'), projectDir)
     })
 
     it('should build an esm project', async function () {
@@ -29,7 +29,7 @@ describe('build', () => {
         cwd: projectDir
       })
 
-      expect(existsSync(join(projectDir, 'dist', 'index.min.js'))).to.be.true()
+      expect(fs.existsSync(join(projectDir, 'dist', 'index.min.js'))).to.be.true()
     })
   })
 })

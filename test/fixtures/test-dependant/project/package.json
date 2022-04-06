@@ -4,6 +4,7 @@
   "description": "",
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
   "scripts": {
     "test": "node ./test.js",
     "another-test": "node ./test.js"

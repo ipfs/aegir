@@ -1,6 +1,4 @@
 
-const main = () => {
+export const main = () => {
 
 }
-
-module.exports = main

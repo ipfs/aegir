@@ -1,6 +1,6 @@
 import path from 'path'
 import { execa } from 'execa'
-import { getElectron, hasTsconfig } from '../utils.js'
+import { getElectron, isTypescript } from '../utils.js'
 import merge from 'merge-options'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
@@ -28,7 +28,7 @@ export default async (argv, execaOptions) => {
   const bail = argv.bail ? ['--bail'] : []
   const timeout = argv.timeout ? [`--timeout=${argv.timeout}`] : []
   const renderer = argv.runner === 'electron-renderer' ? ['--renderer'] : []
-  const ts = hasTsconfig ? ['--require', require.resolve('esbuild-register')] : []
+  const ts = isTypescript ? ['--require', require.resolve('esbuild-register')] : []
 
   // before hook
   const before = await argv.fileConfig.test.before(argv)

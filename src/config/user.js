@@ -13,7 +13,7 @@ const defaults = {
   debug: false,
   // test cmd options
   test: {
-    build: true,
+    build: false,
     runner: 'node',
     target: ['node', 'browser', 'webworker'],
     watch: false,
@@ -134,7 +134,12 @@ export const config = async (searchFrom) => {
         return res.default
       }
 
-      return res
+      if (typeof res.toString === 'function') {
+        return res
+      }
+
+      // if there's no toString function, this was an ES module that didn't export anything
+      return {}
     }
     const loadedConfig = await lilconfig('aegir', {
       loaders: {

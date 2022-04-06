@@ -9,7 +9,7 @@ import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const bin = require.resolve('../')
+const bin = require.resolve('../src/index.js')
 
 describe('test', () => {
   describe('esm', function () {

@@ -98,7 +98,7 @@ const installDependencies = async (targetDir) => {
  */
 const upgradeDependenciesInDir = async (targetDir, deps) => {
   const modulePkgPath = path.join(targetDir, 'package.json')
-  const modulePkg = require(modulePkgPath)
+  const modulePkg = await fs.readJSON(modulePkgPath)
 
   modulePkg.dependencies = modulePkg.dependencies || {}
   modulePkg.peerDependencies = modulePkg.peerDependencies || {}
@@ -137,7 +137,7 @@ const testModule = async (targetDir, deps, scriptName) => {
     throw new Error(`No package.json found at ${pkgPath}`)
   }
 
-  const modulePkg = require(pkgPath)
+  const modulePkg = await fs.readJSON(pkgPath)
 
   for (const dep of Object.keys(deps)) {
     if (!dependsOn(dep, modulePkg)) {
@@ -200,7 +200,7 @@ const testMonoRepo = async (targetDir, deps, scriptName) => {
   })
 
   // read package targetDir config
-  const config = require(path.join(targetDir, 'lerna.json'))
+  const config = await fs.readJSON(path.join(targetDir, 'lerna.json'))
 
   // find where the packages are stored
   let packages = config.packages || 'packages'

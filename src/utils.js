@@ -228,3 +228,24 @@ export const otp = () => {
     }
   })
 }
+
+export const isESM = pkg.type === 'module'
+export const isCJS = pkg.type !== 'module'
+export const hasTypes = Boolean(pkg.types)
+export const hasMain = Boolean(pkg.main)
+export const hasIndexTs = hasFile('src/index.ts')
+export const hasIndexJs = hasFile('src/index.js')
+
+// our project types:
+
+// 1. typescript - ESM, types, src/index.ts present
+export const isTypescript = isESM && hasTypes && hasIndexTs
+
+// 2. typedESM - ESM, types, src/index.js present
+export const isTypedESM = isESM && hasTypes && hasIndexJs
+
+// 3. CJS, no types
+export const isTypedCJS = isCJS && hasMain && hasTypes
+
+// 3. CJS, no types
+export const isUntypedCJS = isCJS && hasMain

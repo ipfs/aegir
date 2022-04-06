@@ -2,7 +2,7 @@ import { execa } from 'execa'
 import path from 'path'
 import tempy from 'tempy'
 import merge from 'merge-options'
-import { hasTsconfig } from '../utils.js'
+import { isTypescript } from '../utils.js'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
 
@@ -60,7 +60,7 @@ export default async function testNode (argv, execaOptions) {
     args.push('--bail')
   }
 
-  if (hasTsconfig) {
+  if (isTypescript) {
     args.push(...['--require', require.resolve('esbuild-register')])
   }
 

@@ -4,6 +4,7 @@ import browser from './browser.js'
 import electron from './electron.js'
 import rn from './react-native.js'
 import buildCmd from '../build/index.js'
+import { isTypescript } from '../utils.js'
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -19,7 +20,7 @@ const TASKS = [
     /**
      * @param {TestOptions & GlobalOptions} ctx
      */
-    enabled: (ctx) => ctx.build === true,
+    enabled: (ctx) => isTypescript || ctx.build === true,
 
     /**
      * @param {BuildOptions & GlobalOptions} ctx

@@ -2,8 +2,8 @@
 
 import { fetch } from 'undici'
 import { Buffer } from 'buffer'
-import { expect } from '../../utils/chai'
-import EchoServer from '../../utils/echo-server'
+import { expect } from '../../utils/chai.js'
+import EchoServer from '../../utils/echo-server.js'
 
 describe('echo server spec', () => {
   const echo = new EchoServer()
@@ -36,7 +36,7 @@ describe('echo server spec', () => {
   })
 
   it('post with body', async () => {
-    const req = await fetch(`${url}/echo`, { body: '{"test":"1"}' })
+    const req = await fetch(`${url}/echo`, { method: 'post', body: '{"test":"1"}' })
     const res = await req.text()
     expect(res).to.be.eq('{"test":"1"}')
   })

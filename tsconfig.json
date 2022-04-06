@@ -1,7 +1,8 @@
 {
     "extends": "./src/config/tsconfig.aegir.json",
     "compilerOptions": {
-        "outDir": "dist"
+        "outDir": "dist",
+        "emitDeclarationOnly": true
     },
     "include": [
       "package.json",

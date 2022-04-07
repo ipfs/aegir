@@ -1,3 +1,10 @@
+### [37.0.1](https://github.com/ipfs/aegir/compare/v37.0.0...v37.0.1) (2022-04-07)
+
+
+### Bug Fixes
+
+* remove ora and use listr instead, make tests run on node ([#949](https://github.com/ipfs/aegir/issues/949)) ([dd5583a](https://github.com/ipfs/aegir/commit/dd5583a43a0089d3819668beeda3489edc674be1))
+
 ## [37.0.0](https://github.com/ipfs/aegir/compare/v36.2.3...v37.0.0) (2022-04-07)
 
 

@@ -1,3 +1,10 @@
+### [37.0.3](https://github.com/ipfs/aegir/compare/v37.0.2...v37.0.3) (2022-04-07)
+
+
+### Bug Fixes
+
+* export utils and add tests for testing projects ([#951](https://github.com/ipfs/aegir/issues/951)) ([46b7f07](https://github.com/ipfs/aegir/commit/46b7f0700e1505e37723754bcde6c2ce522b5069))
+
 ### [37.0.2](https://github.com/ipfs/aegir/compare/v37.0.1...v37.0.2) (2022-04-07)
 
 

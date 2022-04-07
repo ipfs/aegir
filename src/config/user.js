@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-'use strict'
 
-const { lilconfigSync } = require('lilconfig')
-const merge = require('merge-options')
+import { lilconfig } from 'lilconfig'
+import merge from 'merge-options'
+import { pathToFileURL } from 'url'
 
 /**
  * @typedef {import("./../types").Options} Options
@@ -12,9 +12,9 @@ const merge = require('merge-options')
 const defaults = {
   // global options
   debug: false,
-  tsRepo: false,
   // test cmd options
   test: {
+    build: false,
     runner: 'node',
     target: ['node', 'browser', 'webworker'],
     watch: false,
@@ -40,9 +40,7 @@ const defaults = {
     bundlesize: false,
     bundlesizeMax: '100kB',
     types: true,
-    config: {},
-    esmMain: true,
-    esmTests: false
+    config: {}
   },
   // linter cmd options
   lint: {
@@ -68,9 +66,7 @@ const defaults = {
   // ts cmd options
   ts: {
     preset: undefined,
-    include: [],
-    copyFrom: 'src/**/*.d.ts',
-    copyTo: 'dist'
+    include: []
   },
   // release cmd options
   release: {
@@ -126,22 +122,41 @@ const defaults = {
  * Search for local user config
  *
  * @param {string | undefined} [searchFrom]
- * @returns {Options}
+ * @returns {Promise<Options>}
  */
-const config = (searchFrom) => {
+export const config = async (searchFrom) => {
   let userConfig
   try {
-    const configExplorer = lilconfigSync('aegir', {
+    const loadEsm = async (/** @type {string} */ filepath) => {
+      /** @type {any} */
+      const res = await import(pathToFileURL(filepath).toString())
 
+      if (res.default != null) {
+        return res.default
+      }
+
+      if (typeof res.toString === 'function') {
+        return res
+      }
+
+      // if there's no toString function, this was an ES module that didn't export anything
+      return {}
+    }
+    const loadedConfig = await lilconfig('aegir', {
+      loaders: {
+        '.js': loadEsm,
+        '.mjs': loadEsm
+      },
       searchPlaces: [
         'package.json',
         '.aegir.js',
         '.aegir.cjs'
       ]
     })
-    const lilconfig = configExplorer.search(searchFrom)
-    if (lilconfig) {
-      userConfig = lilconfig.config
+      .search(searchFrom)
+
+    if (loadedConfig) {
+      userConfig = loadedConfig.config
     } else {
       userConfig = {}
     }
@@ -158,7 +173,4 @@ const config = (searchFrom) => {
   return conf
 }
 
-module.exports = {
-  userConfig: config(),
-  config
-}
+export const loadUserConfig = () => config()

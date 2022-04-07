@@ -1,9 +1,13 @@
-'use strict'
+import { execa } from 'execa'
+import path from 'path'
+import tempy from 'tempy'
+import merge from 'merge-options'
+import { isTypescript } from '../utils.js'
+import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
 
-const execa = require('execa')
-const path = require('path')
-const tempy = require('tempy')
-const merge = require('merge-options')
+const require = createRequire(import.meta.url)
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -16,7 +20,7 @@ const merge = require('merge-options')
  * @param {TestOptions & GlobalOptions} argv
  * @param {ExecaOptions} execaOptions
  */
-async function testNode (argv, execaOptions) {
+export default async function testNode (argv, execaOptions) {
   const exec = argv.cov ? 'c8' : 'mocha'
   const progress = argv.progress ? ['--reporter=progress'] : []
   const covArgs = argv.cov
@@ -56,7 +60,7 @@ async function testNode (argv, execaOptions) {
     args.push('--bail')
   }
 
-  if (argv.tsRepo) {
+  if (isTypescript) {
     args.push(...['--require', require.resolve('esbuild-register')])
   }
 
@@ -87,5 +91,3 @@ async function testNode (argv, execaOptions) {
   // after hook
   await argv.fileConfig.test.after(argv, before)
 }
-
-module.exports = testNode

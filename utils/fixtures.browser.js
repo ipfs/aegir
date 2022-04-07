@@ -1,7 +1,5 @@
 /* global self */
-'use strict'
 
-const { Buffer } = require('buffer')
 /**
  * Loading fixture files in node and the browser can be painful, that's why aegir provides a method to do this.
  *
@@ -40,8 +38,9 @@ const { Buffer } = require('buffer')
  *
  * @param {string} filePath
  * @param {string} module
+ * @returns {Uint8Array}
  */
-function loadFixtures (filePath, module) {
+export default function loadFixtures (filePath, module) {
   if (module) {
     filePath = module + '/' + filePath
   }
@@ -69,10 +68,8 @@ function syncXhr (filePath) {
       res[i] = filestream.charCodeAt(i) & 0xff
     }
 
-    return Buffer.from(res)
+    return res
   } else {
     throw new Error(`Could not get the Fixture: ${filePath}`)
   }
 }
-
-module.exports = loadFixtures

@@ -1,6 +1,4 @@
-'use strict'
-
-const { createServer } = require('net')
+import { createServer } from 'net'
 
 /**
  * Helper to find an available port to put a server listening on.
@@ -10,14 +8,13 @@ const { createServer } = require('net')
  * const getPort = require('aegir/utils/get-port')
  * const port = await getPort(3000, '127.0.0.1')
  * // if 3000 is available returns 3000 if not returns a free port.
- *
  * ```
  *
  * @param {number} port
  * @param {string} host
  * @returns {Promise<number>}
  */
-function getPort (port = 3000, host = '127.0.0.1') {
+export default function getPort (port = 3000, host = '127.0.0.1') {
   const server = createServer()
   return new Promise((resolve, reject) => {
     server.on('error', (err) => {
@@ -36,5 +33,3 @@ function getPort (port = 3000, host = '127.0.0.1') {
     server.listen(port, host)
   })
 }
-
-module.exports = getPort

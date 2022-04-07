@@ -1,4 +1,7 @@
-'use strict'
-const { userConfig } = require('./user')
+import { loadUserConfig } from './user.js'
 
-module.exports = userConfig.test.browser.config || {}
+export default async () => {
+  const userConfig = await loadUserConfig()
+
+  return userConfig.test.browser.config || {}
+}

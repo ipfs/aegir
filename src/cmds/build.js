@@ -1,20 +1,27 @@
-'use strict'
-const { userConfig } = require('../config/user')
+import { loadUserConfig } from '../config/user.js'
+import buildCmd from '../build/index.js'
+
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
+ * @typedef {import("yargs").CommandModule} CommandModule
  */
+
 const EPILOG = `
 Output files will go into a "./dist" folder.
 `
-module.exports = {
+
+/** @type {CommandModule} */
+export default {
   command: 'build',
-  desc: 'Builds a browser bundle and TS type declarations from the `src` folder.',
+  describe: 'Builds a browser bundle and TS type declarations from the `src` folder.',
   /**
    * @param {Argv} yargs
    */
-  builder: (yargs) => {
-    yargs
+  builder: async (yargs) => {
+    const userConfig = await loadUserConfig()
+
+    return yargs
       .epilog(EPILOG)
       .options({
         bundle: {
@@ -35,28 +42,16 @@ module.exports = {
         },
         types: {
           type: 'boolean',
-          describe: 'Build the Typescripts type declarations.',
+          describe: 'If a tsconfig.json is present in the project, run tsc.',
           default: userConfig.build.types
-        },
-        esmMain: {
-          alias: 'esm-main',
-          type: 'boolean',
-          describe: 'Include a main field in a built esm project',
-          default: userConfig.build.esmMain
-        },
-        esmTests: {
-          alias: 'esm-tests',
-          type: 'boolean',
-          describe: 'Include tests in a built esm project',
-          default: userConfig.build.esmTests
         }
       })
   },
+
   /**
-   * @param {(import("../types").GlobalOptions & import("../types").BuildOptions) | undefined} argv
+   * @param {any} argv
    */
-  handler (argv) {
-    const build = require('../build')
-    return build.run(argv)
+  async handler (argv) {
+    await buildCmd.run(argv)
   }
 }

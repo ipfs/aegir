@@ -1,5 +1,4 @@
 // @ts-nocheck
-'use strict'
 
 const pkg = require('it-all/package.json')
 

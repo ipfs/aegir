@@ -1,13 +1,13 @@
 /* eslint-env mocha */
-'use strict'
 
-const loadFixture = require('../utils/fixtures')
-const expect = require('chai').expect
+import loadFixture from '../utils/fixtures.js'
+import { expect } from '../utils/chai.js'
+import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 
 describe('browser', () => {
   it('fixtures', () => {
     const myFixture = loadFixture('test/fixtures/test.txt')
-    expect(myFixture.toString()).to.be.eql('Hello Fixture\n')
+    expect(uint8ArrayToString(myFixture)).to.be.eql('Hello Fixture\n')
   })
 
   it('non existing fixtures', () => {
@@ -15,9 +15,9 @@ describe('browser', () => {
       .to.throw()
   })
 
-  it('can access context object', () => {
-    const context = require('./fixtures/tests/context-access')
+  it('can access context object', async () => {
+    const context = await import('./fixtures/tests/context-access.js')
 
-    expect(context).to.equal(globalThis.Uint8Array)
+    expect(context.default).to.equal(globalThis.Uint8Array)
   })
 })

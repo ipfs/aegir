@@ -1,7 +1,9 @@
-'use strict'
-const { userConfig } = require('../config/user')
+import { loadUserConfig } from '../config/user.js'
+import testCmd from '../test/index.js'
+
 /**
  * @typedef {import("yargs").Argv} Argv
+ * @typedef {import("yargs").CommandModule} CommandModule
  */
 
 const EPILOG = `
@@ -9,14 +11,17 @@ By default browser tests run in Chromium headless.
 Testing supports options forwarding with '--' for more info check https://github.com/hugomrdias/playwright-test#options, https://mochajs.org/#command-line-usage or https://github.com/jprichardson/electron-mocha#run-tests.
 `
 
-module.exports = {
+/** @type {CommandModule} */
+export default {
   command: 'test',
-  desc: 'Test your code in different environments',
+  describe: 'Test your code in different environments',
   /**
    * @param {Argv} yargs
    */
-  builder: (yargs) => {
-    yargs
+  builder: async (yargs) => {
+    const userConfig = await loadUserConfig()
+
+    return yargs
       .epilog(EPILOG)
       .example(
         'aegir test -t webworker',
@@ -39,6 +44,17 @@ module.exports = {
         'Run test with coverage enabled and report to the terminal.'
       )
       .options({
+        build: {
+          alias: 'b',
+          describe: 'Build the project before running the tests',
+          type: 'boolean',
+          default: userConfig.test.build
+        },
+        types: {
+          type: 'boolean',
+          describe: 'If a tsconfig.json is present in the project, run tsc.',
+          default: userConfig.build.types
+        },
         target: {
           alias: 't',
           describe: 'In which target environment to execute the tests',
@@ -87,10 +103,12 @@ module.exports = {
       })
   },
   /**
-   * @param {import("../types").TestOptions & import("../types").GlobalOptions} argv
+   * @param {any} argv
    */
-  handler (argv) {
-    const test = require('../test')
-    return test.run(argv)
+  async handler (argv) {
+    await testCmd.run({
+      ...argv,
+      bundle: false
+    })
   }
 }

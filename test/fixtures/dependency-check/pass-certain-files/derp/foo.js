@@ -1,4 +1,4 @@
 // @ts-nocheck
-'use strict'
+
 /* eslint-disable no-unused-vars */
-const execa = require('execa')
+import { execa } from 'execa'

@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-'use strict'
 
 describe('should fail', () => {
   it('unhandled promise rejection', (done) => {

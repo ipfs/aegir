@@ -2,6 +2,7 @@
   "name": "submodule",
   "version": "1.0.0",
   "description": "",
+  "type": "commonjs",
   "scripts": {
     "test": "node ./test.js",
     "another-test": "node ./test.js"

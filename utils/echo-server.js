@@ -1,12 +1,10 @@
-'use strict'
-
-// @ts-ignore
-const send = require('@polka/send-type')
-const polka = require('polka')
-const cors = require('cors')
-const http = require('http')
-const { Buffer } = require('buffer')
-const getPort = require('./get-port')
+// @ts-expect-error no types
+import send from '@polka/send-type'
+import polka from 'polka'
+import cors from 'cors'
+import http from 'http'
+import { Buffer } from 'buffer'
+import getPort from './get-port.js'
 
 /**
  * HTTP echo server for testing purposes.
@@ -39,10 +37,10 @@ const getPort = require('./get-port')
  * await server.stop()
  * ```
  */
-class EchoServer {
+export default class EchoServer {
   /**
    *
-   * @param {Object} options - server options
+   * @param {object} options - server options
    * @param {number} [options.port] - server port
    * @param {string} [options.host] - server host
    * @param {boolean} [options.findPort] - flag to check for ports
@@ -105,5 +103,3 @@ class EchoServer {
     return this
   }
 }
-
-module.exports = EchoServer

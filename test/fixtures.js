@@ -1,9 +1,9 @@
 /* eslint-env mocha */
-'use strict'
 
-const loadFixture = require('../utils/fixtures')
-const { expect } = require('../utils/chai')
-const path = require('path')
+import loadFixture from '../utils/fixtures.js'
+import { expect } from '../utils/chai.js'
+import path from 'path'
+import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 
 describe('fixtures', () => {
   it('should load fixtures from dependencies', () => {
@@ -13,6 +13,6 @@ describe('fixtures', () => {
 
   it('should load local fixtures', () => {
     const myFixture = loadFixture(path.join('test', 'fixtures', 'test.txt'))
-    expect(myFixture.toString('utf8').trim()).to.be.eql('Hello Fixture')
+    expect(uint8ArrayToString(myFixture).trim()).to.be.eql('Hello Fixture')
   })
 })

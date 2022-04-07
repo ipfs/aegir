@@ -1,9 +1,9 @@
-'use strict'
+
 /* eslint-env mocha */
 
-const { expect } = require('../../utils/chai')
-const EchoServer = require('../../utils/echo-server')
-const getPort = require('../../utils/get-port')
+import { expect } from '../../utils/chai.js'
+import EchoServer from '../../utils/echo-server.js'
+import getPort from '../../utils/get-port.js'
 
 describe('get port spec', () => {
   it('should find the given port if available', async () => {

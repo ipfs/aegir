@@ -1,4 +1,3 @@
-'use strict'
 
 // export something from the global scope
-module.exports = Uint8Array
+export default Uint8Array

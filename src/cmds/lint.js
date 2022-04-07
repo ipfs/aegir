@@ -1,9 +1,11 @@
-'use strict'
-const { userConfig } = require('../config/user')
+
+import { loadUserConfig } from '../config/user.js'
+import lintCmd from '../lint.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
  * @typedef {import("yargs").Arguments} Arguments
+ * @typedef {import("yargs").CommandModule} CommandModule
  */
 
 const EPILOG = `
@@ -11,14 +13,17 @@ Linting uses eslint (http://eslint.org/) and standard(https://github.com/feross/
 with some custom rules(https://github.com/ipfs/eslint-config-aegir) to enforce some more strictness.
 `
 
-module.exports = {
+/** @type {CommandModule} */
+export default {
   command: 'lint',
-  desc: 'Lint all project files',
+  describe: 'Lint all project files',
   /**
    * @param {Argv} yargs
    */
-  builder: (yargs) => {
-    yargs
+  builder: async (yargs) => {
+    const userConfig = await loadUserConfig()
+
+    return yargs
       .epilog(EPILOG)
       .options({
         fix: {
@@ -40,10 +45,9 @@ module.exports = {
       })
   },
   /**
-   * @param {(import("../types").GlobalOptions & import("../types").LintOptions) | undefined} argv
+   * @param {any} argv
    */
-  handler (argv) {
-    const lint = require('../lint')
-    return lint.run(argv)
+  async handler (argv) {
+    await lintCmd.run(argv)
   }
 }

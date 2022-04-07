@@ -1,26 +1,33 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable max-depth */
 /* eslint-disable no-console */
-'use strict'
-const esbuild = require('esbuild')
-const fs = require('fs-extra')
-const findPkg = require('read-pkg-up')
-const kleur = require('kleur')
-const { userConfig } = require('../config/user')
-const path = require('path')
-const { fromRoot, paths } = require('../utils')
-const merge = require('merge-options').bind({
+
+import esbuild from 'esbuild'
+import fs from 'fs-extra'
+import { readPackageUp } from 'read-pkg-up'
+import kleur from 'kleur'
+import { loadUserConfig } from '../config/user.js'
+import path from 'path'
+import { fromRoot, paths } from '../utils.js'
+import merge from 'merge-options'
+
+const defaults = merge.bind({
   ignoreUndefined: true,
   concatArrays: true
 })
-module.exports = {
+
+/**
+ * @typedef {import("yargs").CommandModule} CommandModule
+ */
+
+/** @type {CommandModule} */
+export default {
   command: 'check',
-  desc: 'Check project',
-  builder: {},
+  describe: 'Check project',
   /**
    * @param {any} argv
    */
-  handler (argv) {
+  async handler (argv) {
     return checkBuiltins(argv)
   }
 }
@@ -85,7 +92,8 @@ const checkBuiltins = async (argv) => {
       'process.env.NODE_ENV': '"production"'
     }
   }
-  const result = await esbuild.build(merge(esbuildOptions, userConfig.build.config))
+  const userConfig = await loadUserConfig()
+  const result = await esbuild.build(defaults(esbuildOptions, userConfig.build.config))
   if (result.metafile) {
     fs.writeJSONSync(metafile, result.metafile)
   }
@@ -132,7 +140,7 @@ const findDuplicates = async (inputs) => {
     if (imports.size > 1) {
       console.log(kleur.red(key))
       for (const file of imports) {
-        const out = await findPkg({ cwd: file })
+        const out = await readPackageUp({ cwd: file })
         if (out) {
           console.log(kleur.dim(file), kleur.blue(out.packageJson.version))
         }
@@ -150,7 +158,7 @@ const findBuiltins = async (nodeBuiltIns) => {
   // eslint-disable-next-line guard-for-in
   for (const builtin in nodeBuiltIns) {
     for (const importer of nodeBuiltIns[builtin]) {
-      const out = await findPkg({ cwd: importer })
+      const out = await readPackageUp({ cwd: importer })
       let isOk = false
       if (out) {
         if (out.packageJson.dependencies) {

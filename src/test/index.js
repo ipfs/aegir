@@ -1,20 +1,36 @@
-'use strict'
-
-const pmap = require('p-map')
-const node = require('./node')
-const browser = require('./browser')
-const electron = require('./electron')
-const rn = require('./react-native')
+import pmap from 'p-map'
+import node from './node.js'
+import browser from './browser.js'
+import electron from './electron.js'
+import rn from './react-native.js'
+import buildCmd from '../build/index.js'
+import { isTypescript } from '../utils.js'
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
  * @typedef {import('./../types').TestOptions} TestOptions
  * @typedef {import('./../types').GlobalOptions} GlobalOptions
+ * @typedef {import('./../types').BuildOptions} BuildOptions
  */
 
 const TASKS = [
   {
-    title: 'Test Node.js',
+    title: 'build',
+
+    /**
+     * @param {TestOptions & GlobalOptions} ctx
+     */
+    enabled: (ctx) => isTypescript || ctx.build === true,
+
+    /**
+     * @param {BuildOptions & GlobalOptions} ctx
+     */
+    task: async (ctx) => {
+      await buildCmd.run(ctx)
+    }
+  },
+  {
+    title: 'test node.js',
     /**
      * @param {TestOptions & GlobalOptions} opts
      * @param {ExecaOptions} execaOptions
@@ -26,7 +42,7 @@ const TASKS = [
     enabled: (ctx) => ctx.target.includes('node')
   },
   {
-    title: 'Test Browser',
+    title: 'test browser',
     /**
      * @param {TestOptions & GlobalOptions} opts
      * @param {ExecaOptions} execaOptions
@@ -38,7 +54,7 @@ const TASKS = [
     enabled: (ctx) => ctx.target.includes('browser')
   },
   {
-    title: 'Test Webworker',
+    title: 'test webworker',
     /**
      * @param {TestOptions & GlobalOptions} opts
      * @param {ExecaOptions} execaOptions
@@ -50,7 +66,7 @@ const TASKS = [
     enabled: (ctx) => ctx.target.includes('webworker')
   },
   {
-    title: 'Test Electron Main',
+    title: 'test electron main',
     /**
      * @param {TestOptions & GlobalOptions} opts
      * @param {ExecaOptions} execaOptions
@@ -62,7 +78,7 @@ const TASKS = [
     enabled: (ctx) => ctx.target.includes('electron-main')
   },
   {
-    title: 'Test Electron Renderer',
+    title: 'test electron renderer',
     /**
      * @param {TestOptions & GlobalOptions} opts
      * @param {ExecaOptions} execaOptions
@@ -74,7 +90,7 @@ const TASKS = [
     enabled: (ctx) => ctx.target.includes('electron-renderer')
   },
   {
-    title: 'Test React Native Android',
+    title: 'test react native android',
     /**
      * @param {TestOptions & GlobalOptions} opts
      * @param {ExecaOptions} execaOptions
@@ -87,10 +103,10 @@ const TASKS = [
   }
 ]
 
-module.exports = {
+export default {
   /**
    *
-   * @param {TestOptions & GlobalOptions} opts
+   * @param {TestOptions & BuildOptions & GlobalOptions} opts
    * @param {ExecaOptions} execaOptions
    */
   run (opts, execaOptions = {}) {

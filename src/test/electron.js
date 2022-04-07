@@ -1,20 +1,25 @@
-'use strict'
-const path = require('path')
-const execa = require('execa')
-const { getElectron } = require('../utils')
-const merge = require('merge-options')
+import path from 'path'
+import { execa } from 'execa'
+import { getElectron, isTypescript } from '../utils.js'
+import merge from 'merge-options'
+import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
  * @typedef {import('./../types').TestOptions} TestOptions
  * @typedef {import('./../types').GlobalOptions} GlobalOptions
  */
+
 /**
  *
  * @param {TestOptions & GlobalOptions} argv
  * @param {ExecaOptions} execaOptions
  */
-module.exports = async (argv, execaOptions) => {
+export default async (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   const watch = argv.watch ? ['--watch'] : []
   const files = argv.files.length > 0 ? [...argv.files] : ['test/**/*.spec.{js,ts,mjs,cjs}']
@@ -23,7 +28,7 @@ module.exports = async (argv, execaOptions) => {
   const bail = argv.bail ? ['--bail'] : []
   const timeout = argv.timeout ? [`--timeout=${argv.timeout}`] : []
   const renderer = argv.runner === 'electron-renderer' ? ['--renderer'] : []
-  const ts = argv.tsRepo ? ['--require', require.resolve('esbuild-register')] : []
+  const ts = isTypescript ? ['--require', require.resolve('esbuild-register')] : []
 
   // before hook
   const before = await argv.fileConfig.test.before(argv)

@@ -1,30 +1,36 @@
-'use strict'
 
-const execa = require('execa')
-const path = require('path')
-const { fromAegir, fromRoot } = require('../utils')
+import { execa } from 'execa'
+import path from 'path'
+import { fromAegir, fromRoot } from '../utils.js'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 /**
  * @typedef {import("yargs").Argv} Argv
+ * @typedef {import("yargs").CommandModule} CommandModule
  */
+
 const EPILOG = `
 Supports options forwarding with '--' for more info check https://github.com/tclindner/npm-package-json-lint#cli-commands-and-configuration
 `
 
-module.exports = {
+/** @type {CommandModule} */
+export default {
   command: 'lint-package-json',
-  desc: 'Lint package.json with aegir defaults.',
+  describe: 'Lint package.json with aegir defaults.',
   aliases: ['lint-package', 'lpj'],
   /**
    * @param {Argv} yargs
    */
   builder: (yargs) => {
-    yargs
+    return yargs
       .epilog(EPILOG)
   },
   /**
-   * @param {{ [x: string]: any; _: string | any[]; }} argv
+   * @param {any} argv
    */
-  handler (argv) {
+  async handler (argv) {
     const input = argv._.slice(1)
     const forwardOptions = argv['--'] ? argv['--'] : []
     const useBuiltinConfig = !forwardOptions.includes('--configFile')
@@ -32,7 +38,7 @@ module.exports = {
       ? ['-c', fromAegir('src/config/.npmpackagejsonlintrc.json')]
       : []
 
-    return execa('npmPkgJsonLint', [
+    await execa('npmPkgJsonLint', [
       fromRoot('package.json'),
       ...config,
       ...input,

@@ -1,3 +1,10 @@
+### [37.0.2](https://github.com/ipfs/aegir/compare/v37.0.1...v37.0.2) (2022-04-07)
+
+
+### Bug Fixes
+
+* exclude .ts files from electron test ([#950](https://github.com/ipfs/aegir/issues/950)) ([1a28e68](https://github.com/ipfs/aegir/commit/1a28e68be2901bd66209e37b651b802acd2db1f0))
+
 ### [37.0.1](https://github.com/ipfs/aegir/compare/v37.0.0...v37.0.1) (2022-04-07)
 
 

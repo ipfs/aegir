@@ -263,3 +263,7 @@ export const isTypedCJS = isCJS && hasMain && hasTypes
 
 // 3. CJS, no types
 export const isUntypedCJS = isCJS && hasMain
+
+const parentManifestPath = path.resolve(path.join(process.cwd(), '..', '..', 'package.json'))
+
+export const isMonorepoProject = Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)

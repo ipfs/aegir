@@ -79,7 +79,7 @@ describe('lint', () => {
   })
 
   it('lint itself (aegir)', async function () {
-    this.timeout(20 * 1000) // slow ci is slow
+    this.timeout(120 * 1000) // slow ci is slow
     const userConfig = await loadUserConfig()
     return lint.run({
       fileConfig: userConfig,

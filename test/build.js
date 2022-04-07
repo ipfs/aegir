@@ -19,11 +19,11 @@ describe('build', () => {
     before(async () => {
       projectDir = tempy.directory()
 
-      await fs.copy(join(__dirname, 'fixtures', 'esm', 'an-esm-project'), projectDir)
+      await fs.copy(join(__dirname, 'fixtures', 'projects', 'an-esm-project'), projectDir)
     })
 
     it('should build an esm project', async function () {
-      this.timeout(20 * 1000) // slow ci is slow
+      this.timeout(120 * 1000) // slow ci is slow
 
       await execa(bin, ['build'], {
         cwd: projectDir

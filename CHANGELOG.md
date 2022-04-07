@@ -1,3 +1,10 @@
+### [37.0.4](https://github.com/ipfs/aegir/compare/v37.0.3...v37.0.4) (2022-04-07)
+
+
+### Bug Fixes
+
+* types and deps ([#952](https://github.com/ipfs/aegir/issues/952)) ([aa0d44d](https://github.com/ipfs/aegir/commit/aa0d44d1abb086cbf8ce3db5a453daa493fc1945))
+
 ### [37.0.3](https://github.com/ipfs/aegir/compare/v37.0.2...v37.0.3) (2022-04-07)
 
 

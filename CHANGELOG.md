@@ -1,3 +1,10 @@
+### [37.0.5](https://github.com/ipfs/aegir/compare/v37.0.4...v37.0.5) (2022-04-07)
+
+
+### Bug Fixes
+
+* add semantic-release-monorepo to release command ([#953](https://github.com/ipfs/aegir/issues/953)) ([28c25f5](https://github.com/ipfs/aegir/commit/28c25f50b19c0e3f4378ed239af476778edb9769))
+
 ### [37.0.4](https://github.com/ipfs/aegir/compare/v37.0.3...v37.0.4) (2022-04-07)
 
 

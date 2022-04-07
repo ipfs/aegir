@@ -39,7 +39,7 @@ export async function typescriptManifest (manifest, branchName, repoUrl, homePag
         sourceType: 'module'
       }
     }, manifest.eslintConfig),
-    release: manifest.scripts?.release?.includes('semantic-release') ? semanticReleaseConfig(branchName) : undefined
+    release: (manifest.scripts?.release?.includes('semantic-release') || manifest.scripts?.release?.includes('aegir release')) ? semanticReleaseConfig(branchName) : undefined
   }, repoUrl, homePage)
 
   if (Object.keys(proposedManifest.exports).length > 1) {

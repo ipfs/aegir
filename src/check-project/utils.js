@@ -5,6 +5,9 @@ import path from 'path'
 import prompt from 'prompt'
 import chalk from 'chalk'
 import * as Diff from 'diff'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @param {string} projectDir

@@ -52,7 +52,7 @@ export async function typedESMManifest (manifest, branchName, repoUrl, homePage 
         sourceType: 'module'
       }
     }, manifest.eslintConfig),
-    release: manifest.scripts?.release?.includes('semantic-release') || manifest.scripts?.release?.includes('aegir release') ? semanticReleaseConfig(branchName) : undefined
+    release: (manifest.scripts?.release?.includes('semantic-release') || manifest.scripts?.release?.includes('aegir release')) ? semanticReleaseConfig(branchName) : undefined
   }, repoUrl, homePage)
 
   const rest = {

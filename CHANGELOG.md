@@ -1,3 +1,19 @@
+## [37.0.0](https://github.com/ipfs/aegir/compare/v36.2.3...v37.0.0) (2022-04-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* ESM modules are now published as ESM and not dual-ESM/CJS
+
+### Features
+
+* update build and release commands ([#946](https://github.com/ipfs/aegir/issues/946)) ([e3a4b45](https://github.com/ipfs/aegir/commit/e3a4b450c5eb271ae3557144d78636695751ce11))
+
+
+### Trivial Changes
+
+* add missing dep ([bc62524](https://github.com/ipfs/aegir/commit/bc62524460691031e410ca4ddb97d8bc6b08d4f7))
+
 ### [36.2.3](https://github.com/ipfs/aegir/compare/v36.2.2...v36.2.3) (2022-03-18)
 
 

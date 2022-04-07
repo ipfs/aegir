@@ -23,7 +23,7 @@ export default async (argv, execaOptions) => {
   const files = argv.files.length > 0
     ? [...argv.files]
     : [
-        'test/**/*.spec.{js,ts,mjs,cjs}',
+        'test/**/*.spec.{js,mjs,cjs}',
         'dist/test/**/*.spec.{js,cjs,mjs}'
       ]
   const grep = argv.grep ? ['--grep', argv.grep] : []

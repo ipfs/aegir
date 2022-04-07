@@ -7,7 +7,6 @@
 
 import { constants, createBrotliCompress, createGzip } from 'zlib'
 import os from 'os'
-import ora from 'ora'
 import extract from 'extract-zip'
 import stripComments from 'strip-json-comments'
 import stripBom from 'strip-bom'
@@ -20,6 +19,7 @@ import { execa } from 'execa'
 import envPaths from 'env-paths'
 import lockfile from 'proper-lockfile'
 import { fileURLToPath } from 'url'
+import Listr from 'listr'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -151,16 +151,31 @@ export const getElectron = async () => {
     lockfilePath
   })
 
-  const version = pkg.devDependencies.electron.slice(1)
-  const spinner = ora(`Downloading electron: ${version}`).start()
-  const zipPath = await download(version)
-  const electronPath = path.join(path.dirname(zipPath), getPlatformPath())
-  if (!fs.existsSync(electronPath)) {
-    spinner.text = 'Extracting electron to system cache'
-    await extract(zipPath, { dir: path.dirname(zipPath) })
+  const aegirManifest = await fs.readJSON(path.join(__dirname, '../package.json'))
+  const version = pkg.devDependencies?.electron?.slice(1) ?? pkg.dependencies?.electron?.slice(1) ?? aegirManifest.devDependencies.electron.slice(1)
+  let electronPath = ''
+  let zipPath = ''
+
+  const tasks = new Listr([{
+    title: `Downloading electron: ${version}`,
+    task: async () => {
+      zipPath = await download(version)
+      electronPath = path.join(path.dirname(zipPath), getPlatformPath())
+    }
+  }, {
+    title: 'Extracting electron to system cache',
+    enabled: () => !fs.existsSync(electronPath),
+    task: async () => {
+      await extract(zipPath, { dir: path.dirname(zipPath) })
+    }
+  }])
+
+  try {
+    await tasks.run()
+  } finally {
+    await releaseLock()
   }
-  spinner.stop()
-  await releaseLock()
+
   return electronPath
 }
 

@@ -99,6 +99,7 @@ const defaults = {
       'src/**/*.cjs',
       'test/**/*.js',
       'test/**/*.cjs',
+      'dist/**/*.js',
       'benchmarks/**/*.js',
       'benchmarks/**/*.cjs',
       'utils/**/*.js',

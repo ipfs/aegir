@@ -14,24 +14,13 @@ chai.use(chaiString)
 
 export const expect = chai.expect
 export const assert = chai.assert
-export { chai }
-/*
-module.exports = {
-  expect,
-  assert,
+export {
   chai,
 
   // this is to ensure that we import the chai types in the generated .d.ts file
-  _: {
-    chaiAsPromised,
-    chaiParentheses,
-    chaiSubset,
-    chaiBites,
-    chaiString
-  }
+  chaiAsPromised,
+  chaiParentheses,
+  chaiSubset,
+  chaiBites,
+  chaiString
 }
-
-// we don't actually want to export these things so remove the property
-// @ts-ignore - the operand should be optional
-delete module.exports._
-*/

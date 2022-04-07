@@ -1,3 +1,10 @@
+### [37.0.6](https://github.com/ipfs/aegir/compare/v37.0.5...v37.0.6) (2022-04-07)
+
+
+### Bug Fixes
+
+* set correct semantic-release config for files with aegir release ([#954](https://github.com/ipfs/aegir/issues/954)) ([93136ff](https://github.com/ipfs/aegir/commit/93136ffec213ad7b5279a6f0ce00385ff6ebb02c))
+
 ### [37.0.5](https://github.com/ipfs/aegir/compare/v37.0.4...v37.0.5) (2022-04-07)
 
 

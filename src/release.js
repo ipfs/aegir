@@ -4,6 +4,7 @@ import Listr from 'listr'
 import { execa } from 'execa'
 import cleanCmd from './clean.js'
 import buildCmd from './build/index.js'
+import { isMonorepoProject } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -31,12 +32,18 @@ const tasks = new Listr([
     }
   },
   {
-    title: 'semantic-release',
+    title: `semantic-release${isMonorepoProject ? '-monorepo' : ''}`,
     /**
      * @param {GlobalOptions} ctx
      */
     task: async (ctx) => {
-      await execa('semantic-release', ctx['--'] ?? [], {
+      let args = ctx['--'] ?? []
+
+      if (isMonorepoProject) {
+        args = ['-e', 'semantic-release-monorepo', ...args]
+      }
+
+      await execa('semantic-release', args, {
         preferLocal: true,
         stdio: 'inherit'
       })

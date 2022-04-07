@@ -1,11 +1,9 @@
 import path from 'path'
 import { execa } from 'execa'
-import { getElectron, isTypescript } from '../utils.js'
+import { getElectron } from '../utils.js'
 import merge from 'merge-options'
 import { fileURLToPath } from 'url'
-import { createRequire } from 'module'
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
@@ -22,13 +20,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export default async (argv, execaOptions) => {
   const forwardOptions = argv['--'] ? argv['--'] : []
   const watch = argv.watch ? ['--watch'] : []
-  const files = argv.files.length > 0 ? [...argv.files] : ['test/**/*.spec.{js,ts,mjs,cjs}']
+  const files = argv.files.length > 0
+    ? [...argv.files]
+    : [
+        'test/**/*.spec.{js,ts,mjs,cjs}',
+        'dist/test/**/*.spec.{js,cjs,mjs}'
+      ]
   const grep = argv.grep ? ['--grep', argv.grep] : []
   const progress = argv.progress ? ['--reporter=progress'] : []
   const bail = argv.bail ? ['--bail'] : []
   const timeout = argv.timeout ? [`--timeout=${argv.timeout}`] : []
   const renderer = argv.runner === 'electron-renderer' ? ['--renderer'] : []
-  const ts = isTypescript ? ['--require', require.resolve('esbuild-register')] : []
 
   // before hook
   const before = await argv.fileConfig.test.before(argv)
@@ -43,7 +45,6 @@ export default async (argv, execaOptions) => {
       ...progress,
       ...bail,
       ...timeout,
-      ...ts,
       '--colors',
       '--full-trace',
       ...renderer,

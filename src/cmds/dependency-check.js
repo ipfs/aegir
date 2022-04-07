@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 
-import ora from 'ora'
 import { loadUserConfig } from '../config/user.js'
 import depCheck from '../dependency-check.js'
 
@@ -51,14 +50,6 @@ export default {
    * @param {any} argv
    */
   async handler (argv) {
-    const spinner = ora('Checking dependencies').start()
-
-    try {
-      await depCheck(argv)
-      spinner.succeed()
-    } catch (err) {
-      spinner.fail()
-      throw err
-    }
+    await depCheck.run(argv)
   }
 }

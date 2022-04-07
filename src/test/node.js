@@ -2,11 +2,8 @@ import { execa } from 'execa'
 import path from 'path'
 import tempy from 'tempy'
 import merge from 'merge-options'
-import { isTypescript } from '../utils.js'
 import { fileURLToPath } from 'url'
-import { createRequire } from 'module'
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
@@ -35,8 +32,10 @@ export default async function testNode (argv, execaOptions) {
   const files = argv.files.length > 0
     ? argv.files
     : [
-        'test/node.{js,ts,cjs,mjs}',
-        'test/**/*.spec.{js,ts,cjs,mjs}'
+        'test/node.{js,cjs,mjs}',
+        'test/**/*.spec.{js,cjs,mjs}',
+        'dist/test/node.{js,cjs,mjs}',
+        'dist/test/**/*.spec.{js,cjs,mjs}'
       ]
 
   const args = [
@@ -58,10 +57,6 @@ export default async function testNode (argv, execaOptions) {
 
   if (argv.bail) {
     args.push('--bail')
-  }
-
-  if (isTypescript) {
-    args.push(...['--require', require.resolve('esbuild-register')])
   }
 
   if (argv['--']) {

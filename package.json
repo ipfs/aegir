@@ -56,8 +56,9 @@
     }
   },
   "files": [
+    "dist",
     "src",
-    "dist/src",
+    "utils",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -195,7 +196,6 @@
     "electron-mocha-main": "^11.0.3",
     "env-paths": "^3.0.0",
     "esbuild": "^0.14.31",
-    "esbuild-register": "^3.3.2",
     "eslint": "^8.12.0",
     "eslint-config-ipfs": "^2.1.0",
     "eslint-plugin-etc": "^2.0.2",
@@ -215,7 +215,6 @@
     "mocha": "^9.0.2",
     "npm-package-json-lint": "^6.3.0",
     "nyc": "^15.1.0",
-    "ora": "^6.1.0",
     "p-map": "^5.3.0",
     "pascalcase": "^2.0.0",
     "path": "^0.12.7",

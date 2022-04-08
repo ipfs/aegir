@@ -1,3 +1,10 @@
+### [37.0.8](https://github.com/ipfs/aegir/compare/v37.0.7...v37.0.8) (2022-04-08)
+
+
+### Bug Fixes
+
+* dep-check command name ([#957](https://github.com/ipfs/aegir/issues/957)) ([0257e77](https://github.com/ipfs/aegir/commit/0257e778e04f76fa1eb09532fd53fdde77538d1d))
+
 ### [37.0.7](https://github.com/ipfs/aegir/compare/v37.0.6...v37.0.7) (2022-04-08)
 
 

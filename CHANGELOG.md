@@ -1,3 +1,10 @@
+### [37.0.7](https://github.com/ipfs/aegir/compare/v37.0.6...v37.0.7) (2022-04-08)
+
+
+### Bug Fixes
+
+* use @semantic-release/github fork ([#956](https://github.com/ipfs/aegir/issues/956)) ([92bfc37](https://github.com/ipfs/aegir/commit/92bfc3751f7fe6919d008ff9696683ac59f9247a))
+
 ### [37.0.6](https://github.com/ipfs/aegir/compare/v37.0.5...v37.0.6) (2022-04-07)
 
 

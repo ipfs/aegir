@@ -23,7 +23,7 @@ const isDefaultInput = (arr1, arr2) =>
 const tasks = new Listr(
   [
     {
-      title: 'eslint',
+      title: 'dependency-check',
       /**
        * @param {GlobalOptions & DependencyCheckOptions} ctx
        * @param {Task} task

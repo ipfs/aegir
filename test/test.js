@@ -31,7 +31,9 @@ async function setUpProject (project) {
   await fs.createSymlink(path.resolve(__dirname, '..'), path.join(projectDir, 'node_modules/aegir'), 'dir')
 
   // ensure binary is executable
+  await fs.createSymlink(path.resolve(__dirname, '../src/index.js'), path.join(projectDir, 'node_modules/.bin/aegir'), 'file')
   await fs.chmod(path.resolve(__dirname, '../src/index.js'), 0o755)
+  await fs.chmod(path.join(projectDir, 'node_modules/.bin/aegir'), 0o755)
 
   return projectDir
 }

@@ -5,11 +5,8 @@ import fs, { copy } from 'fs-extra'
 import path, { join } from 'path'
 import tempy from 'tempy'
 import { fileURLToPath } from 'url'
-import { createRequire } from 'module'
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const bin = require.resolve('../src/index.js')
 
 /**
  * @param {string} project
@@ -47,7 +44,7 @@ describe('test', () => {
     it('should test an esm project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      await execa('node', [bin, 'test'], {
+      await execa('npm', ['test'], {
         cwd: projectDir
       })
     })
@@ -63,7 +60,7 @@ describe('test', () => {
     it('should test a ts project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      await execa('node', [bin, 'test'], {
+      await execa('npm', ['test'], {
         cwd: projectDir
       })
     })

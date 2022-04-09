@@ -1,3 +1,10 @@
+### [37.0.10](https://github.com/ipfs/aegir/compare/v37.0.9...v37.0.10) (2022-04-09)
+
+
+### Trivial Changes
+
+* update migration guide ([9201d17](https://github.com/ipfs/aegir/commit/9201d17d64e7f791d64047adb1d3279cbc8d6821))
+
 ### [37.0.9](https://github.com/ipfs/aegir/compare/v37.0.8...v37.0.9) (2022-04-09)
 
 

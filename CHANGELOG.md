@@ -1,3 +1,17 @@
+### [37.0.9](https://github.com/ipfs/aegir/compare/v37.0.8...v37.0.9) (2022-04-09)
+
+
+### Bug Fixes
+
+* run npm scripts instead of chaining to other commands ([#959](https://github.com/ipfs/aegir/issues/959)) ([098fca3](https://github.com/ipfs/aegir/commit/098fca327f24d0c01906590596e736548a97d6e3))
+* skip tsc during linting for ts projects ([#958](https://github.com/ipfs/aegir/issues/958)) ([af32fb1](https://github.com/ipfs/aegir/commit/af32fb1377fb41876eba385181e041cb3c4d0b65))
+
+
+### Trivial Changes
+
+* add migration guide for 37 ([f4bec49](https://github.com/ipfs/aegir/commit/f4bec497ecb49f5d1e62231220e82c4fd09e18ac))
+* **deps:** bump eslint-plugin-jsdoc from 38.1.6 to 39.0.0 ([#955](https://github.com/ipfs/aegir/issues/955)) ([ca50cb6](https://github.com/ipfs/aegir/commit/ca50cb628b56dad12b5ff90167e5a0b60a359471))
+
 ### [37.0.8](https://github.com/ipfs/aegir/compare/v37.0.7...v37.0.8) (2022-04-08)
 
 

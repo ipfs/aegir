@@ -26,10 +26,15 @@ async function setUpProject (project) {
       continue
     }
 
+    // symlink dep
     await fs.createSymlink(path.join(nodeModulesPath, entry), path.join(projectDir, 'node_modules', entry), 'dir')
   }
 
+  // symlink aegir
   await fs.createSymlink(path.resolve(__dirname, '..'), path.join(projectDir, 'node_modules/aegir'), 'dir')
+
+  // symlink binary
+  await fs.createSymlink(path.resolve(__dirname, '../src/index.js'), path.join(projectDir, 'node_modules/.bin/aegir'), 'file')
 
   return projectDir
 }

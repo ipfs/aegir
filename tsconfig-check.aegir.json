@@ -1,0 +1,1 @@
+{"extends":"./src/config/tsconfig.aegir.json","compilerOptions":{"outDir":"dist","emitDeclarationOnly":false,"noEmit":true},"include":["package.json","src","test","utils"]}

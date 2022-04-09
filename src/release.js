@@ -2,33 +2,28 @@
 
 import Listr from 'listr'
 import { execa } from 'execa'
-import cleanCmd from './clean.js'
-import buildCmd from './build/index.js'
 import { isMonorepoProject } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").BuildOptions} BuildOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  */
 
 const tasks = new Listr([
   {
     title: 'clean',
-    /**
-     * @param {GlobalOptions} ctx
-     */
-    task: async (ctx) => {
-      await cleanCmd.run(ctx)
+    task: async () => {
+      await execa('npm', ['run', 'clean', '--if-present'], {
+        stdio: 'inherit'
+      })
     }
   },
   {
     title: 'build',
-    /**
-     * @param {GlobalOptions & BuildOptions} ctx
-     */
-    task: async (ctx) => {
-      await buildCmd.run(ctx)
+    task: async () => {
+      await execa('npm', ['run', 'build', '--if-present'], {
+        stdio: 'inherit'
+      })
     }
   },
   {

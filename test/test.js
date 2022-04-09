@@ -33,12 +33,6 @@ async function setUpProject (project) {
   // symlink aegir
   await fs.createSymlink(path.resolve(__dirname, '..'), path.join(projectDir, 'node_modules/aegir'), 'dir')
 
-  // symlink binary
-  await fs.createSymlink(path.resolve(__dirname, '../src/index.js'), path.join(projectDir, 'node_modules/.bin/aegir'), 'file')
-
-  // ensure binary is executable
-  await fs.chmod(path.resolve(__dirname, '../src/index.js'), 0o755)
-
   return projectDir
 }
 
@@ -53,7 +47,7 @@ describe('test', () => {
     it('should test an esm project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      await execa(bin, ['test'], {
+      await execa('node', [bin, 'test'], {
         cwd: projectDir
       })
     })
@@ -69,7 +63,7 @@ describe('test', () => {
     it('should test a ts project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      await execa(bin, ['test'], {
+      await execa('node', [bin, 'test'], {
         cwd: projectDir
       })
     })

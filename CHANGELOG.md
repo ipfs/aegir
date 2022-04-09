@@ -1,3 +1,10 @@
+### [37.0.11](https://github.com/ipfs/aegir/compare/v37.0.10...v37.0.11) (2022-04-09)
+
+
+### Bug Fixes
+
+* run uncompiled tests for browsers ([#960](https://github.com/ipfs/aegir/issues/960)) ([120c4cb](https://github.com/ipfs/aegir/commit/120c4cb4ca380dd11cd4ec88d912fb64453ccb05))
+
 ### [37.0.10](https://github.com/ipfs/aegir/compare/v37.0.9...v37.0.10) (2022-04-09)
 
 

@@ -7,7 +7,7 @@ import path from 'path'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import merge from 'merge-options'
-import { fromRoot, readJson, hasTsconfig } from './utils.js'
+import { fromRoot, readJson, hasTsconfig, isTypescript } from './utils.js'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -56,7 +56,7 @@ const tasks = new Listr(
       /**
        * @param {GlobalOptions & LintOptions} ctx
        */
-      enabled: ctx => hasTsconfig,
+      enabled: ctx => hasTsconfig && !isTypescript,
       /**
        * @param {GlobalOptions & LintOptions} ctx
        * @param {Task} task

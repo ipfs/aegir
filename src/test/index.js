@@ -3,8 +3,8 @@ import node from './node.js'
 import browser from './browser.js'
 import electron from './electron.js'
 import rn from './react-native.js'
-import buildCmd from '../build/index.js'
 import { isTypescript } from '../utils.js'
+import { execa } from 'execa'
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
@@ -26,7 +26,9 @@ const TASKS = [
      * @param {BuildOptions & GlobalOptions} ctx
      */
     task: async (ctx) => {
-      await buildCmd.run(ctx)
+      await execa('npm', ['run', 'build', '--if-present'], {
+        stdio: 'inherit'
+      })
     }
   },
   {

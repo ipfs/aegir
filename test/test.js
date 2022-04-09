@@ -5,11 +5,8 @@ import fs, { copy } from 'fs-extra'
 import path, { join } from 'path'
 import tempy from 'tempy'
 import { fileURLToPath } from 'url'
-import { createRequire } from 'module'
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const bin = require.resolve('../src/index.js')
 
 /**
  * @param {string} project
@@ -26,10 +23,14 @@ async function setUpProject (project) {
       continue
     }
 
+    // symlink dep
     await fs.createSymlink(path.join(nodeModulesPath, entry), path.join(projectDir, 'node_modules', entry), 'dir')
   }
 
-  await fs.createSymlink(path.resolve(__dirname, '..'), path.join(projectDir, 'node_modules/aegir'), 'dir')
+  // link aegir into project
+  await execa('npm', ['link', path.resolve(__dirname, '..')], {
+    cwd: projectDir
+  })
 
   return projectDir
 }
@@ -45,7 +46,7 @@ describe('test', () => {
     it('should test an esm project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      await execa(bin, ['test'], {
+      await execa('npm', ['test'], {
         cwd: projectDir
       })
     })
@@ -61,7 +62,7 @@ describe('test', () => {
     it('should test a ts project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      await execa(bin, ['test'], {
+      await execa('npm', ['test'], {
         cwd: projectDir
       })
     })

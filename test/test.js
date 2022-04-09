@@ -5,6 +5,7 @@ import fs, { copy } from 'fs-extra'
 import path, { join } from 'path'
 import tempy from 'tempy'
 import { fileURLToPath } from 'url'
+import os from 'os'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -30,10 +31,17 @@ async function setUpProject (project) {
   // symlink aegir
   await fs.createSymlink(path.resolve(__dirname, '..'), path.join(projectDir, 'node_modules/aegir'), 'dir')
 
-  // ensure binary is executable
-  await fs.createSymlink(path.resolve(__dirname, '../src/index.js'), path.join(projectDir, 'node_modules/.bin/aegir'), 'file')
-  await fs.chmod(path.resolve(__dirname, '../src/index.js'), 0o755)
-  await fs.chmod(path.join(projectDir, 'node_modules/.bin/aegir'), 0o755)
+  if (os.platform() === 'win32') {
+    // ensure binary is executable
+    await fs.createSymlink(path.resolve(__dirname, '../src/index.js'), path.join(projectDir, 'node_modules/.bin/aegir.cmd'), 'file')
+    await fs.chmod(path.resolve(__dirname, '../src/index.js'), 0o755)
+    await fs.chmod(path.join(projectDir, 'node_modules/.bin/aegir.cmd'), 0o755)
+  } else {
+    // ensure binary is executable
+    await fs.createSymlink(path.resolve(__dirname, '../src/index.js'), path.join(projectDir, 'node_modules/.bin/aegir'), 'file')
+    await fs.chmod(path.resolve(__dirname, '../src/index.js'), 0o755)
+    await fs.chmod(path.join(projectDir, 'node_modules/.bin/aegir'), 0o755)
+  }
 
   return projectDir
 }

@@ -31,13 +31,22 @@ async function setUpProject (project) {
   // symlink aegir
   await fs.createSymlink(path.resolve(__dirname, '..'), path.join(projectDir, 'node_modules/aegir'), 'dir')
 
+  // simulate aegir linked in node_modules/.bin
   if (os.platform() === 'win32') {
-    // ensure binary is executable
-    await fs.createSymlink(path.resolve(__dirname, '../src/index.js'), path.join(projectDir, 'node_modules/.bin/aegir.cmd'), 'file')
-    await fs.chmod(path.resolve(__dirname, '../src/index.js'), 0o755)
+    await fs.writeFile(path.join(projectDir, 'node_modules/.bin/aegir.cmd'), `#!/bin/sh
+basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+
+case \`uname\` in
+    *CYGWIN*|*MINGW*|*MSYS*) basedir=\`cygpath -w "$basedir"\`;;
+esac
+
+if [ -x "$basedir/node" ]; then
+  exec "$basedir/node"  "$basedir/../aegir/src/index" "$@"
+else
+  exec node  "$basedir/../aegir/src/index" "$@"
+fi`)
     await fs.chmod(path.join(projectDir, 'node_modules/.bin/aegir.cmd'), 0o755)
   } else {
-    // ensure binary is executable
     await fs.createSymlink(path.resolve(__dirname, '../src/index.js'), path.join(projectDir, 'node_modules/.bin/aegir'), 'file')
     await fs.chmod(path.resolve(__dirname, '../src/index.js'), 0o755)
     await fs.chmod(path.join(projectDir, 'node_modules/.bin/aegir'), 0o755)

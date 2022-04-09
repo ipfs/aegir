@@ -6,7 +6,6 @@ import { isMonorepoProject } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").BuildOptions} BuildOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  */
 
@@ -21,10 +20,7 @@ const tasks = new Listr([
   },
   {
     title: 'build',
-    /**
-     * @param {GlobalOptions & BuildOptions} ctx
-     */
-    task: async (ctx) => {
+    task: async () => {
       await execa('npm', ['run', 'build', '--if-present'], {
         stdio: 'inherit'
       })

@@ -42,7 +42,7 @@ async function setUpProject (project) {
   return projectDir
 }
 
-describe.only('test', () => {
+describe('test', () => {
   describe('esm', function () {
     let projectDir = ''
 

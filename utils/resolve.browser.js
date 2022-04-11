@@ -4,6 +4,6 @@
  * @param {string} filePath
  * @param {string} [module]
  */
- export default function resolve (filePath, module = '') {
+export default function resolve (filePath, module = '') {
   throw new Error('Not supported in the browser')
 }

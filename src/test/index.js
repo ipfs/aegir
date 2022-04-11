@@ -26,7 +26,7 @@ const TASKS = [
      * @param {BuildOptions & GlobalOptions} ctx
      */
     task: async (ctx) => {
-      await execa('npm', ['run', 'build', '--if-present'], {
+      await execa('npm', ['run', 'build', '--if-present', '--', '--no-bundle'], {
         stdio: 'inherit'
       })
     }

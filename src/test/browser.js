@@ -30,8 +30,10 @@ export default async (argv, execaOptions) => {
   const files = argv.files.length > 0
     ? argv.files
     : [
-        'test/**/*.spec.{js,ts,cjs,mjs}',
-        'test/browser.{js,ts,cjs,mjs}'
+        'test/**/*.spec.{js,cjs,mjs}',
+        'test/browser.{js,cjs,mjs}',
+        'dist/test/**/*.spec.{js,cjs,mjs}',
+        'dist/test/browser.{js,cjs,mjs}'
       ]
 
   // before hook

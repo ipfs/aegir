@@ -1,3 +1,10 @@
+### [37.0.13](https://github.com/ipfs/aegir/compare/v37.0.12...v37.0.13) (2022-04-11)
+
+
+### Bug Fixes
+
+* make resolve node-only ([#962](https://github.com/ipfs/aegir/issues/962)) ([57e6fff](https://github.com/ipfs/aegir/commit/57e6fffc463b3cb1c444ce7bb98aacb9c019b2ae))
+
 ### [37.0.12](https://github.com/ipfs/aegir/compare/v37.0.11...v37.0.12) (2022-04-11)
 
 

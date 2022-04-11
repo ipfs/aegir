@@ -6,7 +6,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import pascalcase from 'pascalcase'
 import bytes from 'bytes'
-import { gzipSize, pkg, hasTsconfig, isTypescript, hasFile, fromRoot, paths } from './../utils.js'
+import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths } from './../utils.js'
 import { execa } from 'execa'
 import merge from 'merge-options'
 

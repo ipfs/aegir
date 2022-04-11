@@ -6,7 +6,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import pascalcase from 'pascalcase'
 import bytes from 'bytes'
-import { gzipSize, pkg, hasTsconfig, hasFile, fromRoot, paths } from './../utils.js'
+import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths } from './../utils.js'
 import { execa } from 'execa'
 import merge from 'merge-options'
 
@@ -30,10 +30,11 @@ const build = async (argv) => {
   const globalName = pascalcase(pkg.name)
   const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
   const umdPost = `return ${globalName}}));`
+  let entryPoint = fromRoot('src', 'index.js')
 
-  const tsIndex = fromRoot('src', 'index.ts')
-  const jsIndex = fromRoot('src', 'index.js')
-  const entryPoint = hasFile(tsIndex) ? tsIndex : jsIndex
+  if (isTypescript) {
+    entryPoint = fromRoot('dist', 'src', 'index.js')
+  }
 
   const result = await esbuild.build(defaults(
     {

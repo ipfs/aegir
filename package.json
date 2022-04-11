@@ -80,6 +80,7 @@
       "import": "./utils/get-port.js"
     },
     "./resolve": {
+      "browser": "./utils/resolve.browser.js",
       "import": "./utils/resolve.js"
     }
   },
@@ -287,6 +288,7 @@
   },
   "browser": {
     "fs": false,
-    "./utils/fixtures.js": "./utils/fixtures.browser.js"
+    "./utils/fixtures.js": "./utils/fixtures.browser.js",
+    "./utils/resolve.js": "./utils/resolve.browser.js"
   }
 }

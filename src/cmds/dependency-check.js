@@ -39,6 +39,12 @@ export default {
         type: 'boolean',
         default: userConfig.dependencyCheck.productionOnly
       })
+      .option('I', {
+        alias: 'production-input',
+        describe: 'Files to check when in production only mode',
+        type: 'string',
+        default: userConfig.dependencyCheck.productionInput
+      })
       .option('i', {
         alias: 'ignore',
         describe: 'Ignore these dependencies when considering which are used and which are not',

@@ -1,3 +1,10 @@
+### [37.0.14](https://github.com/ipfs/aegir/compare/v37.0.13...v37.0.14) (2022-04-19)
+
+
+### Bug Fixes
+
+* run dep check in prod mode ([#964](https://github.com/ipfs/aegir/issues/964)) ([43f20bf](https://github.com/ipfs/aegir/commit/43f20bf4ae9c33a9e03f6b4a93962be5fd706fee))
+
 ### [37.0.13](https://github.com/ipfs/aegir/compare/v37.0.12...v37.0.13) (2022-04-11)
 
 

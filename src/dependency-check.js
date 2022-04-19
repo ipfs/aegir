@@ -23,7 +23,7 @@ const tasks = new Listr(
        */
       task: async (ctx, task) => {
         const forwardOptions = ctx['--'] ? ctx['--'] : []
-        const input = ctx.input
+        const input = ctx.input.length > 0 ? ctx.input : ctx.fileConfig.dependencyCheck.input
         const ignore = ctx.ignore
           .concat(ctx.fileConfig.dependencyCheck.ignore)
           .reduce((acc, i) => acc.concat('-i', i), /** @type {string[]} */ ([]))
@@ -58,7 +58,7 @@ const tasks = new Listr(
        */
       task: async (ctx, task) => {
         const forwardOptions = ctx['--'] ? ctx['--'] : []
-        const input = ctx.fileConfig.dependencyCheck.productionInput
+        const input = ctx.input.length > 0 ? ctx.input : ctx.fileConfig.dependencyCheck.productionInput
         const ignore = ctx.ignore
           .concat(ctx.fileConfig.dependencyCheck.ignore)
           .reduce((acc, i) => acc.concat('-i', i), /** @type {string[]} */ ([]))

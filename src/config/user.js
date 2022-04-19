@@ -110,15 +110,11 @@ const defaults = {
     productionOnly: false,
     productionInput: [
       'package.json',
-      '.aegir.js',
-      '.aegir.cjs',
       'src/**/*.js',
       'src/**/*.cjs',
       'dist/src/**/*.js',
       'utils/**/*.js',
-      'utils/**/*.cjs',
-      '!./test/fixtures/**/*.js',
-      '!./test/fixtures/**/*.cjs'
+      'utils/**/*.cjs'
     ],
     ignore: [
       '@types/*'

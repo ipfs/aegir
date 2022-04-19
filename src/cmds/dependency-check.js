@@ -30,20 +30,7 @@ export default {
       .positional('input', {
         describe: 'Files to check',
         type: 'string',
-        array: true,
-        default: userConfig.dependencyCheck.input
-      })
-      .option('p', {
-        alias: 'production-only',
-        describe: 'Check production dependencies and paths only',
-        type: 'boolean',
-        default: userConfig.dependencyCheck.productionOnly
-      })
-      .option('I', {
-        alias: 'production-input',
-        describe: 'Files to check when in production only mode',
-        type: 'string',
-        default: userConfig.dependencyCheck.productionInput
+        array: true
       })
       .option('i', {
         alias: 'ignore',

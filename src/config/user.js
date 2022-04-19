@@ -111,7 +111,10 @@ const defaults = {
     productionInput: [
       'package.json',
       'src/**/*.js',
-      'src/**/*.cjs'
+      'src/**/*.cjs',
+      'dist/src/**/*.js',
+      'utils/**/*.js',
+      'utils/**/*.cjs'
     ],
     ignore: [
       '@types/*'

@@ -1,3 +1,15 @@
+### [37.0.15](https://github.com/ipfs/aegir/compare/v37.0.14...v37.0.15) (2022-04-21)
+
+
+### Bug Fixes
+
+* export types ([#968](https://github.com/ipfs/aegir/issues/968)) ([61335c1](https://github.com/ipfs/aegir/commit/61335c1ca165833bb0d61a7cdce93c6bdeb63ded))
+
+
+### Trivial Changes
+
+* update lilconfig version in package.json ([#967](https://github.com/ipfs/aegir/issues/967)) ([479ad00](https://github.com/ipfs/aegir/commit/479ad00ec91f4c9a54b7666664dc245b631fe1a1))
+
 ### [37.0.14](https://github.com/ipfs/aegir/compare/v37.0.13...v37.0.14) (2022-04-19)
 
 

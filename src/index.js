@@ -17,6 +17,19 @@ import releaseCmd from './cmds/release.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
 
+/**
+ * @typedef {import('./types').BuildOptions} BuildOptions
+ * @typedef {import('./types').DependencyCheckOptions} DependencyCheckOptions
+ * @typedef {import('./types').DocsOptions} DocsOptions
+ * @typedef {import('./types').GlobalOptions} GlobalOptions
+ * @typedef {import('./types').LintOptions} LintOptions
+ * @typedef {import('./types').Options} Options
+ * @typedef {import('./types').PartialOptions} PartialOptions
+ * @typedef {import('./types').ReleaseOptions} ReleaseOptions
+ * @typedef {import('./types').TSOptions} TSOptions
+ * @typedef {import('./types').TestOptions} TestOptions
+ */
+
 process.on('unhandledRejection', (err) => {
   throw err
 })

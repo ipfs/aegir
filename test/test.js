@@ -16,21 +16,23 @@ async function setUpProject (project) {
 
   await copy(join(__dirname, 'fixtures', 'projects', project), projectDir)
   const nodeModulesPath = path.resolve(__dirname, '../node_modules')
+  const projectNodeModulesPath = path.join(projectDir, 'node_modules')
+  const aegirPath = path.resolve(__dirname, '..')
 
   // simulate having installed aegir
   for (const entry of await fs.readdir(nodeModulesPath)) {
-    if (entry === '.' || entry === '..') {
+    if (entry === '.' || entry === '..' || entry === '.bin') {
       continue
     }
 
     // symlink dep
-    await fs.createSymlink(path.join(nodeModulesPath, entry), path.join(projectDir, 'node_modules', entry), 'dir')
+    await fs.createSymlink(path.join(nodeModulesPath, entry), path.join(projectNodeModulesPath, entry), 'dir')
   }
 
   // link aegir into project
-  await execa('npm', ['link', path.resolve(__dirname, '..')], {
-    cwd: projectDir
-  })
+  await fs.mkdir(path.join(projectNodeModulesPath, '.bin'))
+  await fs.createSymlink(aegirPath, path.join(projectNodeModulesPath, 'aegir'), 'dir')
+  await fs.createSymlink(path.join(aegirPath, 'src', 'index.js'), path.join(projectNodeModulesPath, '.bin', 'aegir'), 'file')
 
   return projectDir
 }

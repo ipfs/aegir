@@ -1,3 +1,15 @@
+### [37.0.16](https://github.com/ipfs/aegir/compare/v37.0.15...v37.0.16) (2022-05-26)
+
+
+### Bug Fixes
+
+* ts tests ([#984](https://github.com/ipfs/aegir/issues/984)) ([0206c4c](https://github.com/ipfs/aegir/commit/0206c4cca00f88bc5e87e6b0e92634c6d1bb2d8f))
+
+
+### Trivial Changes
+
+* **deps-dev:** bump sinon from 13.0.2 to 14.0.0 ([#976](https://github.com/ipfs/aegir/issues/976)) ([f18d914](https://github.com/ipfs/aegir/commit/f18d914a9353482dd1c089e099f2b7ef6ab951cc))
+
 ### [37.0.15](https://github.com/ipfs/aegir/compare/v37.0.14...v37.0.15) (2022-04-21)
 
 

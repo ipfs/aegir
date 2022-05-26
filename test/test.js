@@ -5,6 +5,7 @@ import fs, { copy } from 'fs-extra'
 import path, { join } from 'path'
 import tempy from 'tempy'
 import { fileURLToPath } from 'url'
+import os from 'os'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -38,6 +39,12 @@ async function setUpProject (project) {
 }
 
 describe('test', () => {
+  if (os.platform() === 'win32') {
+    describe.skip('Skipping tests on windows because symlinking works differently', () => {})
+
+    return
+  }
+
   describe('esm', function () {
     let projectDir = ''
 

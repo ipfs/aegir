@@ -1,3 +1,10 @@
+### [37.0.17](https://github.com/ipfs/aegir/compare/v37.0.16...v37.0.17) (2022-05-27)
+
+
+### Bug Fixes
+
+* ignore minified files and transpiled fixtures in dep-check ([#986](https://github.com/ipfs/aegir/issues/986)) ([3feff4a](https://github.com/ipfs/aegir/commit/3feff4a143f524c4c02ab705b46241a62fbc19e7))
+
 ### [37.0.16](https://github.com/ipfs/aegir/compare/v37.0.15...v37.0.16) (2022-05-26)
 
 

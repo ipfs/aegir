@@ -105,7 +105,10 @@ const defaults = {
       'utils/**/*.js',
       'utils/**/*.cjs',
       '!./test/fixtures/**/*.js',
-      '!./test/fixtures/**/*.cjs'
+      '!./test/fixtures/**/*.cjs',
+      '!./dist/test/fixtures/**/*.js',
+      '!./dist/test/fixtures/**/*.cjs',
+      '!**/*.min.js'
     ],
     productionOnly: false,
     productionInput: [

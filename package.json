@@ -217,7 +217,7 @@
     "chai-parentheses": "^0.0.2",
     "chai-string": "^1.5.0",
     "chai-subset": "^1.6.0",
-    "conventional-changelog-conventionalcommits": "^4.6.3",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
     "cors": "^2.8.5",
     "dependency-check": "^5.0.0-2",
     "detective-cjs": "^4.0.0",

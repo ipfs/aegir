@@ -1,5 +1,7 @@
-export default {
-    docs: {
-        entryPoint: 'utils'
-    }
-} as import("./src/types").PartialOptions
+const options: import('./src/types').PartialOptions = {
+  docs: {
+    entryPoint: 'utils'
+  }
+}
+
+export default options

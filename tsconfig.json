@@ -5,6 +5,7 @@
         "emitDeclarationOnly": true
     },
     "include": [
+      ".aegir.ts",
       "package.json",
       "src",
       "test",

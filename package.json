@@ -273,6 +273,7 @@
     "strip-bom": "^5.0.0",
     "strip-json-comments": "^4.0.0",
     "tempy": "^2.0.0",
+    "ts-import": "^3.0.0-beta.3",
     "typescript": "^4.6.3",
     "uint8arrays": "^3.0.0",
     "undici": "^5.0.0",

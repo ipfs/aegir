@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-
+// @ts-check
 import { lilconfig } from 'lilconfig'
 import merge from 'merge-options'
 import { pathToFileURL } from 'url'
-
+import tsImport from 'ts-import'
 /**
  * @typedef {import("./../types").Options} Options
  */
@@ -126,38 +126,74 @@ const defaults = {
 }
 
 /**
+ * @typedef {(filepath: string) => Promise<Options | {}>} Loader
+ */
+
+/**
+ *
+ * @param {{default?: Options} | Options} mod
+ * @returns {Options | {}}
+ */
+const handleConfigImport = (mod) => {
+  /**
+   * @type {*}
+   */
+  const modWithDefaultExport = mod
+  if (modWithDefaultExport.default != null) {
+    return modWithDefaultExport.default
+  }
+
+  if (typeof mod.toString === 'function') {
+    return mod
+  }
+
+  // if there's no toString function, this was an ES module that didn't export anything
+  return {}
+}
+
+/**
+ * @type {Loader}
+ */
+const loadEsm = async (filepath) => {
+  const res = await import(pathToFileURL(filepath).toString())
+
+  return handleConfigImport(res)
+}
+
+/**
+ * @type {Loader}
+ */
+const loadTs = async (filepath) => {
+  try {
+    const res = await tsImport.load(filepath)
+
+    return handleConfigImport(res)
+  } catch (err) {
+    return {}
+  }
+}
+
+/**
  * Search for local user config
  *
  * @param {string | undefined} [searchFrom]
  * @returns {Promise<Options>}
  */
 export const config = async (searchFrom) => {
+  console.log('searchFrom: ', searchFrom)
   let userConfig
   try {
-    const loadEsm = async (/** @type {string} */ filepath) => {
-      /** @type {any} */
-      const res = await import(pathToFileURL(filepath).toString())
-
-      if (res.default != null) {
-        return res.default
-      }
-
-      if (typeof res.toString === 'function') {
-        return res
-      }
-
-      // if there's no toString function, this was an ES module that didn't export anything
-      return {}
-    }
     const loadedConfig = await lilconfig('aegir', {
       loaders: {
         '.js': loadEsm,
-        '.mjs': loadEsm
+        '.mjs': loadEsm,
+        '.ts': loadTs
       },
       searchPlaces: [
         'package.json',
         '.aegir.js',
-        '.aegir.cjs'
+        '.aegir.cjs',
+        '.aegir.ts'
       ]
     })
       .search(searchFrom)

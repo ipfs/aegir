@@ -136,12 +136,12 @@ aegir test --ts-repo
 
 ## Release steps
 
-1. Run linting
+1. Run linting `npm run lint`
 2. Run type check
-3. Run tests
+3. Run tests `npm run test`
 4. Bump the version in `package.json`
-5. Build everything
-6. Update contributors based on the git history
+5. Build everything `npm run build`
+6. Update contributors based on the git history (deprecated?)
 7. Generate a changelog based on the git log
 8. Commit the version change & `CHANGELOG.md`
 9. Create a git tag

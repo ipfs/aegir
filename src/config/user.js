@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// @ts-check
 import { lilconfig } from 'lilconfig'
 import merge from 'merge-options'
 import { pathToFileURL } from 'url'

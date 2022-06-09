@@ -136,17 +136,19 @@ aegir test --ts-repo
 
 ## Release steps
 
-1. Run linting `npm run lint`
-1. Run tests `npm run test`
-1. Bump the version in `package.json`
-1. Build everything `npm run build`
-1. Generate a changelog based on the git log (missing command?)
-1. Commit the version change & `CHANGELOG.md`
-1. Create a git tag
-1. Run `git push` to `origin/master`
-1. Publish a release to Github releases
-1. Generate documentation and push to Github Pages
-1. Publish to npm
+1. Run linting
+2. Run type check
+3. Run tests
+4. Bump the version in `package.json`
+5. Build everything
+6. Update contributors based on the git history
+7. Generate a changelog based on the git log
+8. Commit the version change & `CHANGELOG.md`
+9. Create a git tag
+10. Run `git push` to `origin/master`
+11. Publish a release to Github releases
+12. Generate documentation and push to Github Pages
+13. Publish to npm
 
 ```bash
 aegir release --help

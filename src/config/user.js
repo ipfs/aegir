@@ -180,7 +180,6 @@ const loadTs = async (filepath) => {
  * @returns {Promise<Options>}
  */
 export const config = async (searchFrom) => {
-  console.log('searchFrom: ', searchFrom)
   let userConfig
   try {
     const loadedConfig = await lilconfig('aegir', {

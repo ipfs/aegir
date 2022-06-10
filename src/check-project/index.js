@@ -13,6 +13,7 @@ import { typedCJSManifest } from './manifests/typed-cjs.js'
 import { checkLicenseFiles } from './check-licence-files.js'
 import { checkBuildFiles } from './check-build-files.js'
 import { checkMonorepoFiles } from './check-monorepo-files.js'
+import { checkReadme } from './check-readme.js'
 import {
   sortManifest,
   ensureFileHasContents
@@ -394,6 +395,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
   await checkLicenseFiles(projectDir)
+  await checkReadme(projectDir, repoUrl)
 }
 
 export default new Listr([

@@ -23,12 +23,13 @@ import { gfmTaskListItemFromMarkdown, gfmTaskListItemToMarkdown } from 'mdast-ut
 /**
  * @param {*} pkg
  * @param {string} repoUrl
+ * @param {string} defaultBranch
  */
-const HEADER = (pkg, repoUrl) => {
+const HEADER = (pkg, repoUrl, defaultBranch) => {
   return `
 # ${pkg.name} <!-- omit in toc -->
 
-[![test & maybe release](${repoUrl}/actions/workflows/js-test-and-release.yml/badge.svg)](${repoUrl}/actions/workflows/js-test-and-release.yml)
+[![test & maybe release](${repoUrl}/actions/workflows/js-test-and-release.yml/badge.svg?branch=${defaultBranch})](${repoUrl}/actions/workflows/js-test-and-release.yml)
 
 > ${pkg.description}
 
@@ -105,8 +106,9 @@ function writeMarkdown (tree) {
 /**
  * @param {string} projectDir
  * @param {string} repoUrl
+ * @param {string} defaultBranch
  */
-export async function checkReadme (projectDir, repoUrl) {
+export async function checkReadme (projectDir, repoUrl, defaultBranch) {
   console.info('Check README files')
 
   const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
@@ -129,7 +131,7 @@ export async function checkReadme (projectDir, repoUrl) {
   const file = parseMarkdown(readmeContents)
 
   // create basic readme with heading, CI link, etc
-  const readme = parseMarkdown(HEADER(pkg, repoUrl))
+  const readme = parseMarkdown(HEADER(pkg, repoUrl, defaultBranch))
 
   // remove existing header, CI link, etc
   /** @type {import('mdast').Root} */

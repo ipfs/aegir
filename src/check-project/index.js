@@ -395,7 +395,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
   await checkLicenseFiles(projectDir)
-  await checkReadme(projectDir, repoUrl)
+  await checkReadme(projectDir, repoUrl, branchName)
 }
 
 export default new Listr([

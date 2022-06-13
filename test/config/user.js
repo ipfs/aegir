@@ -26,8 +26,31 @@ describe('config - user', () => {
     expect(res).to.eql(undefined)
   })
 
+  it('custom config without extension', async () => {
+    const conf = await config(getConfigSearchPath('fixtures/custom-config'))
+    expect(conf).to.have.property('debug').eql(false)
+    expect(conf).to.have.nested.property('test.before')
+    expect(conf).to.have.nested.property('test.after')
+
+    // @ts-ignore
+    const res = await conf.test.before()
+    expect(res).to.eql(undefined)
+  })
+
   it('custom ts config', async () => {
     const conf = await config(getConfigSearchPath('fixtures/custom-ts-config'))
+    expect(conf).to.have.property('debug').eql(true)
+    expect(conf).to.have.nested.property('test.before')
+    expect(conf).to.have.nested.property('test.after')
+
+    // @ts-ignore
+    const res = await conf.test.before()
+    expect(res).not.to.be.undefined()
+    expect(res && res.env?.res).to.eql('1234')
+  })
+
+  it('custom ts config without extension', async () => {
+    const conf = await config(getConfigSearchPath('fixtures/custom-ts-no-ext-config'))
     expect(conf).to.have.property('debug').eql(true)
     expect(conf).to.have.nested.property('test.before')
     expect(conf).to.have.nested.property('test.after')

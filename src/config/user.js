@@ -68,6 +68,25 @@ const loadTs = async (filepath) => {
 }
 
 /**
+ * @type {Loader}
+ */
+const noExt = async (filepath) => {
+  console.log('noExt')
+  try {
+    return await loadEsm(filepath)
+  } catch (err) {
+    try {
+      return await loadTs(filepath)
+    } catch (err) {
+      console.error(`Could not load your config file at '${filepath}'`)
+      console.error(err, err)
+    }
+  }
+
+  return null
+}
+
+/**
  * We should only be grabbing the config once per search location
  *
  * @type {Map<string | undefined, Options>}
@@ -94,7 +113,8 @@ export const config = async (searchFrom) => {
       loaders: {
         '.js': loadEsm,
         '.mjs': loadEsm,
-        '.ts': loadTs
+        '.ts': loadTs,
+        noExt
       },
       searchPlaces: [
         'package.json',

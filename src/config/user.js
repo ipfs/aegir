@@ -3,182 +3,91 @@ import { lilconfig } from 'lilconfig'
 import merge from 'merge-options'
 import { pathToFileURL } from 'url'
 import tsImport from 'ts-import'
-/**
- * @typedef {import("./../types").Options} Options
- */
 
-/** @type {Omit<Options, "fileConfig">} */
-const defaults = {
-  // global options
-  debug: false,
-  // test cmd options
-  test: {
-    build: false,
-    runner: 'node',
-    target: ['node', 'browser', 'webworker'],
-    watch: false,
-    files: [],
-    timeout: 60000,
-    grep: '',
-    bail: false,
-    progress: false,
-    cov: false,
-    browser: {
-      config: {
-        buildConfig: {
-          conditions: ['production']
-        }
-      }
-    },
-    before: async () => { return undefined },
-    after: async () => {}
-  },
-  // build cmd options
-  build: {
-    bundle: true,
-    bundlesize: false,
-    bundlesizeMax: '100kB',
-    types: true,
-    config: {}
-  },
-  // linter cmd options
-  lint: {
-    silent: false,
-    fix: false,
-    files: [
-      '*.{js,ts}',
-      'bin/**',
-      'config/**/*.{js,ts}',
-      'test/**/*.{js,ts}',
-      'src/**/*.{js,ts}',
-      'tasks/**/*.{js,ts}',
-      'benchmarks/**/*.{js,ts}',
-      'utils/**/*.{js,ts}',
-      '!**/node_modules/**'
-    ]
-  },
-  // docs cmd options
-  docs: {
-    publish: false,
-    entryPoint: 'src/index.js'
-  },
-  // ts cmd options
-  ts: {
-    preset: undefined,
-    include: []
-  },
-  // release cmd options
-  release: {
-    build: true,
-    types: true,
-    test: true,
-    lint: true,
-    contributors: true,
-    bump: true,
-    changelog: true,
-    publish: true,
-    commit: true,
-    tag: true,
-    push: true,
-    ghrelease: true,
-    docs: true,
-    ghtoken: '',
-    type: 'patch',
-    preid: undefined,
-    distTag: 'latest',
-    remote: 'origin'
-  },
-  // dependency check cmd options
-  dependencyCheck: {
-    input: [
-      'package.json',
-      '.aegir.js',
-      '.aegir.cjs',
-      'src/**/*.js',
-      'src/**/*.cjs',
-      'test/**/*.js',
-      'test/**/*.cjs',
-      'dist/**/*.js',
-      'benchmarks/**/*.js',
-      'benchmarks/**/*.cjs',
-      'utils/**/*.js',
-      'utils/**/*.cjs',
-      '!./test/fixtures/**/*.js',
-      '!./test/fixtures/**/*.cjs',
-      '!./dist/test/fixtures/**/*.js',
-      '!./dist/test/fixtures/**/*.cjs',
-      '!**/*.min.js'
-    ],
-    productionOnly: false,
-    productionInput: [
-      'package.json',
-      'src/**/*.js',
-      'src/**/*.cjs',
-      'dist/src/**/*.js',
-      'utils/**/*.js',
-      'utils/**/*.cjs'
-    ],
-    ignore: [
-      '@types/*'
-    ]
-  }
-}
+import { defaults } from './defaults.js'
 
 /**
- * @typedef {(filepath: string) => Promise<Options | {}>} Loader
+ * @typedef {import('../types').Options} Options
+ * @typedef {import('../types').PartialOptions} PartialOptions
+ * @typedef {(filepath: string) => Promise<PartialOptions | null>} Loader
  */
 
 /**
  *
- * @param {{default?: Options} | Options} mod
- * @returns {Options | {}}
+ * @param {{default?: PartialOptions} | PartialOptions} mod
+ * @param {string} configFilePath
+ *
+ * @returns {PartialOptions | null}
  */
-const handleConfigImport = (mod) => {
-  /**
-   * @type {*}
-   */
-  const modWithDefaultExport = mod
+const handleConfigImport = (mod, configFilePath) => {
+  const modWithDefaultExport = /** @type {{default?: PartialOptions}} */(mod)
   if (modWithDefaultExport.default != null) {
     return modWithDefaultExport.default
   }
 
   if (typeof mod.toString === 'function') {
-    return mod
+    return /** @type {PartialOptions} */(mod)
   }
 
-  // if there's no toString function, this was an ES module that didn't export anything
-  return {}
+  if (typeof mod === 'object' && typeof mod.toString === 'undefined' && Object.keys(mod).length === 0) {
+    // nothing is exported.
+    throw new Error(`Nothing is exported in your config file '${configFilePath}'. Please export your configuration as the default export`)
+  }
+
+  throw new Error(`Incorrectly exported configuration from '${configFilePath}'`)
 }
 
 /**
  * @type {Loader}
  */
 const loadEsm = async (filepath) => {
-  const res = await import(pathToFileURL(filepath).toString())
+  let res
+  try {
+    res = await import(pathToFileURL(filepath).toString())
+  } catch (err) {
+    console.error('Unexpected error while importing your config file')
+    throw err
+  }
 
-  return handleConfigImport(res)
+  return handleConfigImport(res, filepath)
 }
 
 /**
  * @type {Loader}
  */
 const loadTs = async (filepath) => {
+  let res
   try {
-    const res = await tsImport.load(filepath)
-
-    return handleConfigImport(res)
+    res = await tsImport.load(filepath)
   } catch (err) {
-    return {}
+    console.error('Unexpected error while loading your config file')
+    throw err
   }
+
+  return handleConfigImport(res, filepath)
 }
+
+/**
+ * We should only be grabbing the config once per search location
+ *
+ * @type {Map<string | undefined, Options>}
+ */
+const cachedConfig = new Map()
 
 /**
  * Search for local user config
  *
  * @param {string | undefined} [searchFrom]
+ *
  * @returns {Promise<Options>}
  */
 export const config = async (searchFrom) => {
+  if (cachedConfig.has(searchFrom)) {
+    return /** @type {Options} */(cachedConfig.get(searchFrom))
+  }
+  /**
+   * @type {PartialOptions}
+   */
   let userConfig
   try {
     const loadedConfig = await lilconfig('aegir', {
@@ -202,8 +111,8 @@ export const config = async (searchFrom) => {
       userConfig = {}
     }
   } catch (err) {
-    console.error(err)
-    throw new Error('Error finding your config file.')
+    console.error('Unexpected error loading aegir config')
+    throw err
   }
 
   const conf = /** @type {Options} */(merge(
@@ -211,7 +120,9 @@ export const config = async (searchFrom) => {
     userConfig
   ))
 
+  cachedConfig.set(searchFrom, conf)
+
   return conf
 }
 
-export const loadUserConfig = () => config()
+export const loadUserConfig = config

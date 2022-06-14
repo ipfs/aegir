@@ -71,7 +71,6 @@ const loadTs = async (filepath) => {
  * @type {Loader}
  */
 const noExt = async (filepath) => {
-  console.log('noExt')
   try {
     return await loadEsm(filepath)
   } catch (err) {
@@ -80,10 +79,9 @@ const noExt = async (filepath) => {
     } catch (err) {
       console.error(`Could not load your config file at '${filepath}'`)
       console.error(err, err)
+      throw new Error(`Could not load your no-extension aegir config file at '${filepath}' as ESM nor TS`)
     }
   }
-
-  return null
 }
 
 /**
@@ -120,7 +118,8 @@ export const config = async (searchFrom) => {
         'package.json',
         '.aegir.js',
         '.aegir.cjs',
-        '.aegir.ts'
+        '.aegir.ts',
+        '.aegir'
       ]
     })
       .search(searchFrom)

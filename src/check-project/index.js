@@ -14,6 +14,7 @@ import { checkLicenseFiles } from './check-licence-files.js'
 import { checkBuildFiles } from './check-build-files.js'
 import { checkMonorepoFiles } from './check-monorepo-files.js'
 import { checkReadme } from './check-readme.js'
+import { checkMonorepoReadme } from './check-monorepo-readme.js'
 import {
   sortManifest,
   ensureFileHasContents
@@ -127,6 +128,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
   await checkLicenseFiles(projectDir)
   await checkBuildFiles(projectDir, branchName, repoUrl)
+  await checkMonorepoReadme(projectDir, repoUrl, branchName, projectDirs)
   await checkMonorepoFiles(projectDir)
 }
 

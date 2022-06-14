@@ -27,7 +27,7 @@ describe('config - user', () => {
   })
 
   it('custom config without extension', async () => {
-    const conf = await config(getConfigSearchPath('fixtures/custom-config'))
+    const conf = await config(getConfigSearchPath('fixtures/custom-config-no-ext'))
     expect(conf).to.have.property('debug').eql(false)
     expect(conf).to.have.nested.property('test.before')
     expect(conf).to.have.nested.property('test.after')

@@ -163,7 +163,7 @@ export function sortFields (obj) {
 /**
  * @param {Record<string, any>} obj
  */
- export function sortExportsMap (obj) {
+export function sortExportsMap (obj) {
   /** @type {Record<string, any>} */
   const output = {}
   const sorted = sortFields(obj) ?? {}
@@ -173,7 +173,7 @@ export function sortFields (obj) {
     let types = entry.types
 
     if (!types) {
-      types = entry.import.replace('\.js', '.d.ts')
+      types = entry.import.replace('.js', '.d.ts')
     }
 
     delete entry.types

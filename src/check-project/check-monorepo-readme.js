@@ -10,14 +10,15 @@ import { toc as makeToc } from 'mdast-util-toc'
 import { parseMarkdown, writeMarkdown } from './readme/utils.js'
 import { HEADER } from './readme/header.js'
 import { LICENSE } from './readme/license.js'
-import { INSTALL } from './readme/install.js'
+import { STRUCTURE } from './readme/structure.js'
 
 /**
  * @param {string} projectDir
  * @param {string} repoUrl
  * @param {string} defaultBranch
+ * @param {string[]} projectDirs
  */
-export async function checkReadme (projectDir, repoUrl, defaultBranch) {
+export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, projectDirs) {
   const repoParts = repoUrl.split('/')
   const repoName = repoParts.pop()
   const repoOwner = repoParts.pop()
@@ -57,8 +58,8 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
     children: []
   }
 
+  let structureIndex = -1
   let tocIndex = -1
-  let installIndex = -1
   let licenseFound = false
 
   file.children.forEach((child, index) => {
@@ -74,7 +75,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
       return
     }
 
-    if (child.type === 'blockquote' && tocIndex === -1 && installIndex === -1) {
+    if (child.type === 'blockquote' && tocIndex === -1 && tocIndex === -1) {
       // skip project overview
       return
     }
@@ -86,18 +87,18 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
     }
 
     if (tocIndex !== -1 && index === tocIndex + 1) {
-      // skip toc header
+      // skip toc
       return
     }
 
-    if (child.type === 'heading' && rendered.includes('install')) {
-      // skip install
-      installIndex = index
+    if (child.type === 'heading' && rendered.includes('structure')) {
+      // skip structure header
+      structureIndex = index
       return
     }
 
-    if (installIndex !== -1 && index === installIndex + 1) {
-      // skip install
+    if (structureIndex !== -1 && index === structureIndex + 1) {
+      // skip structure
       return
     }
 
@@ -109,11 +110,11 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
     parsedReadme.children.push(child)
   })
 
-  const installation = parseMarkdown(INSTALL(pkg))
   const license = parseMarkdown(LICENSE[repoOwner])
+  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
 
   parsedReadme.children = [
-    ...installation.children,
+    ...structure.children,
     ...parsedReadme.children,
     ...license.children
   ]

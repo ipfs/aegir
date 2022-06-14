@@ -9,6 +9,7 @@
         }
     },
     "dependencies": {
-        "execa": "1.0.0"
+        "execa": "1.0.0",
+        "pico": "1.0.0"
     }
 }

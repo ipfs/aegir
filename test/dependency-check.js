@@ -46,14 +46,22 @@ describe('dependency check', () => {
     ).to.eventually.be.fulfilled()
   })
 
-  it('should forward options', async () => {
+  it('should detected unused deps', async () => {
     await expect(
-      execa(bin, ['dependency-check', '--', '--unused'], {
-        cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/unused')
       })
     ).to.eventually.be.rejectedWith(
       'Modules in package.json not used in code: pico'
     )
+  })
+
+  it('should forward options', async () => {
+    await expect(
+      execa(bin, ['dependency-check', '--', '-i', 'pico'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/unused')
+      })
+    ).to.eventually.be.fulfilled()
   })
 
   it('should fail for missing production deps', async () => {
@@ -110,5 +118,23 @@ describe('dependency check', () => {
         )
       })
     ).to.eventually.be.fulfilled()
+  })
+
+  it('should pass when there are no missing deps in a ts project', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/ts-pass')
+      })
+    ).to.eventually.be.fulfilled()
+  })
+
+  it('should fail when there are unused in a ts project', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/ts-unused')
+      })
+    ).to.eventually.be.rejectedWith(
+      'Modules in package.json not used in code: pico'
+    )
   })
 })

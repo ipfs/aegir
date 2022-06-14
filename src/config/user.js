@@ -95,17 +95,22 @@ const defaults = {
       'package.json',
       '.aegir.js',
       '.aegir.cjs',
+      'src/**/*.ts',
       'src/**/*.js',
       'src/**/*.cjs',
+      'test/**/*.ts',
       'test/**/*.js',
       'test/**/*.cjs',
       'dist/**/*.js',
       'benchmarks/**/*.js',
       'benchmarks/**/*.cjs',
+      'utils/**/*.ts',
       'utils/**/*.js',
       'utils/**/*.cjs',
+      '!./test/fixtures/**/*.ts',
       '!./test/fixtures/**/*.js',
       '!./test/fixtures/**/*.cjs',
+      '!./dist/test/fixtures/**/*.ts',
       '!./dist/test/fixtures/**/*.js',
       '!./dist/test/fixtures/**/*.cjs',
       '!**/*.min.js'
@@ -113,14 +118,17 @@ const defaults = {
     productionOnly: false,
     productionInput: [
       'package.json',
+      'src/**/*.ts',
       'src/**/*.js',
       'src/**/*.cjs',
       'dist/src/**/*.js',
+      'utils/**/*.ts',
       'utils/**/*.js',
       'utils/**/*.cjs'
     ],
     ignore: [
-      '@types/*'
+      '@types/*',
+      'aegir'
     ]
   }
 }

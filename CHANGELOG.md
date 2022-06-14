@@ -1,3 +1,15 @@
+## [37.2.0](https://github.com/ipfs/aegir/compare/v37.1.1...v37.2.0) (2022-06-14)
+
+
+### Features
+
+* parse monorepo project readme ([#1001](https://github.com/ipfs/aegir/issues/1001)) ([ae76db7](https://github.com/ipfs/aegir/commit/ae76db7ed1a56bbba03d277823f6bd125941b909))
+
+
+### Trivial Changes
+
+* **deps:** bump mocha from 9.2.2 to 10.0.0 ([#973](https://github.com/ipfs/aegir/issues/973)) ([5c767aa](https://github.com/ipfs/aegir/commit/5c767aac53b3cc9e4cef90610eb932b4c1fac86a))
+
 ## [37.1.1](https://github.com/ipfs/aegir/compare/v37.1.0...v37.1.1) (2022-06-14)
 
 

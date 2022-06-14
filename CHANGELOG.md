@@ -1,3 +1,10 @@
+## [37.1.1](https://github.com/ipfs/aegir/compare/v37.1.0...v37.1.1) (2022-06-14)
+
+
+### Trivial Changes
+
+* **deps:** bump playwright-test from 7.4.1 to 8.0.0 ([#980](https://github.com/ipfs/aegir/issues/980)) ([c0dff4b](https://github.com/ipfs/aegir/commit/c0dff4b64a61fa2c961a4da66ea4f40dfaf3ece0))
+
 ## [37.1.0](https://github.com/ipfs/aegir/compare/v37.0.17...v37.1.0) (2022-06-14)
 
 

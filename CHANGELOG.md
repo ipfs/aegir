@@ -1,3 +1,21 @@
+## [37.1.0](https://github.com/ipfs/aegir/compare/v37.0.17...v37.1.0) (2022-06-14)
+
+
+### Features
+
+* ensure readme is in correct format ([#997](https://github.com/ipfs/aegir/issues/997)) ([9bcb366](https://github.com/ipfs/aegir/commit/9bcb366215a78bd918bf20bcfdae7bf62efc2108))
+
+
+### Bug Fixes
+
+* sort exports map ([#999](https://github.com/ipfs/aegir/issues/999)) ([0b82fee](https://github.com/ipfs/aegir/commit/0b82feea6e7989e781128aeb4de47efc4c77872c))
+
+
+### Trivial Changes
+
+* **deps-dev:** bump electron from 18.3.3 to 19.0.4 ([#995](https://github.com/ipfs/aegir/issues/995)) ([05ea778](https://github.com/ipfs/aegir/commit/05ea7782c3f1822921100b06c51b6b7fb3ed8e1b))
+* **deps:** bump conventional-changelog-conventionalcommits from 4.6.3 to 5.0.0 ([#987](https://github.com/ipfs/aegir/issues/987)) ([0170bcf](https://github.com/ipfs/aegir/commit/0170bcf6d1bfcea0c95ae193ab007a0bfdb8f95f))
+
 ### [37.0.17](https://github.com/ipfs/aegir/compare/v37.0.16...v37.0.17) (2022-05-27)
 
 

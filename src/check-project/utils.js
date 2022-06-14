@@ -161,6 +161,34 @@ export function sortFields (obj) {
 }
 
 /**
+ * @param {Record<string, any>} obj
+ */
+export function sortExportsMap (obj) {
+  /** @type {Record<string, any>} */
+  const output = {}
+  const sorted = sortFields(obj) ?? {}
+
+  for (const key of Object.keys(sorted)) {
+    const entry = sorted[key]
+    let types = entry.types
+
+    if (!types) {
+      types = entry.import.replace('.js', '.d.ts')
+    }
+
+    delete entry.types
+
+    output[key] = {
+      // types field must be first - https://devblogs.microsoft.com/typescript/announcing-typescript-4-7/#package-json-exports-imports-and-self-referencing
+      types,
+      ...entry
+    }
+  }
+
+  return output
+}
+
+/**
  * @param {any} manifest
  */
 export function sortManifest (manifest) {

@@ -2,6 +2,7 @@ import { semanticReleaseConfig } from '../semantic-release-config.js'
 import mergeOptions from 'merge-options'
 import {
   sortFields,
+  sortExportsMap,
   constructManifest
 } from '../utils.js'
 
@@ -39,9 +40,10 @@ export async function typedESMManifest (manifest, branchName, repoUrl, homePage 
       '!dist/test',
       '!**/*.tsbuildinfo'
     ],
-    exports: sortFields(
+    exports: sortExportsMap(
       merge({
         '.': {
+          types: './src/index.d.ts',
           import: './src/index.js'
         }
       }, manifest.exports)

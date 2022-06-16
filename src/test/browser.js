@@ -26,7 +26,7 @@ export default async (argv, execaOptions) => {
     argv.bail && '--bail'
   ].filter(Boolean))
   const watch = argv.watch ? ['--watch'] : []
-  const cov = argv.cov ? ['--cov'] : []
+  const cov = argv.cov ? ['--cov', '--report-dir', '.coverage'] : []
   const files = argv.files.length > 0
     ? argv.files
     : [

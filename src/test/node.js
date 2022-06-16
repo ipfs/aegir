@@ -23,7 +23,7 @@ export default async function testNode (argv, execaOptions) {
   const covArgs = argv.cov
     ? [
         '--reporter', 'json',
-        '--report-dir', '.nyc_output',
+        '--report-dir', '.coverage',
         '--temp-directory', tempy.directory(),
         '--clean',
         'mocha'

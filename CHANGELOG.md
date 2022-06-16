@@ -1,3 +1,10 @@
+## [37.3.0](https://github.com/ipfs/aegir/compare/v37.2.1...v37.3.0) (2022-06-16)
+
+
+### Features
+
+* add multiformats readme parts ([#1006](https://github.com/ipfs/aegir/issues/1006)) ([671f47c](https://github.com/ipfs/aegir/commit/671f47c1f35367ecb1bb25ca06e0499649c9ee28))
+
 ## [37.2.1](https://github.com/ipfs/aegir/compare/v37.2.0...v37.2.1) (2022-06-16)
 
 

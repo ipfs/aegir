@@ -1,3 +1,10 @@
+## [37.2.1](https://github.com/ipfs/aegir/compare/v37.2.0...v37.2.1) (2022-06-16)
+
+
+### Bug Fixes
+
+* output coverage to .coverage dir ([#1003](https://github.com/ipfs/aegir/issues/1003)) ([7c5be7f](https://github.com/ipfs/aegir/commit/7c5be7fc1690ca0054e3b4dcd0d99c5f083e25d1))
+
 ## [37.2.0](https://github.com/ipfs/aegir/compare/v37.1.1...v37.2.0) (2022-06-14)
 
 

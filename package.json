@@ -273,7 +273,7 @@
     "strip-bom": "^5.0.0",
     "strip-json-comments": "^4.0.0",
     "tempy": "^3.0.0",
-    "typescript": "^4.6.3",
+    "typescript": "^4.7.4",
     "uint8arrays": "^3.0.0",
     "undici": "^5.0.0",
     "update-notifier": "^5.0.0",

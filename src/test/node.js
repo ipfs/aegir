@@ -1,6 +1,6 @@
 import { execa } from 'execa'
 import path from 'path'
-import tempy from 'tempy'
+import { temporaryDirectory } from 'tempy'
 import merge from 'merge-options'
 import { fileURLToPath } from 'url'
 
@@ -24,7 +24,7 @@ export default async function testNode (argv, execaOptions) {
     ? [
         '--reporter', 'json',
         '--report-dir', '.coverage',
-        '--temp-directory', tempy.directory(),
+        '--temp-directory', temporaryDirectory(),
         '--clean',
         'mocha'
       ]

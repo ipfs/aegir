@@ -3,7 +3,7 @@
 import { execa } from 'execa'
 import fs, { copy } from 'fs-extra'
 import path, { join } from 'path'
-import tempy from 'tempy'
+import { temporaryDirectory } from 'tempy'
 import { fileURLToPath } from 'url'
 import os from 'os'
 
@@ -13,7 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
  * @param {string} project
  */
 async function setUpProject (project) {
-  const projectDir = tempy.directory()
+  const projectDir = temporaryDirectory()
 
   await copy(join(__dirname, 'fixtures', 'projects', project), projectDir)
   const nodeModulesPath = path.resolve(__dirname, '../node_modules')

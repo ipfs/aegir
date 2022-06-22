@@ -4,7 +4,7 @@ import { expect } from '../utils/chai.js'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import path, { join } from 'path'
-import tempy from 'tempy'
+import { temporaryDirectory } from 'tempy'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
 
@@ -17,7 +17,7 @@ describe('build', () => {
     let projectDir = ''
 
     before(async () => {
-      projectDir = tempy.directory()
+      projectDir = temporaryDirectory()
 
       await fs.copy(join(__dirname, 'fixtures', 'projects', 'an-esm-project'), projectDir)
     })

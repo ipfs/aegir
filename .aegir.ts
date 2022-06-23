@@ -1,4 +1,6 @@
-const options: import('./src/types').PartialOptions = {
+import type { PartialOptions } from './src/types.js'
+
+const options: PartialOptions = {
   docs: {
     entryPoint: 'utils'
   }

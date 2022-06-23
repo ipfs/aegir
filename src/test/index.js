@@ -3,7 +3,6 @@ import node from './node.js'
 import browser from './browser.js'
 import electron from './electron.js'
 import rn from './react-native.js'
-import { isTypescript } from '../utils.js'
 import { execa } from 'execa'
 
 /**
@@ -20,13 +19,13 @@ const TASKS = [
     /**
      * @param {TestOptions & GlobalOptions} ctx
      */
-    enabled: (ctx) => isTypescript || ctx.build === true,
+    enabled: (ctx) => ctx.build === true,
 
     /**
      * @param {BuildOptions & GlobalOptions} ctx
      */
     task: async (ctx) => {
-      await execa('npm', ['run', 'build', '--if-present', '--', '--no-bundle'], {
+      await execa('npm', ['run', 'build', '--if-present'], {
         stdio: 'inherit'
       })
     }

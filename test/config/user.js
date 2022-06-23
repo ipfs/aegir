@@ -49,6 +49,18 @@ describe('config - user', () => {
     expect(res && res.env?.res).to.eql('1234')
   })
 
+  it('custom ts config with ESM import', async () => {
+    const conf = await config(getConfigSearchPath('fixtures/custom-ts-config-with-esm-import'))
+    expect(conf).to.have.property('debug').eql(true)
+    expect(conf).to.have.nested.property('test.before')
+    expect(conf).to.have.nested.property('test.after')
+
+    // @ts-ignore
+    const res = await conf.test.before()
+    expect(res).not.to.be.undefined()
+    expect(res && res.env?.res).to.eql('4321')
+  })
+
   it('custom ts config without extension', async () => {
     const conf = await config(getConfigSearchPath('fixtures/custom-ts-no-ext-config'))
     expect(conf).to.have.property('debug').eql(true)

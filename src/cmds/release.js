@@ -27,8 +27,18 @@ export default {
         siblingDepUpdateMessage: {
           alias: 'm',
           type: 'string',
-          describe: 'Automatically fix errors if possible.',
+          describe: 'The commit message to use when updating sibling dependencies',
           default: userConfig.release.siblingDepUpdateMessage
+        },
+        siblingDepUpdateName: {
+          type: 'string',
+          describe: 'The user name to use when updating sibling dependencies',
+          default: userConfig.release.siblingDepUpdateName
+        },
+        siblingDepUpdateEmail: {
+          type: 'string',
+          describe: 'The email to use when updating sibling dependencies',
+          default: userConfig.release.siblingDepUpdateEmail
         }
       })
   },

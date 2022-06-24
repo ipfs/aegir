@@ -107,6 +107,15 @@ const tasks = new Listr([
         return
       }
 
+      // When running on CI, set the commits author and commiter info and prevent the `git` CLI to prompt for username/password.
+      // Borrowed from `semantic-release`
+      process.env.GIT_AUTHOR_NAME = ctx.siblingDepUpdateName
+      process.env.GIT_AUTHOR_EMAIL = ctx.siblingDepUpdateEmail
+      process.env.GIT_COMMITTER_NAME = ctx.siblingDepUpdateName
+      process.env.GIT_COMMITTER_EMAIL = ctx.siblingDepUpdateEmail
+      process.env.GIT_ASKPASS = 'echo'
+      process.env.GIT_TERMINAL_PROMPT = '0'
+
       console.info(`Commit with message "${ctx.siblingDepUpdateMessage}"`) // eslint-disable-line no-console
       await execa('git', ['add', '-A'], {
         cwd: rootDir

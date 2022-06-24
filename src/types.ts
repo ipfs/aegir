@@ -262,6 +262,16 @@ interface ReleaseOptions {
    * it's siblings change, use this as the commit message
    */
   siblingDepUpdateMessage: string
+
+  /**
+   * The name to use in a git commit that update sibling deps
+   */
+   siblingDepUpdateName: string
+
+   /**
+   * The email to use in a git commit that update sibling deps
+   */
+   siblingDepUpdateEmail: string
 }
 
 interface DependencyCheckOptions {

@@ -88,7 +88,9 @@ const defaults = {
     preid: undefined,
     distTag: 'latest',
     remote: 'origin',
-    siblingDepUpdateMessage: 'chore: update sibling dependencies [skip ci]'
+    siblingDepUpdateMessage: 'chore: update sibling dependencies [skip ci]',
+    siblingDepUpdateName: 'semantic-release-bot',
+    siblingDepUpdateEmail: 'semantic-release-bot@martynus.net'
   },
   // dependency check cmd options
   dependencyCheck: {

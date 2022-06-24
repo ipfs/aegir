@@ -1,3 +1,10 @@
+## [37.3.1](https://github.com/ipfs/aegir/compare/v37.3.0...v37.3.1) (2022-06-24)
+
+
+### Bug Fixes
+
+* ignore aegir during dep-check ([#1011](https://github.com/ipfs/aegir/issues/1011)) ([fde760d](https://github.com/ipfs/aegir/commit/fde760d31cac2ab5171beca5c2ca635bcbff8a65))
+
 ## [37.3.0](https://github.com/ipfs/aegir/compare/v37.2.1...v37.3.0) (2022-06-16)
 
 

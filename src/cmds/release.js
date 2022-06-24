@@ -1,4 +1,5 @@
 import releaseCmd from '../release.js'
+import { loadUserConfig } from '../config/user.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
@@ -18,8 +19,18 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
+    const userConfig = await loadUserConfig()
+
     return yargs
       .epilog(EPILOG)
+      .options({
+        siblingDepUpdateMessage: {
+          alias: 'm',
+          type: 'string',
+          describe: 'Automatically fix errors if possible.',
+          default: userConfig.release.siblingDepUpdateMessage
+        }
+      })
   },
   /**
    * @param {any} argv

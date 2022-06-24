@@ -257,6 +257,21 @@ interface ReleaseOptions {
    * Git remote
    */
   remote: string
+  /**
+   * During a monorepo release, if a package release means the dependencies of
+   * it's siblings change, use this as the commit message
+   */
+  siblingDepUpdateMessage: string
+
+  /**
+   * The name to use in a git commit that update sibling deps
+   */
+  siblingDepUpdateName: string
+
+  /**
+   * The email to use in a git commit that update sibling deps
+   */
+  siblingDepUpdateEmail: string
 }
 
 interface DependencyCheckOptions {

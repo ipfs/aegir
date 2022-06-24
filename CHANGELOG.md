@@ -1,3 +1,10 @@
+## [37.4.1](https://github.com/ipfs/aegir/compare/v37.4.0...v37.4.1) (2022-06-24)
+
+
+### Bug Fixes
+
+* set default for sibling dep update committer ([fe96a63](https://github.com/ipfs/aegir/commit/fe96a637276138cee9418b6d8a24fd2f18da1d21))
+
 ## [37.4.0](https://github.com/ipfs/aegir/compare/v37.3.1...v37.4.0) (2022-06-24)
 
 

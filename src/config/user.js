@@ -120,8 +120,8 @@ const defaults = {
       'utils/**/*.cjs'
     ],
     ignore: [
-      'aegir',
-      '@types/*'
+      '@types/*',
+      'aegir'
     ]
   }
 }

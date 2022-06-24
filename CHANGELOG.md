@@ -1,3 +1,10 @@
+## [37.4.0](https://github.com/ipfs/aegir/compare/v37.3.1...v37.4.0) (2022-06-24)
+
+
+### Features
+
+* align monorepo sibling versions ([#1010](https://github.com/ipfs/aegir/issues/1010)) ([a9ba09e](https://github.com/ipfs/aegir/commit/a9ba09e3d55fe66a3d03bdd19012acdb85906a39))
+
 ## [37.3.1](https://github.com/ipfs/aegir/compare/v37.3.0...v37.3.1) (2022-06-24)
 
 

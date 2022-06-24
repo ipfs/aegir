@@ -266,12 +266,12 @@ interface ReleaseOptions {
   /**
    * The name to use in a git commit that update sibling deps
    */
-   siblingDepUpdateName: string
+  siblingDepUpdateName: string
 
-   /**
+  /**
    * The email to use in a git commit that update sibling deps
    */
-   siblingDepUpdateEmail: string
+  siblingDepUpdateEmail: string
 }
 
 interface DependencyCheckOptions {

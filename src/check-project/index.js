@@ -17,7 +17,8 @@ import { checkReadme } from './check-readme.js'
 import { checkMonorepoReadme } from './check-monorepo-readme.js'
 import {
   sortManifest,
-  ensureFileHasContents
+  ensureFileHasContents,
+  calculateSiblingVersion
 } from './utils.js'
 import semver from 'semver'
 import Listr from 'listr'
@@ -155,13 +156,12 @@ async function alignMonorepoProjectDependencies (projectDirs) {
       encoding: 'utf-8'
     }))
 
-    // turn 1.4.1 -> 1.4.0, otherwise every patch release causes all the sibling deps to change
-    siblingVersions[pkg.name] = `^${pkg.version.split('.').slice(0, 2).join('.')}.0`
+    siblingVersions[pkg.name] = calculateSiblingVersion(pkg.version)
 
     chooseVersions(pkg.dependencies || {}, deps)
     chooseVersions(pkg.devDependencies || {}, devDeps)
-    chooseVersions(pkg.optionalDeps || {}, optionalDeps)
-    chooseVersions(pkg.peerDeps || {}, peerDeps)
+    chooseVersions(pkg.optionalDependencies || {}, optionalDeps)
+    chooseVersions(pkg.peerDependencies || {}, peerDeps)
   }
 
   // now propose the most recent version of a dep for all projects
@@ -172,8 +172,8 @@ async function alignMonorepoProjectDependencies (projectDirs) {
 
     selectVersions(pkg.dependencies || {}, deps, siblingVersions)
     selectVersions(pkg.devDependencies || {}, devDeps, siblingVersions)
-    selectVersions(pkg.optionalDeps || {}, optionalDeps, siblingVersions)
-    selectVersions(pkg.peerDeps || {}, peerDeps, siblingVersions)
+    selectVersions(pkg.optionalDependencies || {}, optionalDeps, siblingVersions)
+    selectVersions(pkg.peerDependencies || {}, peerDeps, siblingVersions)
 
     await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(pkg, null, 2))
   }
@@ -259,8 +259,8 @@ async function configureMonorepoProjectReferences (projectDirs) {
 
     addReferences(pkg.dependencies || {}, references, refs)
     addReferences(pkg.devDependencies || {}, references, refs)
-    addReferences(pkg.optionalDeps || {}, references, refs)
-    addReferences(pkg.peerDeps || {}, references, refs)
+    addReferences(pkg.optionalDependencies || {}, references, refs)
+    addReferences(pkg.peerDependencies || {}, references, refs)
 
     tsconfig.references = Array.from(refs.values()).map(refDir => {
       return {

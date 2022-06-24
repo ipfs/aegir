@@ -247,3 +247,28 @@ export function constructManifest (manifest, manifestFields, repoUrl, homePage =
     bundledDependencies: manifest.bundledDependencies
   }
 }
+
+/**
+ * Calculate a valid semver range for a monorepo sibling that will result
+ * in as few releases as possible - e.g. don't rev "^1.2.0" to "^1.2.1" or
+ * "^1.2.0" to "^1.3.0", instead prefer "^1.0.0" as "^1.2.1" and "^^1.3.0"
+ * are both covered by that range.
+ *
+ * @param {string} version
+ */
+export function calculateSiblingVersion (version) {
+  const [major, minor, patch] = version.split('.')
+
+  if (major === '0') {
+    if (minor === '0') {
+      // turn ^0.0.1 -> ~0.0.1, otherwise you don't get 0.0.2, 0.0.3, etc
+      return `~0.0.${patch}`
+    }
+
+    // turn ^1.4.1 -> ^1.4.0, otherwise every patch release causes all the sibling deps to change
+    return `^${major}.${minor}.0`
+  }
+
+  // turn ^1.4.1 -> ^1.0.0, otherwise every minor release causes all the sibling deps to change
+  return `^${major}.0.0`
+}

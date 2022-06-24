@@ -87,7 +87,8 @@ const defaults = {
     type: 'patch',
     preid: undefined,
     distTag: 'latest',
-    remote: 'origin'
+    remote: 'origin',
+    siblingDepUpdateMessage: 'chore: update sibling dependencies [skip ci]'
   },
   // dependency check cmd options
   dependencyCheck: {

@@ -43,7 +43,7 @@ export async function typedESMManifest (manifest, branchName, repoUrl, homePage 
     exports: sortExportsMap(
       merge({
         '.': {
-          types: './src/index.d.ts',
+          types: './dist/src/index.d.ts',
           import: './src/index.js'
         }
       }, manifest.exports)

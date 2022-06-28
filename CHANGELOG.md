@@ -1,3 +1,10 @@
+## [37.4.2](https://github.com/ipfs/aegir/compare/v37.4.1...v37.4.2) (2022-06-28)
+
+
+### Bug Fixes
+
+* remove no-bundle from test build and fix flag ([#1008](https://github.com/ipfs/aegir/issues/1008)) ([f888be4](https://github.com/ipfs/aegir/commit/f888be43f5aed3c56225b562e54e583fffe26a50)), closes [#975](https://github.com/ipfs/aegir/issues/975)
+
 ## [37.4.1](https://github.com/ipfs/aegir/compare/v37.4.0...v37.4.1) (2022-06-24)
 
 

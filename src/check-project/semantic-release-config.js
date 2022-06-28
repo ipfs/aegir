@@ -52,7 +52,10 @@ export const semanticReleaseConfig = (branchName) => {
               section: 'Trivial Changes'
             }, {
               type: 'docs',
-              section: 'Trivial Changes'
+              section: 'Documentation'
+            }, {
+              type: 'deps',
+              section: 'Dependencies'
             }, {
               type: 'test',
               section: 'Tests'

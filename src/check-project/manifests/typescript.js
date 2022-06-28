@@ -30,7 +30,7 @@ export async function typescriptManifest (manifest, branchName, repoUrl, homePag
     exports: sortExportsMap(
       merge({
         '.': {
-          types: './src/index.d.ts',
+          types: './dist/src/index.d.ts',
           import: './dist/src/index.js'
         }
       }, manifest.exports)

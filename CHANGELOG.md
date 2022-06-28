@@ -1,3 +1,10 @@
+## [37.4.3](https://github.com/ipfs/aegir/compare/v37.4.2...v37.4.3) (2022-06-28)
+
+
+### Bug Fixes
+
+* update default index types path ([#1015](https://github.com/ipfs/aegir/issues/1015)) ([e1b29dc](https://github.com/ipfs/aegir/commit/e1b29dcadc892a60f0d969ed2477936cabf1a5f6))
+
 ## [37.4.2](https://github.com/ipfs/aegir/compare/v37.4.1...v37.4.2) (2022-06-28)
 
 

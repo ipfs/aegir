@@ -1,3 +1,10 @@
+## [37.4.4](https://github.com/ipfs/aegir/compare/v37.4.3...v37.4.4) (2022-07-07)
+
+
+### Bug Fixes
+
+* add Documentation and Dependencies to release notes ([#1014](https://github.com/ipfs/aegir/issues/1014)) ([df323ef](https://github.com/ipfs/aegir/commit/df323ef3b1c0d99ce744ff3eb4a65c86c8f85956))
+
 ## [37.4.3](https://github.com/ipfs/aegir/compare/v37.4.2...v37.4.3) (2022-06-28)
 
 

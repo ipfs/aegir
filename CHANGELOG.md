@@ -1,3 +1,10 @@
+## [37.4.5](https://github.com/ipfs/aegir/compare/v37.4.4...v37.4.5) (2022-07-07)
+
+
+### Bug Fixes
+
+* add fallback for project license and badges ([#1020](https://github.com/ipfs/aegir/issues/1020)) ([cb20575](https://github.com/ipfs/aegir/commit/cb2057512add785970c479e966f3fdcc383d0c25))
+
 ## [37.4.4](https://github.com/ipfs/aegir/compare/v37.4.3...v37.4.4) (2022-07-07)
 
 

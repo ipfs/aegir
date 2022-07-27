@@ -1,3 +1,15 @@
+## [37.4.6](https://github.com/ipfs/aegir/compare/v37.4.5...v37.4.6) (2022-07-27)
+
+
+### Bug Fixes
+
+* correct default repo name and org in header ([#1025](https://github.com/ipfs/aegir/issues/1025)) ([1399ff4](https://github.com/ipfs/aegir/commit/1399ff4d938714a3d5e9102002eaddce9263f917))
+
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([4d4de54](https://github.com/ipfs/aegir/commit/4d4de5425c24cbd92dd34db69b7e1bca226cc545))
+
 ## [37.4.5](https://github.com/ipfs/aegir/compare/v37.4.4...v37.4.5) (2022-07-07)
 
 

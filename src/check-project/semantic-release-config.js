@@ -23,13 +23,13 @@ export const semanticReleaseConfig = (branchName) => {
             type: 'fix',
             release: 'patch'
           }, {
-            type: 'chore',
-            release: 'patch'
-          }, {
             type: 'docs',
             release: 'patch'
           }, {
             type: 'test',
+            release: 'patch'
+          }, {
+            type: 'deps',
             release: 'patch'
           }, {
             scope: 'no-release',

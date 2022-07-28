@@ -1,3 +1,10 @@
+## [37.4.7](https://github.com/ipfs/aegir/compare/v37.4.6...v37.4.7) (2022-07-28)
+
+
+### Bug Fixes
+
+* make revving deps trigger a release ([#1027](https://github.com/ipfs/aegir/issues/1027)) ([f77c323](https://github.com/ipfs/aegir/commit/f77c32395e2ef3d40818ad7136ff1f4814799793))
+
 ## [37.4.6](https://github.com/ipfs/aegir/compare/v37.4.5...v37.4.6) (2022-07-27)
 
 

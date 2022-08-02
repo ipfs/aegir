@@ -22,7 +22,7 @@
         "esModuleInterop": true,
         "moduleResolution": "node",
         // linter checks
-        "noImplicitReturns": false,
+        "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,

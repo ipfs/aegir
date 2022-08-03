@@ -1,3 +1,10 @@
+## [37.4.8](https://github.com/ipfs/aegir/compare/v37.4.7...v37.4.8) (2022-08-03)
+
+
+### Bug Fixes
+
+* update sibling dep update message ([#1031](https://github.com/ipfs/aegir/issues/1031)) ([2c488e7](https://github.com/ipfs/aegir/commit/2c488e73b0866c4b6ff60787275903076526f37e))
+
 ## [37.4.7](https://github.com/ipfs/aegir/compare/v37.4.6...v37.4.7) (2022-07-28)
 
 

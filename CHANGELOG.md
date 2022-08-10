@@ -1,3 +1,10 @@
+## [37.5.0](https://github.com/ipfs/aegir/compare/v37.4.8...v37.5.0) (2022-08-10)
+
+
+### Features
+
+* tell lerna to use npm workspaces ([#1036](https://github.com/ipfs/aegir/issues/1036)) ([6b3ed7e](https://github.com/ipfs/aegir/commit/6b3ed7ed6b9abdf976e6b6140f50a19d7cd7ed10))
+
 ## [37.4.8](https://github.com/ipfs/aegir/compare/v37.4.7...v37.4.8) (2022-08-03)
 
 

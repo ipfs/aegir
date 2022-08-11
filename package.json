@@ -200,7 +200,7 @@
     "release": "node src/index.js release --no-bundle"
   },
   "dependencies": {
-    "@electron/get": "^1.12.3",
+    "@electron/get": "^2.0.0",
     "@polka/send-type": "^0.5.2",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",

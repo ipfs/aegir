@@ -28,12 +28,19 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
   let existingContents = ''
 
   if (fileExists) {
-    existingContents = fs.readFileSync(path.join(projectDir, filePath), {
+    const existingFilePath = path.join(projectDir, filePath)
+    existingContents = fs.readFileSync(existingFilePath, {
       encoding: 'utf-8'
     })
 
     if (filePath.endsWith('.json')) {
-      existingContents = JSON.stringify(JSON.parse(existingContents), null, 2) + '\n'
+      try {
+        existingContents = JSON.stringify(JSON.parse(existingContents), null, 2) + '\n'
+      } catch (err) {
+        console.error('Could not parse', existingFilePath, 'as JSON')
+
+        throw err
+      }
     }
   } else {
     if (process.env.CI) {

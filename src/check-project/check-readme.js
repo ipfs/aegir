@@ -1,7 +1,7 @@
 
 /* eslint-disable no-console */
 
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import {
   ensureFileHasContents
@@ -28,9 +28,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
 
   console.info('Check README files')
 
-  const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-    encoding: 'utf-8'
-  }))
+  const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
   const readmePath = path.join(projectDir, 'README.md')
   let readmeContents = ''
@@ -60,6 +58,9 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
   let tocIndex = -1
   let installIndex = -1
   let licenseFound = false
+
+  /** @type {import('mdast').Content[]} */
+  const footer = []
 
   file.children.forEach((child, index) => {
     const rendered = writeMarkdown(child).toLowerCase()
@@ -101,6 +102,11 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
       return
     }
 
+    if (child.type === 'definition') {
+      footer.push(child)
+      return
+    }
+
     if ((child.type === 'heading' && rendered.includes('license')) || licenseFound) {
       licenseFound = true
       return
@@ -115,7 +121,8 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
   parsedReadme.children = [
     ...installation.children,
     ...parsedReadme.children,
-    ...license.children
+    ...license.children,
+    ...footer
   ]
 
   const toc = makeToc(parsedReadme, {

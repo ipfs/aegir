@@ -1,3 +1,11 @@
+## [37.5.1](https://github.com/ipfs/aegir/compare/v37.5.0...v37.5.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* change bot user for updating sibling deps ([fc25395](https://github.com/ipfs/aegir/commit/fc253952fa637ab0c3e20cc37c549f5f5c3241b7))
+* preserve readme definitions when checking project config ([#1041](https://github.com/ipfs/aegir/issues/1041)) ([4a0cecc](https://github.com/ipfs/aegir/commit/4a0cecce7323a2ae2e7a9a0f41a901ffc1fa1604))
+
 ## [37.5.0](https://github.com/ipfs/aegir/compare/v37.4.8...v37.5.0) (2022-08-10)
 
 

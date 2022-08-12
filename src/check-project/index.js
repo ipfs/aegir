@@ -1,6 +1,6 @@
 /* eslint-disable no-console,complexity */
 
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import { execa } from 'execa'
 import prompt from 'prompt'
@@ -106,10 +106,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
       cwd: projectDir,
       absolute: true
     })) {
-      const pkg = JSON.parse(fs.readFileSync(path.join(subProjectDir, 'package.json'), {
-        encoding: 'utf-8'
-      }))
-
+      const pkg = fs.readJSONSync(path.join(subProjectDir, 'package.json'))
       const homePage = `${repoUrl}/tree/master${subProjectDir.substring(projectDir.length)}`
 
       console.info('Found monorepo project', pkg.name)
@@ -152,10 +149,7 @@ async function alignMonorepoProjectDependencies (projectDirs) {
 
   // first loop over every project and choose the most recent version of a given dep
   for (const projectDir of projectDirs) {
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
-
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
     siblingVersions[pkg.name] = calculateSiblingVersion(pkg.version)
 
     chooseVersions(pkg.dependencies || {}, deps)
@@ -166,9 +160,7 @@ async function alignMonorepoProjectDependencies (projectDirs) {
 
   // now propose the most recent version of a dep for all projects
   for (const projectDir of projectDirs) {
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
     selectVersions(pkg.dependencies || {}, deps, siblingVersions)
     selectVersions(pkg.devDependencies || {}, devDeps, siblingVersions)
@@ -233,9 +225,7 @@ async function configureMonorepoProjectReferences (projectDirs) {
 
   // first loop over every project and choose the most recent version of a given dep
   for (const projectDir of projectDirs) {
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
     references[pkg.name] = projectDir
   }
@@ -247,14 +237,8 @@ async function configureMonorepoProjectReferences (projectDirs) {
       continue
     }
 
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
-
-    const tsconfig = JSON.parse(fs.readFileSync(path.join(projectDir, 'tsconfig.json'), {
-      encoding: 'utf-8'
-    }))
-
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
+    const tsconfig = fs.readJSONSync(path.join(projectDir, 'tsconfig.json'))
     const refs = new Set()
 
     addReferences(pkg.dependencies || {}, references, refs)
@@ -406,11 +390,7 @@ export default new Listr([
     task: async () => {
       const projectDir = process.argv[3] || process.cwd()
       const { branchName, repoUrl } = await getConfig(projectDir)
-
-      const manifest = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-        encoding: 'utf-8'
-      }))
-
+      const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
       const monorepo = manifest.workspaces != null
 
       if (monorepo) {

@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 
 /**
@@ -10,9 +10,7 @@ export const STRUCTURE = (monorepoDir, projectDirs) => {
   const packages = {}
 
   for (const projectDir of projectDirs.sort()) {
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
     const key = projectDir.replace(monorepoDir, '')
 

@@ -1,7 +1,7 @@
 
 /* eslint-disable no-console */
 
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import {
   ensureFileHasContents
@@ -29,9 +29,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
 
   console.info('Check README files')
 
-  const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-    encoding: 'utf-8'
-  }))
+  const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
   const readmePath = path.join(projectDir, 'README.md')
   let readmeContents = ''

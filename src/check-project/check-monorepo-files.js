@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import {
   ensureFileHasContents
@@ -15,9 +15,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export async function checkMonorepoFiles (projectDir) {
   console.info('Check monorepo files')
 
-  const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-    encoding: 'utf-8'
-  }))
+  const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
   let defaultLernaContent = fs.readFileSync(path.join(__dirname, 'files/lerna.json'), {
     encoding: 'utf-8'

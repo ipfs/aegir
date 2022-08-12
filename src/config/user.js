@@ -89,8 +89,8 @@ const defaults = {
     distTag: 'latest',
     remote: 'origin',
     siblingDepUpdateMessage: 'deps: update sibling dependencies',
-    siblingDepUpdateName: 'semantic-release-bot',
-    siblingDepUpdateEmail: 'semantic-release-bot@martynus.net'
+    siblingDepUpdateName: 'aegir[bot]',
+    siblingDepUpdateEmail: 'aegir[bot]@users.noreply.github.com'
   },
   // dependency check cmd options
   dependencyCheck: {

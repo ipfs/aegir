@@ -25,18 +25,19 @@ export default {
 
     return yargs
       .epilog(EPILOG)
-      .example('aegir dependency-check -- --unused', 'To check unused packages in your repo.')
-      .example('aegir dependency-check -- --unused --ignore typescript', 'To check unused packages in your repo, ignoring typescript.')
-      .positional('input', {
-        describe: 'Files to check',
-        type: 'string',
-        array: true
-      })
+      .example('aegir dependency-check --unused', 'To check unused packages in your repo.')
+      .example('aegir dependency-check --unused --ignore typescript', 'To check unused packages in your repo, ignoring typescript.')
       .option('i', {
         alias: 'ignore',
         describe: 'Ignore these dependencies when considering which are used and which are not',
         array: true,
         default: userConfig.dependencyCheck.ignore
+      })
+      .option('u', {
+        alias: 'unused',
+        describe: 'Checks for unused dependencies',
+        default: false,
+        type: 'boolean'
       })
   },
   /**

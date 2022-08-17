@@ -36,13 +36,12 @@ Unless you explicitly state otherwise, any contribution intentionally submitted 
 `
 }
 
-
 /**
  * @param {*} pkg
  * @param {string} repoOwner
  * @param {string} repoName
  * @param {string} defaultBranch
  */
- export const LICENSE = (pkg, repoOwner, repoName, defaultBranch) => {
+export const LICENSE = (pkg, repoOwner, repoName, defaultBranch) => {
   return (licenses[repoOwner] ?? licenses.default)(repoOwner, repoName, defaultBranch)
 }

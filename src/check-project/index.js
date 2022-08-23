@@ -22,6 +22,7 @@ import {
 } from './utils.js'
 import semver from 'semver'
 import Listr from 'listr'
+import yargsParser from 'yargs-parser'
 
 /**
  * @param {string} projectDir
@@ -388,7 +389,8 @@ export default new Listr([
   {
     title: 'check project',
     task: async () => {
-      const projectDir = process.argv[3] || process.cwd()
+      const argv = yargsParser(process.argv.slice(2))._ // argv = ['check-project', ...]
+      const projectDir = argv[1] || process.cwd()
       const { branchName, repoUrl } = await getConfig(projectDir)
       const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
       const monorepo = manifest.workspaces != null

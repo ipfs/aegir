@@ -1,3 +1,19 @@
+## [37.5.2](https://github.com/ipfs/aegir/compare/v37.5.1...v37.5.2) (2022-08-30)
+
+
+### Bug Fixes
+
+* check-project uses correct projectDir ([#1055](https://github.com/ipfs/aegir/issues/1055)) ([297ac8f](https://github.com/ipfs/aegir/commit/297ac8f496dc9127a1e22ed665e2d6e2ad79ef9f)), closes [#1054](https://github.com/ipfs/aegir/issues/1054)
+* correct link to issues page for ipfs readmes ([#1049](https://github.com/ipfs/aegir/issues/1049)) ([b3578e8](https://github.com/ipfs/aegir/commit/b3578e8da0bac2014cb123b32fe2947b451305db))
+
+
+### Dependencies
+
+* bump @electron/get from 1.14.1 to 2.0.0 ([#1038](https://github.com/ipfs/aegir/issues/1038)) ([d3fa53f](https://github.com/ipfs/aegir/commit/d3fa53ff2e81ecc7e26d7982d0fa893764174787))
+* bump strip-json-comments from 4.0.0 to 5.0.0 ([#1023](https://github.com/ipfs/aegir/issues/1023)) ([aa14ef9](https://github.com/ipfs/aegir/commit/aa14ef9be2aeb4000c6f05d12341a317bd210ca3))
+* bump update-notifier from 5.1.0 to 6.0.2 ([#1013](https://github.com/ipfs/aegir/issues/1013)) ([3465038](https://github.com/ipfs/aegir/commit/3465038add8a06e9a8fcacf4556fb5046b61a9c7))
+* **dev:** bump electron from 19.0.14 to 20.1.0 ([#1058](https://github.com/ipfs/aegir/issues/1058)) ([b0cb84f](https://github.com/ipfs/aegir/commit/b0cb84f67ea13a11d4c9351f9abeed3d9c1592c7))
+
 ## [37.5.1](https://github.com/ipfs/aegir/compare/v37.5.0...v37.5.1) (2022-08-12)
 
 

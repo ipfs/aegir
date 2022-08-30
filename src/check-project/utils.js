@@ -177,6 +177,13 @@ export function sortExportsMap (obj) {
 
   for (const key of Object.keys(sorted)) {
     const entry = sorted[key]
+
+    // ignore case where obj has string props, e.g. `"exports": { "import": "./src/index.js" }`
+    // as we have already merged `"exports": { ".": { "import": "./src/index.js" } }`
+    if (typeof entry === 'string') {
+      continue
+    }
+
     let types = entry.types
 
     if (!types) {

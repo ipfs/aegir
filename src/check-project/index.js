@@ -390,7 +390,7 @@ export default new Listr([
     title: 'check project',
     task: async () => {
       const argv = yargsParser(process.argv.slice(2))._ // argv = ['check-project', ...]
-      const projectDir = argv[1] || process.cwd()
+      const projectDir = argv[1]?.toString() ?? process.cwd()
       const { branchName, repoUrl } = await getConfig(projectDir)
       const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
       const monorepo = manifest.workspaces != null

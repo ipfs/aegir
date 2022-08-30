@@ -1,3 +1,10 @@
+## [37.5.3](https://github.com/ipfs/aegir/compare/v37.5.2...v37.5.3) (2022-08-30)
+
+
+### Bug Fixes
+
+* ignore single-import from exports map ([#1063](https://github.com/ipfs/aegir/issues/1063)) ([77e43ce](https://github.com/ipfs/aegir/commit/77e43ce61be5e1394a2b8306f122cd9303063499))
+
 ## [37.5.2](https://github.com/ipfs/aegir/compare/v37.5.1...v37.5.2) (2022-08-30)
 
 

@@ -1,3 +1,10 @@
+## [37.5.4](https://github.com/ipfs/aegir/compare/v37.5.3...v37.5.4) (2022-09-22)
+
+
+### Bug Fixes
+
+* update readme badges ([#1073](https://github.com/ipfs/aegir/issues/1073)) ([d0e865b](https://github.com/ipfs/aegir/commit/d0e865b6bfaa244a25c7ea10fbced6aa244c51ee)), closes [/github.com/ipfs/js-ipns/pull/180#discussion_r972826024](https://github.com/ipfs//github.com/ipfs/js-ipns/pull/180/issues/discussion_r972826024)
+
 ## [37.5.3](https://github.com/ipfs/aegir/compare/v37.5.2...v37.5.3) (2022-08-30)
 
 

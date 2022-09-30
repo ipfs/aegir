@@ -1,3 +1,23 @@
+## [37.5.5](https://github.com/ipfs/aegir/compare/v37.5.4...v37.5.5) (2022-09-30)
+
+
+### Bug Fixes
+
+* fix ci link for libp2p repos ([#1084](https://github.com/ipfs/aegir/issues/1084)) ([4d76f79](https://github.com/ipfs/aegir/commit/4d76f79c6577c9ae1a95dd6798174f6867301061))
+
+
+### Documentation
+
+* remove ts command docs ([#1083](https://github.com/ipfs/aegir/issues/1083)) ([c3eca3e](https://github.com/ipfs/aegir/commit/c3eca3e50db74086a4d9a16293a39c0e6399b0c1)), closes [#1077](https://github.com/ipfs/aegir/issues/1077)
+
+
+### Dependencies
+
+* bump @types/mocha from 9.1.1 to 10.0.0 ([#1080](https://github.com/ipfs/aegir/issues/1080)) ([f111936](https://github.com/ipfs/aegir/commit/f111936a4feda8664397850f13e01f64961146bd))
+* bump esbuild from 0.14.54 to 0.15.10 ([#1082](https://github.com/ipfs/aegir/issues/1082)) ([51d3034](https://github.com/ipfs/aegir/commit/51d3034a40ee0aff0ca57ce8338d5c8e016af22c))
+* **dev:** bump @types/update-notifier from 5.1.0 to 6.0.1 ([#1018](https://github.com/ipfs/aegir/issues/1018)) ([e82c2d6](https://github.com/ipfs/aegir/commit/e82c2d645ce5080cbdc9504362bead9a4798b29c))
+* **dev:** bump electron from 20.3.0 to 21.0.1 ([#1081](https://github.com/ipfs/aegir/issues/1081)) ([cdbc918](https://github.com/ipfs/aegir/commit/cdbc918e609bc3d8638300dbefeb64bb1204ecdb))
+
 ## [37.5.4](https://github.com/ipfs/aegir/compare/v37.5.3...v37.5.4) (2022-09-22)
 
 

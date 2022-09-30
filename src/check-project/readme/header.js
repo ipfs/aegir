@@ -6,7 +6,7 @@ const BADGES = {
 [![libp2p.io](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
 [![Discuss](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg?style=flat-square)](https://discuss.libp2p.io)
 [![codecov](https://img.shields.io/codecov/c/github/${repoOwner}/${repoName}.svg?style=flat-square)](https://codecov.io/gh/${repoOwner}/${repoName})
-[![CI](https://img.shields.io/github/workflow/status/libp2p/js-libp2p-interfaces/test%20&%20maybe%20release/${defaultBranch}?style=flat-square)](https://github.com/${repoOwner}/${repoName}/actions/workflows/js-test-and-release.yml)
+[![CI](https://img.shields.io/github/workflow/status/${repoOwner}/${repoName}/test%20&%20maybe%20release/${defaultBranch}?style=flat-square)](https://github.com/${repoOwner}/${repoName}/actions/workflows/js-test-and-release.yml)
 `,
   ipfs: (repoOwner, repoName, defaultBranch) => `
 [![ipfs.tech](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.tech)

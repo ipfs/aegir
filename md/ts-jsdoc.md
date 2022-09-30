@@ -1,9 +1,7 @@
 # TS with JSDoc  <!-- omit in toc -->
 
-
 ## Table of Contents  <!-- omit in toc -->
 - [Getting Started](#getting-started)
-- [CLI `ts` command](#cli-ts-command)
 - [Github Action](#github-action)
 - [Installing package from a git url](#installing-package-from-a-git-url)
 - [Adding types with JSDoc](#adding-types-with-jsdoc)
@@ -19,12 +17,22 @@
 - [Must read references](#must-read-references)
 - [Resources](#resources)
 
-
 ## Getting Started
 
-Add a `tsconfig.json` to your repo:
-```bash
-aegir ts -p config > tsconfig.json
+Add a `tsconfig.json` to your repo that extends the default aegir ts config:
+
+```json
+{
+  "extends": "aegir/src/config/tsconfig.aegir.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "emitDeclarationOnly": true
+  },
+  "include": [
+    "src",
+    "test"
+  ]
+}
 ```
 
 Add types configuration to your package.json:
@@ -51,20 +59,6 @@ When a packages needs to allow type imports other than the entry point, you can 
 
 > Use this hack only if you really need it, this might change from the TS side at any time and break type checks.
 
-
-## CLI `ts` command
-
-> The `ts` command follows aegir folder conventions, source code inside `./src`, test inside `./test` and documentation inside `./docs`.
-
-Run `aegir ts --help` and check the help text. There's presets for common TS use cases.
-
-```md
-Presets:
-`check`       Runs the type checker with your local config and doesn't not emit output.
-`types`       Emits type declarations to `dist` folder.
-`docs`        Generates documentation based on type declarations to the `docs` folder.
-`config`      Prints base config to stdout.
-```
 ## Github Action
 
 To run the typechecker in the CI you can use this action https://github.com/Gozala/typescript-error-reporter-action and you will get the errors reported inline with the code.

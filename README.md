@@ -51,7 +51,6 @@ Commands:
   aegir release                      Release your code onto the world
   aegir test-dependant [repo]        Run the tests of an module that depends on this module to see if the current changes have caused a regression
   aegir test                         Test your code in different environments
-  aegir ts                           Typescript command with presets for specific tasks.
   aegir dependency-check [input...]  Run `dependency-check` cli with aegir defaults.                                                                                                                              [aliases: dep-check, dep]
   aegir lint-package-json            Lint package.json with aegir defaults.                                                                                                                                    [aliases: lint-package, lpj]
   aegir completion                   generate completion script
@@ -120,19 +119,7 @@ Check the [documentation](https://ipfs.github.io/aegir/)
 
 ## Typescript
 
-### JSDoc Typescript support
-
-```bash
-aegir ts --help
-```
-More documentation [here](https://github.com/ipfs/aegir/blob/master/md/ts-jsdoc.md)
-
-### Native Typescript support
-For native typescript add `--ts-repo` to any command.
-```bash
-aegir build --ts-repo
-aegir test --ts-repo
-```
+Aegir will detect the presence of `tsconfig.json` files and build typescript as appropriate.
 
 ## Release steps
 

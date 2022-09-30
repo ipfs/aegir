@@ -17,9 +17,6 @@ jobs:
     - uses: actions/checkout@v2
     - run: npm install
     - run: npx aegir lint
-    - run: npx aegir ts -p check
-    # or
-    # - uses: gozala/typescript-error-reporter-action@v1.0.8
     - run: npx aegir build
     - run: npx aegir dep-check
     - uses: ipfs/aegir/actions/bundle-size@master

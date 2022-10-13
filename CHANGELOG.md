@@ -1,3 +1,10 @@
+## [37.5.6](https://github.com/ipfs/aegir/compare/v37.5.5...v37.5.6) (2022-10-13)
+
+
+### Dependencies
+
+* bump uint8arrays from 3.1.1 to 4.0.2 ([#1090](https://github.com/ipfs/aegir/issues/1090)) ([a5b1342](https://github.com/ipfs/aegir/commit/a5b1342d83a065d3bd6e5a4987edb3569d6ab8a0))
+
 ## [37.5.5](https://github.com/ipfs/aegir/compare/v37.5.4...v37.5.5) (2022-09-30)
 
 

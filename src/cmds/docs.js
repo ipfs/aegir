@@ -1,23 +1,25 @@
 import { loadUserConfig } from '../config/user.js'
-import docs from '../docs.js'
+import docsCmd from '../docs.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
+ * @typedef {import("yargs").ArgumentsCamelCase} Arguments
+ * @typedef {import("yargs").CommandModule} CommandModule
  */
 const EPILOG = `
 Typescript config file is required to generated docs. Try \`aegir ts --preset config > tsconfig.json\`
 `
-
+/** @type {CommandModule} */
 export default {
   command: 'docs',
-  desc: 'Generate documentation from TS type declarations.',
+  describe: 'Generate documentation from TS type declarations.',
   /**
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
     const userConfig = await loadUserConfig()
 
-    yargs
+    return yargs
       .epilog(EPILOG)
       .example('aegir docs', 'Build HTML documentation.')
       .example('aegir docs -p', 'Build HTML documentation and publish to Github Pages.')
@@ -37,9 +39,9 @@ export default {
       })
   },
   /**
-   * @param {(import("../types").GlobalOptions & import("../types").DocsOptions) | undefined} argv
+   * @param {any} argv
    */
   async handler (argv) {
-    await docs.run(argv)
+    await docsCmd.run(argv)
   }
 }

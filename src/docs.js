@@ -1,5 +1,5 @@
 
-import { hasTsconfig, fromAegir, fromRoot, readJson } from './utils'
+import { hasTsconfig, fromAegir, fromRoot, readJson } from './utils.js'
 import Listr from 'listr'
 import kleur from 'kleur'
 import fs from 'fs-extra'
@@ -9,7 +9,6 @@ import merge from 'merge-options'
 import { promisify } from 'util'
 import ghPages from 'gh-pages'
 import { premove as del } from 'premove/sync'
-import resolve from '../utils/resolve.js'
 
 const publishPages = promisify(ghPages.publish)
 

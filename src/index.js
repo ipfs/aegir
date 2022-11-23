@@ -16,6 +16,7 @@ import lintCmd from './cmds/lint.js'
 import releaseCmd from './cmds/release.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
+import docsCmd from './cmds/docs.js'
 
 /**
  * @typedef {import('./types').BuildOptions} BuildOptions
@@ -81,6 +82,7 @@ async function main () {
   res.command(checkProjectCmd)
   res.command(checkCmd)
   res.command(cleanCmd)
+  res.command(docsCmd)
   res.command(dependencyCheckCmd)
   res.command(lintPackageJsonCmd)
   res.command(lintCmd)

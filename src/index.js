@@ -82,7 +82,6 @@ async function main () {
   res.command(checkProjectCmd)
   res.command(checkCmd)
   res.command(cleanCmd)
-  res.command(docsCmd)
   res.command(dependencyCheckCmd)
   res.command(docsCmd)
   res.command(lintPackageJsonCmd)

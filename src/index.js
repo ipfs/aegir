@@ -84,6 +84,7 @@ async function main () {
   res.command(cleanCmd)
   res.command(docsCmd)
   res.command(dependencyCheckCmd)
+  res.command(docsCmd)
   res.command(lintPackageJsonCmd)
   res.command(lintCmd)
   res.command(releaseCmd)

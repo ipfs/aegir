@@ -1,16 +1,17 @@
-
 import { hasTsconfig, fromAegir, fromRoot, readJson } from './utils.js'
 import Listr from 'listr'
 import kleur from 'kleur'
 import fs from 'fs-extra'
 import path from 'path'
 import { execa } from 'execa'
-import merge from 'merge-options'
 import { promisify } from 'util'
 import ghPages from 'gh-pages'
 import { premove as del } from 'premove/sync'
+import { fileURLToPath } from 'url'
 
 const publishPages = promisify(ghPages.publish)
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -33,14 +34,6 @@ const docs = async (ctx, task) => {
   const configPath = fromRoot('tsconfig-docs.aegir.json')
 
   try {
-    if (userTSConfig.extends) {
-      const extendedConf = readJson(path.resolve(userTSConfig.extends))
-
-      userTSConfig = merge.apply({ concatArrays: true }, [extendedConf, userTSConfig])
-
-      delete userTSConfig.extends
-    }
-
     const config = {
       ...userTSConfig
     }
@@ -50,20 +43,24 @@ const docs = async (ctx, task) => {
       delete config.compilerOptions.emitDeclarationOnly
     }
 
-    fs.writeJsonSync(configPath, config)
+    fs.writeJsonSync(configPath, config, {
+      spaces: 2
+    })
 
     /** @type {Options} */
     const opts = {
       forwardOptions: ctx['--'] ? ctx['--'] : [],
       entryPoint: ctx.entryPoint
     }
+
     if (!hasTsconfig) {
       // eslint-disable-next-line no-console
       console.error(
-        kleur.yellow('Documentation requires typescript config.\nTry running `aegir ts --preset config > tsconfig.json`')
+        kleur.yellow('Documentation requires typescript config.')
       )
       return
     }
+
     // run typedoc
     const proc = execa(
       'typedoc',
@@ -78,8 +75,9 @@ const docs = async (ctx, task) => {
         '--gitRevision',
         'master',
         '--plugin',
-        fromAegir('src/ts/typedoc-plugin.js'),
-        ...opts.forwardOptions
+        fromAegir('src/docs/typedoc-plugin.cjs'),
+        ...opts.forwardOptions,
+        'src/*'
       ],
       {
         localDir: path.join(__dirname, '..'),

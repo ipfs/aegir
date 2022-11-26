@@ -30,7 +30,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
  * @param {Task} task
  */
 const docs = async (ctx, task) => {
-  let userTSConfig = readJson(fromRoot('tsconfig.json'))
+  const userTSConfig = readJson(fromRoot('tsconfig.json'))
   const configPath = fromRoot('tsconfig-docs.aegir.json')
 
   try {

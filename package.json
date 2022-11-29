@@ -242,7 +242,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "execa": "^6.1.0",
     "extract-zip": "^2.0.1",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^11.0.0",
     "globby": "^13.1.1",
     "it-glob": "^1.0.1",
     "kleur": "^4.1.4",

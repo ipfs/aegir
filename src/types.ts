@@ -133,7 +133,7 @@ interface DocsOptions {
   /**
    * Specifies the entry points to be documented by TypeDoc. TypeDoc will examine the exports of these files and create documentation according to the exports. Either files or directories may be specified. If a directory is specified, all source files within the directory will be included as an entry point.
    */
-  entryPoint: string
+  entryPoint?: string
 }
 
 interface LintOptions {

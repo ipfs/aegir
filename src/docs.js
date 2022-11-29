@@ -19,7 +19,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
  * @typedef {import("listr").ListrTaskWrapper} Task
  *
  * @typedef {object} Options
- * @property {string} entryPoint - Entry point for typedoc (defaults: 'src/index.js')
+ * @property {string | undefined} entryPoint - Entry point for typedoc (defaults: 'src/index.js')
  * @property {string[]} forwardOptions - Extra options to forward to the backend
  */
 
@@ -32,6 +32,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const docs = async (ctx, task) => {
   const userTSConfig = readJson(fromRoot('tsconfig.json'))
   const configPath = fromRoot('tsconfig-docs.aegir.json')
+  const exportsEntryPoint = readJson(fromRoot('package.json')).exports
 
   try {
     const config = {
@@ -65,7 +66,7 @@ const docs = async (ctx, task) => {
     const proc = execa(
       'typedoc',
       [
-        fromRoot(opts.entryPoint),
+        opts.entryPoint ? fromRoot(opts.entryPoint) : exportsEntryPoint,
         '--tsconfig',
         configPath,
         '--out',

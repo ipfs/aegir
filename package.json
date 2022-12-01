@@ -191,6 +191,7 @@
     "build": "node src/index.js build --no-bundle",
     "lint": "node src/index.js lint",
     "test": "node src/index.js test",
+    "docs": "node src/index.js docs",
     "test:node": "node src/index.js test -t node",
     "test:chrome": "node src/index.js test -t browser",
     "test:chrome-webworker": "node src/index.js test -t webworker",

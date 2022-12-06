@@ -1,3 +1,11 @@
+## [37.5.7](https://github.com/ipfs/aegir/compare/v37.5.6...v37.5.7) (2022-12-06)
+
+
+### Dependencies
+
+* bump fs-extra from 10.1.0 to 11.1.0 ([#1114](https://github.com/ipfs/aegir/issues/1114)) ([1bae91b](https://github.com/ipfs/aegir/commit/1bae91bbf9c5cb4f50ee24125ddc19945f75fa83))
+* **dev:** bump sinon from 14.0.2 to 15.0.0 ([#1110](https://github.com/ipfs/aegir/issues/1110)) ([5edc401](https://github.com/ipfs/aegir/commit/5edc401320549e4266e5d017f237d0681e2669b6))
+
 ## [37.5.6](https://github.com/ipfs/aegir/compare/v37.5.5...v37.5.6) (2022-10-13)
 
 

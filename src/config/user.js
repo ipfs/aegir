@@ -3,6 +3,7 @@
 import { lilconfig } from 'lilconfig'
 import merge from 'merge-options'
 import { pathToFileURL } from 'url'
+import { isTypescript } from '../utils.js'
 
 /**
  * @typedef {import("./../types").Options} Options
@@ -61,7 +62,7 @@ const defaults = {
   // docs cmd options
   docs: {
     publish: false,
-    entryPoint: 'src/index.ts'
+    entryPoint: isTypescript ? 'src/index.ts' : 'src/index.js'
   },
   // ts cmd options
   ts: {

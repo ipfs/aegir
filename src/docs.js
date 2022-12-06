@@ -73,8 +73,12 @@ const docs = async (ctx, task) => {
           return
         }
 
-        // transform `./dist/src/index.js` to `./src/index.ts`
-        entryPoints.push(`.${path.match(/\.\/dist(\/src\/.*).js/)[1]}.ts`)
+        if (path.includes('./dist/src')) {
+          // transform `./dist/src/index.js` to `./src/index.ts`
+          entryPoints.push(`.${path.match(/\.\/dist(\/src\/.*).js/)[1]}.ts`)
+        } else {
+          entryPoints.push(path)
+        }
       })
     } else {
       entryPoints.push(opts.entryPoint)

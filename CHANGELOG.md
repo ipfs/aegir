@@ -1,3 +1,10 @@
+## [37.6.0](https://github.com/ipfs/aegir/compare/v37.5.7...v37.6.0) (2022-12-06)
+
+
+### Features
+
+* Re-Add the `docs` command ([#1107](https://github.com/ipfs/aegir/issues/1107)) ([830e826](https://github.com/ipfs/aegir/commit/830e826d48294d645a551bac6c9e06648499376c))
+
 ## [37.5.7](https://github.com/ipfs/aegir/compare/v37.5.6...v37.5.7) (2022-12-06)
 
 

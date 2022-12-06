@@ -7,7 +7,7 @@ import docsCmd from '../docs.js'
  * @typedef {import("yargs").CommandModule} CommandModule
  */
 const EPILOG = `
-Typescript config file is required to generated docs. Try \`aegir ts --preset config > tsconfig.json\`
+Typescript config file is required to generated docs. Please create a \`tsconfig.json\` file in the root of your project.
 `
 /** @type {CommandModule} */
 export default {

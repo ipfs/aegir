@@ -16,12 +16,14 @@ const plugin = function (Application) {
   } catch (err) {
     throw new Error('cant find package.json')
   }
+
   /**
-   * @param {import("typedoc/dist/lib/converter/context")} context
+   * @param {import("typedoc/dist/lib/converter/context").Context} context
    * @param {import("typedoc/dist/lib/models/reflections/abstract").Reflection} reflection
    * @param {import("typescript").Node} node
    */
   const cb = (context, reflection, node) => {
+
     if (pkgJson && reflection.name === 'export=') {
       let name
       if (node) {
@@ -31,6 +33,7 @@ const plugin = function (Application) {
       reflection.name = `${name || 'default'}`
     }
   }
+
   app.converter.on(Converter.EVENT_CREATE_DECLARATION, cb)
 }
 

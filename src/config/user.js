@@ -61,7 +61,7 @@ const defaults = {
   // docs cmd options
   docs: {
     publish: false,
-    entryPoint: 'src/index.js'
+    entryPoint: 'src/index.ts'
   },
   // ts cmd options
   ts: {

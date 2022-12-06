@@ -19,7 +19,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
  * @typedef {import("listr").ListrTaskWrapper} Task
  *
  * @typedef {object} Options
- * @property {string | undefined} entryPoint - Entry point for typedoc (defaults: 'src/index.js')
+ * @property {string} entryPoint - Entry point for typedoc (defaults: 'src/index.js')
  * @property {string[]} forwardOptions - Extra options to forward to the backend
  */
 
@@ -32,7 +32,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const docs = async (ctx, task) => {
   const userTSConfig = readJson(fromRoot('tsconfig.json'))
   const configPath = fromRoot('tsconfig-docs.aegir.json')
-  const exportsEntryPoint = readJson(fromRoot('package.json')).exports
+  const exportsMap = readJson(fromRoot('package.json')).exports
 
   try {
     const config = {
@@ -62,11 +62,29 @@ const docs = async (ctx, task) => {
       return
     }
 
+    /** @type {string[]} */
+    const entryPoints = []
+
+    if (exportsMap != null) {
+      Object.values(exportsMap).forEach(map => {
+        const path = map.import
+
+        if (path == null) {
+          return
+        }
+
+        // transform `./dist/src/index.js` to `./src/index.ts`
+        entryPoints.push(`.${path.match(/\.\/dist(\/src\/.*).js/)[1]}.ts`)
+      })
+    } else {
+      entryPoints.push(opts.entryPoint)
+    }
+
     // run typedoc
     const proc = execa(
       'typedoc',
       [
-        opts.entryPoint ? fromRoot(opts.entryPoint) : exportsEntryPoint,
+        ...entryPoints,
         '--tsconfig',
         configPath,
         '--out',
@@ -76,13 +94,17 @@ const docs = async (ctx, task) => {
         '--gitRevision',
         'master',
         '--plugin',
+        'typedoc-theme-hierarchy',
+        '--theme',
+        'hierarchy',
+        '--plugin',
         fromAegir('src/docs/typedoc-plugin.cjs'),
-        ...opts.forwardOptions,
-        'src/*'
+        ...opts.forwardOptions
       ],
       {
         localDir: path.join(__dirname, '..'),
-        preferLocal: true
+        preferLocal: true,
+        all: true
       }
     )
     proc.all?.on('data', (chunk) => {

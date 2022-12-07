@@ -1,3 +1,10 @@
+## [37.6.4](https://github.com/ipfs/aegir/compare/v37.6.3...v37.6.4) (2022-12-07)
+
+
+### Bug Fixes
+
+* set url of git repo before docs publish ([6e5de98](https://github.com/ipfs/aegir/commit/6e5de984a9cd49b9adbb19aceb5e87f6a77449b0))
+
 ## [37.6.3](https://github.com/ipfs/aegir/compare/v37.6.2...v37.6.3) (2022-12-07)
 
 

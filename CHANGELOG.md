@@ -1,3 +1,10 @@
+## [37.6.3](https://github.com/ipfs/aegir/compare/v37.6.2...v37.6.3) (2022-12-07)
+
+
+### Bug Fixes
+
+* add credentials to gh-pages push ([#1120](https://github.com/ipfs/aegir/issues/1120)) ([b63cc8a](https://github.com/ipfs/aegir/commit/b63cc8aca2b91b122f0a389f66a30f798d18da58))
+
 ## [37.6.2](https://github.com/ipfs/aegir/compare/v37.6.1...v37.6.2) (2022-12-07)
 
 

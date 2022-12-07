@@ -61,7 +61,7 @@ const defaults = {
   },
   // docs cmd options
   docs: {
-    publish: false,
+    publish: Boolean(process.env.CI),
     entryPoint: isTypescript ? 'src/index.ts' : 'src/index.js'
   },
   // ts cmd options

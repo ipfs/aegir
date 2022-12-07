@@ -1,3 +1,11 @@
+## [37.6.1](https://github.com/ipfs/aegir/compare/v37.6.0...v37.6.1) (2022-12-07)
+
+
+### Dependencies
+
+* bump esbuild from 0.15.18 to 0.16.1 ([#1118](https://github.com/ipfs/aegir/issues/1118)) ([16fc0ac](https://github.com/ipfs/aegir/commit/16fc0aca3f8035150c8b6881ee49ba2ccc3377f3))
+* **dev:** bump electron from 21.3.1 to 22.0.0 ([#1113](https://github.com/ipfs/aegir/issues/1113)) ([6fe55db](https://github.com/ipfs/aegir/commit/6fe55dbcf8196284d674de471680e9936d808b4c))
+
 ## [37.6.0](https://github.com/ipfs/aegir/compare/v37.5.7...v37.6.0) (2022-12-06)
 
 

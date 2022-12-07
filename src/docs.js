@@ -133,7 +133,10 @@ const docs = async (ctx, task) => {
 /**
  * @param {PublishDocsConfig} config
  */
-const publishDocs = (config) => {
+const publishDocs = async (config) => {
+  // https://github.com/tschaub/gh-pages#deploying-with-github-actions
+  await execa('git', ['remote', 'set-url', 'origin', `https://git:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`])
+
   return publishPages(
     'docs',
     // @ts-ignore - promisify returns wrong type

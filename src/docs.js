@@ -123,13 +123,27 @@ const docs = async (ctx, task) => {
   }
 }
 
-const publishDocs = () => {
+/**
+ * @typedef {object} PublishDocsConfig
+ * @property {string} PublishDocsConfig.user
+ * @property {string} PublishDocsConfig.email
+ * @property {string} PublishDocsConfig.message
+ */
+
+/**
+ * @param {PublishDocsConfig} config
+ */
+const publishDocs = (config) => {
   return publishPages(
     'docs',
     // @ts-ignore - promisify returns wrong type
     {
       dotfiles: true,
-      message: 'chore: update documentation'
+      message: config.message,
+      user: {
+        name: config.user,
+        email: config.email
+      }
     }
   )
 }
@@ -154,7 +168,7 @@ const tasks = new Listr(
     },
     {
       title: 'Publish to GitHub Pages',
-      task: publishDocs,
+      task: (ctx) => publishDocs(ctx),
       enabled: (ctx) => ctx.publish && hasTsconfig
     }
   ],

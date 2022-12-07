@@ -62,7 +62,10 @@ const defaults = {
   // docs cmd options
   docs: {
     publish: Boolean(process.env.CI),
-    entryPoint: isTypescript ? 'src/index.ts' : 'src/index.js'
+    entryPoint: isTypescript ? 'src/index.ts' : 'src/index.js',
+    message: 'docs: update documentation [skip ci]',
+    user: 'aegir[bot]',
+    email: 'aegir[bot]@users.noreply.github.com'
   },
   // ts cmd options
   ts: {

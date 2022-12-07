@@ -35,6 +35,21 @@ export default {
           describe:
             'Specifies the entry points to be documented by TypeDoc. TypeDoc will examine the exports of these files and create documentation according to the exports. Either files or directories may be specified. If a directory is specified, all source files within the directory will be included as an entry point.',
           default: userConfig.docs.entryPoint
+        },
+        message: {
+          type: 'string',
+          describe: 'The commit message to use when updating the gh-pages branch',
+          default: userConfig.docs.message
+        },
+        user: {
+          type: 'string',
+          describe: 'The user name to use when updating the gh-pages branch',
+          default: userConfig.docs.user
+        },
+        email: {
+          type: 'string',
+          describe: 'The email address to use when updating the gh-pages branch',
+          default: userConfig.docs.email
         }
       })
   },

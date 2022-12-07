@@ -1,3 +1,10 @@
+## [37.6.2](https://github.com/ipfs/aegir/compare/v37.6.1...v37.6.2) (2022-12-07)
+
+
+### Bug Fixes
+
+* publish docs by default in CI ([#1119](https://github.com/ipfs/aegir/issues/1119)) ([147aeac](https://github.com/ipfs/aegir/commit/147aeacc44c0331ef08a97832aa59bb4321c4e90))
+
 ## [37.6.1](https://github.com/ipfs/aegir/compare/v37.6.0...v37.6.1) (2022-12-07)
 
 

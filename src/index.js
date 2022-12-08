@@ -69,7 +69,7 @@ async function main () {
       alias: 'd',
       default: userConfig.debug
     })
-    .group(['help', 'version', 'debug', 'ts-repo'], 'Global Options:')
+    .group(['help', 'version', 'debug'], 'Global Options:')
     .demandCommand(1, 'You need at least one command.')
     // .wrap(yargs.terminalWidth())
     .parserConfiguration({ 'populate--': true })

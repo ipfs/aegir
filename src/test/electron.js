@@ -1,6 +1,6 @@
 import path from 'path'
 import { execa } from 'execa'
-import { getElectron } from '../utils.js'
+import { getElectron, findBinary } from '../utils.js'
 import merge from 'merge-options'
 import { fileURLToPath } from 'url'
 
@@ -37,7 +37,7 @@ export default async (argv, execaOptions) => {
   const beforeEnv = before && before.env ? before.env : {}
   const electronPath = await getElectron()
 
-  await execa('electron-mocha',
+  await execa(findBinary('electron-mocha'),
     [
       ...files,
       ...watch,

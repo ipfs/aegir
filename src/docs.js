@@ -103,6 +103,8 @@ const docs = async (ctx, task) => {
         'hierarchy',
         '--plugin',
         fromAegir('src/docs/typedoc-plugin.cjs'),
+        '--plugin',
+        fromAegir('src/docs/unknown-symbol-resolver.cjs'),
         ...opts.forwardOptions
       ],
       {

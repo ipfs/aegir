@@ -1,3 +1,10 @@
+## [37.6.6](https://github.com/ipfs/aegir/compare/v37.6.5...v37.6.6) (2022-12-08)
+
+
+### Bug Fixes
+
+* load local binaries ([#1123](https://github.com/ipfs/aegir/issues/1123)) ([6db3c51](https://github.com/ipfs/aegir/commit/6db3c515137f00fc8b60ad653be09574b8f40a57))
+
 ## [37.6.5](https://github.com/ipfs/aegir/compare/v37.6.4...v37.6.5) (2022-12-08)
 
 

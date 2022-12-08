@@ -1,3 +1,10 @@
+## [37.6.5](https://github.com/ipfs/aegir/compare/v37.6.4...v37.6.5) (2022-12-08)
+
+
+### Bug Fixes
+
+* include dist in bundle ([#1121](https://github.com/ipfs/aegir/issues/1121)) ([74f1fe1](https://github.com/ipfs/aegir/commit/74f1fe1c9d639af8f8fcdfa9d5265315b6b2bd72))
+
 ## [37.6.4](https://github.com/ipfs/aegir/compare/v37.6.3...v37.6.4) (2022-12-07)
 
 

@@ -1,5 +1,5 @@
 
-/* eslint-disable no-console */
+/* eslint-disable no-console,complexity */
 
 import fs from 'fs-extra'
 import path from 'path'
@@ -99,6 +99,16 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
 
     if (installIndex !== -1 && index === installIndex + 1) {
       // skip install
+      return
+    }
+
+    if (child.type === 'heading' && rendered.includes('browser `<script>` tag')) {
+      // skip browser install
+      return
+    }
+
+    if (rendered.includes('loading this module through a script tag') || rendered.includes('<script src="https://unpkg.com')) {
+      // skip browser install instructions
       return
     }
 

@@ -1,3 +1,10 @@
+## [37.6.7](https://github.com/ipfs/aegir/compare/v37.6.6...v37.6.7) (2022-12-09)
+
+
+### Bug Fixes
+
+* only add browser script tag instructions for browser modules ([#1124](https://github.com/ipfs/aegir/issues/1124)) ([38521d2](https://github.com/ipfs/aegir/commit/38521d26f918ba2f246dabb41123b48d37ae6b2a))
+
 ## [37.6.6](https://github.com/ipfs/aegir/compare/v37.6.5...v37.6.6) (2022-12-08)
 
 

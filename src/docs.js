@@ -104,7 +104,9 @@ const docs = async (ctx, task) => {
         '--plugin',
         fromAegir('src/docs/typedoc-plugin.cjs'),
         '--plugin',
-        fromAegir('src/docs/unknown-symbol-resolver.cjs'),
+        fromAegir('src/docs/unknown-symbol-resolver-plugin.cjs'),
+        '--plugin',
+        'typedoc-plugin-mdn-links',
         ...opts.forwardOptions
       ],
       {

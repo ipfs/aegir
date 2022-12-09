@@ -1,21 +1,18 @@
 const fs = require('fs')
 
-const nodeDocVersion = process.version.split('.')[0]
-
 /** @type {Record<string, Record<string, string>>} */
 const knownSymbols = {
-  '@types/node': {
-    Buffer: `https://nodejs.org/docs/latest-${nodeDocVersion}.x/api/buffer.html`,
-    IncomingMessage: `https://nodejs.org/docs/latest-${nodeDocVersion}.x/api/http.html#class-httpincomingmessage`,
-    Server: `https://nodejs.org/docs/latest-${nodeDocVersion}.x/api/http.html#class-httpserver`,
-    ServerResponse: `https://nodejs.org/docs/latest-${nodeDocVersion}.x/api/http.html#class-httpserverresponse`
-  },
-  typescript: {
-    BigInt: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt',
-    Promise: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
-    Uint8Array: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array'
+  '@types/chai': {
+    'Chai.ChaiStatic': 'https://www.chaijs.com/api/',
+    'Chai.Assertion': 'https://www.chaijs.com/api/assert/'
   }
 }
+
+// these are handled by the plugin typedoc-plugin-mdn-links
+const ignoreModules = [
+  'typescript',
+  '@types/node'
+]
 
 /**
  * @param {import("typedoc/dist/lib/application").Application} Application
@@ -27,6 +24,10 @@ function load(Application) {
 
       if (moduleName == null || symbolName == null) {
         // can't resolve symbol
+        return
+      }
+
+      if (ignoreModules.includes(moduleName)) {
         return
       }
 

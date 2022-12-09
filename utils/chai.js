@@ -1,3 +1,23 @@
+/**
+ * @packageDocumentation
+ *
+ * Chai instance preconfigured with several useful plugins:
+ *
+ * - {@link https://www.npmjs.com/package/chai-as-promised chai-as-promised}
+ * - {@link https://www.npmjs.com/package/chai-parentheses chai-parentheses}
+ * - {@link https://www.npmjs.com/package/chai-subset chai-subset}
+ * - {@link https://www.npmjs.com/package/chai-bytes chai-bytes}
+ * - {@link https://www.npmjs.com/package/chai-string chai-string}
+ *
+ * @example
+ *
+ * ```js
+ * import { expect } from 'aegir/chai'
+ *
+ * expect(true).to.be.true()
+ * ```
+ */
+
 import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import chaiParentheses from 'chai-parentheses'
@@ -12,8 +32,30 @@ chai.use(chaiSubset)
 chai.use(chaiBites)
 chai.use(chaiString)
 
+/**
+ * @see {@link https://www.chaijs.com/api/bdd/ Chai expect/should docs}
+ * @example
+ *
+ * ```js
+ * import { expect } from 'aegir/chai'
+ *
+ * expect(true).to.be.true()
+ * ```
+ */
 export const expect = chai.expect
+
+/**
+ * @see {@link https://www.chaijs.com/api/assert/ Chai assert docs}
+ * @example
+ *
+ * ```js
+ * import { assert } from 'aegir/chai'
+ *
+ * assert(true)
+ * ```
+ */
 export const assert = chai.assert
+
 export {
   chai,
 

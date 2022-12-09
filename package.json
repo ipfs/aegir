@@ -238,7 +238,7 @@
     "eslint-config-ipfs": "^2.1.0",
     "eslint-plugin-etc": "^1.1.7",
     "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-jsdoc": "^36.0.8",
+    "eslint-plugin-jsdoc": "^39.6.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "execa": "^6.1.0",

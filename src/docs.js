@@ -44,6 +44,7 @@ const docs = async (ctx, task) => {
       ctx.directory,
       '--hideGenerator',
       '--includeVersion',
+      '--excludeExternals',
       '--gitRevision',
       'master',
       '--plugin',

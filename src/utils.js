@@ -249,6 +249,7 @@ export const hasTypes = Boolean(pkg.types)
 export const hasMain = Boolean(pkg.main)
 export const hasIndexTs = hasFile('src/index.ts')
 export const hasIndexJs = hasFile('src/index.js')
+export const isMonorepoParent = Boolean(pkg.workspaces)
 
 // our project types:
 

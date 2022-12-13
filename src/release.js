@@ -16,17 +16,9 @@ import { calculateSiblingVersion } from './check-project/utils.js'
 
 const tasks = new Listr([
   {
-    title: 'clean',
+    title: 'docs',
     task: async () => {
-      await execa('npm', ['run', 'clean', '--if-present'], {
-        stdio: 'inherit'
-      })
-    }
-  },
-  {
-    title: 'build',
-    task: async () => {
-      await execa('npm', ['run', 'build', '--if-present'], {
+      await execa('npm', ['run', 'docs', '--if-present'], {
         stdio: 'inherit'
       })
     }

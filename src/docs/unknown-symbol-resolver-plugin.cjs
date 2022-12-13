@@ -40,10 +40,10 @@ function load(Application) {
 
       // try to load docs from package.json - if the manifest declares a
       // `docs` key use that to look up links to typedocs
-      const manifest = loadManifest(moduleName)
+      const typedocs = loadTypedocUrls(moduleName)
 
-      if (manifest != null && manifest.docs != null && manifest.docs[symbolName] != null) {
-        return manifest.docs[symbolName]
+      if (typedocs[symbolName] != null) {
+        return typedocs[symbolName]
       }
 
       Application.logger.warn(`Unknown symbol ${symbolName} from module ${moduleName}`)
@@ -57,10 +57,15 @@ module.exports = {
 /**
  * @param {string} moduleName
  */
-function loadManifest (moduleName) {
+function loadTypedocUrls (moduleName) {
   try {
-    return require(`${moduleName}/package.json`)
+    return require(`${moduleName}/dist/typedoc-urls.json`)
   } catch (/** @type {any} */ err) {
+    if (err.message.includes('Cannot find module')) {
+      // typedoc-urls did not exist in module with main field
+      return {}
+    }
+
     if (err.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED') {
       throw err
     }
@@ -69,7 +74,14 @@ function loadManifest (moduleName) {
     const match = err.message.match(/ in (.*)$/)
 
     if (match.length > 1) {
-      return JSON.parse(fs.readFileSync(match[1].trim(), 'utf-8'))
+      const manifestPath = match[1].trim()
+      const docUrlsPath = manifestPath.replace('package.json', 'dist/typedoc-urls.json')
+
+      if (!fs.existsSync(docUrlsPath)) {
+        return {}
+      }
+
+      return JSON.parse(fs.readFileSync(docUrlsPath, 'utf-8'))
     }
 
     throw err

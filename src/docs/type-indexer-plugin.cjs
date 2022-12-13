@@ -7,7 +7,7 @@ const { RendererEvent } = require('typedoc')
 const MODELS = [
   'Interface',
   'Function',
-  'Type alia',
+  'Type alias',
   'Variable',
   'Class'
 ]
@@ -17,7 +17,7 @@ const MODELS = [
  * @property {string} moduleName
  * @property {Record<string, string>} Documentation.typedocs
  * @property {string[]} Documentation.exported
- * @property {string} Documentation.outputDir
+ * @property {string} [Documentation.outputDir]
  */
 
 /**
@@ -57,33 +57,13 @@ function load (Application) {
 
       // set up manifest to contain typedoc urls
       if (typedocs[context.manifestAbsolutePath] == null) {
-        const manifest = JSON.parse(fs.readFileSync(context.manifestAbsolutePath, 'utf-8'))
+        const details = loadManifest(Application, context)
 
-        if (manifest.exports === null) {
-          // read exports map
-          Application.logger.warn(`Project ${manifest.name} has no exports map`)
+        if (details == null) {
           continue
         }
 
-        // store a list of all files exported by this project
-        /** @type {string[]} */
-        const exported = []
-
-        Object.keys(manifest.exports ?? {}).forEach(name => {
-          if (manifest.exports[name].import == null) {
-            Application.logger.warn(`Project export ${name} has no import field`)
-            return
-          }
-
-          exported.push(manifest.exports[name].import)
-        })
-
-        typedocs[context.manifestAbsolutePath] = {
-          moduleName: manifest.name,
-          exported,
-          typedocs: {},
-          outputDir: context.outputDir
-        }
+        typedocs[context.manifestAbsolutePath] = details
       }
 
       const source = toExportPath(urlMapping, isMonorepo, context)
@@ -101,7 +81,12 @@ function load (Application) {
     Object.keys(typedocs).forEach(manifestPath => {
       const context = typedocs[manifestPath]
 
-      fs.writeFileSync(`${process.cwd()}/${context.outputDir}/typedoc-urls.json`, JSON.stringify(context.typedocs, null, 2))
+      // skip dependency contexts
+      if (context.outputDir == null) {
+        return
+      }
+
+      fs.writeFileSync(`${context.outputDir}/typedoc-urls.json`, JSON.stringify(context.typedocs, null, 2))
     })
   }
 
@@ -115,7 +100,7 @@ module.exports = {
 /**
  * @typedef {object} ProjectContext
  * @property {string} ManifestDocRef.localProjectDir
- * @property {string} ProjectContext.outputDir
+ * @property {string} [ProjectContext.outputDir]
  * @property {string} ProjectContext.manifestAbsolutePath
  */
 
@@ -143,10 +128,17 @@ function findContext (mapping, isMonorepo) {
 
     const manifestPath = `${absolutePathSegments.join('/')}/package.json`
 
+    /** @type {string | undefined} */
+    let outputDir = `${process.cwd()}${isMonorepo ? localPathSegments.join('/') : ''}/dist`
+
+    if (localPathSegments[0] === 'node_modules') {
+      outputDir = undefined
+    }
+
     if (fs.existsSync(manifestPath)) {
       return {
         localProjectDir: localPathSegments.join('/'),
-        outputDir: isMonorepo ? localPathSegments.join('/') + '/dist' : 'dist',
+        outputDir,
         manifestAbsolutePath: manifestPath
       }
     }
@@ -173,7 +165,7 @@ function toExportPath (mapping, isMonorepo, context) {
     // convert to exports type
     source = `${source.substring(0, source.length - 5)}.js`
 
-    // prepend transpiled destination
+    // prepend source destination
     source = `src/${source}`
   }
 
@@ -190,4 +182,39 @@ function toExportPath (mapping, isMonorepo, context) {
   }
 
   return source
+}
+
+/**
+ * @param {import("typedoc/dist/lib/application").Application} Application
+ * @param {ProjectContext} context
+ * @returns {Documentation | undefined}
+ */
+function loadManifest (Application, context) {
+  const manifest = JSON.parse(fs.readFileSync(context.manifestAbsolutePath, 'utf-8'))
+
+  if (manifest.exports === null) {
+    // read exports map
+    Application.logger.warn(`Project ${manifest.name} has no exports map`)
+    return
+  }
+
+  // store a list of all files exported by this project
+  /** @type {string[]} */
+  const exported = []
+
+  Object.keys(manifest.exports ?? {}).forEach(name => {
+    if (manifest.exports[name].import == null) {
+      Application.logger.warn(`Project export ${name} has no import field`)
+      return
+    }
+
+    exported.push(manifest.exports[name].import)
+  })
+
+  return {
+    moduleName: manifest.name,
+    exported,
+    typedocs: {},
+    outputDir: context.outputDir
+  }
 }

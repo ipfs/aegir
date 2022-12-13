@@ -68,6 +68,14 @@ const defaults = {
     email: 'aegir[bot]@users.noreply.github.com',
     directory: '.docs'
   },
+  // document check cmd options
+  documentCheck: {
+    inputFiles: [
+      '*.md',
+      'src/*.md'
+    ],
+    tsConfigPath: '.'
+  },
   // ts cmd options
   ts: {
     preset: undefined,

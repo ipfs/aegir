@@ -32,6 +32,10 @@ interface Options extends GlobalOptions {
    * Options for the `dependency-check` command
    */
   dependencyCheck: DependencyCheckOptions
+  /**
+   * Options for the `document-check` command
+   */
+  documentCheck: DocsVerifierOptions
 }
 
 /**
@@ -70,6 +74,10 @@ interface PartialOptions {
    * Options for the `dependency-check` command
    */
   dependencyCheck?: DependencyCheckOptions
+  /**
+   * Options for the `document-check` command
+   */
+  documentCheck?: DocsVerifierOptions
 }
 
 interface GlobalOptions {
@@ -150,6 +158,18 @@ interface DocsOptions {
    * Where to build the documentation
    */
   directory: string
+}
+
+interface DocsVerifierOptions {
+  /**
+   * The Markdown files to be verified, defaults to `README.md`
+   */
+  inputFiles?: string[]
+
+  /**
+   * An alternative `.tsconfig.json` path to be used seperately from the default
+   */
+  tsConfigPath?: string
 }
 
 interface LintOptions {
@@ -319,5 +339,6 @@ export type {
   LintOptions,
   TestOptions,
   ReleaseOptions,
-  DependencyCheckOptions
+  DependencyCheckOptions,
+  DocsVerifierOptions
 }

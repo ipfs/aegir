@@ -268,3 +268,34 @@ export const isUntypedCJS = isCJS && hasMain
 const parentManifestPath = path.resolve(path.join(process.cwd(), '..', '..', 'package.json'))
 
 export const isMonorepoProject = Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)
+
+/**
+ * Binaries we need are normally in `node_modules/.bin` of the root project
+ * unless a sibling dependency has caused a different version to be hoisted
+ * so check our local node_modules folder first, then fall back to the main
+ * project node_modules folder, then fall back to the environment or fail.
+ *
+ * Happens quite often when old versions of typescript are in the dependency
+ * tree.
+ *
+ * @param {string} bin
+ * @returns {string}
+ */
+export function findBinary (bin) {
+  // if bin is in local node_modules folder
+  const aegirBin = fromAegir('node_modules', '.bin', bin)
+
+  if (fs.existsSync(aegirBin)) {
+    return aegirBin
+  }
+
+  // if bin has been hoisted
+  const projectBin = fromRoot('node_modules', '.bin', bin)
+
+  if (fs.existsSync(projectBin)) {
+    return projectBin
+  }
+
+  // let shell work it out or error
+  return bin
+}

@@ -74,7 +74,9 @@ function load (Application) {
 
       const source = toExportPath(urlMapping, isMonorepo, context)
 
-      if (!typedocs[context.manifestAbsolutePath].exported.includes(source)) {
+      // TypeDoc doesn't support multiple entry points or exports maps in monorepos yet so
+      // skip this check for monorepos - https://github.com/TypeStrong/typedoc/issues/1937
+      if (!isMonorepo && !typedocs[context.manifestAbsolutePath].exported.includes(source)) {
         Application.logger.info(`Skipping ${source} as it is not in the project exports of ${typedocs[context.manifestAbsolutePath].moduleName}`)
 
         continue

@@ -15,6 +15,10 @@ const ignoreModules = [
 ]
 
 /**
+ * A plugin that attempts to supply typedoc links for symbol names. It will load
+ * `typedoc-urls.json` files from the `dist` folder of types that need
+ * documenting. See `type-indexer-plugin.cjs` for how this file is generated.
+ *
  * @param {import("typedoc/dist/lib/application").Application} Application
  */
 function load(Application) {

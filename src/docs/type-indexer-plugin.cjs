@@ -21,6 +21,12 @@ const MODELS = [
  */
 
 /**
+ * A plugin that creates a `typedoc-urls.json` file in the `dist` folder of the
+ * current project that contains URLs that map exported symbol names to published
+ * typedoc pages.
+ *
+ * See `unknown-symbol-resolver-plugin.cjs` for how it is consumed.
+ *
  * @param {import("typedoc/dist/lib/application").Application} Application
  */
 function load (Application) {

@@ -135,7 +135,7 @@ function findContext (mapping, isMonorepo) {
     const manifestPath = `${absolutePathSegments.join('/')}/package.json`
 
     /** @type {string | undefined} */
-    let outputDir = `${process.cwd()}${isMonorepo ? localPathSegments.join('/') : ''}/dist`
+    let outputDir = `${process.cwd()}${isMonorepo ? `/${localPathSegments.join('/')}` : ''}/dist`
 
     if (localPathSegments[0] === 'node_modules') {
       outputDir = undefined

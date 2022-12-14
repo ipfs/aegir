@@ -38,12 +38,37 @@
         "dist/*",
         "dist/src/*",
         "dist/src/*/index"
+      ],
+      "utils/*": [
+        "*",
+        "dist/*",
+        "dist/utils/*"
+      ],
+      "chai": [
+        "dist/utils/chai.d.ts"
+      ],
+      "echo-server": [
+        "dist/utils/echo-server.d.ts"
+      ],
+      "fixtures": [
+        "dist/utils/fixtures.d.ts"
+      ],
+      "get-port": [
+        "dist/utils/get-port.d.ts"
+      ],
+      "resolve": [
+        "dist/utils/resolve.d.ts"
+      ],
+      "src/config/tsconfig.aegir.json": [
+        "src/config/tsconfig.aegir.json"
       ]
     }
   },
-  "files": [
+  "files":
+   [
     "src",
     "dist",
+    "utils",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -80,6 +105,103 @@
     "parserOptions": {
       "sourceType": "module"
     }
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "breaking": true,
+              "release": "major"
+            },
+            {
+              "revert": true,
+              "release": "patch"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "chore",
+              "release": "patch"
+            },
+            {
+              "type": "docs",
+              "release": "patch"
+            },
+            {
+              "type": "deps",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
+              "scope": "no-release",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "chore",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "chore",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "docs",
+                "section": "Documentation"
+              },
+              {
+                "type": "deps",
+                "section": "Dependencies"
+              },
+              {
+                "type": "test",
+                "section": "Tests"
+              }
+            ]
+          }
+        }
+      ],
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
   },
   "scripts": {
     "clean": "node src/index.js clean",

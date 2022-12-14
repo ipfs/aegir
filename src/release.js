@@ -7,6 +7,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import glob from 'it-glob'
 import { calculateSiblingVersion } from './check-project/utils.js'
+import kleur from 'kleur'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -39,6 +40,17 @@ const tasks = new Listr([
         preferLocal: true,
         stdio: 'inherit'
       })
+
+      if (isMonorepoProject) {
+        console.info(kleur.yellow('Waiting for 60s to prevent hitting rate limits'))
+
+        for (let i = 0; i < 6; i++) {
+          await new Promise((resolve) => {
+            setTimeout(() => resolve(null), 10000)
+          })
+          console.info(kleur.yellow(`Waited ${(i + 1) * 10000}s`))
+        }
+      }
     }
   },
   {

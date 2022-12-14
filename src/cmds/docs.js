@@ -50,6 +50,11 @@ export default {
           type: 'string',
           describe: 'The email address to use when updating the gh-pages branch',
           default: userConfig.docs.email
+        },
+        directory: {
+          type: 'string',
+          describe: 'Where to build the documentation',
+          default: userConfig.docs.directory
         }
       })
   },

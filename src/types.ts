@@ -146,6 +146,10 @@ interface DocsOptions {
    * The email address to make the commit with
    */
   email: string
+  /**
+   * Where to build the documentation
+   */
+  directory: string
 }
 
 interface LintOptions {

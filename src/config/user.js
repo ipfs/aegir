@@ -65,7 +65,8 @@ const defaults = {
     entryPoint: isTypescript ? 'src/index.ts' : 'src/index.js',
     message: 'docs: update documentation [skip ci]',
     user: 'aegir[bot]',
-    email: 'aegir[bot]@users.noreply.github.com'
+    email: 'aegir[bot]@users.noreply.github.com',
+    directory: '.docs'
   },
   // ts cmd options
   ts: {

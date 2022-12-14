@@ -1,4 +1,5 @@
 import './build.js'
+import './docs.js'
 import './lint.js'
 import './fixtures.js'
 import './dependants.js'

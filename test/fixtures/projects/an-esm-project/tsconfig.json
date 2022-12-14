@@ -10,7 +10,7 @@
       "lib": ["ES2021", "ES2021.Promise", "ES2021.String", "ES2020.BigInt", "DOM", "DOM.Iterable"],
       "noEmit": false,
       "noEmitOnError": true,
-      "emitDeclarationOnly": false,
+      "emitDeclarationOnly": true,
       "declaration": true,
       "declarationMap": true,
       "incremental": true,

@@ -8,3 +8,7 @@ export const useHerp = () => {
 export const useDerp = () => {
   derp()
 }
+
+export interface AnExportedInterface {
+  aMethod: () => void
+}

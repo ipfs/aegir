@@ -1,3 +1,11 @@
+## [37.7.2](https://github.com/ipfs/aegir/compare/v37.7.1...v37.7.2) (2022-12-14)
+
+
+### Bug Fixes
+
+* allow configuring docs directory ([#1138](https://github.com/ipfs/aegir/issues/1138)) ([06c9468](https://github.com/ipfs/aegir/commit/06c946862d34ea506fd6afbe7df230de4fb43123))
+* temporarily disable coverage ([#1137](https://github.com/ipfs/aegir/issues/1137)) ([7537d8c](https://github.com/ipfs/aegir/commit/7537d8ca393f270e941719b1ff5c9bdac3f761fc))
+
 ## [37.7.1](https://github.com/ipfs/aegir/compare/v37.7.0...v37.7.1) (2022-12-14)
 
 

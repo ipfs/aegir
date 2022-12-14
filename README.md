@@ -1,14 +1,40 @@
-# AEgir
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](https://protocol.ai)
-[![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.io/)
-[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ipfs/aegir/ci/master?style=flat-square)
+# aegir <!-- omit in toc -->
 
-> Automated JavaScript project management.
+[![ipfs.tech](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.tech)
+[![Discuss](https://img.shields.io/discourse/https/discuss.ipfs.tech/posts.svg?style=flat-square)](https://discuss.ipfs.tech)
+[![codecov](https://img.shields.io/codecov/c/github/ipfs/aegir.svg?style=flat-square)](https://codecov.io/gh/ipfs/aegir)
+[![CI](https://img.shields.io/github/workflow/status/ipfs/aegir/test%20&%20maybe%20release/master?style=flat-square)](https://github.com/ipfs/aegir/actions/workflows/js-test-and-release.yml)
 
-## Lead Maintainer
+> JavaScript project management
 
-[Hugo Dias](https://github.com/hugomrdias)
+## Table of contents <!-- omit in toc -->
+
+- [Install](#install)
+  - [Browser `<script>` tag](#browser-script-tag)
+- [Project Structure](#project-structure)
+- [CLI](#cli)
+- [Configuration](#configuration)
+- [Continuous Integration](#continuous-integration)
+- [Testing helpers](#testing-helpers)
+- [Typescript](#typescript)
+- [Release steps](#release-steps)
+- [API Docs](#api-docs)
+- [License](#license)
+- [Contribute](#contribute)
+
+## Install
+
+```console
+$ npm i aegir
+```
+
+### Browser `<script>` tag
+
+Loading this module through a script tag will make it's exports available as `Aegir` in the global namespace.
+
+```html
+<script src="https://unpkg.com/aegir/dist/index.min.js"></script>
+```
 
 ## Project Structure
 
@@ -71,6 +97,7 @@ Use `aegir <command> --help` to learn more about each command.
 ```
 
 ## Configuration
+
 Aegir can be fully configured using a config file named `.aegir.js` or the package.json using the property `aegir`.
 
 ```js
@@ -106,16 +133,18 @@ module.exports = {
   "tsRepo": false
 }
 ```
+
 You can find the complete default config [here](https://github.com/ipfs/aegir/blob/master/src/config/user.js#L12) and the types [here](https://github.com/ipfs/aegir/blob/master/src/types.d.ts).
 
 ## Continuous Integration
-Check this template for Github Actions https://github.com/ipfs/aegir/blob/master/md/github-actions.md
+
+Check this template for Github Actions <https://github.com/ipfs/aegir/blob/master/md/github-actions.md>
 
 ## Testing helpers
+
 In addition to running the tests `aegir` also provides several helpers to be used by the tests.
 
 Check the [documentation](https://ipfs.github.io/aegir/)
-
 
 ## Typescript
 
@@ -141,6 +170,25 @@ Aegir will detect the presence of `tsconfig.json` files and build typescript as 
 aegir release --help
 ```
 
+## API Docs
+
+- <https://ipfs.github.io/aegir>
+
 ## License
 
-MIT
+Licensed under either of
+
+- Apache 2.0, ([LICENSE-APACHE](LICENSE-APACHE) / <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT ([LICENSE-MIT](LICENSE-MIT) / <http://opensource.org/licenses/MIT>)
+
+## Contribute
+
+Contributions welcome! Please check out [the issues](https://github.com/ipfs/aegir/issues).
+
+Also see our [contributing document](https://github.com/ipfs/community/blob/master/CONTRIBUTING_JS.md) for more information on how we work, and about contributing in general.
+
+Please be aware that all interactions related to this repo are subject to the IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
+
+[![](https://cdn.rawgit.com/jbenet/contribute-ipfs-gif/master/img/contribute.gif)](https://github.com/ipfs/community/blob/master/CONTRIBUTING.md)

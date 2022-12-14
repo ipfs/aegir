@@ -1,3 +1,10 @@
+## [37.7.1](https://github.com/ipfs/aegir/compare/v37.7.0...v37.7.1) (2022-12-14)
+
+
+### Dependencies
+
+* bump @types/node from 16.18.9 to 18.11.15 ([#1135](https://github.com/ipfs/aegir/issues/1135)) ([5cbb2d7](https://github.com/ipfs/aegir/commit/5cbb2d7ce42a253d2ce7669ea9a17d9c5309e150))
+
 ## [37.7.0](https://github.com/ipfs/aegir/compare/v37.6.7...v37.7.0) (2022-12-14)
 
 

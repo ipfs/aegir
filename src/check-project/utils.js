@@ -3,7 +3,7 @@
 import fs from 'fs'
 import path from 'path'
 import prompt from 'prompt'
-import chalk from 'chalk'
+import kleur from 'kleur'
 import * as Diff from 'diff'
 import { fileURLToPath } from 'url'
 
@@ -47,7 +47,7 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
       throw new Error(`${filePath} did not exist`)
     }
 
-    console.warn(chalk.yellow(`${filePath} did not exist`))
+    console.warn(kleur.yellow(`${filePath} did not exist`))
 
     const { createFile } = await prompt.get({
       properties: {
@@ -72,14 +72,14 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
   }
 
   if (existingContents === expectedContents) {
-    console.info(chalk.green(`${filePath} contents ok`))
+    console.info(kleur.green(`${filePath} contents ok`))
   } else {
     if (process.env.CI) {
       throw new Error(`${filePath} contents not ok`)
     }
 
-    console.warn(chalk.yellow(`${filePath} contents not ok`))
-    console.warn('Diff', chalk.green('added'), chalk.red('removed'), chalk.grey('unchanged'))
+    console.warn(kleur.yellow(`${filePath} contents not ok`))
+    console.warn('Diff', kleur.green('added'), kleur.red('removed'), kleur.grey('unchanged'))
 
     const diff = Diff.diffLines(existingContents, expectedContents)
 
@@ -87,11 +87,11 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
       // green for additions, red for deletions
       // grey for common parts
       if (part.added) {
-        console.info(chalk.green(part.value))
+        console.info(kleur.green(part.value))
       } else if (part.removed) {
-        console.info(chalk.red(part.value))
+        console.info(kleur.red(part.value))
       } else {
-        console.info(chalk.grey(part.value))
+        console.info(kleur.grey(part.value))
       }
     })
 
@@ -128,7 +128,7 @@ export async function ensureFileNotPresent (projectDir, filePath) {
       throw new Error(`${filePath} exists`)
     }
 
-    console.warn(chalk.yellow(`${filePath} exist`))
+    console.warn(kleur.yellow(`${filePath} exist`))
 
     const { removeFile } = await prompt.get({
       properties: {

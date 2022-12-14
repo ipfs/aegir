@@ -3,13 +3,11 @@
 import { expect } from '../utils/chai.js'
 import { execa } from 'execa'
 import fs from 'fs-extra'
-import path, { join } from 'path'
-import tempy from 'tempy'
-import { fileURLToPath } from 'url'
+import { join } from 'path'
 import { createRequire } from 'module'
+import { setUpProject } from './utils/set-up-project.js'
 
 const require = createRequire(import.meta.url)
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const bin = require.resolve('../src/index.js')
 
 describe('build', () => {
@@ -17,9 +15,7 @@ describe('build', () => {
     let projectDir = ''
 
     before(async () => {
-      projectDir = tempy.directory()
-
-      await fs.copy(join(__dirname, 'fixtures', 'projects', 'an-esm-project'), projectDir)
+      projectDir = await setUpProject('an-esm-project')
     })
 
     it('should build an esm project', async function () {
@@ -37,9 +33,7 @@ describe('build', () => {
     let projectDir = ''
 
     before(async () => {
-      projectDir = tempy.directory()
-
-      await fs.copy(join(__dirname, 'fixtures', 'projects', 'a-ts-project'), projectDir)
+      projectDir = await setUpProject('a-ts-project')
     })
 
     it('should build a typescript project', async function () {

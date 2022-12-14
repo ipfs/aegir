@@ -5,6 +5,7 @@ yarn.lock
 /coverage
 /dist
 /docs
+.docs
 .nyc_output
 *.log
 .vscode

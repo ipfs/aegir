@@ -41,7 +41,7 @@ const docs = async (ctx, task) => {
     [
       ...entryPoints,
       '--out',
-      'docs',
+      ctx.directory,
       '--hideGenerator',
       '--includeVersion',
       '--gitRevision',
@@ -68,7 +68,7 @@ const docs = async (ctx, task) => {
   await proc
 
   // write .nojekyll file
-  fs.writeFileSync('docs/.nojekyll', '')
+  fs.writeFileSync(`${ctx.directory}/.nojekyll`, '')
 }
 
 async function findProjectEntryPoints () {
@@ -119,6 +119,7 @@ async function findMonorepoEntryPoints () {
  * @property {string} PublishDocsConfig.user
  * @property {string} PublishDocsConfig.email
  * @property {string} PublishDocsConfig.message
+ * @property {string} PublishDocsConfig.directory
  */
 
 /**
@@ -129,7 +130,7 @@ const publishDocs = async (config) => {
   await execa('git', ['remote', 'set-url', 'origin', `https://git:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`])
 
   return publishPages(
-    'docs',
+    config.directory,
     // @ts-ignore - promisify returns wrong type
     {
       dotfiles: true,
@@ -146,14 +147,16 @@ const tasks = new Listr(
   [
     {
       title: 'Clean ./docs',
-      task: () => {
-        del('docs')
+      /**
+       * @param {GlobalOptions & DocsOptions} ctx
+       */
+      task: (ctx) => {
+        del(ctx.directory)
       }
     },
     {
       title: 'Generating documentation',
       /**
-       *
        * @param {GlobalOptions & DocsOptions} ctx
        * @param {Task} task
        */

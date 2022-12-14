@@ -1,3 +1,10 @@
+## [37.7.0](https://github.com/ipfs/aegir/compare/v37.6.7...v37.7.0) (2022-12-14)
+
+
+### Features
+
+* link to external typedocs ([#1122](https://github.com/ipfs/aegir/issues/1122)) ([144e282](https://github.com/ipfs/aegir/commit/144e2829a706c34eaecfc3d1312d741b5d4191f8))
+
 ## [37.6.7](https://github.com/ipfs/aegir/compare/v37.6.6...v37.6.7) (2022-12-09)
 
 

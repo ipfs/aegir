@@ -1,8 +1,12 @@
 /**
  * @param {*} pkg
+ * @param {*} [parentPkg]
  */
-export const APIDOCS = (pkg) => {
-  if (pkg.scripts.docs == null) {
+export const APIDOCS = (pkg, parentPkg) => {
+  // check root module scripts block for docs script if in a monorepo
+  const scripts = parentPkg?.scripts ?? pkg.scripts
+
+  if (scripts.docs == null) {
     return ''
   }
 

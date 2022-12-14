@@ -112,7 +112,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
 
       console.info('Found monorepo project', pkg.name)
 
-      await processModule(subProjectDir, pkg, branchName, repoUrl, homePage)
+      await processModule(subProjectDir, pkg, branchName, repoUrl, homePage, manifest)
 
       projectDirs.push(subProjectDir)
     }
@@ -305,8 +305,9 @@ function isAegirProject (manifest) {
  * @param {string} branchName
  * @param {string} repoUrl
  * @param {string} homePage
+ * @param {any} [parentPkg]
  */
-async function processModule (projectDir, manifest, branchName, repoUrl, homePage = repoUrl) {
+async function processModule (projectDir, manifest, branchName, repoUrl, homePage = repoUrl, parentPkg) {
   if (!isAegirProject(manifest) && manifest.name !== 'aegir') {
     throw new Error(`"${projectDir}" is not an aegir project`)
   }
@@ -382,7 +383,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
   await checkLicenseFiles(projectDir)
-  await checkReadme(projectDir, repoUrl, branchName)
+  await checkReadme(projectDir, repoUrl, branchName, parentPkg)
 }
 
 export default new Listr([

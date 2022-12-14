@@ -1,3 +1,10 @@
+## [37.7.3](https://github.com/ipfs/aegir/compare/v37.7.2...v37.7.3) (2022-12-14)
+
+
+### Bug Fixes
+
+* add missing deps ([#1140](https://github.com/ipfs/aegir/issues/1140)) ([3e57c6a](https://github.com/ipfs/aegir/commit/3e57c6a3cdd28a7e9bab2a1605831076481c1781))
+
 ## [37.7.2](https://github.com/ipfs/aegir/compare/v37.7.1...v37.7.2) (2022-12-14)
 
 

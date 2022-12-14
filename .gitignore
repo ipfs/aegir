@@ -8,3 +8,4 @@ yarn.lock
 .nyc_output
 *.log
 .vscode
+.coverage

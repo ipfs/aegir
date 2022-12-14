@@ -1,5 +1,6 @@
 import { loadUserConfig } from '../config/user.js'
 import testCmd from '../test/index.js'
+import kleur from 'kleur'
 
 /**
  * @typedef {import("yargs").Argv} Argv
@@ -106,6 +107,12 @@ export default {
    * @param {any} argv
    */
   async handler (argv) {
+    // temporarily disable code coverage on node 18
+    if (argv.cov && process.version.startsWith('v18.')) {
+      console.warn(kleur.red('!!! Temporarily disabling code coverage\n')) // eslint-disable-line no-console
+      delete argv.cov
+    }
+
     await testCmd.run({
       ...argv,
       bundle: false

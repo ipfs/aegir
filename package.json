@@ -30,12 +30,14 @@
       "*": [
         "*",
         "dist/*",
-        "dist/src/*"
+        "dist/src/*",
+        "dist/src/*/index"
       ],
       "src/*": [
         "*",
         "dist/*",
-        "dist/src/*"
+        "dist/src/*",
+        "dist/src/*/index"
       ],
       "utils/*": [
         "*",
@@ -62,35 +64,42 @@
       ]
     }
   },
-  "exports": {
-    ".": {
-      "import": "./src/index.js"
-    },
-    "./chai": {
-      "import": "./utils/chai.js"
-    },
-    "./echo-server": {
-      "import": "./utils/echo-server.js"
-    },
-    "./fixtures": {
-      "browser": "./utils/fixtures.browser.js",
-      "import": "./utils/fixtures.js"
-    },
-    "./get-port": {
-      "import": "./utils/get-port.js"
-    },
-    "./resolve": {
-      "browser": "./utils/resolve.browser.js",
-      "import": "./utils/resolve.js"
-    }
-  },
-  "files": [
-    "dist",
+  "files":
+   [
     "src",
+    "dist",
     "utils",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./chai": {
+      "types": "./dist/utils/chai.d.ts",
+      "import": "./utils/chai.js"
+    },
+    "./echo-server": {
+      "types": "./dist/utils/echo-server.d.ts",
+      "import": "./utils/echo-server.js"
+    },
+    "./fixtures": {
+      "types": "./dist/utils/fixtures.d.ts",
+      "browser": "./utils/fixtures.browser.js",
+      "import": "./utils/fixtures.js"
+    },
+    "./get-port": {
+      "types": "./dist/utils/get-port.d.ts",
+      "import": "./utils/get-port.js"
+    },
+    "./resolve": {
+      "types": "./dist/utils/resolve.d.ts",
+      "browser": "./utils/resolve.browser.js",
+      "import": "./utils/resolve.js"
+    }
+  },
   "eslintConfig": {
     "extends": "ipfs",
     "parserOptions": {
@@ -155,6 +164,14 @@
               {
                 "type": "feat",
                 "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "chore",
+                "section": "Trivial Changes"
               },
               {
                 "type": "fix",
@@ -284,7 +301,7 @@
     "strip-json-comments": "^5.0.0",
     "tempy": "^2.0.0",
     "typedoc": "^0.23.21",
-    "typedoc-theme-hierarchy": "^3.0.0",
+    "typedoc-plugin-mdn-links": "^2.0.0",
     "typescript": "^4.6.3",
     "uint8arrays": "^4.0.2",
     "undici": "^5.0.0",

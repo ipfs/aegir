@@ -61,7 +61,7 @@ const defaults = {
   },
   // docs cmd options
   docs: {
-    publish: Boolean(process.env.CI),
+    publish: Boolean(process.env.CI) && process.env.NODE_ENV !== 'test',
     entryPoint: isTypescript ? 'src/index.ts' : 'src/index.js',
     message: 'docs: update documentation [skip ci]',
     user: 'aegir[bot]',

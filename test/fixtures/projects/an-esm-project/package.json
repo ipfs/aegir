@@ -2,7 +2,12 @@
   "name": "an-esm-project",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "homepage": "https://github.com/ipfs/aegir#readme",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
   "type": "module",
   "scripts": {
     "test": "aegir test"
@@ -14,5 +19,9 @@
     "parserOptions": {
       "sourceType": "module"
     }
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "mocha": "^10.0.0"
   }
 }

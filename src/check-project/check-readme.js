@@ -11,6 +11,7 @@ import { parseMarkdown, writeMarkdown } from './readme/utils.js'
 import { HEADER } from './readme/header.js'
 import { LICENSE } from './readme/license.js'
 import { INSTALL } from './readme/install.js'
+import { APIDOCS } from './readme/api-docs.js'
 
 /**
  * @param {string} projectDir
@@ -126,11 +127,13 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
   })
 
   const installation = parseMarkdown(INSTALL(pkg))
+  const apiDocs = parseMarkdown(APIDOCS(pkg))
   const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
 
   parsedReadme.children = [
     ...installation.children,
     ...parsedReadme.children,
+    ...apiDocs.children,
     ...license.children,
     ...footer
   ]

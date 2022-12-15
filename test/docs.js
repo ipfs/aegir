@@ -21,7 +21,7 @@ describe('docs', () => {
     it('should document an esm project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      await execa(bin, ['docs'], {
+      await execa(bin, ['docs', '--publish', 'false'], {
         cwd: projectDir
       })
 
@@ -48,7 +48,7 @@ describe('docs', () => {
       await execa(bin, ['build'], {
         cwd: projectDir
       })
-      await execa(bin, ['docs'], {
+      await execa(bin, ['docs', '--publish', 'false'], {
         cwd: projectDir
       })
 

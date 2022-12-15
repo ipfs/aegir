@@ -1,3 +1,11 @@
+## [37.7.6](https://github.com/ipfs/aegir/compare/v37.7.5...v37.7.6) (2022-12-15)
+
+
+### Bug Fixes
+
+* link to api docs from monorepo child projects ([#1145](https://github.com/ipfs/aegir/issues/1145)) ([e862d02](https://github.com/ipfs/aegir/commit/e862d024701f5fdfe00e2d964eadf9b05f9a2e5f))
+* only use absolute path of url mapping to find project context ([#1144](https://github.com/ipfs/aegir/issues/1144)) ([b99b473](https://github.com/ipfs/aegir/commit/b99b473504f48923e632c314c0b55bc8d374cab7))
+
 ## [37.7.5](https://github.com/ipfs/aegir/compare/v37.7.4...v37.7.5) (2022-12-15)
 
 

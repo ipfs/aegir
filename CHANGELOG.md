@@ -1,3 +1,10 @@
+## [37.7.4](https://github.com/ipfs/aegir/compare/v37.7.3...v37.7.4) (2022-12-15)
+
+
+### Bug Fixes
+
+* generate docs on publish, control publishing from release job ([#1141](https://github.com/ipfs/aegir/issues/1141)) ([5afb1a0](https://github.com/ipfs/aegir/commit/5afb1a0603dcc8a331b9398881c0ae2feee00fc1))
+
 ## [37.7.3](https://github.com/ipfs/aegir/compare/v37.7.2...v37.7.3) (2022-12-14)
 
 

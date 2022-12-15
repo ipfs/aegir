@@ -61,4 +61,30 @@ describe('docs', () => {
       })
     })
   })
+
+  describe('monorepo project', () => {
+    let projectDir = ''
+
+    before(async () => {
+      projectDir = await setUpProject('a-monorepo')
+    })
+
+    it('should document a monorepo project', async function () {
+      this.timeout(120 * 1000) // slow ci is slow
+
+      await execa(bin, ['docs', '--publish', 'false'], {
+        cwd: projectDir
+      })
+
+      expect(fs.existsSync(join(projectDir, '.docs'))).to.be.true()
+
+      const module = await import(`file://${projectDir}/packages/a-workspace-project/src/index.js`)
+      const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports']
+      const typedocUrls = await fs.readJSON(join(projectDir, 'packages/a-workspace-project/dist', 'typedoc-urls.json'))
+
+      exports.forEach(key => {
+        expect(typedocUrls).to.have.property(key)
+      })
+    })
+  })
 })

@@ -1,0 +1,17 @@
+{
+  "name": "another-workspace-project",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ipfs/aegir#readme",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "typedoc": {
+    "entryPoint": "./src/index.js"
+  }
+}

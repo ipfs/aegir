@@ -58,6 +58,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
 
   let tocIndex = -1
   let installIndex = -1
+  let apiDocsIndex = -1
   let licenseFound = false
 
   /** @type {import('mdast').Content[]} */
@@ -110,6 +111,17 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
 
     if (rendered.includes('loading this module through a script tag') || rendered.includes('<script src="https://unpkg.com')) {
       // skip browser install instructions
+      return
+    }
+
+    if (child.type === 'heading' && rendered.includes('api docs')) {
+      // skip api docs header
+      apiDocsIndex = index
+      return
+    }
+
+    if (apiDocsIndex !== -1 && index === apiDocsIndex + 1) {
+      // skip api docs link
       return
     }
 

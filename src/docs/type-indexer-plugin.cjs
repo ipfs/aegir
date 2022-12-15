@@ -1,5 +1,6 @@
 const fs = require('fs')
 const { RendererEvent } = require('typedoc')
+const path = require('path')
 
 /**
  * The types of models we want to store documentation URLs for
@@ -133,10 +134,10 @@ function findContext (mapping, isMonorepo) {
     // remove last path segment
     absolutePathSegments.pop()
 
-    const manifestPath = `${absolutePathSegments.join('/')}/package.json`
+    let manifestPath = makeAbsolute(path.join(...absolutePathSegments, 'package.json'))
 
     /** @type {string | undefined} */
-    let outputDir = `${isMonorepo ? `/${absolutePathSegments.join('/')}` : process.cwd()}/dist`
+    let outputDir = makeAbsolute(path.join(...(isMonorepo ? absolutePathSegments : process.cwd().split('/')), 'dist'))
 
     // this can occur when a symbol from a dependency is exported, if this is
     // the case do not try to write a `typedoc-urls.json` file
@@ -188,4 +189,19 @@ function loadManifest (Application, context) {
     typedocs: {},
     outputDir: context.outputDir
   }
+}
+
+/**
+ * Make a path absolute
+ *
+ * @param {string} p
+ * @returns {string}
+ */
+function makeAbsolute (p) {
+  // on windows it is already absolute
+  if (!p.startsWith('/') && process.platform !== 'win32') {
+    return `/${p}`
+  }
+
+  return p
 }

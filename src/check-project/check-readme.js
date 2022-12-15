@@ -17,8 +17,9 @@ import { APIDOCS } from './readme/api-docs.js'
  * @param {string} projectDir
  * @param {string} repoUrl
  * @param {string} defaultBranch
+ * @param {any} [rootManifest]
  */
-export async function checkReadme (projectDir, repoUrl, defaultBranch) {
+export async function checkReadme (projectDir, repoUrl, defaultBranch, rootManifest) {
   const repoParts = repoUrl.split('/')
   const repoName = repoParts.pop()
   const repoOwner = repoParts.pop()
@@ -139,7 +140,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
   })
 
   const installation = parseMarkdown(INSTALL(pkg))
-  const apiDocs = parseMarkdown(APIDOCS(pkg))
+  const apiDocs = parseMarkdown(APIDOCS(pkg, rootManifest))
   const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
 
   parsedReadme.children = [

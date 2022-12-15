@@ -1,3 +1,10 @@
+## [37.7.5](https://github.com/ipfs/aegir/compare/v37.7.4...v37.7.5) (2022-12-15)
+
+
+### Bug Fixes
+
+* disable package-lock.json in monorepos ([#1142](https://github.com/ipfs/aegir/issues/1142)) ([d3adbfa](https://github.com/ipfs/aegir/commit/d3adbfa545676b913a38645ac754ed4f7c7c0781))
+
 ## [37.7.4](https://github.com/ipfs/aegir/compare/v37.7.3...v37.7.4) (2022-12-15)
 
 

@@ -146,7 +146,7 @@ const publishDocs = async (config) => {
 const tasks = new Listr(
   [
     {
-      title: 'Clean ./docs',
+      title: 'Clean output dir',
       /**
        * @param {GlobalOptions & DocsOptions} ctx
        */
@@ -165,7 +165,7 @@ const tasks = new Listr(
     {
       title: 'Publish to GitHub Pages',
       task: (ctx) => publishDocs(ctx),
-      enabled: (ctx) => ctx.publish && hasTsconfig
+      enabled: (ctx) => ctx.publish
     }
   ],
   {

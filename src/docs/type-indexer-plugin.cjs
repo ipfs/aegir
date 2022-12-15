@@ -113,7 +113,8 @@ module.exports = {
  */
 
 /**
- * Return project details for the passed UrlMapping
+ * For a given UrlMapping, find the nearest package.json file
+ * and work out if a `typedoc-urls.json` should be generated.
  *
  * @param {import("typedoc/dist/lib/output/models/UrlMapping").UrlMapping} mapping
  * @param {boolean} isMonorepo

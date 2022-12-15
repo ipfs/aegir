@@ -59,6 +59,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
 
   let structureIndex = -1
   let tocIndex = -1
+  let apiDocsIndex = -1
   let licenseFound = false
 
   file.children.forEach((child, index) => {
@@ -98,6 +99,17 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
 
     if (structureIndex !== -1 && index === structureIndex + 1) {
       // skip structure
+      return
+    }
+
+    if (child.type === 'heading' && rendered.includes('api docs')) {
+      // skip api docs header
+      apiDocsIndex = index
+      return
+    }
+
+    if (apiDocsIndex !== -1 && index === apiDocsIndex + 1) {
+      // skip api docs link
       return
     }
 

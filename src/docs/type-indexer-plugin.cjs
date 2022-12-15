@@ -1,5 +1,6 @@
 const fs = require('fs')
 const { RendererEvent } = require('typedoc')
+const path = require('path')
 
 /**
  * The types of models we want to store documentation URLs for
@@ -70,18 +71,18 @@ function load (Application) {
       const context = findContext(urlMapping, isMonorepo)
 
       // set up manifest to contain typedoc urls
-      if (typedocs[context.manifestAbsolutePath] == null) {
+      if (typedocs[context.manifestPath] == null) {
         const details = loadManifest(Application, context)
 
         if (details == null) {
           continue
         }
 
-        typedocs[context.manifestAbsolutePath] = details
+        typedocs[context.manifestPath] = details
       }
 
       // store reference to generate doc url
-      typedocs[context.manifestAbsolutePath].typedocs[urlMapping.model.originalName] = `${ghPages}${urlMapping.url}`
+      typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] = `${ghPages}${urlMapping.url}`
     }
 
     Object.keys(typedocs).forEach(manifestPath => {
@@ -108,13 +109,13 @@ module.exports = {
 
 /**
  * @typedef {object} ProjectContext
- * @property {string} ManifestDocRef.localProjectDir
  * @property {string} [ProjectContext.outputDir]
- * @property {string} ProjectContext.manifestAbsolutePath
+ * @property {string} ProjectContext.manifestPath
  */
 
 /**
- * Return project details for the passed UrlMapping
+ * For a given UrlMapping, find the nearest package.json file
+ * and work out if a `typedoc-urls.json` should be generated.
  *
  * @param {import("typedoc/dist/lib/output/models/UrlMapping").UrlMapping} mapping
  * @param {boolean} isMonorepo
@@ -128,27 +129,26 @@ function findContext (mapping, isMonorepo) {
   }
 
   const absolutePathSegments = sources[0].fullFileName.split('/')
-  const localPathSegments = sources[0].fileName.split('/')
 
   while (absolutePathSegments.length) {
     // remove last path segment
     absolutePathSegments.pop()
-    localPathSegments.pop()
 
-    const manifestPath = `${absolutePathSegments.join('/')}/package.json`
+    let manifestPath = makeAbsolute(path.join(...absolutePathSegments, 'package.json'))
 
     /** @type {string | undefined} */
-    let outputDir = `${process.cwd()}${isMonorepo ? `/${localPathSegments.join('/')}` : ''}/dist`
+    let outputDir = makeAbsolute(path.join(...(isMonorepo ? absolutePathSegments : process.cwd().split('/')), 'dist'))
 
-    if (localPathSegments[0] === 'node_modules') {
+    // this can occur when a symbol from a dependency is exported, if this is
+    // the case do not try to write a `typedoc-urls.json` file
+    if (outputDir.includes('node_modules')) {
       outputDir = undefined
     }
 
     if (fs.existsSync(manifestPath)) {
       return {
-        localProjectDir: localPathSegments.join('/'),
         outputDir,
-        manifestAbsolutePath: manifestPath
+        manifestPath
       }
     }
   }
@@ -162,7 +162,7 @@ function findContext (mapping, isMonorepo) {
  * @returns {Documentation | undefined}
  */
 function loadManifest (Application, context) {
-  const manifest = JSON.parse(fs.readFileSync(context.manifestAbsolutePath, 'utf-8'))
+  const manifest = JSON.parse(fs.readFileSync(context.manifestPath, 'utf-8'))
 
   if (manifest.exports === null) {
     // read exports map
@@ -189,4 +189,19 @@ function loadManifest (Application, context) {
     typedocs: {},
     outputDir: context.outputDir
   }
+}
+
+/**
+ * Make a path absolute
+ *
+ * @param {string} p
+ * @returns {string}
+ */
+function makeAbsolute (p) {
+  // on windows it is already absolute
+  if (!p.startsWith('/') && process.platform !== 'win32') {
+    return `/${p}`
+  }
+
+  return p
 }

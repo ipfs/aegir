@@ -11,6 +11,7 @@ import { parseMarkdown, writeMarkdown } from './readme/utils.js'
 import { HEADER } from './readme/header.js'
 import { LICENSE } from './readme/license.js'
 import { STRUCTURE } from './readme/structure.js'
+import { APIDOCS } from './readme/api-docs.js'
 
 /**
  * @param {string} projectDir
@@ -109,11 +110,13 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
   })
 
   const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+  const apiDocs = parseMarkdown(APIDOCS(pkg))
   const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
 
   parsedReadme.children = [
     ...structure.children,
     ...parsedReadme.children,
+    ...apiDocs.children,
     ...license.children
   ]
 

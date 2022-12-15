@@ -2,7 +2,7 @@
 
 import Listr from 'listr'
 import { execa } from 'execa'
-import { isMonorepoProject } from './utils.js'
+import { isMonorepoProject, hasDocs } from './utils.js'
 import fs from 'fs-extra'
 import path from 'path'
 import glob from 'it-glob'
@@ -16,9 +16,10 @@ import { calculateSiblingVersion } from './check-project/utils.js'
 
 const tasks = new Listr([
   {
-    title: 'docs',
+    title: 'generate typedoc urls',
+    enabled: () => hasDocs,
     task: async () => {
-      await execa('npm', ['run', 'docs', '--if-present'], {
+      await execa('npm', ['run', 'docs', '--if-present', '--', '--publish', 'false'], {
         stdio: 'inherit'
       })
     }
@@ -118,6 +119,15 @@ const tasks = new Listr([
       console.info('Push to remote') // eslint-disable-line no-console
       await execa('git', ['push'], {
         cwd: rootDir
+      })
+    }
+  },
+  {
+    title: 'publish documentation',
+    enabled: () => hasDocs,
+    task: async () => {
+      await execa('npm', ['run', 'docs', '--if-present'], {
+        stdio: 'inherit'
       })
     }
   }

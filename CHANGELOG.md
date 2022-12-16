@@ -1,3 +1,10 @@
+## [37.7.8](https://github.com/ipfs/aegir/compare/v37.7.7...v37.7.8) (2022-12-16)
+
+
+### Bug Fixes
+
+* update contribution header in footer ([#1147](https://github.com/ipfs/aegir/issues/1147)) ([2514ebf](https://github.com/ipfs/aegir/commit/2514ebf91396db9962357f0498bcdf701bc12079))
+
 ## [37.7.7](https://github.com/ipfs/aegir/compare/v37.7.6...v37.7.7) (2022-12-16)
 
 

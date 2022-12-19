@@ -17,3 +17,12 @@ export const useHerp = () => {
 export const useDerp = () => {
   derp()
 }
+
+/**
+ * @type {import('./types').UsedButNotExported}
+ */
+export const usesInternalType = {
+  aMethod: function () {
+    throw new Error('Function not implemented')
+  }
+}

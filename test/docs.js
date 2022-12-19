@@ -26,7 +26,7 @@ describe('docs', () => {
       })
 
       const module = await import(`file://${projectDir}/src/index.js`)
-      const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports']
+      const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports', 'UsedButNotExported']
       const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
 
       exports.forEach(key => {
@@ -53,7 +53,7 @@ describe('docs', () => {
       })
 
       const module = await import(`file://${projectDir}/dist/src/index.js`)
-      const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports']
+      const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports', 'UsedButNotExported']
       const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
 
       exports.forEach(key => {

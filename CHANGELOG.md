@@ -1,3 +1,10 @@
+## [37.7.10](https://github.com/ipfs/aegir/compare/v37.7.9...v37.7.10) (2022-12-19)
+
+
+### Bug Fixes
+
+* do not collect typedoc urls for dependencies ([6a65bb6](https://github.com/ipfs/aegir/commit/6a65bb625a159503431acded2c51d262849924d7))
+
 ## [37.7.9](https://github.com/ipfs/aegir/compare/v37.7.8...v37.7.9) (2022-12-19)
 
 

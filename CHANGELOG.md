@@ -1,3 +1,10 @@
+## [37.7.9](https://github.com/ipfs/aegir/compare/v37.7.8...v37.7.9) (2022-12-19)
+
+
+### Bug Fixes
+
+* Added support for generating docs for referenced types ([#1131](https://github.com/ipfs/aegir/issues/1131)) ([64e04aa](https://github.com/ipfs/aegir/commit/64e04aa11bf51a83a6e343569ec0e209454ccd99))
+
 ## [37.7.8](https://github.com/ipfs/aegir/compare/v37.7.7...v37.7.8) (2022-12-16)
 
 

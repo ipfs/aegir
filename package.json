@@ -252,7 +252,7 @@
     "electron-mocha-main": "^11.0.3",
     "env-paths": "^3.0.0",
     "esbuild": "^0.16.1",
-    "eslint": "^7.32.0",
+    "eslint": "^8.30.0",
     "eslint-config-ipfs": "^2.1.0",
     "eslint-plugin-etc": "^1.1.7",
     "eslint-plugin-import": "^2.18.0",

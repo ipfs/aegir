@@ -10,3 +10,4 @@ yarn.lock
 *.log
 .vscode
 .coverage
+.DS_Store

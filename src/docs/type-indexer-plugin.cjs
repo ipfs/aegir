@@ -141,7 +141,7 @@ function findContext (mapping, isMonorepo) {
 
     // this can occur when a symbol from a dependency is exported, if this is
     // the case do not try to write a `typedoc-urls.json` file
-    if (outputDir.includes('node_modules')) {
+    if (sources[0].fullFileName.includes('node_modules')) {
       outputDir = undefined
     }
 

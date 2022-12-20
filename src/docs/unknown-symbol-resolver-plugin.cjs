@@ -5,13 +5,15 @@ const knownSymbols = {
   '@types/chai': {
     'Chai.ChaiStatic': 'https://www.chaijs.com/api/',
     'Chai.Assertion': 'https://www.chaijs.com/api/assert/'
+  },
+  '@types/node': {
+    'EventEmitter': 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter'
   }
 }
 
 // these are handled by the plugin typedoc-plugin-mdn-links
 const ignoreModules = [
-  'typescript',
-  '@types/node'
+  'typescript'
 ]
 
 /**

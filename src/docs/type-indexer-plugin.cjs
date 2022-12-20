@@ -81,8 +81,12 @@ function load (Application) {
         typedocs[context.manifestPath] = details
       }
 
-      // store reference to generate doc url
-      typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] = `${ghPages}${urlMapping.url}`
+      if (typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] != null) {
+        Application.logger.warn(`Duplicate exported type name ${urlMapping.model.originalName} defined in ${urlMapping.model.sources[0].fullFileName}`)
+      } else {
+        // store reference to generate doc url
+        typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] = `${ghPages}${urlMapping.url}`
+      }
     }
 
     Object.keys(typedocs).forEach(manifestPath => {

@@ -1,3 +1,11 @@
+## [37.7.11](https://github.com/ipfs/aegir/compare/v37.7.10...v37.7.11) (2022-12-20)
+
+
+### Bug Fixes
+
+* exclude node_modules from docs ([#1149](https://github.com/ipfs/aegir/issues/1149)) ([21ae44d](https://github.com/ipfs/aegir/commit/21ae44df8b30fba6b15eda6b812727fd622ad1af))
+* return empty map if no typedoc urls found ([8b7fc4c](https://github.com/ipfs/aegir/commit/8b7fc4cb272620c70183437f03a1440837faae14))
+
 ## [37.7.10](https://github.com/ipfs/aegir/compare/v37.7.9...v37.7.10) (2022-12-19)
 
 

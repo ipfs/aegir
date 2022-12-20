@@ -81,6 +81,7 @@ function load (Application) {
         typedocs[context.manifestPath] = details
       }
 
+      // cannot differentiate between types with duplicate names in the same module https://github.com/TypeStrong/typedoc/issues/2125
       if (typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] != null) {
         Application.logger.warn(`Duplicate exported type name ${urlMapping.model.originalName} defined in ${urlMapping.model.sources[0].fullFileName}`)
       } else {

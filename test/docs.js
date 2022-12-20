@@ -14,17 +14,16 @@ describe('docs', () => {
   describe('simple esm project', () => {
     let projectDir = ''
 
-    before(async () => {
-      projectDir = await setUpProject('an-esm-project')
-    })
-
-    it('should document an esm project', async function () {
+    before(async function () {
       this.timeout(120 * 1000) // slow ci is slow
+      projectDir = await setUpProject('an-esm-project')
 
       await execa(bin, ['docs', '--publish', 'false'], {
         cwd: projectDir
       })
+    })
 
+    it('should document an esm project', async () => {
       const module = await import(`file://${projectDir}/src/index.js`)
       const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports', 'UsedButNotExported']
       const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
@@ -33,17 +32,30 @@ describe('docs', () => {
         expect(typedocUrls).to.have.property(key)
       })
     })
+
+    it('should include definitions for classes exported but not in file in export map', async function () {
+      const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
+
+      expect(typedocUrls).to.have.property('ExportedButNotInExports')
+    })
+
+    it('should include definitions for classes used but not exported', async function () {
+      const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
+
+      expect(typedocUrls).to.have.property('UsedButNotExported')
+    })
+
+    it('should exclude definitions from node_modules', async function () {
+      expect(fs.existsSync(join(projectDir, '.docs', 'modules', '_internal_.EventEmitter.html'))).to.be.false('included type from node_modules/@types/node')
+    })
   })
 
   describe('simple ts project', () => {
     let projectDir = ''
 
-    before(async () => {
-      projectDir = await setUpProject('a-ts-project')
-    })
-
-    it('should document a ts project', async function () {
+    before(async function () {
       this.timeout(120 * 1000) // slow ci is slow
+      projectDir = await setUpProject('a-ts-project')
 
       await execa(bin, ['build'], {
         cwd: projectDir
@@ -51,14 +63,32 @@ describe('docs', () => {
       await execa(bin, ['docs', '--publish', 'false'], {
         cwd: projectDir
       })
+    })
 
+    it('should document a ts project', async () => {
       const module = await import(`file://${projectDir}/dist/src/index.js`)
-      const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports', 'UsedButNotExported']
+      const exports = Object.keys(module)
       const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
 
       exports.forEach(key => {
         expect(typedocUrls).to.have.property(key)
       })
+    })
+
+    it('should include definitions for classes exported but not in file in export map', async function () {
+      const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
+
+      expect(typedocUrls).to.have.property('ExportedButNotInExports')
+    })
+
+    it('should include definitions for classes used but not exported', async function () {
+      const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
+
+      expect(typedocUrls).to.have.property('UsedButNotExported')
+    })
+
+    it('should exclude definitions from node_modules', async function () {
+      expect(fs.existsSync(join(projectDir, '.docs', 'modules', '_internal_.EventEmitter.html'))).to.be.false('included type from node_modules/@types/node')
     })
   })
 

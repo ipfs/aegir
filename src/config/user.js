@@ -131,6 +131,12 @@ const defaults = {
       '@types/*',
       'aegir'
     ]
+  },
+  exec: {
+    bail: true
+  },
+  run: {
+    bail: true
   }
 }
 

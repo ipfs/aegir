@@ -20,6 +20,7 @@ import envPaths from 'env-paths'
 import lockfile from 'proper-lockfile'
 import { fileURLToPath } from 'url'
 import Listr from 'listr'
+import glob from 'it-glob'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -299,4 +300,83 @@ export function findBinary (bin) {
 
   // let shell work it out or error
   return bin
+}
+
+/**
+ * @typedef {object} Project
+ * @property {any} manifest
+ * @property {string} dir
+ * @property {string[]} siblingDependencies
+ * @property {string[]} dependencies
+ * @property {boolean} run
+ */
+
+/**
+ * @param {string} projectDir
+ * @param {(project: Project) => Promise<void>} fn
+ */
+export async function everyMonorepoProject (projectDir, fn) {
+  const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
+  const workspaces = manifest.workspaces
+
+  if (!workspaces || !Array.isArray(workspaces)) {
+    throw new Error('No monorepo workspaces found')
+  }
+
+  /** @type {Record<string, Project>} */
+  const projects = {}
+
+  for (const workspace of workspaces) {
+    for await (const subProjectDir of glob('.', workspace, {
+      cwd: projectDir,
+      absolute: true
+    })) {
+      const pkg = fs.readJSONSync(path.join(subProjectDir, 'package.json'))
+
+      projects[pkg.name] = {
+        manifest: pkg,
+        dir: subProjectDir,
+        siblingDependencies: [],
+        run: false,
+        dependencies: [
+          ...Object.keys(pkg.dependencies ?? {}),
+          ...Object.keys(pkg.devDependencies ?? {}),
+          ...Object.keys(pkg.optionalDependencies ?? {}),
+          ...Object.keys(pkg.peerDependencies ?? {})
+        ]
+      }
+    }
+  }
+
+  for (const project of Object.values(projects)) {
+    for (const dep of project.dependencies) {
+      if (projects[dep] != null) {
+        project.siblingDependencies.push(dep)
+      }
+    }
+  }
+
+  /**
+   * @param {Project} project
+   */
+  async function run (project) {
+    if (project.run) {
+      return
+    }
+
+    for (const siblingDep of project.siblingDependencies) {
+      await run(projects[siblingDep])
+    }
+
+    if (project.run) {
+      return
+    }
+
+    project.run = true
+    await fn(project)
+  }
+
+  for (const project of Object.values(projects)) {
+    await run(project)
+  }
 }

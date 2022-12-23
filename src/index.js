@@ -17,6 +17,8 @@ import releaseCmd from './cmds/release.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
 import docsCmd from './cmds/docs.js'
+import execCmd from './cmds/exec.js'
+import runCmd from './cmds/run.js'
 
 /**
  * @typedef {import('./types').BuildOptions} BuildOptions
@@ -89,6 +91,8 @@ async function main () {
   res.command(releaseCmd)
   res.command(testDependantCmd)
   res.command(testCmd)
+  res.command(execCmd)
+  res.command(runCmd)
 
   try {
     await res.parse()

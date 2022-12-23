@@ -7,12 +7,15 @@ import runCmd from '../run.js'
  * @typedef {import("yargs").CommandModule} CommandModule
  */
 
-const EPILOG = ''
+const EPILOG = `Example:
+
+$ aegir run clean build
+`
 
 /** @type {CommandModule} */
 export default {
   command: 'run <scripts..>',
-  describe: 'Run an npm script in each project of a monorepo',
+  describe: 'Run one or more npm scripts in each project of a monorepo',
   /**
    * @param {Argv} yargs
    */

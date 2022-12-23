@@ -9,22 +9,17 @@ import kleur from 'kleur'
 
 export default {
   /**
-   * @param {GlobalOptions & ExecOptions} ctx
+   * @param {GlobalOptions & ExecOptions & { command: string }} ctx
    */
   async run (ctx) {
     const forwardOptions = ctx['--'] ? ctx['--'] : []
-    const command = forwardOptions.shift()
-
-    if (command == null) {
-      throw new Error('Please specify a command as forward args')
-    }
 
     await everyMonorepoProject(process.cwd(), async (project) => {
       console.info('') // eslint-disable-line no-console
-      console.info(kleur.grey(`${project.manifest.name} > ${command} ${forwardOptions.join(' ')}`)) // eslint-disable-line no-console
+      console.info(kleur.grey(`${project.manifest.name} > ${ctx.command} ${forwardOptions.join(' ')}`)) // eslint-disable-line no-console
 
       try {
-        await execa(command, forwardOptions, {
+        await execa(ctx.command, forwardOptions, {
           cwd: project.dir,
           stderr: 'inherit',
           stdout: 'inherit'

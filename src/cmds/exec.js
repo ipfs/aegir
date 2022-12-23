@@ -7,11 +7,14 @@ import execCmd from '../exec.js'
  * @typedef {import("yargs").CommandModule} CommandModule
  */
 
-const EPILOG = ''
+const EPILOG = `Example:
+
+$ aegir exec david -- update
+`
 
 /** @type {CommandModule} */
 export default {
-  command: 'exec',
+  command: 'exec <command>',
   describe: 'Run a command in each project of a monorepo',
   /**
    * @param {Argv} yargs

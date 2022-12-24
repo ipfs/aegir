@@ -1,3 +1,15 @@
+## [37.8.0](https://github.com/ipfs/aegir/compare/v37.7.11...v37.8.0) (2022-12-24)
+
+
+### Features
+
+* add run and exec commands for executing commands in monorepo packages ([#1151](https://github.com/ipfs/aegir/issues/1151)) ([80f10b3](https://github.com/ipfs/aegir/commit/80f10b3d3038fbe7f5aaca6d2df4eefdb4f66e83))
+
+
+### Bug Fixes
+
+* print linting errors in red ([#1150](https://github.com/ipfs/aegir/issues/1150)) ([a6633f3](https://github.com/ipfs/aegir/commit/a6633f34c0e94dd37e429816d4812553046a1417))
+
 ## [37.7.11](https://github.com/ipfs/aegir/compare/v37.7.10...v37.7.11) (2022-12-20)
 
 

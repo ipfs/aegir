@@ -12,7 +12,7 @@ Removes the ./dist folder
 
 /** @type {CommandModule} */
 export default {
-  command: 'clean',
+  command: 'clean [files..]',
   describe: 'Remove created build artifacts.',
   /**
    * @param {Argv} yargs
@@ -20,6 +20,10 @@ export default {
   builder: (yargs) => {
     return yargs
       .epilog(EPILOG)
+      .positional('files', {
+        array: true,
+        default: ['dist']
+      })
   },
   /**
    * @param {any} argv

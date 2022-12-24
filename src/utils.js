@@ -324,6 +324,42 @@ export async function everyMonorepoProject (projectDir, fn) {
   }
 
   /** @type {Record<string, Project>} */
+  const projects = await parseProjects(projectDir, workspaces)
+
+  checkForCircularDependencies(projects)
+
+  /**
+   * @param {Project} project
+   */
+  async function run (project) {
+    if (project.run) {
+      return
+    }
+
+    for (const siblingDep of project.siblingDependencies) {
+      await run(projects[siblingDep])
+    }
+
+    if (project.run) {
+      return
+    }
+
+    project.run = true
+    await fn(project)
+  }
+
+  for (const project of Object.values(projects)) {
+    await run(project)
+  }
+}
+
+/**
+ *
+ * @param {string} projectDir
+ * @param {string[]} workspaces
+ */
+async function parseProjects (projectDir, workspaces) {
+  /** @type {Record<string, Project>} */
   const projects = {}
 
   for (const workspace of workspaces) {
@@ -356,27 +392,59 @@ export async function everyMonorepoProject (projectDir, fn) {
     }
   }
 
+  return projects
+}
+
+/**
+ * @param {Record<string, Project>} projects
+ */
+function checkForCircularDependencies (projects) {
   /**
    * @param {Project} project
+   * @param {string} target
+   * @param {Set<string>} checked
+   * @param {string[]} chain
+   * @returns {string[] | undefined}
    */
-  async function run (project) {
-    if (project.run) {
-      return
+  function dependsOn (project, target, checked, chain) {
+    chain = [...chain, project.manifest.name]
+
+    if (project.manifest.name === target) {
+      return chain
     }
 
-    for (const siblingDep of project.siblingDependencies) {
-      await run(projects[siblingDep])
-    }
+    for (const dep of project.siblingDependencies) {
+      if (checked.has(dep)) {
+        // already checked this dep
+        return
+      }
 
-    if (project.run) {
-      return
-    }
+      checked.add(dep)
 
-    project.run = true
-    await fn(project)
+      if (dep === target) {
+        // circular dependency detected
+        chain.push(target)
+        return chain
+      }
+
+      const subChain = dependsOn(projects[dep], target, checked, chain)
+
+      if (subChain != null) {
+        return subChain
+      }
+    }
   }
 
+  // check for circular dependencies
   for (const project of Object.values(projects)) {
-    await run(project)
+    for (const siblingDep of project.siblingDependencies) {
+      const sibling = projects[siblingDep]
+
+      const chain = dependsOn(sibling, project.manifest.name, new Set([sibling.manifest.name]), [project.manifest.name])
+
+      if (chain != null) {
+        throw new Error(`Circular dependency detected: ${chain.join(' -> ')}`)
+      }
+    }
   }
 }

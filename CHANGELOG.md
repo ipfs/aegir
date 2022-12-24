@@ -1,3 +1,10 @@
+## [37.9.0](https://github.com/ipfs/aegir/compare/v37.8.0...v37.9.0) (2022-12-24)
+
+
+### Features
+
+* let clean take args ([#1152](https://github.com/ipfs/aegir/issues/1152)) ([34a8c18](https://github.com/ipfs/aegir/commit/34a8c18098a75621278641ac29f37c1211caad3c))
+
 ## [37.8.0](https://github.com/ipfs/aegir/compare/v37.7.11...v37.8.0) (2022-12-24)
 
 

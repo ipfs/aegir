@@ -32,6 +32,14 @@ interface Options extends GlobalOptions {
    * Options for the `dependency-check` command
    */
   dependencyCheck: DependencyCheckOptions
+  /**
+   * Options for the `exec` command
+   */
+  exec: ExecOptions
+  /**
+   * Options for the `run` command
+   */
+  run: RunOptions
 }
 
 /**
@@ -309,6 +317,20 @@ interface DependencyCheckOptions {
   productionInput: string[]
 }
 
+interface ExecOptions {
+  /**
+   * If false, the command will continue to be run in other packages
+   */
+  bail?: boolean
+}
+
+interface RunOptions {
+  /**
+   * If false, the command will continue to be run in other packages
+   */
+  bail?: boolean
+}
+
 export type {
   PartialOptions,
   Options,
@@ -319,5 +341,7 @@ export type {
   LintOptions,
   TestOptions,
   ReleaseOptions,
-  DependencyCheckOptions
+  DependencyCheckOptions,
+  ExecOptions,
+  RunOptions
 }

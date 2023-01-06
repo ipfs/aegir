@@ -1,3 +1,10 @@
+## [37.9.1](https://github.com/ipfs/aegir/compare/v37.9.0...v37.9.1) (2023-01-06)
+
+
+### Bug Fixes
+
+* update monorepo detection and use ([#1155](https://github.com/ipfs/aegir/issues/1155)) ([a4172f7](https://github.com/ipfs/aegir/commit/a4172f7211a10abb56323f8fed287f9d08c2469d))
+
 ## [37.9.0](https://github.com/ipfs/aegir/compare/v37.8.0...v37.9.0) (2022-12-24)
 
 

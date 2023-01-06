@@ -1,3 +1,10 @@
+## [37.9.2](https://github.com/ipfs/aegir/compare/v37.9.1...v37.9.2) (2023-01-06)
+
+
+### Bug Fixes
+
+* do not create npmrc for monorepos ([#1156](https://github.com/ipfs/aegir/issues/1156)) ([3cdc766](https://github.com/ipfs/aegir/commit/3cdc76652db35d5597f3785fcb38884a6a828184))
+
 ## [37.9.1](https://github.com/ipfs/aegir/compare/v37.9.0...v37.9.1) (2023-01-06)
 
 

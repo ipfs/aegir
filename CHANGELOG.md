@@ -1,3 +1,10 @@
+## [37.10.1](https://github.com/ipfs/aegir/compare/v37.10.0...v37.10.1) (2023-01-07)
+
+
+### Documentation
+
+* document env export ([#1158](https://github.com/ipfs/aegir/issues/1158)) ([b639b2e](https://github.com/ipfs/aegir/commit/b639b2ef280f6d661243a1b00fbb7c98e983531f))
+
 ## [37.10.0](https://github.com/ipfs/aegir/compare/v37.9.2...v37.10.0) (2023-01-07)
 
 

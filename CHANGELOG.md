@@ -1,3 +1,10 @@
+## [37.10.0](https://github.com/ipfs/aegir/compare/v37.9.2...v37.10.0) (2023-01-07)
+
+
+### Features
+
+* add env ([#1157](https://github.com/ipfs/aegir/issues/1157)) ([fd65561](https://github.com/ipfs/aegir/commit/fd65561f4f3e913ecd7ef26e29da1a4bcc9e64d6))
+
 ## [37.9.2](https://github.com/ipfs/aegir/compare/v37.9.1...v37.9.2) (2023-01-06)
 
 

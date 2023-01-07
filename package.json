@@ -84,6 +84,10 @@
       "types": "./dist/utils/echo-server.d.ts",
       "import": "./utils/echo-server.js"
     },
+    "./env": {
+      "types": "./dist/src/env.d.ts",
+      "import": "./src/env.js"
+    },
     "./fixtures": {
       "types": "./dist/utils/fixtures.d.ts",
       "browser": "./utils/fixtures.browser.js",
@@ -310,6 +314,7 @@
     "uint8arrays": "^4.0.2",
     "undici": "^5.0.0",
     "update-notifier": "^6.0.2",
+    "wherearewe": "^2.0.1",
     "yargs": "^17.1.1",
     "yargs-parser": "^21.1.1"
   },

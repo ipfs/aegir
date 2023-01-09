@@ -300,7 +300,7 @@
     "react-native-test-runner": "^5.0.0",
     "read-pkg-up": "^9.1.0",
     "rimraf": "^3.0.2",
-    "semantic-release": "^19.0.2",
+    "semantic-release": "^20.0.2",
     "semantic-release-monorepo": "^7.0.5",
     "semver": "^7.3.8",
     "source-map-support": "^0.5.20",

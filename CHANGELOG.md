@@ -1,3 +1,10 @@
+## [37.11.0](https://github.com/ipfs/aegir/compare/v37.10.1...v37.11.0) (2023-01-10)
+
+
+### Features
+
+* add release-rc command ([#1161](https://github.com/ipfs/aegir/issues/1161)) ([f61b448](https://github.com/ipfs/aegir/commit/f61b44840d2c7fbfa7159d0234962308b2c0d113))
+
 ## [37.10.1](https://github.com/ipfs/aegir/compare/v37.10.0...v37.10.1) (2023-01-07)
 
 

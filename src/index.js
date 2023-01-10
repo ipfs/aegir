@@ -14,6 +14,7 @@ import dependencyCheckCmd from './cmds/dependency-check.js'
 import lintPackageJsonCmd from './cmds/lint-package-json.js'
 import lintCmd from './cmds/lint.js'
 import releaseCmd from './cmds/release.js'
+import releaseRcCmd from './cmds/release-rc.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
 import docsCmd from './cmds/docs.js'
@@ -89,6 +90,7 @@ async function main () {
   res.command(lintPackageJsonCmd)
   res.command(lintCmd)
   res.command(releaseCmd)
+  res.command(releaseRcCmd)
   res.command(testDependantCmd)
   res.command(testCmd)
   res.command(execCmd)

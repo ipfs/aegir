@@ -29,6 +29,10 @@ interface Options extends GlobalOptions {
    */
   release: ReleaseOptions
   /**
+   * Options for the `release-rc` command
+   */
+  releaseRc: ReleaseRcOptions
+  /**
    * Options for the `dependency-check` command
    */
   dependencyCheck: DependencyCheckOptions
@@ -298,6 +302,18 @@ interface ReleaseOptions {
   siblingDepUpdateEmail: string
 }
 
+interface ReleaseRcOptions {
+  /**
+   * How many times to retry each publish operation
+   */
+  retries: number
+
+  /**
+   * Which tag to publish the rc as
+   */
+  tag: string
+}
+
 interface DependencyCheckOptions {
   /**
    * Files to check
@@ -341,6 +357,7 @@ export type {
   LintOptions,
   TestOptions,
   ReleaseOptions,
+  ReleaseRcOptions,
   DependencyCheckOptions,
   ExecOptions,
   RunOptions

@@ -1,3 +1,16 @@
+## [37.12.0](https://github.com/ipfs/aegir/compare/v37.11.0...v37.12.0) (2023-01-10)
+
+
+### Features
+
+* build opt-out for cache-node-modules action ([#1070](https://github.com/ipfs/aegir/issues/1070)) ([c63b1d0](https://github.com/ipfs/aegir/commit/c63b1d024c11054ed9f3becac4fc0e0ddf8d9c28))
+
+
+### Bug Fixes
+
+* terminate string properly ([6b37d29](https://github.com/ipfs/aegir/commit/6b37d2975b965f648c551e390fc9aa6f0e54d225))
+* update actions/cache ([#1154](https://github.com/ipfs/aegir/issues/1154)) ([9f7d169](https://github.com/ipfs/aegir/commit/9f7d1698f376918116d08c8c1b04af1c8f3866c3))
+
 ## [37.11.0](https://github.com/ipfs/aegir/compare/v37.10.1...v37.11.0) (2023-01-10)
 
 

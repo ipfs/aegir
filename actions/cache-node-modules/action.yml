@@ -9,7 +9,7 @@ inputs:
     required: false
     default: 'echo'
   build_on_cache_fail:
-    description: 'Whether you want to run `npm run --if-present build` if there is no cache
+    description: 'Whether you want to run `npm run --if-present build` if there is no cache'
     require: false
     default: 'true' # defaulting to true to not break any existing users.
   cache_name:

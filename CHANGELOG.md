@@ -1,3 +1,10 @@
+## [37.12.1](https://github.com/ipfs/aegir/compare/v37.12.0...v37.12.1) (2023-01-11)
+
+
+### Bug Fixes
+
+* include enums in typedoc index ([#1162](https://github.com/ipfs/aegir/issues/1162)) ([54d10f8](https://github.com/ipfs/aegir/commit/54d10f8920fc711156f3ce28d1a1f33d3fac39ad))
+
 ## [37.12.0](https://github.com/ipfs/aegir/compare/v37.11.0...v37.12.0) (2023-01-10)
 
 

@@ -90,6 +90,12 @@ describe('docs', () => {
     it('should exclude definitions from node_modules', async function () {
       expect(fs.existsSync(join(projectDir, '.docs', 'modules', '_internal_.EventEmitter.html'))).to.be.false('included type from node_modules/@types/node')
     })
+
+    it('should include definitions for enums', async function () {
+      const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
+
+      expect(typedocUrls).to.have.property('AnEnum')
+    })
   })
 
   describe('monorepo project', () => {

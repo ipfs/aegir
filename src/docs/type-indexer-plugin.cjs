@@ -10,7 +10,8 @@ const MODELS = [
   'Function',
   'Type alias',
   'Variable',
-  'Class'
+  'Class',
+  'Enumeration'
 ]
 
 /**

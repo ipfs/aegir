@@ -18,6 +18,7 @@ import releaseRcCmd from './cmds/release-rc.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
 import docsCmd from './cmds/docs.js'
+import docVerifyCmd from './cmds/document-check.js'
 import execCmd from './cmds/exec.js'
 import runCmd from './cmds/run.js'
 
@@ -87,6 +88,7 @@ async function main () {
   res.command(cleanCmd)
   res.command(dependencyCheckCmd)
   res.command(docsCmd)
+  res.command(docVerifyCmd)
   res.command(lintPackageJsonCmd)
   res.command(lintCmd)
   res.command(releaseCmd)

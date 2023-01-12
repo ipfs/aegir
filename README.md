@@ -73,6 +73,7 @@ Commands:
   aegir build                        Builds a browser bundle and TS type declarations from the `src` folder.
   aegir check                        Check project
   aegir docs                         Generate documentation from TS type declarations.
+  aegir doc-check                    Verify TS code snippets in documentation.
   aegir lint                         Lint all project files
   aegir release                      Release your code onto the world
   aegir test-dependant [repo]        Run the tests of an module that depends on this module to see if the current changes have caused a regression
@@ -102,8 +103,6 @@ Aegir can be fully configured using a config file named `.aegir.js` or the packa
 
 ```js
 // file: .aegir.js
-
-
 
 /** @type {import('aegir').PartialOptions} */
 module.exports = {

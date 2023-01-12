@@ -1,3 +1,10 @@
+## [38.1.0](https://github.com/ipfs/aegir/compare/v38.0.0...v38.1.0) (2023-01-12)
+
+
+### Features
+
+* Add support for compiling Typescript snippets in markdown ([#1134](https://github.com/ipfs/aegir/issues/1134)) ([055e1d5](https://github.com/ipfs/aegir/commit/055e1d5f4a27dbe4fe7b98eb33dfb29e54057025))
+
 ## [38.0.0](https://github.com/ipfs/aegir/compare/v37.12.1...v38.0.0) (2023-01-12)
 
 

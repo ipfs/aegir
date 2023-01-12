@@ -2,7 +2,7 @@
 
 import fs, { copy } from 'fs-extra'
 import path, { join } from 'path'
-import tempy from 'tempy'
+import * as tempy from 'tempy'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -11,7 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
  * @param {string} project
  */
 export async function setUpProject (project) {
-  const projectDir = tempy.directory()
+  const projectDir = tempy.temporaryDirectory()
 
   await copy(join(__dirname, '..', 'fixtures', 'projects', project), projectDir)
   const nodeModulesPath = path.resolve(__dirname, '../../node_modules')

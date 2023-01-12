@@ -108,9 +108,9 @@ Aegir can be fully configured using a config file named `.aegir.js` or the packa
 module.exports = {
   tsRepo: true,
   release: {
-    build: false,
-  },
-};
+    build: false
+  }
+}
 ```
 
 ```json

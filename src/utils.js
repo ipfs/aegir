@@ -252,6 +252,7 @@ export const hasIndexTs = hasFile('src/index.ts')
 export const hasIndexJs = hasFile('src/index.js')
 export const isMonorepoParent = Boolean(pkg.workspaces)
 export const hasDocs = Boolean(pkg.scripts?.docs)
+export const hasDocCheck = Boolean(pkg.scripts && pkg.scripts['doc-check'])
 
 // our project types:
 

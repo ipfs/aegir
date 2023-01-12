@@ -40,6 +40,7 @@ interface Options extends GlobalOptions {
    * Options for the `document-check` command
    */
   documentCheck: DocsVerifierOptions
+  /**
    * Options for the `exec` command
    */
   exec: ExecOptions
@@ -369,7 +370,7 @@ export type {
   LintOptions,
   TestOptions,
   ReleaseOptions,
-  DocsVerifierOptions
+  DocsVerifierOptions,
   ReleaseRcOptions,
   DependencyCheckOptions,
   ExecOptions,

@@ -7,7 +7,7 @@ import path from 'path'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import merge from 'merge-options'
-import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary } from './utils.js'
+import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary, hasDocCheck } from './utils.js'
 import { fileURLToPath } from 'url'
 import kleur from 'kleur'
 
@@ -98,6 +98,15 @@ const tasks = new Listr(
           fs.removeSync(configPath)
           fs.removeSync(fromRoot('dist', 'tsconfig-check.aegir.tsbuildinfo'))
         }
+      }
+    },
+    {
+      title: 'doc-check',
+      enabled: () => hasDocCheck,
+      task: async () => {
+        await execa('npm', ['run', 'doc-check', '--if-present', '--', '--publish', 'false'], {
+          stdio: 'inherit'
+        })
       }
     }
   ],

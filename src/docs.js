@@ -44,6 +44,8 @@ const docs = async (ctx, task) => {
       ctx.directory,
       '--hideGenerator',
       '--includeVersion',
+      '--exclude',
+      '**/node_modules/**',
       '--gitRevision',
       'master',
       '--plugin',
@@ -54,6 +56,8 @@ const docs = async (ctx, task) => {
       fromAegir('src/docs/type-indexer-plugin.cjs'),
       '--plugin',
       'typedoc-plugin-mdn-links',
+      '--plugin',
+      'typedoc-plugin-missing-exports',
       ...forwardOptions
     ],
     {

@@ -1,17 +1,33 @@
 const fs = require('fs')
+const path = require('path')
 
 /** @type {Record<string, Record<string, string>>} */
 const knownSymbols = {
   '@types/chai': {
     'Chai.ChaiStatic': 'https://www.chaijs.com/api/',
     'Chai.Assertion': 'https://www.chaijs.com/api/assert/'
+  },
+  '@types/node': {
+    'EventEmitter': 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter',
+    'Server': 'https://nodejs.org/dist/latest-v19.x/docs/api/net.html#class-netserver',
+    'IncomingMessage': 'https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpincomingmessage',
+    'ServerResponse': 'https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpserverresponse',
+    'global.NodeJS.ReadStream': 'https://nodejs.org/dist/latest-v19.x/docs/api/tty.html#class-ttyreadstream',
+    'global.NodeJS.WriteStream': 'https://nodejs.org/dist/latest-v19.x/docs/api/tty.html#class-ttywritestream',
+    'global.NodeJS.ProcessEnv': 'https://nodejs.org/dist/latest-v19.x/docs/api/process.html#processenv',
+    'internal.Duplex': 'https://nodejs.org/dist/latest-v19.x/docs/api/stream.html#class-streamduplex',
+    'internal.Readable': 'https://nodejs.org/dist/latest-v19.x/docs/api/stream.html#class-streamreadable',
+    'internal.Transform': 'https://nodejs.org/dist/latest-v19.x/docs/api/stream.html#class-streamtransform',
+    'internal.Writable': 'https://nodejs.org/dist/latest-v19.x/docs/api/stream.html#class-streamwritable'
+  },
+  'esbuild': {
+    'BuildOptions': 'https://esbuild.github.io/api/#build-api'
   }
 }
 
 // these are handled by the plugin typedoc-plugin-mdn-links
 const ignoreModules = [
-  'typescript',
-  '@types/node'
+  'typescript'
 ]
 
 /**
@@ -51,6 +67,8 @@ function load(Application) {
       }
 
       Application.logger.warn(`Unknown symbol ${symbolName} from module ${moduleName}`)
+
+      return `https://www.npmjs.com/package/${moduleName}`
     })
 }
 
@@ -62,34 +80,19 @@ module.exports = {
  * @param {string} moduleName
  */
 function loadTypedocUrls (moduleName) {
-  try {
-    return require(`${moduleName}/dist/typedoc-urls.json`)
-  } catch (/** @type {any} */ err) {
-    if (err.message.includes('Cannot find module')) {
-      // typedoc-urls did not exist in module with main field
-      return {}
+  const parts = process.cwd().split('/')
+
+  while (parts.length > 0) {
+    const typedocUrls = path.join(...parts, 'node_modules', moduleName, 'dist', 'typedoc-urls.json')
+
+    if (fs.existsSync(typedocUrls)) {
+      return JSON.parse(fs.readFileSync(typedocUrls, 'utf-8'))
     }
 
-    if (err.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED') {
-      throw err
-    }
-
-    // try to load manifest from module with only exports map
-    const match = err.message.match(/ in (.*)$/)
-
-    if (match.length > 1) {
-      const manifestPath = match[1].trim()
-      const docUrlsPath = manifestPath.replace('package.json', 'dist/typedoc-urls.json')
-
-      if (!fs.existsSync(docUrlsPath)) {
-        return {}
-      }
-
-      return JSON.parse(fs.readFileSync(docUrlsPath, 'utf-8'))
-    }
-
-    throw err
+    parts.pop()
   }
+
+  return {}
 }
 
 /**

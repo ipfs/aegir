@@ -29,6 +29,10 @@ interface Options extends GlobalOptions {
    */
   release: ReleaseOptions
   /**
+   * Options for the `release-rc` command
+   */
+  releaseRc: ReleaseRcOptions
+  /**
    * Options for the `dependency-check` command
    */
   dependencyCheck: DependencyCheckOptions
@@ -36,6 +40,13 @@ interface Options extends GlobalOptions {
    * Options for the `document-check` command
    */
   documentCheck: DocsVerifierOptions
+   * Options for the `exec` command
+   */
+  exec: ExecOptions
+  /**
+   * Options for the `run` command
+   */
+  run: RunOptions
 }
 
 /**
@@ -310,6 +321,18 @@ interface ReleaseOptions {
   siblingDepUpdateEmail: string
 }
 
+interface ReleaseRcOptions {
+  /**
+   * How many times to retry each publish operation
+   */
+  retries: number
+
+  /**
+   * Which tag to publish the rc as
+   */
+  tag: string
+}
+
 interface DependencyCheckOptions {
   /**
    * Files to check
@@ -329,6 +352,20 @@ interface DependencyCheckOptions {
   productionInput: string[]
 }
 
+interface ExecOptions {
+  /**
+   * If false, the command will continue to be run in other packages
+   */
+  bail?: boolean
+}
+
+interface RunOptions {
+  /**
+   * If false, the command will continue to be run in other packages
+   */
+  bail?: boolean
+}
+
 export type {
   PartialOptions,
   Options,
@@ -339,6 +376,9 @@ export type {
   LintOptions,
   TestOptions,
   ReleaseOptions,
-  DependencyCheckOptions,
   DocsVerifierOptions
+  ReleaseRcOptions,
+  DependencyCheckOptions,
+  ExecOptions,
+  RunOptions
 }

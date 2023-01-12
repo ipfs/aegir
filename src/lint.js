@@ -9,6 +9,7 @@ import fs from 'fs-extra'
 import merge from 'merge-options'
 import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary } from './utils.js'
 import { fileURLToPath } from 'url'
+import kleur from 'kleur'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -43,7 +44,18 @@ const tasks = new Listr(
         }
 
         if (!ctx.silent && hasErrors) {
-          console.error(formatter.format(results))
+          const output = await formatter.format(results)
+
+          console.error(output
+            .split('\n')
+            .map(line => {
+              if (line.includes('[Error')) {
+                return kleur.red(line)
+              }
+
+              return line
+            })
+            .join('\n'))
         }
 
         if (hasErrors) {

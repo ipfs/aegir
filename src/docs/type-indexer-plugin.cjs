@@ -10,7 +10,8 @@ const MODELS = [
   'Function',
   'Type alias',
   'Variable',
-  'Class'
+  'Class',
+  'Enumeration'
 ]
 
 /**
@@ -81,8 +82,13 @@ function load (Application) {
         typedocs[context.manifestPath] = details
       }
 
-      // store reference to generate doc url
-      typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] = `${ghPages}${urlMapping.url}`
+      // cannot differentiate between types with duplicate names in the same module https://github.com/TypeStrong/typedoc/issues/2125
+      if (typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] != null) {
+        Application.logger.warn(`Duplicate exported type name ${urlMapping.model.originalName} defined in ${urlMapping.model.sources[0].fullFileName}`)
+      } else {
+        // store reference to generate doc url
+        typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] = `${ghPages}${urlMapping.url}`
+      }
     }
 
     Object.keys(typedocs).forEach(manifestPath => {
@@ -141,7 +147,7 @@ function findContext (mapping, isMonorepo) {
 
     // this can occur when a symbol from a dependency is exported, if this is
     // the case do not try to write a `typedoc-urls.json` file
-    if (outputDir.includes('node_modules')) {
+    if (sources[0].fullFileName.includes('node_modules')) {
       outputDir = undefined
     }
 

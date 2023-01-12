@@ -7,6 +7,11 @@ inputs:
   build:
     description: 'Extra commands to run if nothing is cached'
     required: false
+    default: 'echo'
+  build_on_cache_fail:
+    description: 'Whether you want to run `npm run --if-present build` if there is no cache'
+    require: false
+    default: 'true' # defaulting to true to not break any existing users.
   cache_name:
     description: 'Cache name'
     required: false
@@ -16,7 +21,7 @@ runs:
   steps:
     # Windows I/O is so slow it's faster to just install the deps every time
     - if: ${{ runner.os != 'Windows' }}
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: cache
       with:
         path: |
@@ -31,8 +36,11 @@ runs:
           ${{ inputs.directories }}
         key: ${{ runner.os }}-build-${{ inputs.cache_name }}-${{ github.sha }}
     - if: steps.cache.outputs.cache-hit != 'true'
-      run: |
-          npm install
-          npm run --if-present build
-          ${{ inputs.build }}
+      run: npm install
+      shell: bash
+    - if: steps.cache.outputs.cache-hit != 'true' && ${{ inputs.build_on_cache_fail }} == 'true'
+      run: npm run --if-present build
+      shell: bash
+    - if: steps.cache.outputs.cache-hit != 'true' && ${{ inputs.build }} != 'echo'
+      run: ${{ inputs.build }}
       shell: bash

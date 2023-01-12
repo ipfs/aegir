@@ -105,6 +105,10 @@ const defaults = {
     siblingDepUpdateName: 'aegir[bot]',
     siblingDepUpdateEmail: 'aegir[bot]@users.noreply.github.com'
   },
+  releaseRc: {
+    retries: 5,
+    tag: 'next'
+  },
   // dependency check cmd options
   dependencyCheck: {
     input: [
@@ -139,6 +143,12 @@ const defaults = {
       '@types/*',
       'aegir'
     ]
+  },
+  exec: {
+    bail: true
+  },
+  run: {
+    bail: true
   }
 }
 

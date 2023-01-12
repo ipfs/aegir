@@ -103,34 +103,7 @@ const defaults = {
   },
   // dependency check cmd options
   dependencyCheck: {
-    input: [
-      'package.json',
-      '.aegir.js',
-      '.aegir.cjs',
-      'src/**/*.js',
-      'src/**/*.cjs',
-      'test/**/*.js',
-      'test/**/*.cjs',
-      'dist/**/*.js',
-      'benchmarks/**/*.js',
-      'benchmarks/**/*.cjs',
-      'utils/**/*.js',
-      'utils/**/*.cjs',
-      '!./test/fixtures/**/*.js',
-      '!./test/fixtures/**/*.cjs',
-      '!./dist/test/fixtures/**/*.js',
-      '!./dist/test/fixtures/**/*.cjs',
-      '!**/*.min.js'
-    ],
-    productionOnly: false,
-    productionInput: [
-      'package.json',
-      'src/**/*.js',
-      'src/**/*.cjs',
-      'dist/src/**/*.js',
-      'utils/**/*.js',
-      'utils/**/*.cjs'
-    ],
+    unused: false,
     ignore: [
       '@types/*',
       'aegir'

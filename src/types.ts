@@ -316,21 +316,14 @@ interface ReleaseRcOptions {
 
 interface DependencyCheckOptions {
   /**
-   * Files to check
+   * throws error on unused dependencies, default is false
    */
-  input: string[]
-  /**
-   * Check production dependencies and paths only
-   */
-  productionOnly: boolean
+  unused: boolean
   /**
    * Ignore these dependencies when considering which are used and which are not
    */
   ignore: string[]
-  /**
-   * Files to check when in production only mode
-   */
-  productionInput: string[]
+
 }
 
 interface ExecOptions {

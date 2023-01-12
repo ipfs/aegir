@@ -1,3 +1,25 @@
+## [38.0.0](https://github.com/ipfs/aegir/compare/v37.12.1...v38.0.0) (2023-01-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* - no more forwarding flags
+- no more positional arguments - cannot depcheck single file
+- won't throw an error for missing dependency if it's in devDependencies
+section of package.json
+
+Co-authored-by: Alex Potsides <alex@achingbrain.net>
+* all functions and methods need to declare a return type
+
+### Features
+
+* add support for depchecking typescript projects ([#1042](https://github.com/ipfs/aegir/issues/1042)) ([b9f5d86](https://github.com/ipfs/aegir/commit/b9f5d86d169c8565755e6157242c932b57426bdb))
+
+
+### Dependencies
+
+* update to new linting rules ([#1164](https://github.com/ipfs/aegir/issues/1164)) ([cf77bbb](https://github.com/ipfs/aegir/commit/cf77bbbdf6f08d30ab0c19b4a21cfe4970c78421))
+
 ## [37.12.1](https://github.com/ipfs/aegir/compare/v37.12.0...v37.12.1) (2023-01-11)
 
 

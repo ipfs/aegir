@@ -1,11 +1,6 @@
-import path from 'path'
-import { execa } from 'execa'
-import merge from 'merge-options'
-import { pkg } from './utils.js'
-import { fileURLToPath } from 'url'
 import Listr from 'listr'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+import depcheck from 'depcheck'
+import { cwd } from 'process'
 
 /**
  * @typedef {import("listr").ListrTaskWrapper} Task
@@ -22,67 +17,23 @@ const tasks = new Listr(
        * @param {Task} task
        */
       task: async (ctx, task) => {
-        const forwardOptions = ctx['--'] ? ctx['--'] : []
-        const input = ctx.input.length > 0 ? ctx.input : ctx.fileConfig.dependencyCheck.input
-        const ignore = ctx.ignore
-          .concat(ctx.fileConfig.dependencyCheck.ignore)
-          .reduce((acc, i) => acc.concat('-i', i), /** @type {string[]} */ ([]))
-
-        const args = [...input, '--missing', ...ignore]
-
-        if (pkg.type === 'module') {
-          // use detective-es6 for js, regular detective for cjs
-          args.push(
-            '--extensions', 'cjs:detective-cjs',
-            '--extensions', 'js:detective-es6'
+        const result = await depcheck(cwd(), {
+          parsers: {
+            '**/*.js': depcheck.parser.es6,
+            '**/*.ts': depcheck.parser.typescript,
+            '**/*.cjs': depcheck.parser.es6,
+            '**/*.mjs': depcheck.parser.es6
+          },
+          ignoreMatches: ['eslint*', '@types/*', '@semantic-release/*'].concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore)
+        })
+        if (Object.keys(result.missing).length > 0 || (ctx.unused && (result.dependencies.length > 0 || result.devDependencies.length > 0))) {
+          throw new Error(
+            'Some dependencies are missing or unused.\n' +
+            'Missing: \n' + Object.entries(result.missing).map(([dep, path]) => dep + ': ' + path).join('\n') +
+            '\nUnused production dependencies: \n' + result.dependencies.join('\n') + '\n' +
+            'Unused dev dependencies: \n' + result.devDependencies.join('\n')
           )
         }
-
-        await execa(
-          'dependency-check',
-          [...args, ...forwardOptions],
-          merge(
-            {
-              localDir: path.join(__dirname, '..'),
-              preferLocal: true
-            }
-          )
-        )
-      }
-    },
-    {
-      title: 'dependency-check (production only)',
-      /**
-       * @param {GlobalOptions & DependencyCheckOptions} ctx
-       * @param {Task} task
-       */
-      task: async (ctx, task) => {
-        const forwardOptions = ctx['--'] ? ctx['--'] : []
-        const input = ctx.input.length > 0 ? ctx.input : ctx.fileConfig.dependencyCheck.productionInput
-        const ignore = ctx.ignore
-          .concat(ctx.fileConfig.dependencyCheck.ignore)
-          .reduce((acc, i) => acc.concat('-i', i), /** @type {string[]} */ ([]))
-
-        const args = [...input, '--missing', '--no-dev', ...ignore]
-
-        if (pkg.type === 'module') {
-          // use detective-es6 for js, regular detective for cjs
-          args.push(
-            '--extensions', 'cjs:detective-cjs',
-            '--extensions', 'js:detective-es6'
-          )
-        }
-
-        await execa(
-          'dependency-check',
-          [...args, ...forwardOptions],
-          merge(
-            {
-              localDir: path.join(__dirname, '..'),
-              preferLocal: true
-            }
-          )
-        )
       }
     }
   ]

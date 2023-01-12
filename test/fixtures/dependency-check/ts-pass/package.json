@@ -1,0 +1,10 @@
+{
+    "name": "esm-dep-check-pass",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "dependencies": {
+        "execa": "1.0.0",
+        "pico": "1.0.0"
+    }
+}

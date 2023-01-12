@@ -30,6 +30,17 @@ describe('dependency check', () => {
       .and.include('pico')
   })
 
+  it('should fail for missing deps in an ts project', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/ts-fail')
+      })
+    ).to.eventually.be.rejected()
+      .with.property('message')
+      .that.include('execa')
+      .and.include('pico')
+  })
+
   it('should pass when there are no missing deps', async () => {
     await expect(
       execa(bin, ['dependency-check'], {
@@ -46,17 +57,28 @@ describe('dependency check', () => {
     ).to.eventually.be.fulfilled()
   })
 
-  it('should forward options', async () => {
+  it('should pass when there are no missing deps in an ts project', async () => {
     await expect(
-      execa(bin, ['dependency-check', '--', '--unused'], {
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/ts-pass')
+      })
+    ).to.eventually.be.fulfilled()
+  })
+
+  it('should check unused', async () => {
+    await expect(
+      execa(bin, ['dependency-check', '--unused'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
       })
-    ).to.eventually.be.rejectedWith(
-      'Modules in package.json not used in code: pico'
+    ).to.eventually.be.rejected.with.property('message').that.include(
+      'Unused production dependencies: \npico'
     )
   })
 
-  it('should fail for missing production deps', async () => {
+  /**
+   * depcheck removed this option as it caused too many false positives
+   */
+  it.skip('should fail for missing production deps', async () => {
     await expect(
       execa(bin, ['dependency-check', '-p'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/fail-prod')
@@ -64,7 +86,10 @@ describe('dependency check', () => {
     ).to.eventually.be.rejectedWith('execa')
   })
 
-  it('should pass for passed files', async () => {
+  /**
+   * not supporting depchecking individual files
+   */
+  it.skip('should pass for passed files', async () => {
     const file = 'derp/foo.js'
 
     await expect(
@@ -78,7 +103,10 @@ describe('dependency check', () => {
     ).to.eventually.be.fulfilled()
   })
 
-  it('should pass for passed production files', async () => {
+  /**
+   * not supporting depchecking individual files
+   */
+  it.skip('should pass for passed production files', async () => {
     const file = 'derp/foo.js'
 
     await expect(
@@ -103,7 +131,7 @@ describe('dependency check', () => {
 
   it('should pass for modules used in .aegir.js', async () => {
     await expect(
-      execa(bin, ['dependency-check', '--', '--unused'], {
+      execa(bin, ['dependency-check', '--unused'], {
         cwd: path.join(
           __dirname,
           'fixtures/dependency-check/with-aegir-config'

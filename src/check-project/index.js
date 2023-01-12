@@ -1,6 +1,6 @@
 /* eslint-disable no-console,complexity */
 
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import { execa } from 'execa'
 import prompt from 'prompt'
@@ -22,6 +22,7 @@ import {
 } from './utils.js'
 import semver from 'semver'
 import Listr from 'listr'
+import yargsParser from 'yargs-parser'
 
 /**
  * @param {string} projectDir
@@ -106,15 +107,12 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
       cwd: projectDir,
       absolute: true
     })) {
-      const pkg = JSON.parse(fs.readFileSync(path.join(subProjectDir, 'package.json'), {
-        encoding: 'utf-8'
-      }))
-
+      const pkg = fs.readJSONSync(path.join(subProjectDir, 'package.json'))
       const homePage = `${repoUrl}/tree/master${subProjectDir.substring(projectDir.length)}`
 
       console.info('Found monorepo project', pkg.name)
 
-      await processModule(subProjectDir, pkg, branchName, repoUrl, homePage)
+      await processModule(subProjectDir, pkg, branchName, repoUrl, homePage, manifest)
 
       projectDirs.push(subProjectDir)
     }
@@ -152,10 +150,7 @@ async function alignMonorepoProjectDependencies (projectDirs) {
 
   // first loop over every project and choose the most recent version of a given dep
   for (const projectDir of projectDirs) {
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
-
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
     siblingVersions[pkg.name] = calculateSiblingVersion(pkg.version)
 
     chooseVersions(pkg.dependencies || {}, deps)
@@ -166,9 +161,7 @@ async function alignMonorepoProjectDependencies (projectDirs) {
 
   // now propose the most recent version of a dep for all projects
   for (const projectDir of projectDirs) {
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
     selectVersions(pkg.dependencies || {}, deps, siblingVersions)
     selectVersions(pkg.devDependencies || {}, devDeps, siblingVersions)
@@ -233,9 +226,7 @@ async function configureMonorepoProjectReferences (projectDirs) {
 
   // first loop over every project and choose the most recent version of a given dep
   for (const projectDir of projectDirs) {
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
     references[pkg.name] = projectDir
   }
@@ -247,14 +238,8 @@ async function configureMonorepoProjectReferences (projectDirs) {
       continue
     }
 
-    const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-      encoding: 'utf-8'
-    }))
-
-    const tsconfig = JSON.parse(fs.readFileSync(path.join(projectDir, 'tsconfig.json'), {
-      encoding: 'utf-8'
-    }))
-
+    const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
+    const tsconfig = fs.readJSONSync(path.join(projectDir, 'tsconfig.json'))
     const refs = new Set()
 
     addReferences(pkg.dependencies || {}, references, refs)
@@ -320,8 +305,9 @@ function isAegirProject (manifest) {
  * @param {string} branchName
  * @param {string} repoUrl
  * @param {string} homePage
+ * @param {any} [rootManifest]
  */
-async function processModule (projectDir, manifest, branchName, repoUrl, homePage = repoUrl) {
+async function processModule (projectDir, manifest, branchName, repoUrl, homePage = repoUrl, rootManifest) {
   if (!isAegirProject(manifest) && manifest.name !== 'aegir') {
     throw new Error(`"${projectDir}" is not an aegir project`)
   }
@@ -397,20 +383,17 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
   await checkLicenseFiles(projectDir)
-  await checkReadme(projectDir, repoUrl, branchName)
+  await checkReadme(projectDir, repoUrl, branchName, rootManifest)
 }
 
 export default new Listr([
   {
     title: 'check project',
     task: async () => {
-      const projectDir = process.argv[3] || process.cwd()
+      const argv = yargsParser(process.argv.slice(2))._ // argv = ['check-project', ...]
+      const projectDir = argv[1]?.toString() ?? process.cwd()
       const { branchName, repoUrl } = await getConfig(projectDir)
-
-      const manifest = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-        encoding: 'utf-8'
-      }))
-
+      const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
       const monorepo = manifest.workspaces != null
 
       if (monorepo) {

@@ -14,8 +14,12 @@ import dependencyCheckCmd from './cmds/dependency-check.js'
 import lintPackageJsonCmd from './cmds/lint-package-json.js'
 import lintCmd from './cmds/lint.js'
 import releaseCmd from './cmds/release.js'
+import releaseRcCmd from './cmds/release-rc.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
+import docsCmd from './cmds/docs.js'
+import execCmd from './cmds/exec.js'
+import runCmd from './cmds/run.js'
 
 /**
  * @typedef {import('./types').BuildOptions} BuildOptions
@@ -68,7 +72,7 @@ async function main () {
       alias: 'd',
       default: userConfig.debug
     })
-    .group(['help', 'version', 'debug', 'ts-repo'], 'Global Options:')
+    .group(['help', 'version', 'debug'], 'Global Options:')
     .demandCommand(1, 'You need at least one command.')
     // .wrap(yargs.terminalWidth())
     .parserConfiguration({ 'populate--': true })
@@ -82,11 +86,15 @@ async function main () {
   res.command(checkCmd)
   res.command(cleanCmd)
   res.command(dependencyCheckCmd)
+  res.command(docsCmd)
   res.command(lintPackageJsonCmd)
   res.command(lintCmd)
   res.command(releaseCmd)
+  res.command(releaseRcCmd)
   res.command(testDependantCmd)
   res.command(testCmd)
+  res.command(execCmd)
+  res.command(runCmd)
 
   try {
     await res.parse()

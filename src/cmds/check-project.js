@@ -26,5 +26,9 @@ export default {
    */
   async handler (argv) {
     await checkProjectCmd.run(argv)
+      .catch(err => {
+        console.error(err) // eslint-disable-line no-console
+        process.exit(1)
+      })
   }
 }

@@ -44,7 +44,11 @@ const dependsOn = (name, pkg) => {
  * @param {string} targetDir
  */
 const isMonoRepo = (targetDir) => {
-  return fs.existsSync(path.join(targetDir, 'lerna.json'))
+  const modulePkgPath = path.join(targetDir, 'package.json')
+  const modulePkg = fs.readJSONSync(modulePkgPath)
+
+  // monorepos declare workspaces in their root package.json
+  return Boolean(modulePkg.workspaces)
 }
 
 /**
@@ -185,32 +189,15 @@ const testRepo = async (targetDir, deps, scriptName) => {
 const testMonoRepo = async (targetDir, deps, scriptName) => {
   await installDependencies(targetDir)
 
-  let lerna = path.join('node_modules', '.bin', 'lerna')
-
-  if (!fs.existsSync(lerna)) {
-    // no lerna in project dependencies :(
-    await exec('npm', ['install', '-g', 'lerna'], {
-      cwd: targetDir
-    })
-    lerna = 'lerna'
-  }
-
-  await exec(lerna, ['bootstrap'], {
-    cwd: targetDir
-  })
-
   // read package targetDir config
-  const config = await fs.readJSON(path.join(targetDir, 'lerna.json'))
+  const config = await fs.readJSON(path.join(targetDir, 'package.json'))
 
-  // find where the packages are stored
-  let packages = config.packages || 'packages'
-
-  if (!Array.isArray(packages)) {
-    packages = [packages]
+  if (config.workspaces == null) {
+    throw new Error('Package config did not contain workspaces')
   }
 
-  // test each package that depends on ipfs/http client
-  for (const pattern of packages) {
+  // test each package that depends on passed deps
+  for (const pattern of config.workspaces) {
     for await (const match of glob(targetDir, pattern)) {
       await testModule(path.join(targetDir, match), deps, scriptName)
     }

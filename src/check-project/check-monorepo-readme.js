@@ -1,7 +1,7 @@
 
 /* eslint-disable no-console */
 
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import {
   ensureFileHasContents
@@ -11,6 +11,7 @@ import { parseMarkdown, writeMarkdown } from './readme/utils.js'
 import { HEADER } from './readme/header.js'
 import { LICENSE } from './readme/license.js'
 import { STRUCTURE } from './readme/structure.js'
+import { APIDOCS } from './readme/api-docs.js'
 
 /**
  * @param {string} projectDir
@@ -29,9 +30,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
 
   console.info('Check README files')
 
-  const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-    encoding: 'utf-8'
-  }))
+  const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
   const readmePath = path.join(projectDir, 'README.md')
   let readmeContents = ''
@@ -60,6 +59,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
 
   let structureIndex = -1
   let tocIndex = -1
+  let apiDocsIndex = -1
   let licenseFound = false
 
   file.children.forEach((child, index) => {
@@ -102,6 +102,17 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
       return
     }
 
+    if (child.type === 'heading' && rendered.includes('api docs')) {
+      // skip api docs header
+      apiDocsIndex = index
+      return
+    }
+
+    if (apiDocsIndex !== -1 && index === apiDocsIndex + 1) {
+      // skip api docs link
+      return
+    }
+
     if ((child.type === 'heading' && rendered.includes('license')) || licenseFound) {
       licenseFound = true
       return
@@ -110,12 +121,14 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
     parsedReadme.children.push(child)
   })
 
-  const license = parseMarkdown(LICENSE[repoOwner] ?? LICENSE.default)
+  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+  const apiDocs = parseMarkdown(APIDOCS(pkg))
   const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
 
   parsedReadme.children = [
     ...structure.children,
     ...parsedReadme.children,
+    ...apiDocs.children,
     ...license.children
   ]
 

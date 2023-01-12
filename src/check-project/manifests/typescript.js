@@ -23,7 +23,7 @@ export async function typescriptManifest (manifest, branchName, repoUrl, homePag
     typesVersions: undefined,
     files: [
       'src',
-      'dist/src',
+      'dist',
       '!dist/test',
       '!**/*.tsbuildinfo'
     ],

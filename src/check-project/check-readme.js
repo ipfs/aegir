@@ -1,7 +1,7 @@
 
-/* eslint-disable no-console */
+/* eslint-disable no-console,complexity */
 
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import {
   ensureFileHasContents
@@ -11,13 +11,15 @@ import { parseMarkdown, writeMarkdown } from './readme/utils.js'
 import { HEADER } from './readme/header.js'
 import { LICENSE } from './readme/license.js'
 import { INSTALL } from './readme/install.js'
+import { APIDOCS } from './readme/api-docs.js'
 
 /**
  * @param {string} projectDir
  * @param {string} repoUrl
  * @param {string} defaultBranch
+ * @param {any} [rootManifest]
  */
-export async function checkReadme (projectDir, repoUrl, defaultBranch) {
+export async function checkReadme (projectDir, repoUrl, defaultBranch, rootManifest) {
   const repoParts = repoUrl.split('/')
   const repoName = repoParts.pop()
   const repoOwner = repoParts.pop()
@@ -28,9 +30,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
 
   console.info('Check README files')
 
-  const pkg = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), {
-    encoding: 'utf-8'
-  }))
+  const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
   const readmePath = path.join(projectDir, 'README.md')
   let readmeContents = ''
@@ -59,7 +59,11 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
 
   let tocIndex = -1
   let installIndex = -1
+  let apiDocsIndex = -1
   let licenseFound = false
+
+  /** @type {import('mdast').Content[]} */
+  const footer = []
 
   file.children.forEach((child, index) => {
     const rendered = writeMarkdown(child).toLowerCase()
@@ -101,6 +105,32 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
       return
     }
 
+    if (child.type === 'heading' && rendered.includes('browser `<script>` tag')) {
+      // skip browser install
+      return
+    }
+
+    if (rendered.includes('loading this module through a script tag') || rendered.includes('<script src="https://unpkg.com')) {
+      // skip browser install instructions
+      return
+    }
+
+    if (child.type === 'heading' && rendered.includes('api docs')) {
+      // skip api docs header
+      apiDocsIndex = index
+      return
+    }
+
+    if (apiDocsIndex !== -1 && index === apiDocsIndex + 1) {
+      // skip api docs link
+      return
+    }
+
+    if (child.type === 'definition') {
+      footer.push(child)
+      return
+    }
+
     if ((child.type === 'heading' && rendered.includes('license')) || licenseFound) {
       licenseFound = true
       return
@@ -110,12 +140,15 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch) {
   })
 
   const installation = parseMarkdown(INSTALL(pkg))
-  const license = parseMarkdown(LICENSE[repoOwner] ?? LICENSE.default)
+  const apiDocs = parseMarkdown(APIDOCS(pkg, rootManifest))
+  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
 
   parsedReadme.children = [
     ...installation.children,
     ...parsedReadme.children,
-    ...license.children
+    ...apiDocs.children,
+    ...license.children,
+    ...footer
   ]
 
   const toc = makeToc(parsedReadme, {

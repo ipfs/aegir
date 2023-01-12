@@ -1,7 +1,8 @@
-
-/** @type {Record<string, string>} */
-export const LICENSE = {
-  ipfs: `
+/**
+ * @type {Record<string, (repoOwner: string, repoName: string, defaultBranch: string) => string>}
+ */
+const licenses = {
+  ipfs: (repoOwner, repoName, defaultBranch) => `
 ## License
 
 Licensed under either of
@@ -11,13 +12,17 @@ Licensed under either of
 
 ## Contribute
 
-Feel free to join in. All welcome. Open an [issue](https://github.com/ipfs/js-ipfs-unixfs-importer/issues)!
+Contributions welcome! Please check out [the issues](https://github.com/${repoOwner}/${repoName}/issues).
 
-This repository falls under the IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
+Also see our [contributing document](https://github.com/ipfs/community/blob/master/CONTRIBUTING_JS.md) for more information on how we work, and about contributing in general.
+
+Please be aware that all interactions related to this repo are subject to the IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
 
 [![](https://cdn.rawgit.com/jbenet/contribute-ipfs-gif/master/img/contribute.gif)](https://github.com/ipfs/community/blob/master/CONTRIBUTING.md)
 `,
-  default: `
+  default: (repoOwner, repoName, defaultBranch) => `
 ## License
 
 Licensed under either of
@@ -29,4 +34,14 @@ Licensed under either of
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
 `
+}
+
+/**
+ * @param {*} pkg
+ * @param {string} repoOwner
+ * @param {string} repoName
+ * @param {string} defaultBranch
+ */
+export const LICENSE = (pkg, repoOwner, repoName, defaultBranch) => {
+  return (licenses[repoOwner] ?? licenses.default)(repoOwner, repoName, defaultBranch)
 }

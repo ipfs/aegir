@@ -29,9 +29,21 @@ interface Options extends GlobalOptions {
    */
   release: ReleaseOptions
   /**
+   * Options for the `release-rc` command
+   */
+  releaseRc: ReleaseRcOptions
+  /**
    * Options for the `dependency-check` command
    */
   dependencyCheck: DependencyCheckOptions
+  /**
+   * Options for the `exec` command
+   */
+  exec: ExecOptions
+  /**
+   * Options for the `run` command
+   */
+  run: RunOptions
 }
 
 /**
@@ -134,6 +146,22 @@ interface DocsOptions {
    * Specifies the entry points to be documented by TypeDoc. TypeDoc will examine the exports of these files and create documentation according to the exports. Either files or directories may be specified. If a directory is specified, all source files within the directory will be included as an entry point.
    */
   entryPoint: string
+  /**
+   * The commit message to use in the gh-pages branch
+   */
+  message: string
+  /**
+   * The user to make the commit with
+   */
+  user: string
+  /**
+   * The email address to make the commit with
+   */
+  email: string
+  /**
+   * Where to build the documentation
+   */
+  directory: string
 }
 
 interface LintOptions {
@@ -274,6 +302,18 @@ interface ReleaseOptions {
   siblingDepUpdateEmail: string
 }
 
+interface ReleaseRcOptions {
+  /**
+   * How many times to retry each publish operation
+   */
+  retries: number
+
+  /**
+   * Which tag to publish the rc as
+   */
+  tag: string
+}
+
 interface DependencyCheckOptions {
   /**
    * throws error on unused dependencies, default is false
@@ -286,6 +326,20 @@ interface DependencyCheckOptions {
 
 }
 
+interface ExecOptions {
+  /**
+   * If false, the command will continue to be run in other packages
+   */
+  bail?: boolean
+}
+
+interface RunOptions {
+  /**
+   * If false, the command will continue to be run in other packages
+   */
+  bail?: boolean
+}
+
 export type {
   PartialOptions,
   Options,
@@ -296,5 +350,8 @@ export type {
   LintOptions,
   TestOptions,
   ReleaseOptions,
-  DependencyCheckOptions
+  ReleaseRcOptions,
+  DependencyCheckOptions,
+  ExecOptions,
+  RunOptions
 }

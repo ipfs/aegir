@@ -7,8 +7,9 @@ import path from 'path'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import merge from 'merge-options'
-import { fromRoot, readJson, hasTsconfig, isTypescript } from './utils.js'
+import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary } from './utils.js'
 import { fileURLToPath } from 'url'
+import kleur from 'kleur'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -43,7 +44,18 @@ const tasks = new Listr(
         }
 
         if (!ctx.silent && hasErrors) {
-          console.error(formatter.format(results))
+          const output = await formatter.format(results)
+
+          console.error(output
+            .split('\n')
+            .map(line => {
+              if (line.includes('[Error')) {
+                return kleur.red(line)
+              }
+
+              return line
+            })
+            .join('\n'))
         }
 
         if (hasErrors) {
@@ -77,7 +89,7 @@ const tasks = new Listr(
               }
             ])
           )
-          await execa('tsc', ['--build', configPath], {
+          await execa(findBinary('tsc'), ['--build', configPath], {
             localDir: path.join(__dirname, '../..'),
             preferLocal: true,
             stdio: 'inherit'

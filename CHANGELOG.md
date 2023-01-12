@@ -1,3 +1,294 @@
+## [37.12.1](https://github.com/ipfs/aegir/compare/v37.12.0...v37.12.1) (2023-01-11)
+
+
+### Bug Fixes
+
+* include enums in typedoc index ([#1162](https://github.com/ipfs/aegir/issues/1162)) ([54d10f8](https://github.com/ipfs/aegir/commit/54d10f8920fc711156f3ce28d1a1f33d3fac39ad))
+
+## [37.12.0](https://github.com/ipfs/aegir/compare/v37.11.0...v37.12.0) (2023-01-10)
+
+
+### Features
+
+* build opt-out for cache-node-modules action ([#1070](https://github.com/ipfs/aegir/issues/1070)) ([c63b1d0](https://github.com/ipfs/aegir/commit/c63b1d024c11054ed9f3becac4fc0e0ddf8d9c28))
+
+
+### Bug Fixes
+
+* terminate string properly ([6b37d29](https://github.com/ipfs/aegir/commit/6b37d2975b965f648c551e390fc9aa6f0e54d225))
+* update actions/cache ([#1154](https://github.com/ipfs/aegir/issues/1154)) ([9f7d169](https://github.com/ipfs/aegir/commit/9f7d1698f376918116d08c8c1b04af1c8f3866c3))
+
+## [37.11.0](https://github.com/ipfs/aegir/compare/v37.10.1...v37.11.0) (2023-01-10)
+
+
+### Features
+
+* add release-rc command ([#1161](https://github.com/ipfs/aegir/issues/1161)) ([f61b448](https://github.com/ipfs/aegir/commit/f61b44840d2c7fbfa7159d0234962308b2c0d113))
+
+## [37.10.1](https://github.com/ipfs/aegir/compare/v37.10.0...v37.10.1) (2023-01-07)
+
+
+### Documentation
+
+* document env export ([#1158](https://github.com/ipfs/aegir/issues/1158)) ([b639b2e](https://github.com/ipfs/aegir/commit/b639b2ef280f6d661243a1b00fbb7c98e983531f))
+
+## [37.10.0](https://github.com/ipfs/aegir/compare/v37.9.2...v37.10.0) (2023-01-07)
+
+
+### Features
+
+* add env ([#1157](https://github.com/ipfs/aegir/issues/1157)) ([fd65561](https://github.com/ipfs/aegir/commit/fd65561f4f3e913ecd7ef26e29da1a4bcc9e64d6))
+
+## [37.9.2](https://github.com/ipfs/aegir/compare/v37.9.1...v37.9.2) (2023-01-06)
+
+
+### Bug Fixes
+
+* do not create npmrc for monorepos ([#1156](https://github.com/ipfs/aegir/issues/1156)) ([3cdc766](https://github.com/ipfs/aegir/commit/3cdc76652db35d5597f3785fcb38884a6a828184))
+
+## [37.9.1](https://github.com/ipfs/aegir/compare/v37.9.0...v37.9.1) (2023-01-06)
+
+
+### Bug Fixes
+
+* update monorepo detection and use ([#1155](https://github.com/ipfs/aegir/issues/1155)) ([a4172f7](https://github.com/ipfs/aegir/commit/a4172f7211a10abb56323f8fed287f9d08c2469d))
+
+## [37.9.0](https://github.com/ipfs/aegir/compare/v37.8.0...v37.9.0) (2022-12-24)
+
+
+### Features
+
+* let clean take args ([#1152](https://github.com/ipfs/aegir/issues/1152)) ([34a8c18](https://github.com/ipfs/aegir/commit/34a8c18098a75621278641ac29f37c1211caad3c))
+
+## [37.8.0](https://github.com/ipfs/aegir/compare/v37.7.11...v37.8.0) (2022-12-24)
+
+
+### Features
+
+* add run and exec commands for executing commands in monorepo packages ([#1151](https://github.com/ipfs/aegir/issues/1151)) ([80f10b3](https://github.com/ipfs/aegir/commit/80f10b3d3038fbe7f5aaca6d2df4eefdb4f66e83))
+
+
+### Bug Fixes
+
+* print linting errors in red ([#1150](https://github.com/ipfs/aegir/issues/1150)) ([a6633f3](https://github.com/ipfs/aegir/commit/a6633f34c0e94dd37e429816d4812553046a1417))
+
+## [37.7.11](https://github.com/ipfs/aegir/compare/v37.7.10...v37.7.11) (2022-12-20)
+
+
+### Bug Fixes
+
+* exclude node_modules from docs ([#1149](https://github.com/ipfs/aegir/issues/1149)) ([21ae44d](https://github.com/ipfs/aegir/commit/21ae44df8b30fba6b15eda6b812727fd622ad1af))
+* return empty map if no typedoc urls found ([8b7fc4c](https://github.com/ipfs/aegir/commit/8b7fc4cb272620c70183437f03a1440837faae14))
+
+## [37.7.10](https://github.com/ipfs/aegir/compare/v37.7.9...v37.7.10) (2022-12-19)
+
+
+### Bug Fixes
+
+* do not collect typedoc urls for dependencies ([6a65bb6](https://github.com/ipfs/aegir/commit/6a65bb625a159503431acded2c51d262849924d7))
+
+## [37.7.9](https://github.com/ipfs/aegir/compare/v37.7.8...v37.7.9) (2022-12-19)
+
+
+### Bug Fixes
+
+* Added support for generating docs for referenced types ([#1131](https://github.com/ipfs/aegir/issues/1131)) ([64e04aa](https://github.com/ipfs/aegir/commit/64e04aa11bf51a83a6e343569ec0e209454ccd99))
+
+## [37.7.8](https://github.com/ipfs/aegir/compare/v37.7.7...v37.7.8) (2022-12-16)
+
+
+### Bug Fixes
+
+* update contribution header in footer ([#1147](https://github.com/ipfs/aegir/issues/1147)) ([2514ebf](https://github.com/ipfs/aegir/commit/2514ebf91396db9962357f0498bcdf701bc12079))
+
+## [37.7.7](https://github.com/ipfs/aegir/compare/v37.7.6...v37.7.7) (2022-12-16)
+
+
+### Bug Fixes
+
+* update ci badge link ([#1146](https://github.com/ipfs/aegir/issues/1146)) ([4b7e34d](https://github.com/ipfs/aegir/commit/4b7e34d2f68d2c8a6f9c08fa386e6a7987a316a7))
+
+## [37.7.6](https://github.com/ipfs/aegir/compare/v37.7.5...v37.7.6) (2022-12-15)
+
+
+### Bug Fixes
+
+* link to api docs from monorepo child projects ([#1145](https://github.com/ipfs/aegir/issues/1145)) ([e862d02](https://github.com/ipfs/aegir/commit/e862d024701f5fdfe00e2d964eadf9b05f9a2e5f))
+* only use absolute path of url mapping to find project context ([#1144](https://github.com/ipfs/aegir/issues/1144)) ([b99b473](https://github.com/ipfs/aegir/commit/b99b473504f48923e632c314c0b55bc8d374cab7))
+
+## [37.7.5](https://github.com/ipfs/aegir/compare/v37.7.4...v37.7.5) (2022-12-15)
+
+
+### Bug Fixes
+
+* disable package-lock.json in monorepos ([#1142](https://github.com/ipfs/aegir/issues/1142)) ([d3adbfa](https://github.com/ipfs/aegir/commit/d3adbfa545676b913a38645ac754ed4f7c7c0781))
+
+## [37.7.4](https://github.com/ipfs/aegir/compare/v37.7.3...v37.7.4) (2022-12-15)
+
+
+### Bug Fixes
+
+* generate docs on publish, control publishing from release job ([#1141](https://github.com/ipfs/aegir/issues/1141)) ([5afb1a0](https://github.com/ipfs/aegir/commit/5afb1a0603dcc8a331b9398881c0ae2feee00fc1))
+
+## [37.7.3](https://github.com/ipfs/aegir/compare/v37.7.2...v37.7.3) (2022-12-14)
+
+
+### Bug Fixes
+
+* add missing deps ([#1140](https://github.com/ipfs/aegir/issues/1140)) ([3e57c6a](https://github.com/ipfs/aegir/commit/3e57c6a3cdd28a7e9bab2a1605831076481c1781))
+
+## [37.7.2](https://github.com/ipfs/aegir/compare/v37.7.1...v37.7.2) (2022-12-14)
+
+
+### Bug Fixes
+
+* allow configuring docs directory ([#1138](https://github.com/ipfs/aegir/issues/1138)) ([06c9468](https://github.com/ipfs/aegir/commit/06c946862d34ea506fd6afbe7df230de4fb43123))
+* temporarily disable coverage ([#1137](https://github.com/ipfs/aegir/issues/1137)) ([7537d8c](https://github.com/ipfs/aegir/commit/7537d8ca393f270e941719b1ff5c9bdac3f761fc))
+
+## [37.7.1](https://github.com/ipfs/aegir/compare/v37.7.0...v37.7.1) (2022-12-14)
+
+
+### Dependencies
+
+* bump @types/node from 16.18.9 to 18.11.15 ([#1135](https://github.com/ipfs/aegir/issues/1135)) ([5cbb2d7](https://github.com/ipfs/aegir/commit/5cbb2d7ce42a253d2ce7669ea9a17d9c5309e150))
+
+## [37.7.0](https://github.com/ipfs/aegir/compare/v37.6.7...v37.7.0) (2022-12-14)
+
+
+### Features
+
+* link to external typedocs ([#1122](https://github.com/ipfs/aegir/issues/1122)) ([144e282](https://github.com/ipfs/aegir/commit/144e2829a706c34eaecfc3d1312d741b5d4191f8))
+
+## [37.6.7](https://github.com/ipfs/aegir/compare/v37.6.6...v37.6.7) (2022-12-09)
+
+
+### Bug Fixes
+
+* only add browser script tag instructions for browser modules ([#1124](https://github.com/ipfs/aegir/issues/1124)) ([38521d2](https://github.com/ipfs/aegir/commit/38521d26f918ba2f246dabb41123b48d37ae6b2a))
+
+## [37.6.6](https://github.com/ipfs/aegir/compare/v37.6.5...v37.6.6) (2022-12-08)
+
+
+### Bug Fixes
+
+* load local binaries ([#1123](https://github.com/ipfs/aegir/issues/1123)) ([6db3c51](https://github.com/ipfs/aegir/commit/6db3c515137f00fc8b60ad653be09574b8f40a57))
+
+## [37.6.5](https://github.com/ipfs/aegir/compare/v37.6.4...v37.6.5) (2022-12-08)
+
+
+### Bug Fixes
+
+* include dist in bundle ([#1121](https://github.com/ipfs/aegir/issues/1121)) ([74f1fe1](https://github.com/ipfs/aegir/commit/74f1fe1c9d639af8f8fcdfa9d5265315b6b2bd72))
+
+## [37.6.4](https://github.com/ipfs/aegir/compare/v37.6.3...v37.6.4) (2022-12-07)
+
+
+### Bug Fixes
+
+* set url of git repo before docs publish ([6e5de98](https://github.com/ipfs/aegir/commit/6e5de984a9cd49b9adbb19aceb5e87f6a77449b0))
+
+## [37.6.3](https://github.com/ipfs/aegir/compare/v37.6.2...v37.6.3) (2022-12-07)
+
+
+### Bug Fixes
+
+* add credentials to gh-pages push ([#1120](https://github.com/ipfs/aegir/issues/1120)) ([b63cc8a](https://github.com/ipfs/aegir/commit/b63cc8aca2b91b122f0a389f66a30f798d18da58))
+
+## [37.6.2](https://github.com/ipfs/aegir/compare/v37.6.1...v37.6.2) (2022-12-07)
+
+
+### Bug Fixes
+
+* publish docs by default in CI ([#1119](https://github.com/ipfs/aegir/issues/1119)) ([147aeac](https://github.com/ipfs/aegir/commit/147aeacc44c0331ef08a97832aa59bb4321c4e90))
+
+## [37.6.1](https://github.com/ipfs/aegir/compare/v37.6.0...v37.6.1) (2022-12-07)
+
+
+### Dependencies
+
+* bump esbuild from 0.15.18 to 0.16.1 ([#1118](https://github.com/ipfs/aegir/issues/1118)) ([16fc0ac](https://github.com/ipfs/aegir/commit/16fc0aca3f8035150c8b6881ee49ba2ccc3377f3))
+* **dev:** bump electron from 21.3.1 to 22.0.0 ([#1113](https://github.com/ipfs/aegir/issues/1113)) ([6fe55db](https://github.com/ipfs/aegir/commit/6fe55dbcf8196284d674de471680e9936d808b4c))
+
+## [37.6.0](https://github.com/ipfs/aegir/compare/v37.5.7...v37.6.0) (2022-12-06)
+
+
+### Features
+
+* Re-Add the `docs` command ([#1107](https://github.com/ipfs/aegir/issues/1107)) ([830e826](https://github.com/ipfs/aegir/commit/830e826d48294d645a551bac6c9e06648499376c))
+
+## [37.5.7](https://github.com/ipfs/aegir/compare/v37.5.6...v37.5.7) (2022-12-06)
+
+
+### Dependencies
+
+* bump fs-extra from 10.1.0 to 11.1.0 ([#1114](https://github.com/ipfs/aegir/issues/1114)) ([1bae91b](https://github.com/ipfs/aegir/commit/1bae91bbf9c5cb4f50ee24125ddc19945f75fa83))
+* **dev:** bump sinon from 14.0.2 to 15.0.0 ([#1110](https://github.com/ipfs/aegir/issues/1110)) ([5edc401](https://github.com/ipfs/aegir/commit/5edc401320549e4266e5d017f237d0681e2669b6))
+
+## [37.5.6](https://github.com/ipfs/aegir/compare/v37.5.5...v37.5.6) (2022-10-13)
+
+
+### Dependencies
+
+* bump uint8arrays from 3.1.1 to 4.0.2 ([#1090](https://github.com/ipfs/aegir/issues/1090)) ([a5b1342](https://github.com/ipfs/aegir/commit/a5b1342d83a065d3bd6e5a4987edb3569d6ab8a0))
+
+## [37.5.5](https://github.com/ipfs/aegir/compare/v37.5.4...v37.5.5) (2022-09-30)
+
+
+### Bug Fixes
+
+* fix ci link for libp2p repos ([#1084](https://github.com/ipfs/aegir/issues/1084)) ([4d76f79](https://github.com/ipfs/aegir/commit/4d76f79c6577c9ae1a95dd6798174f6867301061))
+
+
+### Documentation
+
+* remove ts command docs ([#1083](https://github.com/ipfs/aegir/issues/1083)) ([c3eca3e](https://github.com/ipfs/aegir/commit/c3eca3e50db74086a4d9a16293a39c0e6399b0c1)), closes [#1077](https://github.com/ipfs/aegir/issues/1077)
+
+
+### Dependencies
+
+* bump @types/mocha from 9.1.1 to 10.0.0 ([#1080](https://github.com/ipfs/aegir/issues/1080)) ([f111936](https://github.com/ipfs/aegir/commit/f111936a4feda8664397850f13e01f64961146bd))
+* bump esbuild from 0.14.54 to 0.15.10 ([#1082](https://github.com/ipfs/aegir/issues/1082)) ([51d3034](https://github.com/ipfs/aegir/commit/51d3034a40ee0aff0ca57ce8338d5c8e016af22c))
+* **dev:** bump @types/update-notifier from 5.1.0 to 6.0.1 ([#1018](https://github.com/ipfs/aegir/issues/1018)) ([e82c2d6](https://github.com/ipfs/aegir/commit/e82c2d645ce5080cbdc9504362bead9a4798b29c))
+* **dev:** bump electron from 20.3.0 to 21.0.1 ([#1081](https://github.com/ipfs/aegir/issues/1081)) ([cdbc918](https://github.com/ipfs/aegir/commit/cdbc918e609bc3d8638300dbefeb64bb1204ecdb))
+
+## [37.5.4](https://github.com/ipfs/aegir/compare/v37.5.3...v37.5.4) (2022-09-22)
+
+
+### Bug Fixes
+
+* update readme badges ([#1073](https://github.com/ipfs/aegir/issues/1073)) ([d0e865b](https://github.com/ipfs/aegir/commit/d0e865b6bfaa244a25c7ea10fbced6aa244c51ee)), closes [/github.com/ipfs/js-ipns/pull/180#discussion_r972826024](https://github.com/ipfs//github.com/ipfs/js-ipns/pull/180/issues/discussion_r972826024)
+
+## [37.5.3](https://github.com/ipfs/aegir/compare/v37.5.2...v37.5.3) (2022-08-30)
+
+
+### Bug Fixes
+
+* ignore single-import from exports map ([#1063](https://github.com/ipfs/aegir/issues/1063)) ([77e43ce](https://github.com/ipfs/aegir/commit/77e43ce61be5e1394a2b8306f122cd9303063499))
+
+## [37.5.2](https://github.com/ipfs/aegir/compare/v37.5.1...v37.5.2) (2022-08-30)
+
+
+### Bug Fixes
+
+* check-project uses correct projectDir ([#1055](https://github.com/ipfs/aegir/issues/1055)) ([297ac8f](https://github.com/ipfs/aegir/commit/297ac8f496dc9127a1e22ed665e2d6e2ad79ef9f)), closes [#1054](https://github.com/ipfs/aegir/issues/1054)
+* correct link to issues page for ipfs readmes ([#1049](https://github.com/ipfs/aegir/issues/1049)) ([b3578e8](https://github.com/ipfs/aegir/commit/b3578e8da0bac2014cb123b32fe2947b451305db))
+
+
+### Dependencies
+
+* bump @electron/get from 1.14.1 to 2.0.0 ([#1038](https://github.com/ipfs/aegir/issues/1038)) ([d3fa53f](https://github.com/ipfs/aegir/commit/d3fa53ff2e81ecc7e26d7982d0fa893764174787))
+* bump strip-json-comments from 4.0.0 to 5.0.0 ([#1023](https://github.com/ipfs/aegir/issues/1023)) ([aa14ef9](https://github.com/ipfs/aegir/commit/aa14ef9be2aeb4000c6f05d12341a317bd210ca3))
+* bump update-notifier from 5.1.0 to 6.0.2 ([#1013](https://github.com/ipfs/aegir/issues/1013)) ([3465038](https://github.com/ipfs/aegir/commit/3465038add8a06e9a8fcacf4556fb5046b61a9c7))
+* **dev:** bump electron from 19.0.14 to 20.1.0 ([#1058](https://github.com/ipfs/aegir/issues/1058)) ([b0cb84f](https://github.com/ipfs/aegir/commit/b0cb84f67ea13a11d4c9351f9abeed3d9c1592c7))
+
+## [37.5.1](https://github.com/ipfs/aegir/compare/v37.5.0...v37.5.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* change bot user for updating sibling deps ([fc25395](https://github.com/ipfs/aegir/commit/fc253952fa637ab0c3e20cc37c549f5f5c3241b7))
+* preserve readme definitions when checking project config ([#1041](https://github.com/ipfs/aegir/issues/1041)) ([4a0cecc](https://github.com/ipfs/aegir/commit/4a0cecce7323a2ae2e7a9a0f41a901ffc1fa1604))
+
 ## [37.5.0](https://github.com/ipfs/aegir/compare/v37.4.8...v37.5.0) (2022-08-10)
 
 

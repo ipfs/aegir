@@ -1,6 +1,6 @@
 import path from 'path'
 import { execa } from 'execa'
-import { fromAegir } from '../utils.js'
+import { fromAegir, findBinary } from '../utils.js'
 import merge from 'merge-options'
 import { fileURLToPath } from 'url'
 
@@ -41,7 +41,7 @@ export default async (argv, execaOptions) => {
   const beforeEnv = before && before.env ? before.env : {}
 
   // run pw-test
-  await execa('pw-test',
+  await execa(findBinary('pw-test'),
     [
       ...files,
       '--mode', argv.runner === 'browser' ? 'main' : 'worker',

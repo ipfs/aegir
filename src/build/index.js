@@ -6,7 +6,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import pascalcase from 'pascalcase'
 import bytes from 'bytes'
-import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths } from './../utils.js'
+import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths, findBinary } from './../utils.js'
 import { execa } from 'execa'
 import merge from 'merge-options'
 
@@ -73,7 +73,7 @@ const tasks = new Listr([
      * @param {Task} task
      */
     task: async (ctx, task) => {
-      await execa('tsc', {
+      await execa(findBinary('tsc'), {
         preferLocal: true,
         stdio: 'inherit'
       })

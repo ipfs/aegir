@@ -3,6 +3,7 @@
 import { lilconfig } from 'lilconfig'
 import merge from 'merge-options'
 import { pathToFileURL } from 'url'
+import { isTypescript } from '../utils.js'
 
 /**
  * @typedef {import("./../types").Options} Options
@@ -60,8 +61,12 @@ const defaults = {
   },
   // docs cmd options
   docs: {
-    publish: false,
-    entryPoint: 'src/index.js'
+    publish: Boolean(process.env.CI),
+    entryPoint: isTypescript ? 'src/index.ts' : 'src/index.js',
+    message: 'docs: update documentation [skip ci]',
+    user: 'aegir[bot]',
+    email: 'aegir[bot]@users.noreply.github.com',
+    directory: '.docs'
   },
   // ts cmd options
   ts: {
@@ -89,8 +94,12 @@ const defaults = {
     distTag: 'latest',
     remote: 'origin',
     siblingDepUpdateMessage: 'deps: update sibling dependencies',
-    siblingDepUpdateName: 'semantic-release-bot',
-    siblingDepUpdateEmail: 'semantic-release-bot@martynus.net'
+    siblingDepUpdateName: 'aegir[bot]',
+    siblingDepUpdateEmail: 'aegir[bot]@users.noreply.github.com'
+  },
+  releaseRc: {
+    retries: 5,
+    tag: 'next'
   },
   // dependency check cmd options
   dependencyCheck: {
@@ -99,6 +108,12 @@ const defaults = {
       '@types/*',
       'aegir'
     ]
+  },
+  exec: {
+    bail: true
+  },
+  run: {
+    bail: true
   }
 }
 

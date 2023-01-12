@@ -20,6 +20,7 @@ import envPaths from 'env-paths'
 import lockfile from 'proper-lockfile'
 import { fileURLToPath } from 'url'
 import Listr from 'listr'
+import glob from 'it-glob'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -249,6 +250,8 @@ export const hasTypes = Boolean(pkg.types)
 export const hasMain = Boolean(pkg.main)
 export const hasIndexTs = hasFile('src/index.ts')
 export const hasIndexJs = hasFile('src/index.js')
+export const isMonorepoParent = Boolean(pkg.workspaces)
+export const hasDocs = Boolean(pkg.scripts?.docs)
 
 // our project types:
 
@@ -267,3 +270,181 @@ export const isUntypedCJS = isCJS && hasMain
 const parentManifestPath = path.resolve(path.join(process.cwd(), '..', '..', 'package.json'))
 
 export const isMonorepoProject = Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)
+
+/**
+ * Binaries we need are normally in `node_modules/.bin` of the root project
+ * unless a sibling dependency has caused a different version to be hoisted
+ * so check our local node_modules folder first, then fall back to the main
+ * project node_modules folder, then fall back to the environment or fail.
+ *
+ * Happens quite often when old versions of typescript are in the dependency
+ * tree.
+ *
+ * @param {string} bin
+ * @returns {string}
+ */
+export function findBinary (bin) {
+  // if bin is in local node_modules folder
+  const aegirBin = fromAegir('node_modules', '.bin', bin)
+
+  if (fs.existsSync(aegirBin)) {
+    return aegirBin
+  }
+
+  // if bin has been hoisted
+  const projectBin = fromRoot('node_modules', '.bin', bin)
+
+  if (fs.existsSync(projectBin)) {
+    return projectBin
+  }
+
+  // let shell work it out or error
+  return bin
+}
+
+/**
+ * @typedef {object} Project
+ * @property {any} manifest
+ * @property {string} dir
+ * @property {string[]} siblingDependencies
+ * @property {string[]} dependencies
+ * @property {boolean} run
+ */
+
+/**
+ * @param {string} projectDir
+ * @param {(project: Project) => Promise<void>} fn
+ */
+export async function everyMonorepoProject (projectDir, fn) {
+  const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
+  const workspaces = manifest.workspaces
+
+  if (!workspaces || !Array.isArray(workspaces)) {
+    throw new Error('No monorepo workspaces found')
+  }
+
+  /** @type {Record<string, Project>} */
+  const projects = await parseProjects(projectDir, workspaces)
+
+  checkForCircularDependencies(projects)
+
+  /**
+   * @param {Project} project
+   */
+  async function run (project) {
+    if (project.run) {
+      return
+    }
+
+    for (const siblingDep of project.siblingDependencies) {
+      await run(projects[siblingDep])
+    }
+
+    if (project.run) {
+      return
+    }
+
+    project.run = true
+    await fn(project)
+  }
+
+  for (const project of Object.values(projects)) {
+    await run(project)
+  }
+}
+
+/**
+ *
+ * @param {string} projectDir
+ * @param {string[]} workspaces
+ */
+async function parseProjects (projectDir, workspaces) {
+  /** @type {Record<string, Project>} */
+  const projects = {}
+
+  for (const workspace of workspaces) {
+    for await (const subProjectDir of glob('.', workspace, {
+      cwd: projectDir,
+      absolute: true
+    })) {
+      const pkg = fs.readJSONSync(path.join(subProjectDir, 'package.json'))
+
+      projects[pkg.name] = {
+        manifest: pkg,
+        dir: subProjectDir,
+        siblingDependencies: [],
+        run: false,
+        dependencies: [
+          ...Object.keys(pkg.dependencies ?? {}),
+          ...Object.keys(pkg.devDependencies ?? {}),
+          ...Object.keys(pkg.optionalDependencies ?? {}),
+          ...Object.keys(pkg.peerDependencies ?? {})
+        ]
+      }
+    }
+  }
+
+  for (const project of Object.values(projects)) {
+    for (const dep of project.dependencies) {
+      if (projects[dep] != null) {
+        project.siblingDependencies.push(dep)
+      }
+    }
+  }
+
+  return projects
+}
+
+/**
+ * @param {Record<string, Project>} projects
+ */
+function checkForCircularDependencies (projects) {
+  /**
+   * @param {Project} project
+   * @param {string} target
+   * @param {Set<string>} checked
+   * @param {string[]} chain
+   * @returns {string[] | undefined}
+   */
+  function dependsOn (project, target, checked, chain) {
+    chain = [...chain, project.manifest.name]
+
+    if (project.manifest.name === target) {
+      return chain
+    }
+
+    for (const dep of project.siblingDependencies) {
+      if (checked.has(dep)) {
+        // already checked this dep
+        return
+      }
+
+      checked.add(dep)
+
+      if (dep === target) {
+        // circular dependency detected
+        chain.push(target)
+        return chain
+      }
+
+      const subChain = dependsOn(projects[dep], target, checked, chain)
+
+      if (subChain != null) {
+        return subChain
+      }
+    }
+  }
+
+  // check for circular dependencies
+  for (const project of Object.values(projects)) {
+    for (const siblingDep of project.siblingDependencies) {
+      const sibling = projects[siblingDep]
+
+      const chain = dependsOn(sibling, project.manifest.name, new Set([sibling.manifest.name]), [project.manifest.name])
+
+      if (chain != null) {
+        throw new Error(`Circular dependency detected: ${chain.join(' -> ')}`)
+      }
+    }
+  }
+}

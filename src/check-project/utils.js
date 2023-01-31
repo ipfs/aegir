@@ -2,10 +2,11 @@
 
 import fs from 'fs'
 import path from 'path'
-import prompt from 'prompt'
-import kleur from 'kleur'
-import * as Diff from 'diff'
 import { fileURLToPath } from 'url'
+
+import * as Diff from 'diff'
+import kleur from 'kleur'
+import prompt from 'prompt'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

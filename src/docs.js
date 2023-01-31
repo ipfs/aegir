@@ -1,12 +1,15 @@
-import { hasTsconfig, fromAegir, fromRoot, readJson, isMonorepoParent } from './utils.js'
-import Listr from 'listr'
-import fs from 'fs-extra'
 import path from 'path'
-import { execa } from 'execa'
-import { promisify } from 'util'
-import ghPages from 'gh-pages'
-import { premove as del } from 'premove/sync'
 import { fileURLToPath } from 'url'
+import { promisify } from 'util'
+
+import { premove as del } from 'premove/sync'
+
+import { execa } from 'execa'
+import fs from 'fs-extra'
+import ghPages from 'gh-pages'
+import Listr from 'listr'
+
+import { hasTsconfig, fromAegir, fromRoot, readJson, isMonorepoParent } from './utils.js'
 
 const publishPages = promisify(ghPages.publish)
 

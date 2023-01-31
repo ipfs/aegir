@@ -1,12 +1,14 @@
 /* eslint-env mocha */
 
-import { expect } from '../utils/chai.js'
+import { createRequire } from 'module'
+import os from 'os'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 import { execa } from 'execa'
 import fs from 'fs-extra'
-import path from 'path'
-import os from 'os'
-import { fileURLToPath } from 'url'
-import { createRequire } from 'module'
+
+import { expect } from '../utils/chai.js'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

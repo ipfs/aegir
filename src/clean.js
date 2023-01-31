@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 
-import Listr from 'listr'
 import { promisify } from 'util'
+
+import Listr from 'listr'
 import rm from 'rimraf'
 
 const rimraf = promisify(rm)

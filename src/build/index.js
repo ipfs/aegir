@@ -1,14 +1,16 @@
 /* eslint-disable no-console */
 
-import Listr from 'listr'
-import esbuild from 'esbuild'
 import path from 'path'
-import fs from 'fs-extra'
-import pascalcase from 'pascalcase'
+
 import bytes from 'bytes'
-import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths, findBinary } from './../utils.js'
+import esbuild from 'esbuild'
 import { execa } from 'execa'
+import fs from 'fs-extra'
+import Listr from 'listr'
 import merge from 'merge-options'
+import pascalcase from 'pascalcase'
+
+import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths, findBinary } from './../utils.js'
 
 const defaults = merge.bind({
   ignoreUndefined: true

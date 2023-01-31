@@ -1,26 +1,28 @@
 #! /usr/bin/env node
 /* eslint-disable no-console */
 
-import updateNotifier from 'update-notifier'
-import { readPackageUpSync } from 'read-pkg-up'
-import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import { loadUserConfig } from './config/user.js'
+
+import { readPackageUpSync } from 'read-pkg-up'
+import updateNotifier from 'update-notifier'
+import yargs from 'yargs'
+
 import buildCmd from './cmds/build.js'
 import checkProjectCmd from './cmds/check-project.js'
 import checkCmd from './cmds/check.js'
 import cleanCmd from './cmds/clean.js'
 import dependencyCheckCmd from './cmds/dependency-check.js'
-import lintPackageJsonCmd from './cmds/lint-package-json.js'
-import lintCmd from './cmds/lint.js'
-import releaseCmd from './cmds/release.js'
-import releaseRcCmd from './cmds/release-rc.js'
-import testDependantCmd from './cmds/test-dependant.js'
-import testCmd from './cmds/test.js'
 import docsCmd from './cmds/docs.js'
 import docVerifyCmd from './cmds/document-check.js'
 import execCmd from './cmds/exec.js'
+import lintPackageJsonCmd from './cmds/lint-package-json.js'
+import lintCmd from './cmds/lint.js'
+import releaseRcCmd from './cmds/release-rc.js'
+import releaseCmd from './cmds/release.js'
 import runCmd from './cmds/run.js'
+import testDependantCmd from './cmds/test-dependant.js'
+import testCmd from './cmds/test.js'
+import { loadUserConfig } from './config/user.js'
 
 /**
  * @typedef {import('./types').BuildOptions} BuildOptions

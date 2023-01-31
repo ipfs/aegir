@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 
-import Listr from 'listr'
-import { hasTsconfig } from './utils.js'
 import { globby } from 'globby'
+import Listr from 'listr'
 import { compileSnippets } from 'typescript-docs-verifier'
+
+import { hasTsconfig } from './utils.js'
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
  * @typedef {import("./types").DocsVerifierOptions} DocsVerifierOptions

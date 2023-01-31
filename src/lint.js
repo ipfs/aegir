@@ -1,15 +1,17 @@
 /* eslint-disable no-console */
 
-import { globby } from 'globby'
-import { ESLint } from 'eslint'
-import Listr from 'listr'
 import path from 'path'
+import { fileURLToPath } from 'url'
+
+import { ESLint } from 'eslint'
 import { execa } from 'execa'
 import fs from 'fs-extra'
-import merge from 'merge-options'
-import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary, hasDocCheck } from './utils.js'
-import { fileURLToPath } from 'url'
+import { globby } from 'globby'
 import kleur from 'kleur'
+import Listr from 'listr'
+import merge from 'merge-options'
+
+import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary, hasDocCheck } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

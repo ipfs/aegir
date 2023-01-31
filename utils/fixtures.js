@@ -1,4 +1,5 @@
 import fs from 'fs'
+
 import resolve from './resolve.js'
 
 /**

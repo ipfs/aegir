@@ -1,8 +1,10 @@
 import path from 'path'
-import { execa } from 'execa'
-import { fromAegir, findBinary } from '../utils.js'
-import merge from 'merge-options'
 import { fileURLToPath } from 'url'
+
+import { execa } from 'execa'
+import merge from 'merge-options'
+
+import { fromAegir, findBinary } from '../utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

@@ -1,9 +1,10 @@
 /* eslint-env mocha */
 
-import { expect } from '../../utils/chai.js'
-import { config } from '../../src/config/user.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
+
+import { config } from '../../src/config/user.js'
+import { expect } from '../../utils/chai.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

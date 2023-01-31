@@ -1,6 +1,7 @@
-import Listr from 'listr'
-import depcheck from 'depcheck'
 import { cwd } from 'process'
+
+import depcheck from 'depcheck'
+import Listr from 'listr'
 
 /**
  * @typedef {import("listr").ListrTaskWrapper} Task

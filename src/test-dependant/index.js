@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
 
-import path from 'path'
 import os from 'os'
+import path from 'path'
+
+import fs from 'fs-extra'
+import glob from 'it-glob'
+
 import {
   exec
 } from '../utils.js'
-import fs from 'fs-extra'
-import glob from 'it-glob'
 
 /**
  * @param {string} name

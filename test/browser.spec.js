@@ -1,8 +1,9 @@
 /* eslint-env mocha */
 
-import loadFixture from '../utils/fixtures.js'
-import { expect } from '../utils/chai.js'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
+
+import { expect } from '../utils/chai.js'
+import loadFixture from '../utils/fixtures.js'
 
 describe('browser', () => {
   it('fixtures', () => {

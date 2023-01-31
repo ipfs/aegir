@@ -20,10 +20,10 @@
 
 import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
-import chaiParentheses from 'chai-parentheses'
-import chaiSubset from 'chai-subset'
 import chaiBites from 'chai-bites'
+import chaiParentheses from 'chai-parentheses'
 import chaiString from 'chai-string'
+import chaiSubset from 'chai-subset'
 
 // Do not reorder these statements - https://github.com/chaijs/chai/issues/1298
 chai.use(chaiAsPromised)

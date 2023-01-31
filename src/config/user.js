@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
 
+import { pathToFileURL } from 'url'
+
 import { lilconfig } from 'lilconfig'
 import merge from 'merge-options'
-import { pathToFileURL } from 'url'
+
 import { isTypescript } from '../utils.js'
 
 /**

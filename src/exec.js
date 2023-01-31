@@ -1,6 +1,7 @@
-import { everyMonorepoProject } from './utils.js'
 import { execa } from 'execa'
 import kleur from 'kleur'
+
+import { everyMonorepoProject } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions

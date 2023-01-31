@@ -1,7 +1,9 @@
 /* eslint-env mocha */
 
-import { execa } from 'execa'
 import os from 'os'
+
+import { execa } from 'execa'
+
 import { setUpProject } from './utils/set-up-project.js'
 
 describe('test', () => {

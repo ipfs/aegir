@@ -1,9 +1,10 @@
 /* eslint-env mocha */
 
-import fs, { copy } from 'fs-extra'
 import path, { join } from 'path'
-import * as tempy from 'tempy'
 import { fileURLToPath } from 'url'
+
+import fs, { copy } from 'fs-extra'
+import * as tempy from 'tempy'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

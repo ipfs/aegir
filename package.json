@@ -332,7 +332,7 @@
     "@types/polka": "^0.5.2",
     "@types/prompt": "^1.1.2",
     "@types/proper-lockfile": "^4.1.1",
-    "@types/rimraf": "^3.0.2",
+    "@types/rimraf": "^4.0.5",
     "@types/semver": "^7.3.4",
     "@types/update-notifier": "^6.0.1",
     "@types/yargs": "^17.0.0",

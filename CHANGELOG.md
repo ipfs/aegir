@@ -1,3 +1,10 @@
+## [38.1.2](https://github.com/ipfs/aegir/compare/v38.1.1...v38.1.2) (2023-02-07)
+
+
+### Bug Fixes
+
+* update default branch pattern detection ([#1183](https://github.com/ipfs/aegir/issues/1183)) ([d02f670](https://github.com/ipfs/aegir/commit/d02f6705f34c3d0b9884c3cfdb4fedddcb2e226d))
+
 ## [38.1.1](https://github.com/ipfs/aegir/compare/v38.1.0...v38.1.1) (2023-02-06)
 
 

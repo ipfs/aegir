@@ -1,4 +1,3 @@
-// @ts-expect-error no types
 import { Buffer } from 'buffer'
 import http from 'http'
 

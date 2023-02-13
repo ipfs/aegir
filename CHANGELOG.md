@@ -1,3 +1,17 @@
+## [38.1.2](https://github.com/ipfs/aegir/compare/v38.1.1...v38.1.2) (2023-02-07)
+
+
+### Bug Fixes
+
+* update default branch pattern detection ([#1183](https://github.com/ipfs/aegir/issues/1183)) ([d02f670](https://github.com/ipfs/aegir/commit/d02f6705f34c3d0b9884c3cfdb4fedddcb2e226d))
+
+## [38.1.1](https://github.com/ipfs/aegir/compare/v38.1.0...v38.1.1) (2023-02-06)
+
+
+### Trivial Changes
+
+* remove coverage dir ([#1180](https://github.com/ipfs/aegir/issues/1180)) ([0a0dd5d](https://github.com/ipfs/aegir/commit/0a0dd5dcb543ed4e68b9dee64c5055d40dd376c6))
+
 ## [38.1.0](https://github.com/ipfs/aegir/compare/v38.0.0...v38.1.0) (2023-01-12)
 
 

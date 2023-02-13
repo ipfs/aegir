@@ -1,6 +1,7 @@
 /* eslint-disable no-console,complexity */
 
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 import { execa } from 'execa'
 import fs from 'fs-extra'
@@ -25,6 +26,8 @@ import {
   ensureFileHasContents,
   calculateSiblingVersion
 } from './utils.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @param {string} projectDir
@@ -127,6 +130,9 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
   proposedManifest = sortManifest(proposedManifest)
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
+  await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {
+    encoding: 'utf-8'
+  }))
   await checkLicenseFiles(projectDir)
   await checkBuildFiles(projectDir, branchName, repoUrl)
   await checkMonorepoReadme(projectDir, repoUrl, branchName, projectDirs)
@@ -384,6 +390,9 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   proposedManifest = sortManifest(proposedManifest)
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
+  await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {
+    encoding: 'utf-8'
+  }))
   await checkLicenseFiles(projectDir)
   await checkReadme(projectDir, repoUrl, branchName, rootManifest)
 }

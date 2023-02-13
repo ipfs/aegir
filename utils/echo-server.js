@@ -4,6 +4,7 @@ import http from 'http'
 import cors from 'cors'
 import polka from 'polka'
 
+// @ts-expect-error no types
 import send from '@polka/send-type'
 
 import getPort from './get-port.js'

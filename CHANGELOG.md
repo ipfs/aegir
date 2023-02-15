@@ -1,3 +1,10 @@
+## [38.1.3](https://github.com/ipfs/aegir/compare/v38.1.2...v38.1.3) (2023-02-15)
+
+
+### Bug Fixes
+
+* do not create .gitignore in monorepo workspaces ([0eace6c](https://github.com/ipfs/aegir/commit/0eace6cb9cf6fd01c306b6abc3c28ddb62afc5ec))
+
 ## [38.1.2](https://github.com/ipfs/aegir/compare/v38.1.1...v38.1.2) (2023-02-07)
 
 

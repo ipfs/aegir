@@ -268,9 +268,11 @@ export const isTypedCJS = isCJS && hasMain && hasTypes
 // 3. CJS, no types
 export const isUntypedCJS = isCJS && hasMain
 
-const parentManifestPath = path.resolve(path.join(process.cwd(), '..', '..', 'package.json'))
+export const isMonorepoProject = (dir = process.cwd()) => {
+  const parentManifestPath = path.resolve(dir, '..', '..', 'package.json')
 
-export const isMonorepoProject = Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)
+  return Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)
+}
 
 /**
  * Binaries we need are normally in `node_modules/.bin` of the root project

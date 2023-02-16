@@ -25,14 +25,14 @@ const tasks = new Listr([
     }
   },
   {
-    title: `semantic-release${isMonorepoProject ? '-monorepo' : ''}`,
+    title: `semantic-release${isMonorepoProject() ? '-monorepo' : ''}`,
     /**
      * @param {GlobalOptions} ctx
      */
     task: async (ctx) => {
       let args = ctx['--'] ?? []
 
-      if (isMonorepoProject) {
+      if (isMonorepoProject()) {
         args = ['-e', 'semantic-release-monorepo', ...args]
       }
 
@@ -44,7 +44,7 @@ const tasks = new Listr([
   },
   {
     title: 'align sibling dependency versions',
-    enabled: () => isMonorepoProject,
+    enabled: () => isMonorepoProject(),
     /**
      * @param {GlobalOptions & ReleaseOptions} ctx
      */

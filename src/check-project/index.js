@@ -131,13 +131,9 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
   proposedManifest = sortManifest(proposedManifest)
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
-
-  if (!isMonorepoProject) {
-    await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {
-      encoding: 'utf-8'
-    }))
-  }
-
+  await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {
+    encoding: 'utf-8'
+  }))
   await checkLicenseFiles(projectDir)
   await checkBuildFiles(projectDir, branchName, repoUrl)
   await checkMonorepoReadme(projectDir, repoUrl, branchName, projectDirs)
@@ -396,7 +392,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
 
-  if (!isMonorepoProject) {
+  if (!isMonorepoProject(projectDir)) {
     await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {
       encoding: 'utf-8'
     }))

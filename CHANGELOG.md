@@ -1,3 +1,12 @@
+## [38.1.4](https://github.com/ipfs/aegir/compare/v38.1.3...v38.1.4) (2023-02-16)
+
+
+### Bug Fixes
+
+* allow not overwriting files ([1cefa04](https://github.com/ipfs/aegir/commit/1cefa04aa3fddc61b7313e6345d9da30817947b6))
+* do not create .gitignore files for monorepo workspace projects ([2dad5f2](https://github.com/ipfs/aegir/commit/2dad5f2d0fa6b30c9299cfdab9e4db0cf1b66c0e))
+* pin esquery version temporarily ([eff8550](https://github.com/ipfs/aegir/commit/eff85503196453876a788c7fdb64f46fe891a236))
+
 ## [38.1.3](https://github.com/ipfs/aegir/compare/v38.1.2...v38.1.3) (2023-02-15)
 
 

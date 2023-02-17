@@ -1,3 +1,10 @@
+## [38.1.5](https://github.com/ipfs/aegir/compare/v38.1.4...v38.1.5) (2023-02-17)
+
+
+### Bug Fixes
+
+* revert pinning of esquery dep ([8d37a9a](https://github.com/ipfs/aegir/commit/8d37a9a374a27a553f9e7d11b83048ee98ab4b65))
+
 ## [38.1.4](https://github.com/ipfs/aegir/compare/v38.1.3...v38.1.4) (2023-02-16)
 
 

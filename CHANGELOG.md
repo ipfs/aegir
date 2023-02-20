@@ -1,3 +1,13 @@
+## [38.1.6](https://github.com/ipfs/aegir/compare/v38.1.5...v38.1.6) (2023-02-20)
+
+
+### Dependencies
+
+* bump esbuild from 0.16.17 to 0.17.9 ([#1194](https://github.com/ipfs/aegir/issues/1194)) ([8761e36](https://github.com/ipfs/aegir/commit/8761e3621e28112b042eaaeee372db2f73c0c90b))
+* bump execa from 6.1.0 to 7.0.0 ([#1191](https://github.com/ipfs/aegir/issues/1191)) ([5a71818](https://github.com/ipfs/aegir/commit/5a7181857301194ea4b96d530bad4504370fef84))
+* bump gh-pages from 4.0.0 to 5.0.0 ([#1173](https://github.com/ipfs/aegir/issues/1173)) ([c103f37](https://github.com/ipfs/aegir/commit/c103f37ab7c00bcc5bc255ee57e8b44dcacca84d))
+* **dev:** bump electron from 22.3.0 to 23.1.0 ([#1193](https://github.com/ipfs/aegir/issues/1193)) ([6e58c9e](https://github.com/ipfs/aegir/commit/6e58c9e14f58d7c23681346bc0974d8a380cc9dc))
+
 ## [38.1.5](https://github.com/ipfs/aegir/compare/v38.1.4...v38.1.5) (2023-02-17)
 
 

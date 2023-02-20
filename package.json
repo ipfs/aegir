@@ -265,7 +265,7 @@
     "execa": "^7.0.0",
     "extract-zip": "^2.0.1",
     "fs-extra": "^11.1.0",
-    "gh-pages": "^4.0.0",
+    "gh-pages": "^5.0.0",
     "globby": "^13.1.1",
     "it-glob": "^2.0.0",
     "kleur": "^4.1.4",

@@ -1,3 +1,10 @@
+## [38.1.7](https://github.com/ipfs/aegir/compare/v38.1.6...v38.1.7) (2023-03-02)
+
+
+### Bug Fixes
+
+* remove it-glob dependency ([#1200](https://github.com/ipfs/aegir/issues/1200)) ([2285b4e](https://github.com/ipfs/aegir/commit/2285b4ecc233ad05ebacecabf32dc13b38f683eb))
+
 ## [38.1.6](https://github.com/ipfs/aegir/compare/v38.1.5...v38.1.6) (2023-02-20)
 
 

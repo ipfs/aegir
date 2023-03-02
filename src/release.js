@@ -2,10 +2,9 @@
 
 import Listr from 'listr'
 import { execa } from 'execa'
-import { isMonorepoProject, hasDocs } from './utils.js'
+import { isMonorepoProject, hasDocs, glob } from './utils.js'
 import fs from 'fs-extra'
 import path from 'path'
-import glob from 'it-glob'
 import { calculateSiblingVersion } from './check-project/utils.js'
 
 /**

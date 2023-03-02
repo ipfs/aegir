@@ -4,7 +4,6 @@ import fs from 'fs-extra'
 import path from 'path'
 import { execa } from 'execa'
 import prompt from 'prompt'
-import glob from 'it-glob'
 import { monorepoManifest } from './manifests/monorepo.js'
 import { typedESMManifest } from './manifests/typed-esm.js'
 import { typescriptManifest } from './manifests/typescript.js'
@@ -25,7 +24,8 @@ import Listr from 'listr'
 import yargsParser from 'yargs-parser'
 import { fileURLToPath } from 'url'
 import {
-  isMonorepoProject
+  isMonorepoProject,
+  glob
 } from '../utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

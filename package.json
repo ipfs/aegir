@@ -299,7 +299,7 @@
     "proper-lockfile": "^4.1.2",
     "react-native-test-runner": "^5.0.0",
     "read-pkg-up": "^9.1.0",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.3.0",
     "semantic-release": "^20.0.2",
     "semantic-release-monorepo": "^7.0.5",
     "semver": "^7.3.8",

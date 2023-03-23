@@ -1,3 +1,10 @@
+## [38.1.8](https://github.com/ipfs/aegir/compare/v38.1.7...v38.1.8) (2023-03-23)
+
+
+### Bug Fixes
+
+* use WebWorker lib in tsconfig ([#1219](https://github.com/ipfs/aegir/issues/1219)) ([b173aba](https://github.com/ipfs/aegir/commit/b173ababeeea2cb865696e2aeda9357c37ab8c88)), closes [#discussion_r1145871872](https://github.com/ipfs/aegir/issues/discussion_r1145871872)
+
 ## [38.1.7](https://github.com/ipfs/aegir/compare/v38.1.6...v38.1.7) (2023-03-02)
 
 

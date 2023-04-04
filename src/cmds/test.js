@@ -1,6 +1,5 @@
 import { loadUserConfig } from '../config/user.js'
 import testCmd from '../test/index.js'
-import kleur from 'kleur'
 
 /**
  * @typedef {import("yargs").Argv} Argv

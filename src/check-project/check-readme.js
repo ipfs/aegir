@@ -48,7 +48,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, rootManif
   const file = parseMarkdown(readmeContents)
 
   // create basic readme with heading, CI link, etc
-  const readme = parseMarkdown(HEADER(pkg, repoOwner, repoName, defaultBranch))
+  const readme = parseMarkdown(HEADER({ defaultBranch, pkg, repoOwner, repoName, repoUrl }))
 
   // remove existing header, CI link, etc
   /** @type {import('mdast').Root} */

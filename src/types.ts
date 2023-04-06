@@ -360,12 +360,20 @@ interface RunOptions {
   bail?: boolean
 }
 
+interface ReadmeStringGeneratorInputOptions {
+  repoOwner: string
+  repoName: string
+  defaultBranch: string
+  repoUrl: string
+}
+
 interface LicenseGenerator {
-  (options: {
-    repoOwner: string
-    repoName?: string
-    defaultBranch?: string
-    repoUrl: string
+  (options: Omit<ReadmeStringGeneratorInputOptions, 'defaultBranch'>): string
+}
+
+interface HeaderGenerator {
+  (options: ReadmeStringGeneratorInputOptions & {
+    pkg: typeof import('../package.json')
   }): string
 }
 
@@ -384,5 +392,7 @@ export type {
   DependencyCheckOptions,
   ExecOptions,
   RunOptions,
-  LicenseGenerator
+  LicenseGenerator,
+  HeaderGenerator,
+  ReadmeStringGeneratorInputOptions
 }

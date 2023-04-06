@@ -48,7 +48,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
   const file = parseMarkdown(readmeContents)
 
   // create basic readme with heading, CI link, etc
-  const readme = parseMarkdown(HEADER(pkg, repoOwner, repoName, defaultBranch))
+  const readme = parseMarkdown(HEADER({ defaultBranch, pkg, repoOwner, repoName, repoUrl }))
 
   // remove existing header, CI link, etc
   /** @type {import('mdast').Root} */
@@ -121,7 +121,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
     parsedReadme.children.push(child)
   })
 
-  const license = parseMarkdown(LICENSE({ repoUrl, repoOwner, repoName, defaultBranch }))
+  const license = parseMarkdown(LICENSE({ repoUrl, repoOwner, repoName }))
   const apiDocs = parseMarkdown(APIDOCS(pkg))
   const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
 

@@ -141,7 +141,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, rootManif
 
   const installation = parseMarkdown(INSTALL(pkg))
   const apiDocs = parseMarkdown(APIDOCS(pkg, rootManifest))
-  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+  const license = parseMarkdown(LICENSE({ repoOwner, repoName, repoUrl }))
 
   parsedReadme.children = [
     ...installation.children,

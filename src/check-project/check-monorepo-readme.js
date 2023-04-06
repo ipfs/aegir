@@ -121,7 +121,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
     parsedReadme.children.push(child)
   })
 
-  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+  const license = parseMarkdown(LICENSE({ repoUrl, repoOwner, repoName, defaultBranch }))
   const apiDocs = parseMarkdown(APIDOCS(pkg))
   const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
 

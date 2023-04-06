@@ -360,6 +360,15 @@ interface RunOptions {
   bail?: boolean
 }
 
+interface LicenseGenerator {
+  (options: {
+    repoOwner: string
+    repoName?: string
+    defaultBranch?: string
+    repoUrl: string
+  }): string
+}
+
 export type {
   PartialOptions,
   Options,
@@ -374,5 +383,6 @@ export type {
   ReleaseRcOptions,
   DependencyCheckOptions,
   ExecOptions,
-  RunOptions
+  RunOptions,
+  LicenseGenerator
 }

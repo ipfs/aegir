@@ -1,6 +1,8 @@
+import { computePkgUrl } from './utils.js'
+
 /**
  * @typedef {import('../../types').ReadmeStringGeneratorInputOptions} ReadmeStringGeneratorInputOptions
- * @type {Record<string, (options: Omit<ReadmeStringGeneratorInputOptions, 'repoUrl'>) => string>}
+ * @type {Record<string, (options: Omit<ReadmeStringGeneratorInputOptions, 'repoUrl' | 'pkg'>) => string>}
  */
 const BADGES = {
   libp2p: ({ repoOwner, repoName, defaultBranch }) => `
@@ -27,11 +29,12 @@ const BADGES = {
 }
 
 /**
- * @type {import('../../types').HeaderGenerator}
+ * @type {import('../../types').ReadmeStringGenerator}
  */
-export const HEADER = ({ pkg, repoOwner, repoName, defaultBranch }) => {
+export const HEADER = ({ defaultBranch, pkg, repoOwner, repoName, repoUrl }) => {
+  const pkgUrl = computePkgUrl({ defaultBranch, pkg, repoUrl })
   return `
-# ${pkg.name} <!-- omit in toc -->
+# [${pkg.name}](${pkgUrl}) <!-- omit in toc -->
 
 ${(BADGES[repoOwner] ?? BADGES.default)({ repoOwner, repoName, defaultBranch }).trim()}
 

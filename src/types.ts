@@ -365,16 +365,13 @@ interface ReadmeStringGeneratorInputOptions {
   repoName: string
   defaultBranch: string
   repoUrl: string
+  pkg: typeof import('../package.json') & {
+    workspaces?: string[]
+  }
 }
 
-interface LicenseGenerator {
-  (options: Omit<ReadmeStringGeneratorInputOptions, 'defaultBranch'>): string
-}
-
-interface HeaderGenerator {
-  (options: ReadmeStringGeneratorInputOptions & {
-    pkg: typeof import('../package.json')
-  }): string
+interface ReadmeStringGenerator {
+  (options: ReadmeStringGeneratorInputOptions): string
 }
 
 export type {
@@ -392,7 +389,6 @@ export type {
   DependencyCheckOptions,
   ExecOptions,
   RunOptions,
-  LicenseGenerator,
-  HeaderGenerator,
+  ReadmeStringGenerator,
   ReadmeStringGeneratorInputOptions
 }

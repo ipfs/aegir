@@ -50,3 +50,9 @@ export function writeMarkdown (tree) {
     listItemIndent: 'one'
   })
 }
+
+/**
+ * @typedef {import('../../types').ReadmeStringGeneratorInputOptions} ReadmeStringGeneratorInputOptions
+ * @type {(options: Omit<ReadmeStringGeneratorInputOptions, 'repoOwner' | 'repoName'>) => string}
+ */
+export const computePkgUrl = ({ pkg, repoUrl, defaultBranch }) => Array.isArray(pkg.workspaces) ? repoUrl : `${repoUrl}/tree/${defaultBranch}/packages/${pkg.name}`

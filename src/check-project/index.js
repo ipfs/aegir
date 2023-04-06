@@ -399,7 +399,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   }
 
   await checkLicenseFiles(projectDir)
-  await checkReadme(projectDir, repoUrl, branchName, rootManifest)
+  await checkReadme(projectDir, homePage, branchName, rootManifest)
 }
 
 export default new Listr([

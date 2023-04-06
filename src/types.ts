@@ -363,15 +363,20 @@ interface RunOptions {
 interface ReadmeStringGeneratorInputOptions {
   repoOwner: string
   repoName: string
-  defaultBranch: string
   repoUrl: string
-  pkg: typeof import('../package.json') & {
-    workspaces?: string[]
-  }
+}
+
+interface LicenseStringGenerator {
+  (options: ReadmeStringGeneratorInputOptions): string
 }
 
 interface ReadmeStringGenerator {
-  (options: ReadmeStringGeneratorInputOptions): string
+  (options: ReadmeStringGeneratorInputOptions & {
+    defaultBranch: string
+    pkg: typeof import('../package.json') & {
+      workspaces?: string[]
+    }
+  }): string
 }
 
 export type {
@@ -389,6 +394,7 @@ export type {
   DependencyCheckOptions,
   ExecOptions,
   RunOptions,
+  LicenseStringGenerator,
   ReadmeStringGenerator,
   ReadmeStringGeneratorInputOptions
 }

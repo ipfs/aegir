@@ -1,3 +1,11 @@
+## [39.0.3](https://github.com/ipfs/aegir/compare/v39.0.2...v39.0.3) (2023-04-27)
+
+
+### Dependencies
+
+* bump minimatch from 5.1.6 to 9.0.0 ([#1232](https://github.com/ipfs/aegir/issues/1232)) ([07150fc](https://github.com/ipfs/aegir/commit/07150fca81667064b5bbedcdfddbd9f53629b168))
+* bump p-map from 5.5.0 to 6.0.0 ([#1249](https://github.com/ipfs/aegir/issues/1249)) ([584ceca](https://github.com/ipfs/aegir/commit/584cecac55637b6b846b58da337155f9ff4ae522))
+
 ## [39.0.2](https://github.com/ipfs/aegir/compare/v39.0.1...v39.0.2) (2023-04-27)
 
 

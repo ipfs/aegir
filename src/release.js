@@ -1,12 +1,11 @@
 /* eslint-disable no-console */
 
-import Listr from 'listr'
-import { execa } from 'execa'
-import { isMonorepoProject, hasDocs } from './utils.js'
-import fs from 'fs-extra'
 import path from 'path'
-import glob from 'it-glob'
+import { execa } from 'execa'
+import fs from 'fs-extra'
+import Listr from 'listr'
 import { calculateSiblingVersion } from './check-project/utils.js'
+import { isMonorepoProject, hasDocs, glob } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -25,14 +24,14 @@ const tasks = new Listr([
     }
   },
   {
-    title: `semantic-release${isMonorepoProject ? '-monorepo' : ''}`,
+    title: `semantic-release${isMonorepoProject() ? '-monorepo' : ''}`,
     /**
      * @param {GlobalOptions} ctx
      */
     task: async (ctx) => {
       let args = ctx['--'] ?? []
 
-      if (isMonorepoProject) {
+      if (isMonorepoProject()) {
         args = ['-e', 'semantic-release-monorepo', ...args]
       }
 
@@ -44,7 +43,7 @@ const tasks = new Listr([
   },
   {
     title: 'align sibling dependency versions',
-    enabled: () => isMonorepoProject,
+    enabled: () => isMonorepoProject(),
     /**
      * @param {GlobalOptions & ReleaseOptions} ctx
      */

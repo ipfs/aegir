@@ -1,28 +1,34 @@
 /* eslint-disable no-console,complexity */
 
-import fs from 'fs-extra'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { execa } from 'execa'
+import fs from 'fs-extra'
+import Listr from 'listr'
 import prompt from 'prompt'
-import glob from 'it-glob'
+import semver from 'semver'
+import yargsParser from 'yargs-parser'
+import {
+  isMonorepoProject,
+  glob
+} from '../utils.js'
+import { checkBuildFiles } from './check-build-files.js'
+import { checkLicenseFiles } from './check-licence-files.js'
+import { checkMonorepoFiles } from './check-monorepo-files.js'
+import { checkMonorepoReadme } from './check-monorepo-readme.js'
+import { checkReadme } from './check-readme.js'
 import { monorepoManifest } from './manifests/monorepo.js'
+import { typedCJSManifest } from './manifests/typed-cjs.js'
 import { typedESMManifest } from './manifests/typed-esm.js'
 import { typescriptManifest } from './manifests/typescript.js'
 import { untypedCJSManifest } from './manifests/untyped-cjs.js'
-import { typedCJSManifest } from './manifests/typed-cjs.js'
-import { checkLicenseFiles } from './check-licence-files.js'
-import { checkBuildFiles } from './check-build-files.js'
-import { checkMonorepoFiles } from './check-monorepo-files.js'
-import { checkReadme } from './check-readme.js'
-import { checkMonorepoReadme } from './check-monorepo-readme.js'
 import {
   sortManifest,
   ensureFileHasContents,
   calculateSiblingVersion
 } from './utils.js'
-import semver from 'semver'
-import Listr from 'listr'
-import yargsParser from 'yargs-parser'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @param {string} projectDir
@@ -125,6 +131,9 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
   proposedManifest = sortManifest(proposedManifest)
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
+  await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {
+    encoding: 'utf-8'
+  }))
   await checkLicenseFiles(projectDir)
   await checkBuildFiles(projectDir, branchName, repoUrl)
   await checkMonorepoReadme(projectDir, repoUrl, branchName, projectDirs)
@@ -382,6 +391,13 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   proposedManifest = sortManifest(proposedManifest)
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
+
+  if (!isMonorepoProject(projectDir)) {
+    await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {
+      encoding: 'utf-8'
+    }))
+  }
+
   await checkLicenseFiles(projectDir)
   await checkReadme(projectDir, repoUrl, branchName, rootManifest)
 }

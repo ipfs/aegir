@@ -5,22 +5,22 @@
  * @module aegir/utils
  */
 
-import { constants, createBrotliCompress, createGzip } from 'zlib'
 import os from 'os'
-import extract from 'extract-zip'
-import stripComments from 'strip-json-comments'
-import stripBom from 'strip-bom'
-import { download } from '@electron/get'
 import path from 'path'
 import readline from 'readline'
-import { readPackageUpSync } from 'read-pkg-up'
-import fs from 'fs-extra'
-import { execa } from 'execa'
-import envPaths from 'env-paths'
-import lockfile from 'proper-lockfile'
 import { fileURLToPath } from 'url'
+import { constants, createBrotliCompress, createGzip } from 'zlib'
+import { download } from '@electron/get'
+import envPaths from 'env-paths'
+import { execa } from 'execa'
+import extract from 'extract-zip'
+import fs from 'fs-extra'
 import Listr from 'listr'
-import glob from 'it-glob'
+import minimatch from 'minimatch'
+import lockfile from 'proper-lockfile'
+import { readPackageUpSync } from 'read-pkg-up'
+import stripBom from 'strip-bom'
+import stripComments from 'strip-json-comments'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -268,9 +268,11 @@ export const isTypedCJS = isCJS && hasMain && hasTypes
 // 3. CJS, no types
 export const isUntypedCJS = isCJS && hasMain
 
-const parentManifestPath = path.resolve(path.join(process.cwd(), '..', '..', 'package.json'))
+export const isMonorepoProject = (dir = process.cwd()) => {
+  const parentManifestPath = path.resolve(dir, '..', '..', 'package.json')
 
-export const isMonorepoProject = Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)
+  return Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)
+}
 
 /**
  * Binaries we need are normally in `node_modules/.bin` of the root project
@@ -446,6 +448,68 @@ function checkForCircularDependencies (projects) {
       if (chain != null) {
         throw new Error(`Circular dependency detected: ${chain.join(' -> ')}`)
       }
+    }
+  }
+}
+
+/**
+ * @typedef {object} GlobOptions
+ * @property {string} [cwd] The current working directory
+ * @property {boolean} [absolute] If true produces absolute paths (default: false)
+ * @property {boolean} [nodir] If true yields file paths and skip directories (default: false)
+ *
+ * Async iterable filename pattern matcher
+ *
+ * @param {string} dir
+ * @param {string} pattern
+ * @param {GlobOptions & import('minimatch').IOptions} [options]
+ * @returns {AsyncGenerator<string, void, undefined>}
+ */
+export async function * glob (dir, pattern, options = {}) {
+  const absoluteDir = path.resolve(dir)
+  const relativeDir = path.relative(options.cwd ?? process.cwd(), dir)
+
+  const stats = await fs.stat(absoluteDir)
+
+  if (stats.isDirectory()) {
+    for await (const entry of _glob(absoluteDir, '', pattern, options)) {
+      yield entry
+    }
+
+    return
+  }
+
+  if (minimatch(relativeDir, pattern, options)) {
+    yield options.absolute === true ? absoluteDir : relativeDir
+  }
+}
+
+/**
+ * @param {string} base
+ * @param {string} dir
+ * @param {string} pattern
+ * @param {GlobOptions & import('minimatch').IOptions} options
+ * @returns {AsyncGenerator<string, void, undefined>}
+ */
+async function * _glob (base, dir, pattern, options) {
+  for await (const entry of await fs.opendir(path.join(base, dir))) {
+    const relativeEntryPath = path.join(dir, entry.name)
+    const absoluteEntryPath = path.join(base, dir, entry.name)
+
+    let match = minimatch(relativeEntryPath, pattern, options)
+
+    const isDirectory = entry.isDirectory()
+
+    if (isDirectory && options.nodir === true) {
+      match = false
+    }
+
+    if (match) {
+      yield options.absolute === true ? absoluteEntryPath : relativeEntryPath
+    }
+
+    if (isDirectory) {
+      yield * _glob(base, relativeEntryPath, pattern, options)
     }
   }
 }

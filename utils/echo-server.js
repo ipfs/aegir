@@ -1,9 +1,9 @@
+import { Buffer } from 'buffer'
+import http from 'http'
 // @ts-expect-error no types
 import send from '@polka/send-type'
-import polka from 'polka'
 import cors from 'cors'
-import http from 'http'
-import { Buffer } from 'buffer'
+import polka from 'polka'
 import getPort from './get-port.js'
 
 /**

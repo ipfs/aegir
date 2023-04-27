@@ -2,10 +2,10 @@
 
 import fs from 'fs'
 import path from 'path'
-import prompt from 'prompt'
-import kleur from 'kleur'
-import * as Diff from 'diff'
 import { fileURLToPath } from 'url'
+import * as Diff from 'diff'
+import kleur from 'kleur'
+import prompt from 'prompt'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -60,7 +60,8 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
     })
 
     if (!createFile) {
-      throw new Error(`Not creating ${filePath} file`)
+      console.warn(kleur.yellow(`${filePath} did not exist`))
+      return
     }
 
     fs.mkdirSync(path.dirname(path.join(projectDir, filePath)), {
@@ -106,7 +107,8 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
     })
 
     if (!overwriteFile) {
-      throw new Error(`Not overwriting ${filePath} file`)
+      console.warn(kleur.yellow(`Not overwriting ${filePath} file`))
+      return
     }
 
     fs.mkdirSync(path.dirname(path.join(projectDir, filePath)), {

@@ -3,10 +3,10 @@
 import path from 'path'
 import os from 'os'
 import {
-  exec
+  exec,
+  glob
 } from '../utils.js'
 import fs from 'fs-extra'
-import glob from 'it-glob'
 
 /**
  * @param {string} name

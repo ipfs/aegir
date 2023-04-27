@@ -67,7 +67,7 @@ export async function checkBuildFiles (projectDir, branchName, repoUrl) {
   }
 
   let defaultCiContent = await download(ciFileUrl)
-  defaultCiContent = defaultCiContent.replace(/\$default-branch/g, branchName)
+  defaultCiContent = defaultCiContent.replace(/\${{{ github.default_branch }}}/g, branchName)
 
   await ensureFileHasContents(projectDir, '.github/workflows/js-test-and-release.yml', defaultCiContent)
 

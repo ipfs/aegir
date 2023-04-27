@@ -1,3 +1,64 @@
+## [38.1.8](https://github.com/ipfs/aegir/compare/v38.1.7...v38.1.8) (2023-03-23)
+
+
+### Bug Fixes
+
+* use WebWorker lib in tsconfig ([#1219](https://github.com/ipfs/aegir/issues/1219)) ([b173aba](https://github.com/ipfs/aegir/commit/b173ababeeea2cb865696e2aeda9357c37ab8c88)), closes [#discussion_r1145871872](https://github.com/ipfs/aegir/issues/discussion_r1145871872)
+
+## [38.1.7](https://github.com/ipfs/aegir/compare/v38.1.6...v38.1.7) (2023-03-02)
+
+
+### Bug Fixes
+
+* remove it-glob dependency ([#1200](https://github.com/ipfs/aegir/issues/1200)) ([2285b4e](https://github.com/ipfs/aegir/commit/2285b4ecc233ad05ebacecabf32dc13b38f683eb))
+
+## [38.1.6](https://github.com/ipfs/aegir/compare/v38.1.5...v38.1.6) (2023-02-20)
+
+
+### Dependencies
+
+* bump esbuild from 0.16.17 to 0.17.9 ([#1194](https://github.com/ipfs/aegir/issues/1194)) ([8761e36](https://github.com/ipfs/aegir/commit/8761e3621e28112b042eaaeee372db2f73c0c90b))
+* bump execa from 6.1.0 to 7.0.0 ([#1191](https://github.com/ipfs/aegir/issues/1191)) ([5a71818](https://github.com/ipfs/aegir/commit/5a7181857301194ea4b96d530bad4504370fef84))
+* bump gh-pages from 4.0.0 to 5.0.0 ([#1173](https://github.com/ipfs/aegir/issues/1173)) ([c103f37](https://github.com/ipfs/aegir/commit/c103f37ab7c00bcc5bc255ee57e8b44dcacca84d))
+* **dev:** bump electron from 22.3.0 to 23.1.0 ([#1193](https://github.com/ipfs/aegir/issues/1193)) ([6e58c9e](https://github.com/ipfs/aegir/commit/6e58c9e14f58d7c23681346bc0974d8a380cc9dc))
+
+## [38.1.5](https://github.com/ipfs/aegir/compare/v38.1.4...v38.1.5) (2023-02-17)
+
+
+### Bug Fixes
+
+* revert pinning of esquery dep ([8d37a9a](https://github.com/ipfs/aegir/commit/8d37a9a374a27a553f9e7d11b83048ee98ab4b65))
+
+## [38.1.4](https://github.com/ipfs/aegir/compare/v38.1.3...v38.1.4) (2023-02-16)
+
+
+### Bug Fixes
+
+* allow not overwriting files ([1cefa04](https://github.com/ipfs/aegir/commit/1cefa04aa3fddc61b7313e6345d9da30817947b6))
+* do not create .gitignore files for monorepo workspace projects ([2dad5f2](https://github.com/ipfs/aegir/commit/2dad5f2d0fa6b30c9299cfdab9e4db0cf1b66c0e))
+* pin esquery version temporarily ([eff8550](https://github.com/ipfs/aegir/commit/eff85503196453876a788c7fdb64f46fe891a236))
+
+## [38.1.3](https://github.com/ipfs/aegir/compare/v38.1.2...v38.1.3) (2023-02-15)
+
+
+### Bug Fixes
+
+* do not create .gitignore in monorepo workspaces ([0eace6c](https://github.com/ipfs/aegir/commit/0eace6cb9cf6fd01c306b6abc3c28ddb62afc5ec))
+
+## [38.1.2](https://github.com/ipfs/aegir/compare/v38.1.1...v38.1.2) (2023-02-07)
+
+
+### Bug Fixes
+
+* update default branch pattern detection ([#1183](https://github.com/ipfs/aegir/issues/1183)) ([d02f670](https://github.com/ipfs/aegir/commit/d02f6705f34c3d0b9884c3cfdb4fedddcb2e226d))
+
+## [38.1.1](https://github.com/ipfs/aegir/compare/v38.1.0...v38.1.1) (2023-02-06)
+
+
+### Trivial Changes
+
+* remove coverage dir ([#1180](https://github.com/ipfs/aegir/issues/1180)) ([0a0dd5d](https://github.com/ipfs/aegir/commit/0a0dd5dcb543ed4e68b9dee64c5055d40dd376c6))
+
 ## [38.1.0](https://github.com/ipfs/aegir/compare/v38.0.0...v38.1.0) (2023-01-12)
 
 

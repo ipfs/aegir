@@ -1,3 +1,15 @@
+## [39.0.1](https://github.com/ipfs/aegir/compare/v39.0.0...v39.0.1) (2023-04-27)
+
+
+### Bug Fixes
+
+* allow top level await ([#1196](https://github.com/ipfs/aegir/issues/1196)) ([e76b978](https://github.com/ipfs/aegir/commit/e76b9785b942b779a6b5e57dc1e661df3d210335))
+
+
+### Dependencies
+
+* bump typedoc-plugin-mdn-links from 2.0.2 to 3.0.3 ([#1209](https://github.com/ipfs/aegir/issues/1209)) ([536a111](https://github.com/ipfs/aegir/commit/536a1118f2ab3cef8a28573747410a63fe80be5e))
+
 ## [39.0.0](https://github.com/ipfs/aegir/compare/v38.1.8...v39.0.0) (2023-04-27)
 
 

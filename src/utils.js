@@ -16,7 +16,7 @@ import { execa } from 'execa'
 import extract from 'extract-zip'
 import fs from 'fs-extra'
 import Listr from 'listr'
-import minimatch from 'minimatch'
+import { minimatch } from 'minimatch'
 import lockfile from 'proper-lockfile'
 import { readPackageUpSync } from 'read-pkg-up'
 import stripBom from 'strip-bom'
@@ -462,7 +462,7 @@ function checkForCircularDependencies (projects) {
  *
  * @param {string} dir
  * @param {string} pattern
- * @param {GlobOptions & import('minimatch').IOptions} [options]
+ * @param {GlobOptions & import('minimatch').MinimatchOptions} [options]
  * @returns {AsyncGenerator<string, void, undefined>}
  */
 export async function * glob (dir, pattern, options = {}) {
@@ -488,7 +488,7 @@ export async function * glob (dir, pattern, options = {}) {
  * @param {string} base
  * @param {string} dir
  * @param {string} pattern
- * @param {GlobOptions & import('minimatch').IOptions} options
+ * @param {GlobOptions & import('minimatch').MinimatchOptions} options
  * @returns {AsyncGenerator<string, void, undefined>}
  */
 async function * _glob (base, dir, pattern, options) {

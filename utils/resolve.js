@@ -1,6 +1,6 @@
-import path from 'path'
 import fs from 'fs'
 import { createRequire } from 'module'
+import path from 'path'
 
 const require = createRequire(import.meta.url)
 

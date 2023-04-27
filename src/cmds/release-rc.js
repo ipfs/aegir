@@ -1,5 +1,5 @@
-import releaseRcCmd from '../release-rc.js'
 import { loadUserConfig } from '../config/user.js'
+import releaseRcCmd from '../release-rc.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv

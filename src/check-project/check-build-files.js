@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 
+import http from 'https'
 import {
   ensureFileHasContents,
   ensureFileNotPresent
 } from './utils.js'
-import http from 'https'
 
 const managedRepos = 'https://raw.githubusercontent.com/protocol/.github/master/configs/js.json'
 const ciFileUrl = 'https://raw.githubusercontent.com/protocol/.github/master/templates/.github/workflows/js-test-and-release.yml'

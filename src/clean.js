@@ -1,10 +1,7 @@
 /* eslint-disable no-console */
 
-import { promisify } from 'util'
 import Listr from 'listr'
-import rm from 'rimraf'
-
-const rimraf = promisify(rm)
+import { rimraf } from 'rimraf'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -20,7 +17,9 @@ export default new Listr([
      */
     task: async (ctx) => {
       await Promise.all(
-        ctx.files.map(pattern => rimraf(pattern))
+        ctx.files.map(pattern => rimraf(pattern, {
+          glob: true
+        }))
       )
     }
   }

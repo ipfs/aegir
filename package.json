@@ -212,7 +212,7 @@
     "lint": "node src/index.js lint",
     "test": "node src/index.js test",
     "docs": "node src/index.js docs",
-    "dep-check": "node src/index.js dep-check",
+    "dep-check": "node src/index.js dep-check --unused false",
     "doc-check": "node src/index.js doc-check",
     "test:node": "node src/index.js test -t node --cov",
     "test:chrome": "node src/index.js test -t browser --cov",

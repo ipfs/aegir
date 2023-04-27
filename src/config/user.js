@@ -112,10 +112,7 @@ const defaults = {
   // dependency check cmd options
   dependencyCheck: {
     unused: false,
-    ignore: [
-      '@types/*',
-      'aegir'
-    ]
+    ignore: []
   },
   exec: {
     bail: true

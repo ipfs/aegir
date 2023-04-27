@@ -1,9 +1,9 @@
+import { execa } from 'execa'
 import pmap from 'p-map'
-import node from './node.js'
 import browser from './browser.js'
 import electron from './electron.js'
+import node from './node.js'
 import rn from './react-native.js'
-import { execa } from 'execa'
 
 /**
  * @typedef {import("execa").Options} ExecaOptions

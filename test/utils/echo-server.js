@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
-import { fetch } from 'undici'
 import { Buffer } from 'buffer'
+import { fetch } from 'undici'
 import { expect } from '../../utils/chai.js'
 import EchoServer from '../../utils/echo-server.js'
 

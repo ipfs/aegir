@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 
-import { expect } from '../utils/chai.js'
+import { createRequire } from 'module'
+import { join } from 'path'
 import { execa } from 'execa'
 import fs from 'fs-extra'
-import { join } from 'path'
-import { createRequire } from 'module'
+import { expect } from '../utils/chai.js'
 import { setUpProject } from './utils/set-up-project.js'
 
 const require = createRequire(import.meta.url)

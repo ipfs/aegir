@@ -1,5 +1,5 @@
-import { loadUserConfig } from '../config/user.js'
 import buildCmd from '../build/index.js'
+import { loadUserConfig } from '../config/user.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv

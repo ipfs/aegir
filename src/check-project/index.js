@@ -1,32 +1,32 @@
 /* eslint-disable no-console,complexity */
 
-import fs from 'fs-extra'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { execa } from 'execa'
+import fs from 'fs-extra'
+import Listr from 'listr'
 import prompt from 'prompt'
+import semver from 'semver'
+import yargsParser from 'yargs-parser'
+import {
+  isMonorepoProject,
+  glob
+} from '../utils.js'
+import { checkBuildFiles } from './check-build-files.js'
+import { checkLicenseFiles } from './check-licence-files.js'
+import { checkMonorepoFiles } from './check-monorepo-files.js'
+import { checkMonorepoReadme } from './check-monorepo-readme.js'
+import { checkReadme } from './check-readme.js'
 import { monorepoManifest } from './manifests/monorepo.js'
+import { typedCJSManifest } from './manifests/typed-cjs.js'
 import { typedESMManifest } from './manifests/typed-esm.js'
 import { typescriptManifest } from './manifests/typescript.js'
 import { untypedCJSManifest } from './manifests/untyped-cjs.js'
-import { typedCJSManifest } from './manifests/typed-cjs.js'
-import { checkLicenseFiles } from './check-licence-files.js'
-import { checkBuildFiles } from './check-build-files.js'
-import { checkMonorepoFiles } from './check-monorepo-files.js'
-import { checkReadme } from './check-readme.js'
-import { checkMonorepoReadme } from './check-monorepo-readme.js'
 import {
   sortManifest,
   ensureFileHasContents,
   calculateSiblingVersion
 } from './utils.js'
-import semver from 'semver'
-import Listr from 'listr'
-import yargsParser from 'yargs-parser'
-import { fileURLToPath } from 'url'
-import {
-  isMonorepoProject,
-  glob
-} from '../utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

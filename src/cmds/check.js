@@ -2,14 +2,14 @@
 /* eslint-disable max-depth */
 /* eslint-disable no-console */
 
+import path from 'path'
 import esbuild from 'esbuild'
 import fs from 'fs-extra'
-import { readPackageUp } from 'read-pkg-up'
 import kleur from 'kleur'
-import { loadUserConfig } from '../config/user.js'
-import path from 'path'
-import { fromRoot, paths } from '../utils.js'
 import merge from 'merge-options'
+import { readPackageUp } from 'read-pkg-up'
+import { loadUserConfig } from '../config/user.js'
+import { fromRoot, paths } from '../utils.js'
 
 const defaults = merge.bind({
   ignoreUndefined: true,

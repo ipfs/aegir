@@ -1,8 +1,8 @@
-import { execa } from 'execa'
 import path from 'path'
-import * as tempy from 'tempy'
-import merge from 'merge-options'
 import { fileURLToPath } from 'url'
+import { execa } from 'execa'
+import merge from 'merge-options'
+import * as tempy from 'tempy'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

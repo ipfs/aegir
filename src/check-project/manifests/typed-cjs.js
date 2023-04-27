@@ -1,5 +1,5 @@
-import { semanticReleaseConfig } from '../semantic-release-config.js'
 import mergeOptions from 'merge-options'
+import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,
   constructManifest

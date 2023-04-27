@@ -1,3 +1,15 @@
+## [39.0.2](https://github.com/ipfs/aegir/compare/v39.0.1...v39.0.2) (2023-04-27)
+
+
+### Bug Fixes
+
+* print useful dep-check message ([#1248](https://github.com/ipfs/aegir/issues/1248)) ([2473ae3](https://github.com/ipfs/aegir/commit/2473ae3b3798d4e70c8573b5a561e8b2c0134b56))
+
+
+### Dependencies
+
+* bump rimraf from 3.0.2 to 5.0.0 ([#1230](https://github.com/ipfs/aegir/issues/1230)) ([c761502](https://github.com/ipfs/aegir/commit/c761502b41ba5302d04fc19aa6c34daa7b58c80f))
+
 ## [39.0.1](https://github.com/ipfs/aegir/compare/v39.0.0...v39.0.1) (2023-04-27)
 
 

@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 
-import { expect } from '../utils/chai.js'
-import path from 'path'
-import { execa } from 'execa'
-import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { execa } from 'execa'
+import { expect } from '../utils/chai.js'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -13,7 +13,7 @@ const bin = require.resolve('../src/index.js')
 describe('dependency check', () => {
   it('should fail for missing deps', async () => {
     await expect(
-      execa(bin, ['dependency-check'], {
+      execa(bin, ['dependency-check', '-u', 'false'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/fail')
       })
     ).to.eventually.be.rejectedWith('execa')
@@ -21,7 +21,7 @@ describe('dependency check', () => {
 
   it('should fail for missing deps in an esm project', async () => {
     await expect(
-      execa(bin, ['dependency-check'], {
+      execa(bin, ['dependency-check', '-u', 'false'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/esm-fail')
       })
     ).to.eventually.be.rejected()
@@ -32,7 +32,7 @@ describe('dependency check', () => {
 
   it('should fail for missing deps in an ts project', async () => {
     await expect(
-      execa(bin, ['dependency-check'], {
+      execa(bin, ['dependency-check', '-u', 'false'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/ts-fail')
       })
     ).to.eventually.be.rejected()
@@ -43,7 +43,7 @@ describe('dependency check', () => {
 
   it('should pass when there are no missing deps', async () => {
     await expect(
-      execa(bin, ['dependency-check'], {
+      execa(bin, ['dependency-check', '-u', 'false'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
       })
     ).to.eventually.be.fulfilled()
@@ -51,7 +51,7 @@ describe('dependency check', () => {
 
   it('should pass when there are no missing deps in an esm project', async () => {
     await expect(
-      execa(bin, ['dependency-check'], {
+      execa(bin, ['dependency-check', '-u', 'false'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/esm-pass')
       })
     ).to.eventually.be.fulfilled()
@@ -59,7 +59,7 @@ describe('dependency check', () => {
 
   it('should pass when there are no missing deps in an ts project', async () => {
     await expect(
-      execa(bin, ['dependency-check'], {
+      execa(bin, ['dependency-check', '-u', 'false'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/ts-pass')
       })
     ).to.eventually.be.fulfilled()
@@ -67,7 +67,7 @@ describe('dependency check', () => {
 
   it('should check unused', async () => {
     await expect(
-      execa(bin, ['dependency-check', '--unused'], {
+      execa(bin, ['dependency-check'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
       })
     ).to.eventually.be.rejected.with.property('message').that.include(
@@ -131,7 +131,7 @@ describe('dependency check', () => {
 
   it('should pass for modules used in .aegir.js', async () => {
     await expect(
-      execa(bin, ['dependency-check', '--unused'], {
+      execa(bin, ['dependency-check', '-u', 'false'], {
         cwd: path.join(
           __dirname,
           'fixtures/dependency-check/with-aegir-config'

@@ -1,8 +1,8 @@
 
-import { execa } from 'execa'
 import path from 'path'
-import { fromAegir, fromRoot } from '../utils.js'
 import { fileURLToPath } from 'url'
+import { execa } from 'execa'
+import { fromAegir, fromRoot } from '../utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

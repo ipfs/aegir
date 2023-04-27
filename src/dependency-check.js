@@ -1,6 +1,17 @@
-import Listr from 'listr'
-import depcheck from 'depcheck'
 import { cwd } from 'process'
+import depcheck from 'depcheck'
+import Listr from 'listr'
+
+const ignoredDevDependencies = [
+  '@types/*',
+  'aegir',
+  'mkdirp',
+  'rimraf',
+  'protons',
+  'eslint*',
+  '@types/*',
+  '@semantic-release/*'
+]
 
 /**
  * @typedef {import("listr").ListrTaskWrapper} Task
@@ -24,7 +35,7 @@ const tasks = new Listr(
             '**/*.cjs': depcheck.parser.es6,
             '**/*.mjs': depcheck.parser.es6
           },
-          ignoreMatches: ['eslint*', '@types/*', '@semantic-release/*'].concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore)
+          ignoreMatches: ignoredDevDependencies.concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore)
         })
         if (Object.keys(result.missing).length > 0 || (ctx.unused && (result.dependencies.length > 0 || result.devDependencies.length > 0))) {
           throw new Error(

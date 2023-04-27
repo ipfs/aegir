@@ -25,7 +25,7 @@ describe('docs', () => {
 
     it('should document an esm project', async () => {
       const module = await import(`file://${projectDir}/src/index.js`)
-      const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports', 'UsedButNotExported']
+      const exports = [...Object.keys(module), 'AnExportedInterface', 'ExportedButNotInExports', '<internal>.UsedButNotExported']
       const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
 
       exports.forEach(key => {
@@ -42,7 +42,7 @@ describe('docs', () => {
     it('should include definitions for classes used but not exported', async function () {
       const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
 
-      expect(typedocUrls).to.have.property('UsedButNotExported')
+      expect(typedocUrls).to.have.property('<internal>.UsedButNotExported')
     })
 
     it('should exclude definitions from node_modules', async function () {
@@ -84,7 +84,7 @@ describe('docs', () => {
     it('should include definitions for classes used but not exported', async function () {
       const typedocUrls = await fs.readJSON(join(projectDir, 'dist', 'typedoc-urls.json'))
 
-      expect(typedocUrls).to.have.property('UsedButNotExported')
+      expect(typedocUrls).to.have.property('<internal>.UsedButNotExported')
     })
 
     it('should exclude definitions from node_modules', async function () {

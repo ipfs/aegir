@@ -1,3 +1,3 @@
-// @ts-nocheck
 /* eslint-disable no-unused-vars */
-import { execa } from 'execa'
+// @ts-ignore
+const pico = require('pico')

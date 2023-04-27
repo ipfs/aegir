@@ -36,7 +36,7 @@ export default {
       .option('u', {
         alias: 'unused',
         describe: 'Checks for unused dependencies',
-        default: false,
+        default: true,
         type: 'boolean'
       })
   },

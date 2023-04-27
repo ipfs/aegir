@@ -1,12 +1,12 @@
 /* eslint-env mocha */
 
-import lint from '../src/lint.js'
-import { expect } from '../utils/chai.js'
-import path from 'path'
 import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { premove as del } from 'premove/sync'
 import { loadUserConfig } from '../src/config/user.js'
-import { fileURLToPath } from 'url'
+import lint from '../src/lint.js'
+import { expect } from '../utils/chai.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const TEMP_FOLDER = path.join(__dirname, '../node_modules/.temp-test')

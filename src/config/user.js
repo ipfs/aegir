@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
+import { pathToFileURL } from 'url'
 import { lilconfig } from 'lilconfig'
 import merge from 'merge-options'
-import { pathToFileURL } from 'url'
 import { isTypescript } from '../utils.js'
 
 /**
@@ -112,10 +112,7 @@ const defaults = {
   // dependency check cmd options
   dependencyCheck: {
     unused: false,
-    ignore: [
-      '@types/*',
-      'aegir'
-    ]
+    ignore: []
   },
   exec: {
     bail: true

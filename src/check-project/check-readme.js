@@ -1,17 +1,17 @@
 
 /* eslint-disable no-console,complexity */
 
-import fs from 'fs-extra'
 import path from 'path'
+import fs from 'fs-extra'
+import { toc as makeToc } from 'mdast-util-toc'
+import { APIDOCS } from './readme/api-docs.js'
+import { HEADER } from './readme/header.js'
+import { INSTALL } from './readme/install.js'
+import { LICENSE } from './readme/license.js'
+import { parseMarkdown, writeMarkdown } from './readme/utils.js'
 import {
   ensureFileHasContents
 } from './utils.js'
-import { toc as makeToc } from 'mdast-util-toc'
-import { parseMarkdown, writeMarkdown } from './readme/utils.js'
-import { HEADER } from './readme/header.js'
-import { LICENSE } from './readme/license.js'
-import { INSTALL } from './readme/install.js'
-import { APIDOCS } from './readme/api-docs.js'
 
 /**
  * @param {string} projectDir

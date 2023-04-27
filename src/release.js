@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 
-import Listr from 'listr'
-import { execa } from 'execa'
-import { isMonorepoProject, hasDocs, glob } from './utils.js'
-import fs from 'fs-extra'
 import path from 'path'
+import { execa } from 'execa'
+import fs from 'fs-extra'
+import Listr from 'listr'
 import { calculateSiblingVersion } from './check-project/utils.js'
+import { isMonorepoProject, hasDocs, glob } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions

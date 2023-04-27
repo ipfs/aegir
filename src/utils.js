@@ -5,22 +5,22 @@
  * @module aegir/utils
  */
 
-import { constants, createBrotliCompress, createGzip } from 'zlib'
 import os from 'os'
-import extract from 'extract-zip'
-import stripComments from 'strip-json-comments'
-import stripBom from 'strip-bom'
-import { download } from '@electron/get'
 import path from 'path'
 import readline from 'readline'
-import { readPackageUpSync } from 'read-pkg-up'
-import fs from 'fs-extra'
-import { execa } from 'execa'
-import envPaths from 'env-paths'
-import lockfile from 'proper-lockfile'
 import { fileURLToPath } from 'url'
+import { constants, createBrotliCompress, createGzip } from 'zlib'
+import { download } from '@electron/get'
+import envPaths from 'env-paths'
+import { execa } from 'execa'
+import extract from 'extract-zip'
+import fs from 'fs-extra'
 import Listr from 'listr'
 import { minimatch } from 'minimatch'
+import lockfile from 'proper-lockfile'
+import { readPackageUpSync } from 'read-pkg-up'
+import stripBom from 'strip-bom'
+import stripComments from 'strip-json-comments'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -488,7 +488,7 @@ export async function * glob (dir, pattern, options = {}) {
  * @param {string} base
  * @param {string} dir
  * @param {string} pattern
- * @param {GlobOptions & import('minimatch').IOptions} options
+ * @param {GlobOptions & import('minimatch').MinimatchOptions} options
  * @returns {AsyncGenerator<string, void, undefined>}
  */
 async function * _glob (base, dir, pattern, options) {

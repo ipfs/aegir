@@ -1,3 +1,34 @@
+## [39.0.1](https://github.com/ipfs/aegir/compare/v39.0.0...v39.0.1) (2023-04-27)
+
+
+### Bug Fixes
+
+* allow top level await ([#1196](https://github.com/ipfs/aegir/issues/1196)) ([e76b978](https://github.com/ipfs/aegir/commit/e76b9785b942b779a6b5e57dc1e661df3d210335))
+
+
+### Dependencies
+
+* bump typedoc-plugin-mdn-links from 2.0.2 to 3.0.3 ([#1209](https://github.com/ipfs/aegir/issues/1209)) ([536a111](https://github.com/ipfs/aegir/commit/536a1118f2ab3cef8a28573747410a63fe80be5e))
+
+## [39.0.0](https://github.com/ipfs/aegir/compare/v38.1.8...v39.0.0) (2023-04-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* check for unused dependencies by default (#1177)
+
+### Features
+
+* check for unused dependencies by default ([#1177](https://github.com/ipfs/aegir/issues/1177)) ([6b01e36](https://github.com/ipfs/aegir/commit/6b01e3634a16414d4c0c0ee2d078fdb327271f39))
+
+
+### Dependencies
+
+* bump @semantic-release/npm from 9.0.2 to 10.0.3 ([#1233](https://github.com/ipfs/aegir/issues/1233)) ([fd02d90](https://github.com/ipfs/aegir/commit/fd02d90d95563dcc795d288f949f025dce0e4f1c))
+* bump eslint-config-ipfs from 3.1.7 to 4.0.0 ([#1229](https://github.com/ipfs/aegir/issues/1229)) ([d03ce94](https://github.com/ipfs/aegir/commit/d03ce94b1fe3809b26382e952f7df3edfa38dd6d))
+* bump semantic-release from 20.1.3 to 21.0.1 ([#1223](https://github.com/ipfs/aegir/issues/1223)) ([7806e55](https://github.com/ipfs/aegir/commit/7806e558268e07fe079b84fc0fe2f0086de9721e))
+* **dev:** bump electron from 23.2.4 to 24.1.2 ([#1240](https://github.com/ipfs/aegir/issues/1240)) ([a53d306](https://github.com/ipfs/aegir/commit/a53d306e72dd25b5d2989783570680ffb05dabc7))
+
 ## [38.1.8](https://github.com/ipfs/aegir/compare/v38.1.7...v38.1.8) (2023-03-23)
 
 

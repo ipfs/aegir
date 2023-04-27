@@ -43,7 +43,7 @@ describe('dependency check', () => {
 
   it('should pass when there are no missing deps', async () => {
     await expect(
-      execa(bin, ['dependency-check', '-u', 'false'], {
+      execa(bin, ['dependency-check'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
       })
     ).to.eventually.be.fulfilled()
@@ -51,7 +51,7 @@ describe('dependency check', () => {
 
   it('should pass when there are no missing deps in an esm project', async () => {
     await expect(
-      execa(bin, ['dependency-check', '-u', 'false'], {
+      execa(bin, ['dependency-check'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/esm-pass')
       })
     ).to.eventually.be.fulfilled()
@@ -59,7 +59,7 @@ describe('dependency check', () => {
 
   it('should pass when there are no missing deps in an ts project', async () => {
     await expect(
-      execa(bin, ['dependency-check', '-u', 'false'], {
+      execa(bin, ['dependency-check'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/ts-pass')
       })
     ).to.eventually.be.fulfilled()
@@ -68,11 +68,9 @@ describe('dependency check', () => {
   it('should check unused', async () => {
     await expect(
       execa(bin, ['dependency-check'], {
-        cwd: path.join(__dirname, 'fixtures/dependency-check/pass')
+        cwd: path.join(__dirname, 'fixtures/dependency-check/fail-unused')
       })
-    ).to.eventually.be.rejected.with.property('message').that.include(
-      'Unused production dependencies: \npico'
-    )
+    ).to.eventually.be.rejectedWith('pico')
   })
 
   /**

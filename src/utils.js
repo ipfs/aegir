@@ -20,7 +20,7 @@ import envPaths from 'env-paths'
 import lockfile from 'proper-lockfile'
 import { fileURLToPath } from 'url'
 import Listr from 'listr'
-import minimatch from 'minimatch'
+import { minimatch } from 'minimatch'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -462,7 +462,7 @@ function checkForCircularDependencies (projects) {
  *
  * @param {string} dir
  * @param {string} pattern
- * @param {GlobOptions & import('minimatch').IOptions} [options]
+ * @param {GlobOptions & import('minimatch').MinimatchOptions} [options]
  * @returns {AsyncGenerator<string, void, undefined>}
  */
 export async function * glob (dir, pattern, options = {}) {

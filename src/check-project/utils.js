@@ -247,8 +247,8 @@ export function constructManifest (manifest, manifestFields, repoUrl, homePage =
     },
     keywords: manifest.keywords ? manifest.keywords.sort() : undefined,
     engines: {
-      node: '>=18',
-      npm: '>=9'
+      node: '>=18.0.0',
+      npm: '>=8.6.0'
     },
     bin: manifest.bin,
     ...manifestFields,

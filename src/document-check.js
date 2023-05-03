@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
 
+import chalk from 'chalk'
+import fs from 'fs-extra'
 import { globby } from 'globby'
 import Listr from 'listr'
+import merge from 'merge-options'
 import { compileSnippets } from 'typescript-docs-verifier'
-import { hasTsconfig } from './utils.js'
+import { formatCode, formatError, fromRoot, hasTsconfig, isTypescript, readJson } from './utils.js'
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
  * @typedef {import("./types").DocsVerifierOptions} DocsVerifierOptions
@@ -17,16 +20,16 @@ const tasks = new Listr(
       /**
        * @param {GlobalOptions & DocsVerifierOptions} ctx
        */
-      enabled: ctx => hasTsconfig,
+      enabled: ctx => hasTsconfig && !isTypescript,
       /**
        * @param {GlobalOptions & DocsVerifierOptions} ctx
        * @param {Task} task
        */
       task: async (ctx, task) => {
-        let tsconfigPath = 'tsconfig.json'
+        let tsconfigPath = 'tsconfig-doc-check.aegir.json'
         let markdownFiles = ['README.md']
 
-        if (ctx.tsConfigPath) {
+        if (ctx.tsConfigPath && ctx.tsConfigPath !== '.') {
           tsconfigPath = `${ctx.tsConfigPath}/tsconfig.json`
         }
 
@@ -34,20 +37,44 @@ const tasks = new Listr(
           markdownFiles = await globby(ctx.inputFiles)
         }
 
-        compileSnippets({ markdownFiles, project: tsconfigPath })
-          .then((results) => {
-            results.forEach((result) => {
-              if (result.error) {
-                console.log(`Error compiling example code block ${result.index} in file ${result.file}`)
-                console.log(result.error.message)
-                console.log('Original code:')
-                console.log(result.snippet)
+        const configPath = fromRoot(tsconfigPath)
+        const userTSConfig = readJson(fromRoot('tsconfig.json'))
+
+        try {
+          fs.writeJsonSync(
+            configPath,
+            merge.apply({ concatArrays: true }, [
+              userTSConfig,
+              {
+                compilerOptions: {
+                  target: 'esnext',
+                  module: 'esnext',
+                  noImplicitAny: true,
+                  noEmit: true
+                }
               }
+            ])
+          )
+
+          compileSnippets({ markdownFiles, project: configPath })
+            .then((results) => {
+              results.forEach((result) => {
+                if (result.error) {
+                  process.exitCode = 1
+                  chalk`{red.bold Error compiling example code block ${result.index} in file ${result.file}:}`
+                  console.log(formatError(result.error))
+                  console.log(chalk`{blue.bold  Original code:}`)
+                  console.log(formatCode(result.snippet, result.linesWithErrors))
+                }
+              })
             })
-          })
-          .catch((error) => {
-            console.error('Error compiling TypeScript snippets', error)
-          })
+            .catch((error) => {
+              console.error('Error compiling TypeScript snippets', error)
+            })
+        } finally {
+          fs.removeSync(configPath)
+          fs.removeSync(fromRoot('dist', 'tsconfig-doc-check.aegir.tsbuildinfo'))
+        }
       }
 
     }

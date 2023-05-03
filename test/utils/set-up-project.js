@@ -41,6 +41,12 @@ export async function setUpProject (project) {
   await execa('git', ['add', '-A'], {
     cwd: projectDir
   })
+  await execa('config', ['user.email', 'you@example.com'], {
+    cwd: projectDir
+  })
+  await execa('config', ['user.name', 'Your Name'], {
+    cwd: projectDir
+  })
   await execa('git', ['commit', '-m', 'feat: initial import'], {
     cwd: projectDir
   })

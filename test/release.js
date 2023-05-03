@@ -4,7 +4,7 @@ import { execa } from 'execa'
 import { expect } from '../utils/chai.js'
 import { setUpProject } from './utils/set-up-project.js'
 
-describe('release', () => {
+describe.only('release', () => {
   describe('regular repo', function () {
     let projectDir = ''
 
@@ -15,8 +15,14 @@ describe('release', () => {
     it('should release an esm project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      const branchName = await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'])
-      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci', '--branches', branchName.stdout.trim()], {
+      const args = []
+
+      // necessary for CI
+      if (process.env.GITHUB_HEAD_REF != null) {
+        args.push('--branches', process.env.GITHUB_HEAD_REF)
+      }
+
+      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci', ...args], {
         cwd: projectDir
       })
 
@@ -36,8 +42,14 @@ describe('release', () => {
     it('should release a monorepo project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      const branchName = await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'])
-      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci', '--branches', branchName.stdout.trim()], {
+      const args = []
+
+      // necessary for CI
+      if (process.env.GITHUB_HEAD_REF != null) {
+        args.push('--branches', process.env.GITHUB_HEAD_REF)
+      }
+
+      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci', ...args], {
         cwd: projectDir
       })
 

@@ -15,7 +15,7 @@ describe('release', () => {
     it('should release an esm project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run'], {
+      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci'], {
         cwd: projectDir
       })
 
@@ -35,7 +35,7 @@ describe('release', () => {
     it('should release a monorepo project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      const output = await execa('npm', ['run', 'release', '--', '--', '--', '--dry-run'], {
+      const output = await execa('npm', ['run', 'release', '--', '--', '--', '--dry-run', '--no-ci'], {
         cwd: projectDir
       })
 

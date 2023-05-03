@@ -1,3 +1,10 @@
+## [39.0.5](https://github.com/ipfs/aegir/compare/v39.0.4...v39.0.5) (2023-05-03)
+
+
+### Bug Fixes
+
+* downgrade @semantic-release/npm to cjs version ([#1253](https://github.com/ipfs/aegir/issues/1253)) ([4b4b77b](https://github.com/ipfs/aegir/commit/4b4b77b3ceae4935250469e1890ddd03578783d5))
+
 ## [39.0.4](https://github.com/ipfs/aegir/compare/v39.0.3...v39.0.4) (2023-05-03)
 
 

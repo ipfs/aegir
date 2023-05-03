@@ -4,7 +4,7 @@ import { execa } from 'execa'
 import { expect } from '../utils/chai.js'
 import { setUpProject } from './utils/set-up-project.js'
 
-describe.only('release', () => {
+describe('release', () => {
   describe('regular repo', function () {
     let projectDir = ''
 

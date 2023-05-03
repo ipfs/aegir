@@ -16,7 +16,11 @@ describe('release', () => {
       this.timeout(120 * 1000) // slow ci is slow
 
       const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci'], {
-        cwd: projectDir
+        cwd: projectDir,
+        env: {
+          ...process.env,
+          GITHUB_ACTIONS: ''
+        }
       })
 
       console.info('output.stdout', output.stdout) // eslint-disable-line no-console
@@ -36,7 +40,11 @@ describe('release', () => {
       this.timeout(120 * 1000) // slow ci is slow
 
       const output = await execa('npm', ['run', 'release', '--', '--', '--', '--dry-run', '--no-ci'], {
-        cwd: projectDir
+        cwd: projectDir,
+        env: {
+          ...process.env,
+          GITHUB_ACTIONS: ''
+        }
       })
 
       console.info('output.stdout', output.stdout) // eslint-disable-line no-console

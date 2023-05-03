@@ -15,12 +15,9 @@ describe('release', () => {
     it('should release an esm project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci'], {
-        cwd: projectDir,
-        env: {
-          ...process.env,
-          GITHUB_ACTIONS: ''
-        }
+      const branchName = await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'])
+      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci', '--branches', branchName.stdout.trim()], {
+        cwd: projectDir
       })
 
       console.info('output.stdout', output.stdout) // eslint-disable-line no-console
@@ -39,12 +36,9 @@ describe('release', () => {
     it('should release a monorepo project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      const output = await execa('npm', ['run', 'release', '--', '--', '--', '--dry-run', '--no-ci'], {
-        cwd: projectDir,
-        env: {
-          ...process.env,
-          GITHUB_ACTIONS: ''
-        }
+      const branchName = await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'])
+      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci', '--branches', branchName.stdout.trim()], {
+        cwd: projectDir
       })
 
       console.info('output.stdout', output.stdout) // eslint-disable-line no-console

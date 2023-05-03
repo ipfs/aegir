@@ -19,6 +19,8 @@ describe('release', () => {
         cwd: projectDir
       })
 
+      console.info('output.stdout', output.stdout) // eslint-disable-line no-console
+      console.info('output.stderr', output.stderr) // eslint-disable-line no-console
       expect(output.stdout).to.include('Published release 1.0.0 on default channel')
     })
   })
@@ -37,6 +39,8 @@ describe('release', () => {
         cwd: projectDir
       })
 
+      console.info('output.stdout', output.stdout) // eslint-disable-line no-console
+      console.info('output.stderr', output.stderr) // eslint-disable-line no-console
       expect(output.stdout).to.include('Published release 1.0.0 on default channel')
     })
   })

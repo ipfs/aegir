@@ -1,3 +1,10 @@
+## [39.0.4](https://github.com/ipfs/aegir/compare/v39.0.3...v39.0.4) (2023-05-03)
+
+
+### Bug Fixes
+
+* use semantic-release-monorepo fork ([#1252](https://github.com/ipfs/aegir/issues/1252)) ([dd91980](https://github.com/ipfs/aegir/commit/dd91980183615cfa17306730c42e37367d5efd5f))
+
 ## [39.0.3](https://github.com/ipfs/aegir/compare/v39.0.2...v39.0.3) (2023-04-27)
 
 

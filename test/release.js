@@ -15,11 +15,12 @@ describe('release', () => {
     it('should release an esm project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci', '--branches', '*'], {
+      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run'], {
         cwd: projectDir,
         env: {
           ...process.env,
-          GITHUB_ACTIONS: ''
+          GITHUB_ACTIONS: '',
+          CI: ''
         }
       })
 
@@ -39,11 +40,12 @@ describe('release', () => {
     it('should release a monorepo project', async function () {
       this.timeout(120 * 1000) // slow ci is slow
 
-      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run', '--no-ci', '--branches', '*'], {
+      const output = await execa('npm', ['run', 'release', '--', '--', '--dry-run'], {
         cwd: projectDir,
         env: {
           ...process.env,
-          GITHUB_ACTIONS: ''
+          GITHUB_ACTIONS: '',
+          CI: ''
         }
       })
 

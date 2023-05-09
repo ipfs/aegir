@@ -1,3 +1,10 @@
+## [39.0.6](https://github.com/ipfs/aegir/compare/v39.0.5...v39.0.6) (2023-05-09)
+
+
+### Bug Fixes
+
+* Update required node version to node 18 and npm 8 ([#1184](https://github.com/ipfs/aegir/issues/1184)) ([b7ef86c](https://github.com/ipfs/aegir/commit/b7ef86cd3291d08cb5f6e211682f4bfc09be69e0))
+
 ## [39.0.5](https://github.com/ipfs/aegir/compare/v39.0.4...v39.0.5) (2023-05-03)
 
 

@@ -8,10 +8,10 @@
 import os from 'os'
 import path from 'path'
 import readline from 'readline'
-import chalk from 'chalk'
 import { fileURLToPath } from 'url'
 import { constants, createBrotliCompress, createGzip } from 'zlib'
 import { download } from '@electron/get'
+import chalk from 'chalk'
 import envPaths from 'env-paths'
 import { execa } from 'execa'
 import extract from 'extract-zip'
@@ -520,7 +520,7 @@ async function * _glob (base, dir, pattern, options) {
  * @param {Error} error
  * @returns
  */
-export const formatError = (error) => "  " + error.message.split("\n").join("\n      ")
+export const formatError = (error) => '  ' + error.message.split('\n').join('\n      ')
 
 /**
  *
@@ -529,13 +529,13 @@ export const formatError = (error) => "  " + error.message.split("\n").join("\n 
  * @returns
  */
 export const formatCode = (code, errorLines) => {
-  const lines = code.split("\n").map((line, index) => {
-    const lineNumber = index + 1;
+  const lines = code.split('\n').map((line, index) => {
+    const lineNumber = index + 1
     if (errorLines.includes(lineNumber)) {
-      return chalk`{bold.red ${String(lineNumber).padStart(2)}| ${line}}`
+      return chalk.bold.red(`${String(lineNumber).padStart(2)}| ${line}`)
     } else {
       return `${String(lineNumber).padStart(2)}| ${line}`
     }
   })
-  return "    " + lines.join("\n    ")
+  return '    ' + lines.join('\n    ')
 }

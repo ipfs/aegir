@@ -27,7 +27,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         // advanced
-        "importsNotUsedAsValues": "error",
+        "verbatimModuleSyntax": true,
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
         "stripInternal": true,

@@ -6,7 +6,7 @@ import kleur from 'kleur'
 import Listr from 'listr'
 import merge from 'merge-options'
 import { compileSnippets } from 'typescript-docs-verifier'
-import { formatCode, formatError, fromRoot, hasTsconfig, isTypescript, readJson } from './utils.js'
+import { formatCode, formatError, fromRoot, hasTsconfig, readJson } from './utils.js'
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
  * @typedef {import("./types").DocsVerifierOptions} DocsVerifierOptions

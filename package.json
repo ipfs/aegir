@@ -247,7 +247,6 @@
     "chai-parentheses": "^0.0.2",
     "chai-string": "^1.5.0",
     "chai-subset": "^1.6.0",
-    "chalk": "^5.2.0",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "cors": "^2.8.5",
     "depcheck": "^1.4.3",

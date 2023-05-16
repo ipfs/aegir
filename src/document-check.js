@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
-import chalk from 'chalk'
 import fs from 'fs-extra'
 import { globby } from 'globby'
+import kleur from 'kleur'
 import Listr from 'listr'
 import merge from 'merge-options'
 import { compileSnippets } from 'typescript-docs-verifier'
@@ -20,7 +20,7 @@ const tasks = new Listr(
       /**
        * @param {GlobalOptions & DocsVerifierOptions} ctx
        */
-      enabled: ctx => hasTsconfig && !isTypescript,
+      enabled: ctx => hasTsconfig,
       /**
        * @param {GlobalOptions & DocsVerifierOptions} ctx
        * @param {Task} task
@@ -60,9 +60,9 @@ const tasks = new Listr(
           results.forEach((result) => {
             if (result.error) {
               process.exitCode = 1
-              console.log(chalk.red.bold(`Error compiling example code block ${result.index} in file ${result.file}:`))
+              console.log(kleur.red().bold(`Error compiling example code block ${result.index} in file ${result.file}:`))
               console.log(formatError(result.error))
-              console.log(chalk.blue.bold('Original code:'))
+              console.log(kleur.blue().bold('Original code:'))
               console.log(formatCode(result.snippet, result.linesWithErrors))
             }
           })

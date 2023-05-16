@@ -11,11 +11,11 @@ import readline from 'readline'
 import { fileURLToPath } from 'url'
 import { constants, createBrotliCompress, createGzip } from 'zlib'
 import { download } from '@electron/get'
-import chalk from 'chalk'
 import envPaths from 'env-paths'
 import { execa } from 'execa'
 import extract from 'extract-zip'
 import fs from 'fs-extra'
+import kleur from 'kleur'
 import Listr from 'listr'
 import { minimatch } from 'minimatch'
 import lockfile from 'proper-lockfile'
@@ -532,7 +532,7 @@ export const formatCode = (code, errorLines) => {
   const lines = code.split('\n').map((line, index) => {
     const lineNumber = index + 1
     if (errorLines.includes(lineNumber)) {
-      return chalk.bold.red(`${String(lineNumber).padStart(2)}| ${line}`)
+      return kleur.red().bold(`${String(lineNumber).padStart(2)}| ${line}`)
     } else {
       return `${String(lineNumber).padStart(2)}| ${line}`
     }

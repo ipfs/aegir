@@ -26,18 +26,20 @@ const tasks = new Listr(
        * @param {Task} task
        */
       task: async (ctx, task) => {
-        let configPath = './tsconfig-doc-check.aegir.json'
+        const configPath = './tsconfig-doc-check.aegir.json'
+
+        let userTSConfig = {}
         let markdownFiles = ['README.md']
 
         if (ctx.tsConfigPath && ctx.tsConfigPath !== '.') {
-          configPath = `${ctx.tsConfigPath}/tsconfig.json`
+          userTSConfig = readJson(`${ctx.tsConfigPath}/tsconfig.json`)
+        } else {
+          userTSConfig = readJson(fromRoot('tsconfig.json'))
         }
 
         if (ctx.inputFiles) {
           markdownFiles = await globby(ctx.inputFiles)
         }
-
-        const userTSConfig = readJson(fromRoot('tsconfig.json'))
 
         try {
           fs.writeJsonSync(
@@ -66,8 +68,6 @@ const tasks = new Listr(
               console.log(formatCode(result.snippet, result.linesWithErrors))
             }
           })
-        } catch (error) {
-          console.error('Error complining Typescript snippets ', error)
         } finally {
           fs.removeSync(configPath)
           fs.removeSync(fromRoot('dist', 'tsconfig-doc-check.aegir.tsbuildinfo'))

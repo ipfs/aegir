@@ -68,6 +68,8 @@ const tasks = new Listr(
               console.log(formatCode(result.snippet, result.linesWithErrors))
             }
           })
+        } catch (err) {
+          console.log('Error in trying to compile Typescript code', err)
         } finally {
           fs.removeSync(configPath)
           fs.removeSync(fromRoot('dist', 'tsconfig-doc-check.aegir.tsbuildinfo'))

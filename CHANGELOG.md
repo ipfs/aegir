@@ -1,3 +1,10 @@
+## [39.0.7](https://github.com/ipfs/aegir/compare/v39.0.6...v39.0.7) (2023-05-17)
+
+
+### Bug Fixes
+
+* add tsconfig to exports map ([#1278](https://github.com/ipfs/aegir/issues/1278)) ([94b4c4b](https://github.com/ipfs/aegir/commit/94b4c4bb7fbccc13da5492d727c6e02b4e7c8eac))
+
 ## [39.0.6](https://github.com/ipfs/aegir/compare/v39.0.5...v39.0.6) (2023-05-09)
 
 

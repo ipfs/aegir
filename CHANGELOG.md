@@ -1,3 +1,10 @@
+## [39.0.8](https://github.com/ipfs/aegir/compare/v39.0.7...v39.0.8) (2023-05-19)
+
+
+### Bug Fixes
+
+* do not enforce engines in package.json ([#1277](https://github.com/ipfs/aegir/issues/1277)) ([5e9c2fa](https://github.com/ipfs/aegir/commit/5e9c2fa44508ffbc5cf89042d44dc22c13b260d2)), closes [#1184](https://github.com/ipfs/aegir/issues/1184)
+
 ## [39.0.7](https://github.com/ipfs/aegir/compare/v39.0.6...v39.0.7) (2023-05-17)
 
 

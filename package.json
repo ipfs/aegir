@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "39.0.6",
+  "version": "39.0.8",
   "description": "JavaScript project management",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/ipfs/aegir#readme",
@@ -101,6 +101,9 @@
       "types": "./dist/utils/resolve.d.ts",
       "browser": "./utils/resolve.browser.js",
       "import": "./utils/resolve.js"
+    },
+    "./src/config/tsconfig.aegir.json": {
+      "require": "./src/config/tsconfig.aegir.json"
     }
   },
   "eslintConfig": {

@@ -11,7 +11,7 @@
       "require-description": "error",
       "require-devDependencies": "off",
       "require-directories": "off",
-      "require-engines": "error",
+      "require-engines": "off",
       "require-files": "error",
       "require-funding": "off",
       "require-homepage": "error" ,

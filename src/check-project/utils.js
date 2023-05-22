@@ -248,10 +248,6 @@ export function constructManifest (manifest, manifestFields, repoUrl, homePage =
       url: `${repoUrl}/issues`
     },
     keywords: manifest.keywords ? manifest.keywords.sort() : undefined,
-    engines: {
-      node: '>=18.0.0',
-      npm: '>=8.6.0'
-    },
     bin: manifest.bin,
     ...manifestFields,
     scripts: manifest.scripts,

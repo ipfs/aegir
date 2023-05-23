@@ -26,56 +26,61 @@ const tasks = new Listr(
        * @param {Task} task
        */
       task: async (ctx, task) => {
-        const configPath = './tsconfig-doc-check.aegir.json'
+        const isWindows = process.platform === 'win32'
 
-        let userTSConfig = {}
-        let markdownFiles = ['README.md']
+        if (!isWindows) {
+          const configPath = './tsconfig-doc-check.aegir.json'
 
-        if (ctx.tsConfigPath && ctx.tsConfigPath !== '.') {
-          userTSConfig = readJson(`${ctx.tsConfigPath}/tsconfig.json`)
-        } else {
-          userTSConfig = readJson(fromRoot('tsconfig.json'))
-        }
+          let userTSConfig = {}
+          let markdownFiles = ['README.md']
 
-        if (ctx.inputFiles) {
-          markdownFiles = await globby(ctx.inputFiles)
-        }
+          if (ctx.tsConfigPath && ctx.tsConfigPath !== '.') {
+            userTSConfig = readJson(`${ctx.tsConfigPath}/tsconfig.json`)
+          } else {
+            userTSConfig = readJson(fromRoot('tsconfig.json'))
+          }
 
-        try {
-          fs.writeJsonSync(
-            configPath,
-            merge.apply({ concatArrays: true }, [
-              userTSConfig,
-              {
-                compilerOptions: {
-                  target: 'esnext',
-                  module: 'esnext',
-                  noImplicitAny: true,
-                  noEmit: true
+          if (ctx.inputFiles) {
+            markdownFiles = await globby(ctx.inputFiles)
+          }
+
+          try {
+            fs.writeJsonSync(
+              configPath,
+              merge.apply({ concatArrays: true }, [
+                userTSConfig,
+                {
+                  compilerOptions: {
+                    target: 'esnext',
+                    module: 'esnext',
+                    noImplicitAny: true,
+                    noEmit: true
+                  }
                 }
+              ])
+            )
+
+            const results = await compileSnippets({ markdownFiles, project: configPath })
+
+            results.forEach((result) => {
+              if (result.error) {
+                process.exitCode = 1
+                console.log(kleur.red().bold(`Error compiling example code block ${result.index} in file ${result.file}:`))
+                console.log(formatError(result.error))
+                console.log(kleur.blue().bold('Original code:'))
+                console.log(formatCode(result.snippet, result.linesWithErrors))
               }
-            ])
-          )
-
-          const results = await compileSnippets({ markdownFiles, project: configPath })
-
-          results.forEach((result) => {
-            if (result.error) {
-              process.exitCode = 1
-              console.log(kleur.red().bold(`Error compiling example code block ${result.index} in file ${result.file}:`))
-              console.log(formatError(result.error))
-              console.log(kleur.blue().bold('Original code:'))
-              console.log(formatCode(result.snippet, result.linesWithErrors))
-            }
-          })
-        } catch (err) {
-          console.log('Error in trying to compile Typescript code', err)
-        } finally {
-          fs.removeSync(configPath)
-          fs.removeSync(fromRoot('dist', 'tsconfig-doc-check.aegir.tsbuildinfo'))
+            })
+          } catch (err) {
+            console.log('Error in trying to compile Typescript code', err)
+          } finally {
+            fs.removeSync(configPath)
+            fs.removeSync(fromRoot('dist', 'tsconfig-doc-check.aegir.tsbuildinfo'))
+          }
+        } else {
+          console.log(kleur.red('The underlying plugin used for TS-doc checks currently does not support Windows OS (See Github issue https://github.com/bbc/typescript-docs-verifier/issues/26). Skipping document check.'))
         }
       }
-
     }
   ],
   {

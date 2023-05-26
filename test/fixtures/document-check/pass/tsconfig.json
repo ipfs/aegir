@@ -1,0 +1,14 @@
+{
+    "extends": "./../../../../src/config/tsconfig.aegir.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "emitDeclarationOnly": true,
+	      "isolatedModules": true
+    },
+    "include": [
+      "package.json",
+      "src",
+      "test",
+      "utils"
+    ]
+}

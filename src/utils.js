@@ -15,6 +15,7 @@ import envPaths from 'env-paths'
 import { execa } from 'execa'
 import extract from 'extract-zip'
 import fs from 'fs-extra'
+import kleur from 'kleur'
 import Listr from 'listr'
 import { minimatch } from 'minimatch'
 import lockfile from 'proper-lockfile'
@@ -512,4 +513,29 @@ async function * _glob (base, dir, pattern, options) {
       yield * _glob(base, relativeEntryPath, pattern, options)
     }
   }
+}
+
+/**
+ *
+ * @param {Error} error
+ * @returns
+ */
+export const formatError = (error) => '  ' + error.message.split('\n').join('\n      ')
+
+/**
+ *
+ * @param {string} code
+ * @param {number[]} errorLines
+ * @returns
+ */
+export const formatCode = (code, errorLines) => {
+  const lines = code.split('\n').map((line, index) => {
+    const lineNumber = index + 1
+    if (errorLines.includes(lineNumber)) {
+      return kleur.red().bold(`${String(lineNumber).padStart(2)}| ${line}`)
+    } else {
+      return `${String(lineNumber).padStart(2)}| ${line}`
+    }
+  })
+  return '    ' + lines.join('\n    ')
 }

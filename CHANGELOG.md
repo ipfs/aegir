@@ -1,3 +1,10 @@
+## [39.0.9](https://github.com/ipfs/aegir/compare/v39.0.8...v39.0.9) (2023-05-26)
+
+
+### Bug Fixes
+
+* Updated doc-check to generate config + format errors ([#1255](https://github.com/ipfs/aegir/issues/1255)) ([c97f9bf](https://github.com/ipfs/aegir/commit/c97f9bf6c1a262afea0c88be4ec1fb4a9d01e922))
+
 ## [39.0.8](https://github.com/ipfs/aegir/compare/v39.0.7...v39.0.8) (2023-05-19)
 
 

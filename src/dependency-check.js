@@ -38,7 +38,7 @@ const tasks = new Listr(
             '**/*.cjs': depcheck.parser.es6,
             '**/*.mjs': depcheck.parser.es6
           },
-          ignoreMatches: ignoredDevDependencies.concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore)
+          ignoreMatches: ignoredDevDependencies.concat(ctx.fileConfig?.dependencyCheck?.ignore || []).concat(ctx.ignore)
         })
 
         if (Object.keys(result.missing).length > 0 || result.dependencies.length > 0 || result.devDependencies.length > 0) {

@@ -8,7 +8,7 @@ import fs from 'fs-extra'
 import kleur from 'kleur'
 import merge from 'merge-options'
 import { readPackageUp } from 'read-pkg-up'
-import { loadUserConfig } from '../config/user.js'
+import { defaultBuildConfig } from '../config/default-build-config.js'
 import { fromRoot, paths } from '../utils.js'
 
 const defaults = merge.bind({
@@ -92,8 +92,7 @@ const checkBuiltins = async (argv) => {
       'process.env.NODE_ENV': '"production"'
     }
   }
-  const userConfig = await loadUserConfig()
-  const result = await esbuild.build(defaults(esbuildOptions, userConfig.build.config))
+  const result = await esbuild.build(defaults(esbuildOptions, defaultBuildConfig))
   if (result.metafile) {
     fs.writeJSONSync(metafile, result.metafile)
   }

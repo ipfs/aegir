@@ -33,7 +33,7 @@ export default async (argv, execaOptions) => {
   const renderer = argv.runner === 'electron-renderer' ? ['--renderer'] : []
 
   // before hook
-  const before = await argv.fileConfig.test.before(argv)
+  const before = await argv.fileConfig.test?.before?.(argv)
   const beforeEnv = before && before.env ? before.env : {}
   const electronPath = await getElectron()
 
@@ -64,5 +64,5 @@ export default async (argv, execaOptions) => {
     execaOptions)
   )
   // after hook
-  await argv.fileConfig.test.after(argv, before)
+  await argv.fileConfig.test?.after?.(argv, before)
 }

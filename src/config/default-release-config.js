@@ -1,0 +1,23 @@
+export const defaultReleaseConfig = {
+  build: true,
+  types: true,
+  test: true,
+  lint: true,
+  contributors: true,
+  bump: true,
+  changelog: true,
+  publish: true,
+  commit: true,
+  tag: true,
+  push: true,
+  ghrelease: true,
+  docs: true,
+  ghtoken: '',
+  type: 'patch',
+  preid: undefined,
+  distTag: 'latest',
+  remote: 'origin',
+  siblingDepUpdateMessage: 'deps: update sibling dependencies',
+  siblingDepUpdateName: 'aegir[bot]',
+  siblingDepUpdateEmail: 'aegir[bot]@users.noreply.github.com'
+}

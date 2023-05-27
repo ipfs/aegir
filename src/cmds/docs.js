@@ -1,4 +1,5 @@
-import { loadUserConfig } from '../config/user.js'
+import merge from 'merge-options'
+import { defaultDocConfig } from '../config/default-doc-config.js'
 import docsCmd from '../docs.js'
 
 /**
@@ -17,10 +18,9 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
+      .middleware((yargs) => merge(yargs.fileConfig.docs, yargs))
       .example('aegir docs', 'Build HTML documentation.')
       .example('aegir docs -p', 'Build HTML documentation and publish to Github Pages.')
       .options({
@@ -28,33 +28,33 @@ export default {
           alias: 'p',
           type: 'boolean',
           describe: 'Publish to GitHub Pages',
-          default: userConfig.docs.publish
+          default: defaultDocConfig.publish
         },
         entryPoint: {
           type: 'string',
           describe:
             'Specifies the entry points to be documented by TypeDoc. TypeDoc will examine the exports of these files and create documentation according to the exports. Either files or directories may be specified. If a directory is specified, all source files within the directory will be included as an entry point.',
-          default: userConfig.docs.entryPoint
+          default: defaultDocConfig.entryPoint
         },
         message: {
           type: 'string',
           describe: 'The commit message to use when updating the gh-pages branch',
-          default: userConfig.docs.message
+          default: defaultDocConfig.message
         },
         user: {
           type: 'string',
           describe: 'The user name to use when updating the gh-pages branch',
-          default: userConfig.docs.user
+          default: defaultDocConfig.user
         },
         email: {
           type: 'string',
           describe: 'The email address to use when updating the gh-pages branch',
-          default: userConfig.docs.email
+          default: defaultDocConfig.email
         },
         directory: {
           type: 'string',
           describe: 'Where to build the documentation',
-          default: userConfig.docs.directory
+          default: defaultDocConfig.directory
         }
       })
   },

@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import merge from 'merge-options'
 import testDependantCmd from '../test-dependant/index.js'
 
 /**
@@ -15,6 +16,7 @@ export default {
    */
   builder: (yargs) => {
     return yargs
+      .middleware((yargs) => merge(yargs.fileConfig.testDependant, yargs))
       .options({
         repo: {
           describe: 'The dependant module\'s repo URL',

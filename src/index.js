@@ -20,6 +20,7 @@ import releaseCmd from './cmds/release.js'
 import runCmd from './cmds/run.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
+import { defaultAegirConfig } from './config/default-aegir-config.js'
 import { loadUserConfig } from './config/user.js'
 
 /**
@@ -71,7 +72,7 @@ async function main () {
       desc: 'Show debug output.',
       type: 'boolean',
       alias: 'd',
-      default: userConfig.debug
+      default: defaultAegirConfig.debug
     })
     .group(['help', 'version', 'debug'], 'Global Options:')
     .demandCommand(1, 'You need at least one command.')

@@ -1,5 +1,6 @@
+import merge from 'merge-options'
 import buildCmd from '../build/index.js'
-import { loadUserConfig } from '../config/user.js'
+import { defaultBuildConfig } from '../config/default-build-config.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
@@ -19,31 +20,30 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
+      .middleware((yargs) => merge(yargs.fileConfig.build, yargs))
       .options({
         bundle: {
           type: 'boolean',
           describe: 'Build the JS standalone bundle.',
-          default: userConfig.build.bundle
+          default: defaultBuildConfig.bundle
         },
         bundlesize: {
           alias: 'b',
           type: 'boolean',
           describe: 'Analyse bundle size.',
-          default: userConfig.build.bundlesize
+          default: defaultBuildConfig.bundlesize
         },
         bundlesizeMax: {
           type: 'string',
           describe: 'Max threshold for the bundle size.',
-          default: userConfig.build.bundlesizeMax
+          default: defaultBuildConfig.bundlesizeMax
         },
         types: {
           type: 'boolean',
           describe: 'If a tsconfig.json is present in the project, run tsc.',
-          default: userConfig.build.types
+          default: defaultBuildConfig.types
         }
       })
   },

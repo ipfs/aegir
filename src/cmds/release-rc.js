@@ -1,4 +1,5 @@
-import { loadUserConfig } from '../config/user.js'
+import merge from 'merge-options'
+import { defaultReleaseRcConfig } from '../config/default-release-rc-config.js'
 import releaseRcCmd from '../release-rc.js'
 
 /**
@@ -19,22 +20,21 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
+      .middleware((yargs) => merge(yargs.fileConfig.releaseRc, yargs))
       .options({
         retries: {
           alias: 'r',
           type: 'number',
           describe: 'How many times to retry each publish',
-          default: userConfig.releaseRc.retries
+          default: defaultReleaseRcConfig.retries
         },
         tag: {
           alias: 't',
           type: 'string',
           describe: 'Which tag to publish the version as',
-          default: userConfig.releaseRc.tag
+          default: defaultReleaseRcConfig.tag
         }
       })
   },

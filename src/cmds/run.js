@@ -1,4 +1,5 @@
-import { loadUserConfig } from '../config/user.js'
+import merge from 'merge-options'
+import { defaultRunConfig } from '../config/default-run-config.js'
 import runCmd from '../run.js'
 
 /**
@@ -20,15 +21,14 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
+      .middleware((yargs) => merge(yargs.fileConfig.run, yargs))
       .options({
         bail: {
           type: 'boolean',
           describe: '',
-          default: userConfig.build.bundle
+          default: defaultRunConfig.bail
         }
       })
       .positional('script', {

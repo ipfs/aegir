@@ -1,5 +1,5 @@
-
-import { loadUserConfig } from '../config/user.js'
+import merge from 'merge-options'
+import { defaultLintConfig } from '../config/default-lint-config.js'
 import lintCmd from '../lint.js'
 
 /**
@@ -21,26 +21,25 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
+      .middleware((yargs) => merge(yargs.fileConfig.lint, yargs))
       .options({
         fix: {
           alias: 'f',
           type: 'boolean',
           describe: 'Automatically fix errors if possible.',
-          default: userConfig.lint.fix
+          default: defaultLintConfig.fix
         },
         files: {
           array: true,
           describe: 'Files to lint.',
-          default: userConfig.lint.files
+          default: defaultLintConfig.files
         },
         silent: {
           type: 'boolean',
           describe: 'Disable eslint output.',
-          default: userConfig.lint.silent
+          default: defaultLintConfig.silent
         }
       })
   },

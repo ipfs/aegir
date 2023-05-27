@@ -2,125 +2,10 @@
 
 import { pathToFileURL } from 'url'
 import { lilconfig } from 'lilconfig'
-import merge from 'merge-options'
-import { isTypescript } from '../utils.js'
 
 /**
  * @typedef {import("./../types").Options} Options
  */
-
-/** @type {Omit<Options, "fileConfig">} */
-const defaults = {
-  // global options
-  debug: false,
-  // test cmd options
-  test: {
-    build: true,
-    runner: 'node',
-    target: ['node', 'browser', 'webworker'],
-    watch: false,
-    files: [],
-    timeout: 60000,
-    grep: '',
-    bail: false,
-    progress: false,
-    cov: false,
-    browser: {
-      config: {
-        buildConfig: {
-          conditions: ['production']
-        }
-      }
-    },
-    before: async () => { return undefined },
-    after: async () => {}
-  },
-  // build cmd options
-  build: {
-    bundle: true,
-    bundlesize: false,
-    bundlesizeMax: '100kB',
-    types: true,
-    config: {}
-  },
-  // linter cmd options
-  lint: {
-    silent: false,
-    fix: false,
-    files: [
-      '*.{js,ts}',
-      'bin/**',
-      'config/**/*.{js,ts}',
-      'test/**/*.{js,ts}',
-      'src/**/*.{js,ts}',
-      'tasks/**/*.{js,ts}',
-      'benchmarks/**/*.{js,ts}',
-      'utils/**/*.{js,ts}',
-      '!**/node_modules/**'
-    ]
-  },
-  // docs cmd options
-  docs: {
-    publish: Boolean(process.env.CI),
-    entryPoint: isTypescript ? 'src/index.ts' : 'src/index.js',
-    message: 'docs: update documentation [skip ci]',
-    user: 'aegir[bot]',
-    email: 'aegir[bot]@users.noreply.github.com',
-    directory: '.docs'
-  },
-  // document check cmd options
-  documentCheck: {
-    inputFiles: [
-      '*.md',
-      'src/*.md'
-    ],
-    tsConfigPath: '.'
-  },
-  // ts cmd options
-  ts: {
-    preset: undefined,
-    include: []
-  },
-  // release cmd options
-  release: {
-    build: true,
-    types: true,
-    test: true,
-    lint: true,
-    contributors: true,
-    bump: true,
-    changelog: true,
-    publish: true,
-    commit: true,
-    tag: true,
-    push: true,
-    ghrelease: true,
-    docs: true,
-    ghtoken: '',
-    type: 'patch',
-    preid: undefined,
-    distTag: 'latest',
-    remote: 'origin',
-    siblingDepUpdateMessage: 'deps: update sibling dependencies',
-    siblingDepUpdateName: 'aegir[bot]',
-    siblingDepUpdateEmail: 'aegir[bot]@users.noreply.github.com'
-  },
-  releaseRc: {
-    retries: 5,
-    tag: 'next'
-  },
-  // dependency check cmd options
-  dependencyCheck: {
-    unused: false,
-    ignore: []
-  },
-  exec: {
-    bail: true
-  },
-  run: {
-    bail: true
-  }
-}
 
 /**
  * Search for local user config
@@ -169,12 +54,7 @@ export const config = async (searchFrom) => {
     throw new Error('Error finding your config file.')
   }
 
-  const conf = /** @type {Options} */(merge(
-    defaults,
-    userConfig
-  ))
-
-  return conf
+  return userConfig
 }
 
 export const loadUserConfig = () => config()

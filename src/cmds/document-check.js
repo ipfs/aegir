@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
-import { loadUserConfig } from '../config/user.js'
+import merge from 'merge-options'
+import { defaultDocumentCheckConfig } from '../config/default-document-check-config.js'
 import docCheck from '../document-check.js'
 
 /**
@@ -23,20 +24,19 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
+      .middleware((yargs) => merge(yargs.fileConfig.documentCheck, yargs))
       .options({
         inputFiles: {
           array: true,
           describe: 'The files to verify, defaults to `README.md`',
-          default: userConfig.documentCheck.inputFiles
+          default: defaultDocumentCheckConfig.inputFiles
         },
         tsConfigPath: {
           type: 'string',
           describe: 'The path to the `tsconfig.json`, defaults to the root.',
-          default: userConfig.documentCheck.tsConfigPath
+          default: defaultDocumentCheckConfig.tsConfigPath
         }
       })
   },

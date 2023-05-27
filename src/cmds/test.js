@@ -1,5 +1,7 @@
 import kleur from 'kleur'
-import { loadUserConfig } from '../config/user.js'
+import merge from 'merge-options'
+import { defaultBuildConfig } from '../config/default-build-config.js'
+import { defaultTestConfig } from '../config/default-test-config.js'
 import testCmd from '../test/index.js'
 
 /**
@@ -20,10 +22,9 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
+      .middleware((yargs) => merge(yargs.fileConfig.test, yargs))
       .example(
         'aegir test -t webworker',
         'Run tests in the browser inside a webworker.'
@@ -49,57 +50,63 @@ export default {
           alias: 'b',
           describe: 'Build the project before running the tests',
           type: 'boolean',
-          default: userConfig.test.build
+          default: defaultTestConfig.build
         },
         types: {
           type: 'boolean',
           describe: 'If a tsconfig.json is present in the project, run tsc.',
-          default: userConfig.build.types
+          default: defaultBuildConfig.types
         },
         target: {
           alias: 't',
           describe: 'In which target environment to execute the tests',
           array: true,
           choices: ['node', 'browser', 'webworker', 'electron-main', 'electron-renderer', 'react-native-android', 'react-native-ios'],
-          default: userConfig.test.target
+          default: defaultTestConfig.target
         },
         watch: {
           alias: 'w',
           describe: 'Watch files for changes and rerun tests',
           type: 'boolean',
-          default: userConfig.test.watch
+          default: defaultTestConfig.watch
         },
         files: {
           alias: 'f',
           describe: 'Custom globs for files to test',
           array: true,
-          default: userConfig.test.files
+          default: defaultTestConfig.files
         },
         timeout: {
           describe: 'The default time a single test has to run',
           type: 'number',
-          default: userConfig.test.timeout
+          default: defaultTestConfig.timeout
         },
         grep: {
           alias: 'g',
           type: 'string',
-          describe: 'Limit tests to those whose names match given pattern'
+          describe: 'Limit tests to those whose names match given pattern',
+          default: defaultTestConfig.grep
         },
         bail: {
           alias: 'b',
           describe: 'Mocha should bail once a test fails',
           type: 'boolean',
-          default: userConfig.test.bail
+          default: defaultTestConfig.bail
         },
         progress: {
           describe: 'Use progress reporters on mocha and karma',
           type: 'boolean',
-          default: userConfig.test.progress
+          default: defaultTestConfig.progress
         },
         cov: {
           describe: 'Enable coverage output. Output is already in Istanbul JSON format and can be uploaded directly to codecov.',
           type: 'boolean',
-          default: userConfig.test.cov
+          default: defaultTestConfig.cov
+        },
+        runner: {
+          describe: 'The platform running the code. Important for differentiating between browser, electron, react-native, etc.',
+          type: 'string',
+          default: defaultTestConfig.runner
         }
       })
   },

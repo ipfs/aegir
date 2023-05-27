@@ -4,6 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { premove as del } from 'premove/sync'
+import { defaultLintConfig } from '../src/config/default-lint-config.js'
 import { loadUserConfig } from '../src/config/user.js'
 import lint from '../src/lint.js'
 import { expect } from '../utils/chai.js'
@@ -42,7 +43,7 @@ const projectShouldPassLint = async (project) => {
   await lint.run({
     fileConfig: userConfig,
     debug: false,
-    ...userConfig.lint
+    ...defaultLintConfig
   })
 }
 
@@ -57,7 +58,7 @@ const projectShouldFailLint = async (project) => {
     await lint.run({
       fileConfig: userConfig,
       debug: false,
-      ...userConfig.lint
+      ...defaultLintConfig
     })
   } catch (/** @type {any} */ error) {
     failed = true
@@ -86,7 +87,7 @@ describe('lint', () => {
       debug: false,
       fix: false,
       silent: true,
-      files: userConfig.lint.files
+      files: defaultLintConfig.files
     })
   })
 
@@ -134,7 +135,7 @@ describe('lint', () => {
     await lint.run({
       fileConfig: userConfig,
       debug: false,
-      ...userConfig.lint
+      ...defaultLintConfig
     })
   })
 

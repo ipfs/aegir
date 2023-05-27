@@ -1,4 +1,5 @@
 import cleanCmd from '../clean.js'
+import { defaultCleanConfig } from '../config/default-clean-config.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
@@ -22,7 +23,7 @@ export default {
       .epilog(EPILOG)
       .positional('files', {
         array: true,
-        default: ['dist']
+        default: defaultCleanConfig.files
       })
   },
   /**

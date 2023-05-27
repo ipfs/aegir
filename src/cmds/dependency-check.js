@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
-import { loadUserConfig } from '../config/user.js'
+import merge from 'merge-options'
+import { defaultDependencyCheckConfig } from '../config/default-dependency-check-config.js'
 import depCheck from '../dependency-check.js'
 
 /**
@@ -21,22 +22,21 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
+      .middleware((yargs) => merge(yargs.fileConfig.dependencyCheck, yargs))
       .example('aegir dependency-check --unused', 'To check unused packages in your repo.')
       .example('aegir dependency-check --unused --ignore typescript', 'To check unused packages in your repo, ignoring typescript.')
       .option('i', {
         alias: 'ignore',
         describe: 'Ignore these dependencies when considering which are used and which are not',
         array: true,
-        default: userConfig.dependencyCheck.ignore
+        default: defaultDependencyCheckConfig.ignore
       })
       .option('u', {
         alias: 'unused',
         describe: 'Checks for unused dependencies',
-        default: true,
+        default: defaultDependencyCheckConfig.unused,
         type: 'boolean'
       })
   },

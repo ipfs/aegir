@@ -64,7 +64,7 @@ export default async function testNode (argv, execaOptions) {
   }
 
   // before hook
-  const before = await argv.fileConfig.test.before(argv)
+  const before = await argv.fileConfig.test?.before?.(argv)
   const beforeEnv = before && before.env ? before.env : {}
 
   // run mocha
@@ -84,5 +84,5 @@ export default async function testNode (argv, execaOptions) {
     )
   )
   // after hook
-  await argv.fileConfig.test.after(argv, before)
+  await argv.fileConfig.test?.after?.(argv, before)
 }

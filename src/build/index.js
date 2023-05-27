@@ -54,7 +54,7 @@ const build = async (argv) => {
         'process.env.NODE_ENV': '"production"'
       }
     },
-    argv.fileConfig.build.config
+    argv.fileConfig.build?.config
   ))
 
   if (result.metafile) {

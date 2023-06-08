@@ -229,7 +229,7 @@
     "@electron/get": "^2.0.0",
     "@polka/send-type": "^0.5.2",
     "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/commit-analyzer": "^10.0.1",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "https://registry.npmjs.org/@achingbrain/semantic-release-github/-/semantic-release-github-0.0.2.tgz",
     "@semantic-release/npm": "^9.0.2",

@@ -1,3 +1,10 @@
+## [39.0.10](https://github.com/ipfs/aegir/compare/v39.0.9...v39.0.10) (2023-06-10)
+
+
+### Trivial Changes
+
+* fix linting ([#1305](https://github.com/ipfs/aegir/issues/1305)) ([17c0331](https://github.com/ipfs/aegir/commit/17c0331c9ebed841ccb00cb3ffb442f0e0c87549))
+
 ## [39.0.9](https://github.com/ipfs/aegir/compare/v39.0.8...v39.0.9) (2023-05-26)
 
 

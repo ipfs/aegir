@@ -1,4 +1,3 @@
-
 /* eslint-disable no-console,complexity */
 
 import path from 'path'

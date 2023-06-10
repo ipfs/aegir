@@ -1,4 +1,3 @@
-
 import { loadUserConfig } from '../config/user.js'
 import lintCmd from '../lint.js'
 

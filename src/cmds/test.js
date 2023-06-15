@@ -107,8 +107,8 @@ export default {
    * @param {any} argv
    */
   async handler (argv) {
-    // temporarily disable code coverage on node 18
-    if (argv.cov && process.version.startsWith('v18.')) {
+    // temporarily disable code coverage on node targets running node 18
+    if (argv.cov && process.version.startsWith('v18.') && argv.target === 'node') {
       console.warn(kleur.red('!!! Temporarily disabling code coverage - https://github.com/ipfs/aegir/issues/1206\n')) // eslint-disable-line no-console
       delete argv.cov
     }

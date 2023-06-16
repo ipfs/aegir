@@ -18,6 +18,7 @@ import fs from 'fs-extra'
 import kleur from 'kleur'
 import Listr from 'listr'
 import { minimatch } from 'minimatch'
+import PQueue from 'p-queue'
 import lockfile from 'proper-lockfile'
 import { readPackageUpSync } from 'read-pkg-up'
 import stripBom from 'strip-bom'
@@ -318,8 +319,10 @@ export function findBinary (bin) {
 /**
  * @param {string} projectDir
  * @param {(project: Project) => Promise<void>} fn
+ * @param {object} [opts]
+ * @param {number} [opts.concurrency]
  */
-export async function everyMonorepoProject (projectDir, fn) {
+export async function everyMonorepoProject (projectDir, fn, opts) {
   const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
   const workspaces = manifest.workspaces
 
@@ -334,15 +337,18 @@ export async function everyMonorepoProject (projectDir, fn) {
 
   /**
    * @param {Project} project
+   * @param {import('p-queue').default} queue
    */
-  async function run (project) {
+  async function run (project, queue) {
     if (project.run) {
       return
     }
 
-    for (const siblingDep of project.siblingDependencies) {
-      await run(projects[siblingDep])
-    }
+    await Promise.all(
+      project.siblingDependencies.map(siblingDep => {
+        return queue.add(() => run(projects[siblingDep], queue))
+      })
+    )
 
     if (project.run) {
       return
@@ -352,8 +358,12 @@ export async function everyMonorepoProject (projectDir, fn) {
     await fn(project)
   }
 
+  const queue = new PQueue({
+    concurrency: opts?.concurrency ?? Number.POSITIVE_INFINITY
+  })
+
   for (const project of Object.values(projects)) {
-    await run(project)
+    await run(project, queue)
   }
 }
 

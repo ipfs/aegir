@@ -29,6 +29,11 @@ export default {
           type: 'boolean',
           describe: '',
           default: userConfig.exec.bail
+        },
+        concurrency: {
+          type: 'number',
+          describe: 'How many commands to run at the same time',
+          default: userConfig.exec.concurrency
         }
       })
   },

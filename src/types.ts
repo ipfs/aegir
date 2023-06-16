@@ -336,6 +336,11 @@ interface ReleaseRcOptions {
    * Which tag to publish the rc as
    */
   tag: string
+
+  /**
+   * Release modules in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 interface DependencyCheckOptions {
@@ -355,13 +360,23 @@ interface ExecOptions {
    * If false, the command will continue to be run in other packages
    */
   bail?: boolean
+
+  /**
+   * Run commands in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 interface RunOptions {
   /**
-   * If false, the command will continue to be run in other packages
+   * If false, the script will continue to be run in other packages
    */
   bail?: boolean
+
+  /**
+   * Run scripts in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 export type {

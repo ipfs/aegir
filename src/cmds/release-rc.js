@@ -35,6 +35,11 @@ export default {
           type: 'string',
           describe: 'Which tag to publish the version as',
           default: userConfig.releaseRc.tag
+        },
+        concurrency: {
+          type: 'number',
+          describe: 'How many modules to release at the same time',
+          default: userConfig.releaseRc.concurrency
         }
       })
   },

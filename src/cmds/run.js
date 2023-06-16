@@ -29,6 +29,11 @@ export default {
           type: 'boolean',
           describe: '',
           default: userConfig.run.bail
+        },
+        concurrency: {
+          type: 'number',
+          describe: 'How many scripts to run at the same time',
+          default: userConfig.run.concurrency
         }
       })
       .positional('script', {

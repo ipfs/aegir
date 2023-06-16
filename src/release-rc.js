@@ -29,6 +29,8 @@ async function releaseMonorepoRcs (commit, ctx) {
     }
 
     versions[project.manifest.name] = `${project.manifest.version}-${commit}`
+  }, {
+    concurrency: ctx.concurrency
   })
 
   console.info('Will release the following packages:')
@@ -98,6 +100,8 @@ async function releaseMonorepoRcs (commit, ctx) {
     })
 
     console.info('')
+  }, {
+    concurrency: ctx.concurrency
   })
 }
 

@@ -1,3 +1,15 @@
+## [39.0.11](https://github.com/ipfs/aegir/compare/v39.0.10...v39.0.11) (2023-06-27)
+
+
+### Bug Fixes
+
+* handle invalid workspace entries ([#1316](https://github.com/ipfs/aegir/issues/1316)) ([a95aec3](https://github.com/ipfs/aegir/commit/a95aec346270472fe635e508476a1eb844e80cfe))
+
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([369453f](https://github.com/ipfs/aegir/commit/369453f7543488d43e72721c48320d6d8d59b705))
+
 ## [39.0.10](https://github.com/ipfs/aegir/compare/v39.0.9...v39.0.10) (2023-06-10)
 
 

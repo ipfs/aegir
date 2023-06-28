@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "homepage": "https://github.com/ipfs/aegir#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ipfs-shipyard/empty-repository.git"
+  },
   "scripts": {
-    "docs": "aegir docs"
+    "docs": "aegir docs",
+    "release": "aegir run release"
   },
   "workspaces": [
     "packages/*"

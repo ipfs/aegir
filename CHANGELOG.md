@@ -1,3 +1,10 @@
+## [39.0.12](https://github.com/ipfs/aegir/compare/v39.0.11...v39.0.12) (2023-06-28)
+
+
+### Bug Fixes
+
+* allow specifying ci file in check-project ([#1317](https://github.com/ipfs/aegir/issues/1317)) ([4c3ab55](https://github.com/ipfs/aegir/commit/4c3ab552b63017c896429cca9398592d703eeafc))
+
 ## [39.0.11](https://github.com/ipfs/aegir/compare/v39.0.10...v39.0.11) (2023-06-27)
 
 

@@ -1,3 +1,10 @@
+## [39.0.13](https://github.com/ipfs/aegir/compare/v39.0.12...v39.0.13) (2023-06-28)
+
+
+### Bug Fixes
+
+* when generating api doc link, check typedoc entry point ([#1318](https://github.com/ipfs/aegir/issues/1318)) ([8f4ab17](https://github.com/ipfs/aegir/commit/8f4ab172b7f46381e08d3c709e576197396c5331))
+
 ## [39.0.12](https://github.com/ipfs/aegir/compare/v39.0.11...v39.0.12) (2023-06-28)
 
 

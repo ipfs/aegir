@@ -16,9 +16,10 @@ import {
  * @param {string} projectDir
  * @param {string} repoUrl
  * @param {string} defaultBranch
+ * @param {string} ciFile
  * @param {any} [rootManifest]
  */
-export async function checkReadme (projectDir, repoUrl, defaultBranch, rootManifest) {
+export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, rootManifest) {
   const repoParts = repoUrl.split('/')
   const repoName = repoParts.pop()
   const repoOwner = repoParts.pop()
@@ -47,7 +48,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, rootManif
   const file = parseMarkdown(readmeContents)
 
   // create basic readme with heading, CI link, etc
-  const readme = parseMarkdown(HEADER(pkg, repoOwner, repoName, defaultBranch))
+  const readme = parseMarkdown(HEADER(pkg, repoOwner, repoName, defaultBranch, ciFile))
 
   // remove existing header, CI link, etc
   /** @type {import('mdast').Root} */

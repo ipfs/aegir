@@ -1,17 +1,17 @@
-const fs = require('fs')
-const { RendererEvent } = require('typedoc')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+import { RendererEvent, ReflectionKind } from 'typedoc'
 
 /**
  * The types of models we want to store documentation URLs for
  */
 const MODELS = [
-  'Interface',
-  'Function',
-  'Type alias',
-  'Variable',
-  'Class',
-  'Enumeration'
+  ReflectionKind.Interface,
+  ReflectionKind.Function,
+  ReflectionKind.TypeAlias,
+  ReflectionKind.Variable,
+  ReflectionKind.Class,
+  ReflectionKind.Enum
 ]
 
 /**
@@ -27,13 +27,13 @@ const MODELS = [
  * current project that contains URLs that map exported symbol names to published
  * typedoc pages.
  *
- * See `unknown-symbol-resolver-plugin.cjs` for how it is consumed.
+ * See `unknown-symbol-resolver-plugin.js` for how it is consumed.
  *
  * @param {import("typedoc/dist/lib/application").Application} Application
  */
-function load (Application) {
+export function load (Application) {
   const manifestPath = `${process.cwd()}/package.json`
-  const manifest = require(manifestPath)
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
   const isMonorepo = Boolean(manifest.workspaces)
 
   /** @type {string} */
@@ -54,6 +54,7 @@ function load (Application) {
    */
   const onRendererBegin = event => {
     if (!event.urls) {
+      Application.logger.warn('No urls found in RendererEvent')
       return
     }
 
@@ -62,10 +63,17 @@ function load (Application) {
 
     for (const urlMapping of event.urls) {
       if (!urlMapping.model.sources || urlMapping.model.sources.length === 0) {
+        Application.logger.warn(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
         continue
       }
 
-      if (!MODELS.includes(urlMapping.model.kindString)) {
+      if (!MODELS.includes(urlMapping.model.kind)) {
+        Application.logger.verbose(`Skipping model ${urlMapping.model.kind}`)
+        continue
+      }
+
+      if (urlMapping.model.sources == null || urlMapping.model.sources.length === 0 || urlMapping.model.sources[0].url == null) {
+        Application.logger.verbose(`Skipping model ${urlMapping.model.kind} as it has no url mapping sources`)
         continue
       }
 
@@ -83,11 +91,11 @@ function load (Application) {
       }
 
       // cannot differentiate between types with duplicate names in the same module https://github.com/TypeStrong/typedoc/issues/2125
-      if (typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] != null) {
-        Application.logger.warn(`Duplicate exported type name ${urlMapping.model.originalName} defined in ${urlMapping.model.sources[0].fullFileName}`)
+      if (typedocs[context.manifestPath].typedocs[urlMapping.model.name] != null) {
+        Application.logger.warn(`Duplicate exported type name ${urlMapping.model.name} defined in ${urlMapping.model.sources[0].fullFileName}`)
       } else {
         // store reference to generate doc url
-        typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] = `${ghPages}${urlMapping.url}`
+        typedocs[context.manifestPath].typedocs[urlMapping.model.name] = `${ghPages}${urlMapping.url}`
       }
     }
 
@@ -109,10 +117,6 @@ function load (Application) {
   Application.renderer.on(RendererEvent.BEGIN, onRendererBegin)
 }
 
-module.exports = {
-  load
-}
-
 /**
  * @typedef {object} ProjectContext
  * @property {string} [ProjectContext.outputDir]
@@ -130,17 +134,21 @@ module.exports = {
 function findContext (mapping, isMonorepo) {
   const sources = mapping.model.sources
 
-  if (sources == null || sources.length === 0 || sources[0].fullFileName == null) {
-    throw new Error('UrlMapping had no sources')
+  if (sources == null || sources.length === 0 || sources[0].url == null) {
+    throw new Error(`UrlMapping for variant ${mapping.model.variant} had no sources`)
   }
 
-  const absolutePathSegments = sources[0].fullFileName.split('/')
+  // fullFileName is absolute for regular projects, relative for monorepo projects so
+  // use the URL instead to guess where the file is. Probably won't work on Windows.
+  // https://github.com/TypeStrong/typedoc/issues/2338
+  const absolutePathSegments = findOverlap(process.cwd(), sources[0].url)
+  // const absolutePathSegments = sources[0].fullFileName.split('/')
 
   while (absolutePathSegments.length) {
     // remove last path segment
     absolutePathSegments.pop()
 
-    let manifestPath = makeAbsolute(path.join(...absolutePathSegments, 'package.json'))
+    const manifestPath = makeAbsolute(path.join(...absolutePathSegments, 'package.json'))
 
     /** @type {string | undefined} */
     let outputDir = makeAbsolute(path.join(...(isMonorepo ? absolutePathSegments : process.cwd().split('/')), 'dist'))
@@ -210,4 +218,46 @@ function makeAbsolute (p) {
   }
 
   return p
+}
+
+/**
+ * @param {string} cwd
+ * @param {string} url
+ * @returns {string[]}
+ */
+function findOverlap (cwd, url) {
+  const cwdParts = cwd.split('/')
+  const urlParts = url
+    // remove line number from url
+    .split('#')[0]
+    // remove github url
+    .replace('https://github.com/', '')
+    // turn into path segments
+    .split('/')
+    // remove org, repo, blob and commit-ish/branch name
+    .slice(4)
+
+  for (let i = 0; i < cwdParts.length; i++) {
+    const cwdPart = cwdParts[i]
+
+    if (urlParts[0] === cwdPart) {
+      let urlIndex = 1
+      let matches = true
+
+      for (let n = i + 1; n < cwdPart.length; n++) {
+        if (urlParts[urlIndex] !== cwdParts[n]) {
+          matches = false
+          break
+        }
+
+        urlIndex++
+      }
+
+      if (matches) {
+        return cwdParts.slice(1, i).concat(urlParts)
+      }
+    }
+  }
+
+  throw new Error(`No overlap between ${cwd} and ${urlParts.join('/')}`)
 }

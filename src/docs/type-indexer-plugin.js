@@ -63,17 +63,17 @@ export function load (Application) {
 
     for (const urlMapping of event.urls) {
       if (!urlMapping.model.sources || urlMapping.model.sources.length === 0) {
-        Application.logger.warn(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
+        Application.logger.verbose(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
         continue
       }
 
       if (!MODELS.includes(urlMapping.model.kind)) {
-        Application.logger.verbose(`Skipping model ${urlMapping.model.kind}`)
+        Application.logger.verbose(`Skipping model "${urlMapping.model.variant}" as it is not in the list of model types we are interested in`)
         continue
       }
 
-      if (urlMapping.model.sources == null || urlMapping.model.sources.length === 0 || urlMapping.model.sources[0].url == null) {
-        Application.logger.verbose(`Skipping model ${urlMapping.model.kind} as it has no url mapping sources`)
+      if (urlMapping.model.sources == null || urlMapping.model.sources.length === 0) {
+        Application.logger.verbose(`Skipping model "${urlMapping.model.variant}" as it has no url mapping sources`)
         continue
       }
 
@@ -111,7 +111,13 @@ export function load (Application) {
         recursive: true
       })
       fs.writeFileSync(`${context.outputDir}/typedoc-urls.json`, JSON.stringify(context.typedocs, null, 2))
+
+      Application.logger.info(`Wrote typedoc URLs to ${context.outputDir}/typedoc-urls.json`)
     })
+
+    if (Object.keys(typedocs).length === 0) {
+      Application.logger.warn('No typedoc URLs written!')
+    }
   }
 
   Application.renderer.on(RendererEvent.BEGIN, onRendererBegin)
@@ -133,16 +139,16 @@ export function load (Application) {
  */
 function findContext (mapping, isMonorepo) {
   const sources = mapping.model.sources
+  let absolutePathSegments = []
 
-  if (sources == null || sources.length === 0 || sources[0].url == null) {
-    throw new Error(`UrlMapping for variant ${mapping.model.variant} had no sources`)
+  if (path.isAbsolute(sources[0].fullFileName)) {
+    absolutePathSegments = sources[0].fullFileName.split('/')
+  } else {
+    // fullFileName is absolute for regular projects, relative for monorepo projects so
+    // use the URL instead to guess where the file is. Probably won't work on Windows.
+    // https://github.com/TypeStrong/typedoc/issues/2338
+    absolutePathSegments = findOverlap(process.cwd(), sources[0].url)
   }
-
-  // fullFileName is absolute for regular projects, relative for monorepo projects so
-  // use the URL instead to guess where the file is. Probably won't work on Windows.
-  // https://github.com/TypeStrong/typedoc/issues/2338
-  const absolutePathSegments = findOverlap(process.cwd(), sources[0].url)
-  // const absolutePathSegments = sources[0].fullFileName.split('/')
 
   while (absolutePathSegments.length) {
     // remove last path segment

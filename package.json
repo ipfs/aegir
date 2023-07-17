@@ -294,7 +294,7 @@
     "p-retry": "^5.1.2",
     "pascalcase": "^2.0.0",
     "path": "^0.12.7",
-    "playwright-test": "^8.1.0",
+    "playwright-test": "^12.1.1",
     "polka": "^0.5.2",
     "premove": "^4.0.0",
     "prompt": "^1.2.2",

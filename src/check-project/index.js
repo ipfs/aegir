@@ -17,6 +17,7 @@ import { checkLicenseFiles } from './check-licence-files.js'
 import { checkMonorepoFiles } from './check-monorepo-files.js'
 import { checkMonorepoReadme } from './check-monorepo-readme.js'
 import { checkReadme } from './check-readme.js'
+import { checkTypedocFiles } from './check-typedoc-files.js'
 import { monorepoManifest } from './manifests/monorepo.js'
 import { typedCJSManifest } from './manifests/typed-cjs.js'
 import { typedESMManifest } from './manifests/typed-esm.js'
@@ -424,6 +425,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
 
   await checkLicenseFiles(projectDir)
   await checkReadme(projectDir, repoUrl, branchName, ciFile, rootManifest)
+  await checkTypedocFiles(projectDir, typescript)
 }
 
 export default new Listr([

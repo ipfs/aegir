@@ -1,17 +1,18 @@
-const fs = require('fs')
-const { RendererEvent } = require('typedoc')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+import { RendererEvent, ReflectionKind } from 'typedoc'
+import { parseProjects } from '../utils.js'
 
 /**
  * The types of models we want to store documentation URLs for
  */
 const MODELS = [
-  'Interface',
-  'Function',
-  'Type alias',
-  'Variable',
-  'Class',
-  'Enumeration'
+  ReflectionKind.Interface,
+  ReflectionKind.Function,
+  ReflectionKind.TypeAlias,
+  ReflectionKind.Variable,
+  ReflectionKind.Class,
+  ReflectionKind.Enum
 ]
 
 /**
@@ -20,6 +21,8 @@ const MODELS = [
  * @property {Record<string, string>} Documentation.typedocs
  * @property {string[]} Documentation.exported
  * @property {string} [Documentation.outputDir]
+ *
+ * @typedef {import('../utils.js').Project} Project
  */
 
 /**
@@ -27,14 +30,22 @@ const MODELS = [
  * current project that contains URLs that map exported symbol names to published
  * typedoc pages.
  *
- * See `unknown-symbol-resolver-plugin.cjs` for how it is consumed.
+ * See `unknown-symbol-resolver-plugin.js` for how it is consumed.
  *
  * @param {import("typedoc/dist/lib/application").Application} Application
  */
-function load (Application) {
+export function load (Application) {
   const manifestPath = `${process.cwd()}/package.json`
-  const manifest = require(manifestPath)
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
   const isMonorepo = Boolean(manifest.workspaces)
+
+  // workaround for https://github.com/TypeStrong/typedoc/issues/2338
+  /** @type {Record<string, Project>} */
+  let projects = {}
+
+  if (isMonorepo) {
+    projects = parseProjects(process.cwd(), manifest.workspaces)
+  }
 
   /** @type {string} */
   let ghPages
@@ -54,6 +65,7 @@ function load (Application) {
    */
   const onRendererBegin = event => {
     if (!event.urls) {
+      Application.logger.warn('No urls found in RendererEvent')
       return
     }
 
@@ -62,14 +74,45 @@ function load (Application) {
 
     for (const urlMapping of event.urls) {
       if (!urlMapping.model.sources || urlMapping.model.sources.length === 0) {
+        Application.logger.info(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
         continue
       }
 
-      if (!MODELS.includes(urlMapping.model.kindString)) {
+      if (!MODELS.includes(urlMapping.model.kind)) {
+        Application.logger.info(`Skipping model "${urlMapping.model.variant}" as it is not in the list of model types we are interested in`)
         continue
       }
 
-      const context = findContext(urlMapping, isMonorepo)
+      if (urlMapping.model.sources == null || urlMapping.model.sources.length === 0) {
+        Application.logger.info(`Skipping model "${urlMapping.model.variant}" as it has no url mapping sources`)
+        continue
+      }
+
+      const source = urlMapping.model.sources[0]
+
+      // workaround for https://github.com/TypeStrong/typedoc/issues/2338
+      if (!path.isAbsolute(source.fullFileName)) {
+        const project = urlMapping.model.parent
+        const projectDir = projects[project.name]?.dir
+
+        if (!projectDir) {
+          Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute but could not find containing project - see https://github.com/TypeStrong/typedoc/issues/2338`)
+          continue
+        } else {
+          const fullFileName = `${projectDir}/src/${source.fullFileName}`
+
+          if (fs.existsSync(fullFileName)) {
+            Application.logger.info(`Full file name of source was not absolute, overriding ${source.fullFileName} -> ${fullFileName} - see https://github.com/TypeStrong/typedoc/issues/2338`)
+
+            source.fullFileName = fullFileName
+          } else {
+            Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute, found containing project but could not locate source file in project - see https://github.com/TypeStrong/typedoc/issues/2338`)
+            continue
+          }
+        }
+      }
+
+      const context = findContext(source, isMonorepo)
 
       // set up manifest to contain typedoc urls
       if (typedocs[context.manifestPath] == null) {
@@ -83,11 +126,11 @@ function load (Application) {
       }
 
       // cannot differentiate between types with duplicate names in the same module https://github.com/TypeStrong/typedoc/issues/2125
-      if (typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] != null) {
-        Application.logger.warn(`Duplicate exported type name ${urlMapping.model.originalName} defined in ${urlMapping.model.sources[0].fullFileName}`)
+      if (typedocs[context.manifestPath].typedocs[urlMapping.model.name] != null) {
+        Application.logger.warn(`Duplicate exported type name ${urlMapping.model.name} defined in ${urlMapping.model.sources[0].fullFileName}`)
       } else {
         // store reference to generate doc url
-        typedocs[context.manifestPath].typedocs[urlMapping.model.originalName] = `${ghPages}${urlMapping.url}`
+        typedocs[context.manifestPath].typedocs[urlMapping.model.name] = `${ghPages}${urlMapping.url}`
       }
     }
 
@@ -103,14 +146,16 @@ function load (Application) {
         recursive: true
       })
       fs.writeFileSync(`${context.outputDir}/typedoc-urls.json`, JSON.stringify(context.typedocs, null, 2))
+
+      Application.logger.info(`Wrote typedoc URLs to ${context.outputDir}/typedoc-urls.json`)
     })
+
+    if (Object.keys(typedocs).length === 0) {
+      Application.logger.warn('No typedoc-urls.json written!')
+    }
   }
 
   Application.renderer.on(RendererEvent.BEGIN, onRendererBegin)
-}
-
-module.exports = {
-  load
 }
 
 /**
@@ -123,31 +168,25 @@ module.exports = {
  * For a given UrlMapping, find the nearest package.json file
  * and work out if a `typedoc-urls.json` should be generated.
  *
- * @param {import("typedoc/dist/lib/output/models/UrlMapping").UrlMapping} mapping
+ * @param {import("typedoc/dist/lib/models/sources/file").SourceReference} source
  * @param {boolean} isMonorepo
  * @returns {ProjectContext}
  */
-function findContext (mapping, isMonorepo) {
-  const sources = mapping.model.sources
-
-  if (sources == null || sources.length === 0 || sources[0].fullFileName == null) {
-    throw new Error('UrlMapping had no sources')
-  }
-
-  const absolutePathSegments = sources[0].fullFileName.split('/')
+function findContext (source, isMonorepo) {
+  const absolutePathSegments = source.fullFileName.split('/')
 
   while (absolutePathSegments.length) {
     // remove last path segment
     absolutePathSegments.pop()
 
-    let manifestPath = makeAbsolute(path.join(...absolutePathSegments, 'package.json'))
+    const manifestPath = makeAbsolute(path.join(...absolutePathSegments, 'package.json'))
 
     /** @type {string | undefined} */
     let outputDir = makeAbsolute(path.join(...(isMonorepo ? absolutePathSegments : process.cwd().split('/')), 'dist'))
 
     // this can occur when a symbol from a dependency is exported, if this is
     // the case do not try to write a `typedoc-urls.json` file
-    if (sources[0].fullFileName.includes('node_modules')) {
+    if (source.fullFileName.includes('node_modules')) {
       outputDir = undefined
     }
 

@@ -18,17 +18,17 @@ export function parseMarkdown (md) {
   return fromMarkdown(md, {
     extensions: [
       gfm(),
-      gfmTable,
+      gfmTable(),
       gfmFootnote(),
       gfmStrikethrough(),
-      gfmTaskListItem
+      gfmTaskListItem()
     ],
     mdastExtensions: [
       gfmFromMarkdown(),
-      gfmTableFromMarkdown,
+      gfmTableFromMarkdown(),
       gfmFootnoteFromMarkdown(),
-      gfmStrikethroughFromMarkdown,
-      gfmTaskListItemFromMarkdown
+      gfmStrikethroughFromMarkdown(),
+      gfmTaskListItemFromMarkdown()
     ]
   })
 }
@@ -43,8 +43,8 @@ export function writeMarkdown (tree) {
       gfmToMarkdown(),
       gfmTableToMarkdown(),
       gfmFootnoteToMarkdown(),
-      gfmStrikethroughToMarkdown,
-      gfmTaskListItemToMarkdown
+      gfmStrikethroughToMarkdown(),
+      gfmTaskListItemToMarkdown()
     ],
     bullet: '-',
     listItemIndent: 'one'

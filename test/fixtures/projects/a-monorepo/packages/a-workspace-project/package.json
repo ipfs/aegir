@@ -10,8 +10,5 @@
   },
   "type": "module",
   "author": "",
-  "license": "ISC",
-  "typedoc": {
-    "entryPoint": "./src/index.js"
-  }
+  "license": "ISC"
 }

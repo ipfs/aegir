@@ -3,6 +3,8 @@ import derp from 'an-esm-dep'
 import type { UsedButNotExported } from './a-module.js'
 import type { EventEmitter } from 'events'
 
+export { garply } from './dir/index.js'
+
 export const useHerp = (): void => {
   herp()
 }

@@ -1,6 +1,8 @@
 import herp from 'a-cjs-dep'
 import derp from 'an-esm-dep'
 
+export { garply } from './dir/index.js'
+
 /**
  * @typedef {import('./types').ExportedButNotInExports} ExportedButNotInExports
  */

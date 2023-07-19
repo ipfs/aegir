@@ -505,7 +505,14 @@ export function * glob (dir, pattern, options = {}) {
  * @returns {Generator<string, void, undefined>}
  */
 function * _glob (base, dir, pattern, options) {
-  const d = fs.opendirSync(path.join(base, dir))
+  const p = path.join(base, dir)
+  const stats = fs.statSync(p)
+
+  if (!stats.isDirectory()) {
+    return
+  }
+
+  const d = fs.opendirSync(p)
 
   while (true) {
     const entry = d.readSync()

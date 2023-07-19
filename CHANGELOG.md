@@ -1,3 +1,19 @@
+## [40.0.0](https://github.com/ipfs/aegir/compare/v39.0.13...v40.0.0) (2023-07-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* update typescript to `5.1.6, typedoc to `0.24.8` and eslint-config-ipfs to `5.0.0`
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([48cc141](https://github.com/ipfs/aegir/commit/48cc1413972451fc58749b3cf4d91719d74e518c))
+
+
+### Dependencies
+
+* upgrade typescript and typedoc ([#1337](https://github.com/ipfs/aegir/issues/1337)) ([4ef4b62](https://github.com/ipfs/aegir/commit/4ef4b62f215316a24b58dac67c840c0dbd149d01))
+
 ## [39.0.13](https://github.com/ipfs/aegir/compare/v39.0.12...v39.0.13) (2023-06-28)
 
 

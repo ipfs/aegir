@@ -506,6 +506,11 @@ export function * glob (dir, pattern, options = {}) {
  */
 function * _glob (base, dir, pattern, options) {
   const p = path.join(base, dir)
+
+  if (!fs.existsSync(p)) {
+    return
+  }
+
   const stats = fs.statSync(p)
 
   if (!stats.isDirectory()) {

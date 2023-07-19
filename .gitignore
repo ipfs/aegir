@@ -1,6 +1,7 @@
 package-lock.json
 yarn.lock
-node_modules
+# only the root node_modules folder since some of the test fixtures have them
+/node_modules
 dist
 .docs
 .nyc_output

@@ -362,16 +362,16 @@ export async function everyMonorepoProject (projectDir, fn) {
  * @param {string} projectDir
  * @param {string[]} workspaces
  */
-async function parseProjects (projectDir, workspaces) {
+export function parseProjects (projectDir, workspaces) {
   /** @type {Record<string, Project>} */
   const projects = {}
 
   for (const workspace of workspaces) {
-    for await (const subProjectDir of glob('.', workspace, {
+    for (const subProjectDir of glob('.', workspace, {
       cwd: projectDir,
       absolute: true
     })) {
-      const stat = await fs.stat(subProjectDir)
+      const stat = fs.statSync(subProjectDir)
 
       if (!stat.isDirectory()) {
         continue
@@ -471,21 +471,21 @@ function checkForCircularDependencies (projects) {
  * @property {boolean} [absolute] If true produces absolute paths (default: false)
  * @property {boolean} [nodir] If true yields file paths and skip directories (default: false)
  *
- * Async iterable filename pattern matcher
+ * Iterable filename pattern matcher
  *
  * @param {string} dir
  * @param {string} pattern
  * @param {GlobOptions & import('minimatch').MinimatchOptions} [options]
- * @returns {AsyncGenerator<string, void, undefined>}
+ * @returns {Generator<string, void, undefined>}
  */
-export async function * glob (dir, pattern, options = {}) {
+export function * glob (dir, pattern, options = {}) {
   const absoluteDir = path.resolve(dir)
   const relativeDir = path.relative(options.cwd ?? process.cwd(), dir)
 
-  const stats = await fs.stat(absoluteDir)
+  const stats = fs.statSync(absoluteDir)
 
   if (stats.isDirectory()) {
-    for await (const entry of _glob(absoluteDir, '', pattern, options)) {
+    for (const entry of _glob(absoluteDir, '', pattern, options)) {
       yield entry
     }
 
@@ -502,10 +502,18 @@ export async function * glob (dir, pattern, options = {}) {
  * @param {string} dir
  * @param {string} pattern
  * @param {GlobOptions & import('minimatch').MinimatchOptions} options
- * @returns {AsyncGenerator<string, void, undefined>}
+ * @returns {Generator<string, void, undefined>}
  */
-async function * _glob (base, dir, pattern, options) {
-  for await (const entry of await fs.opendir(path.join(base, dir))) {
+function * _glob (base, dir, pattern, options) {
+  const d = fs.opendirSync(path.join(base, dir))
+
+  while (true) {
+    const entry = d.readSync()
+
+    if (entry == null) {
+      break
+    }
+
     const relativeEntryPath = path.join(dir, entry.name)
     const absoluteEntryPath = path.join(base, dir, entry.name)
 

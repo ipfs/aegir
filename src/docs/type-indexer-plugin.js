@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { RendererEvent, ReflectionKind } from 'typedoc'
+import { parseProjects } from '../utils.js'
 
 /**
  * The types of models we want to store documentation URLs for
@@ -20,6 +21,8 @@ const MODELS = [
  * @property {Record<string, string>} Documentation.typedocs
  * @property {string[]} Documentation.exported
  * @property {string} [Documentation.outputDir]
+ *
+ * @typedef {import('../utils.js').Project} Project
  */
 
 /**
@@ -35,6 +38,14 @@ export function load (Application) {
   const manifestPath = `${process.cwd()}/package.json`
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
   const isMonorepo = Boolean(manifest.workspaces)
+
+  // workaround for https://github.com/TypeStrong/typedoc/issues/2338
+  /** @type {Record<string, Project>} */
+  let projects = {}
+
+  if (isMonorepo) {
+    projects = parseProjects(process.cwd(), manifest.workspaces)
+  }
 
   /** @type {string} */
   let ghPages
@@ -63,21 +74,45 @@ export function load (Application) {
 
     for (const urlMapping of event.urls) {
       if (!urlMapping.model.sources || urlMapping.model.sources.length === 0) {
-        Application.logger.verbose(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
+        Application.logger.info(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
         continue
       }
 
       if (!MODELS.includes(urlMapping.model.kind)) {
-        Application.logger.verbose(`Skipping model "${urlMapping.model.variant}" as it is not in the list of model types we are interested in`)
+        Application.logger.info(`Skipping model "${urlMapping.model.variant}" as it is not in the list of model types we are interested in`)
         continue
       }
 
       if (urlMapping.model.sources == null || urlMapping.model.sources.length === 0) {
-        Application.logger.verbose(`Skipping model "${urlMapping.model.variant}" as it has no url mapping sources`)
+        Application.logger.info(`Skipping model "${urlMapping.model.variant}" as it has no url mapping sources`)
         continue
       }
 
-      const context = findContext(urlMapping, isMonorepo)
+      const source = urlMapping.model.sources[0]
+
+      // workaround for https://github.com/TypeStrong/typedoc/issues/2338
+      if (!path.isAbsolute(source.fullFileName)) {
+        const project = urlMapping.model.parent
+        const projectDir = projects[project.name]?.dir
+
+        if (!projectDir) {
+          Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute but could not find containing project - see https://github.com/TypeStrong/typedoc/issues/2338`)
+          continue
+        } else {
+          const fullFileName = `${projectDir}/src/${source.fullFileName}`
+
+          if (fs.existsSync(fullFileName)) {
+            Application.logger.info(`Full file name of source was not absolute, overriding ${source.fullFileName} -> ${fullFileName} - see https://github.com/TypeStrong/typedoc/issues/2338`)
+
+            source.fullFileName = fullFileName
+          } else {
+            Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute, found containing project but could not locate source file in project - see https://github.com/TypeStrong/typedoc/issues/2338`)
+            continue
+          }
+        }
+      }
+
+      const context = findContext(source, isMonorepo)
 
       // set up manifest to contain typedoc urls
       if (typedocs[context.manifestPath] == null) {
@@ -116,7 +151,7 @@ export function load (Application) {
     })
 
     if (Object.keys(typedocs).length === 0) {
-      Application.logger.warn('No typedoc URLs written!')
+      Application.logger.warn('No typedoc-urls.json written!')
     }
   }
 
@@ -133,22 +168,12 @@ export function load (Application) {
  * For a given UrlMapping, find the nearest package.json file
  * and work out if a `typedoc-urls.json` should be generated.
  *
- * @param {import("typedoc/dist/lib/output/models/UrlMapping").UrlMapping} mapping
+ * @param {import("typedoc/dist/lib/models/sources/file").SourceReference} source
  * @param {boolean} isMonorepo
  * @returns {ProjectContext}
  */
-function findContext (mapping, isMonorepo) {
-  const sources = mapping.model.sources
-  let absolutePathSegments = []
-
-  if (path.isAbsolute(sources[0].fullFileName)) {
-    absolutePathSegments = sources[0].fullFileName.split('/')
-  } else {
-    // fullFileName is absolute for regular projects, relative for monorepo projects so
-    // use the URL instead to guess where the file is. Probably won't work on Windows.
-    // https://github.com/TypeStrong/typedoc/issues/2338
-    absolutePathSegments = findOverlap(process.cwd(), sources[0].url)
-  }
+function findContext (source, isMonorepo) {
+  const absolutePathSegments = source.fullFileName.split('/')
 
   while (absolutePathSegments.length) {
     // remove last path segment
@@ -161,7 +186,7 @@ function findContext (mapping, isMonorepo) {
 
     // this can occur when a symbol from a dependency is exported, if this is
     // the case do not try to write a `typedoc-urls.json` file
-    if (sources[0].fullFileName.includes('node_modules')) {
+    if (source.fullFileName.includes('node_modules')) {
       outputDir = undefined
     }
 
@@ -224,46 +249,4 @@ function makeAbsolute (p) {
   }
 
   return p
-}
-
-/**
- * @param {string} cwd
- * @param {string} url
- * @returns {string[]}
- */
-function findOverlap (cwd, url) {
-  const cwdParts = cwd.split('/')
-  const urlParts = url
-    // remove line number from url
-    .split('#')[0]
-    // remove github url
-    .replace('https://github.com/', '')
-    // turn into path segments
-    .split('/')
-    // remove org, repo, blob and commit-ish/branch name
-    .slice(4)
-
-  for (let i = 0; i < cwdParts.length; i++) {
-    const cwdPart = cwdParts[i]
-
-    if (urlParts[0] === cwdPart) {
-      let urlIndex = 1
-      let matches = true
-
-      for (let n = i + 1; n < cwdPart.length; n++) {
-        if (urlParts[urlIndex] !== cwdParts[n]) {
-          matches = false
-          break
-        }
-
-        urlIndex++
-      }
-
-      if (matches) {
-        return cwdParts.slice(1, i).concat(urlParts)
-      }
-    }
-  }
-
-  throw new Error(`No overlap between ${cwd} and ${urlParts.join('/')}`)
 }

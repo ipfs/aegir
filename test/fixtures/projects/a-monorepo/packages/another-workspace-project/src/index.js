@@ -14,3 +14,5 @@ export const useHerp = () => {
 export const useDerp = () => {
 
 }
+
+export { garply } from './dir/index.js'

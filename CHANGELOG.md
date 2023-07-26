@@ -1,3 +1,10 @@
+## [40.0.1](https://github.com/ipfs/aegir/compare/v40.0.0...v40.0.1) (2023-07-26)
+
+
+### Bug Fixes
+
+* handle more relative path cases in doc command ([#1342](https://github.com/ipfs/aegir/issues/1342)) ([57b7642](https://github.com/ipfs/aegir/commit/57b7642eb5da14e5b2ff354396f206d43b2f46d2))
+
 ## [40.0.0](https://github.com/ipfs/aegir/compare/v39.0.13...v40.0.0) (2023-07-19)
 
 

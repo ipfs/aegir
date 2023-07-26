@@ -7,8 +7,12 @@ const knownSymbols = {
     'Chai.ChaiStatic': 'https://www.chaijs.com/api/',
     'Chai.Assertion': 'https://www.chaijs.com/api/assert/'
   },
+  '@types/mocha': {
+    'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter'
+  },
   '@types/node': {
     EventEmitter: 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter',
+    'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter',
     Server: 'https://nodejs.org/dist/latest-v19.x/docs/api/net.html#class-netserver',
     IncomingMessage: 'https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpincomingmessage',
     ServerResponse: 'https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpserverresponse',

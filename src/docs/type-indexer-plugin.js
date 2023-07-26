@@ -1,3 +1,5 @@
+/* eslint-disable max-depth */
+
 import fs from 'fs'
 import path from 'path'
 import { RendererEvent, ReflectionKind } from 'typedoc'
@@ -23,6 +25,7 @@ const MODELS = [
  * @property {string} [Documentation.outputDir]
  *
  * @typedef {import('../utils.js').Project} Project
+ * @typedef {import('typedoc/dist/lib/models/reflections').DeclarationReflection} DeclarationReflection
  */
 
 /**
@@ -92,22 +95,35 @@ export function load (Application) {
 
       // workaround for https://github.com/TypeStrong/typedoc/issues/2338
       if (!path.isAbsolute(source.fullFileName)) {
-        const project = urlMapping.model.parent
-        const projectDir = projects[project.name]?.dir
+        // did we get lucky?
+        const p = path.join(process.cwd(), source.fullFileName)
 
-        if (!projectDir) {
-          Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute but could not find containing project - see https://github.com/TypeStrong/typedoc/issues/2338`)
-          continue
+        if (fs.existsSync(p)) {
+          source.fullFileName = p
         } else {
-          const fullFileName = `${projectDir}/src/${source.fullFileName}`
+          const project = findParentProject(urlMapping.model)
 
-          if (fs.existsSync(fullFileName)) {
-            Application.logger.info(`Full file name of source was not absolute, overriding ${source.fullFileName} -> ${fullFileName} - see https://github.com/TypeStrong/typedoc/issues/2338`)
-
-            source.fullFileName = fullFileName
-          } else {
-            Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute, found containing project but could not locate source file in project - see https://github.com/TypeStrong/typedoc/issues/2338`)
+          if (project == null) {
+            Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute but could not detect containing module definition - see https://github.com/TypeStrong/typedoc/issues/2338`)
             continue
+          }
+
+          const projectDir = projects[project.name]?.dir
+
+          if (projectDir == null) {
+            Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute but could not find containing project "${project.name}" - see https://github.com/TypeStrong/typedoc/issues/2338`)
+            continue
+          } else {
+            const fullFileName = `${projectDir}/src/${source.fullFileName}`
+
+            if (fs.existsSync(fullFileName)) {
+              Application.logger.info(`Full file name of source was not absolute, overriding ${source.fullFileName} -> ${fullFileName} - see https://github.com/TypeStrong/typedoc/issues/2338`)
+
+              source.fullFileName = fullFileName
+            } else {
+              Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute, found containing project but could not locate source file in project - see https://github.com/TypeStrong/typedoc/issues/2338`)
+              continue
+            }
           }
         }
       }
@@ -249,4 +265,25 @@ function makeAbsolute (p) {
   }
 
   return p
+}
+
+/**
+ * @param {any} model
+ * @param {Set<any>} seen
+ * @returns {DeclarationReflection | undefined}
+ */
+function findParentProject (model, seen = new Set()) {
+  const parent = model.parent
+
+  if (seen.has(parent)) {
+    return
+  } else {
+    seen.add(parent)
+  }
+
+  if (parent.kind === ReflectionKind.Module) {
+    return parent
+  }
+
+  return findParentProject(parent, seen)
 }

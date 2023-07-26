@@ -14,6 +14,11 @@ export async function checkTypedocFiles (projectDir, isTypescriptProject) {
   console.info('Check typedoc files')
 
   const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
+
+  if (pkg.exports == null) {
+    return
+  }
+
   const entryPoints = Object.values(pkg.exports)
     .map(e => {
       const path = e.import
@@ -27,7 +32,7 @@ export async function checkTypedocFiles (projectDir, isTypescriptProject) {
       return path
     })
 
-  await ensureFileHasContents(JSON.stringify({
+  await ensureFileHasContents(projectDir, 'typedoc.json', JSON.stringify({
     entryPoints
-  }, null, 2), 'typedoc.json')
+  }, null, 2))
 }

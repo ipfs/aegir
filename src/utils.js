@@ -519,31 +519,35 @@ function * _glob (base, dir, pattern, options) {
 
   const d = fs.opendirSync(p)
 
-  while (true) {
-    const entry = d.readSync()
+  try {
+    while (true) {
+      const entry = d.readSync()
 
-    if (entry == null) {
-      break
+      if (entry == null) {
+        break
+      }
+
+      const relativeEntryPath = path.join(dir, entry.name)
+      const absoluteEntryPath = path.join(base, dir, entry.name)
+
+      let match = minimatch(relativeEntryPath, pattern, options)
+
+      const isDirectory = entry.isDirectory()
+
+      if (isDirectory && options.nodir === true) {
+        match = false
+      }
+
+      if (match) {
+        yield options.absolute === true ? absoluteEntryPath : relativeEntryPath
+      }
+
+      if (isDirectory) {
+        yield * _glob(base, relativeEntryPath, pattern, options)
+      }
     }
-
-    const relativeEntryPath = path.join(dir, entry.name)
-    const absoluteEntryPath = path.join(base, dir, entry.name)
-
-    let match = minimatch(relativeEntryPath, pattern, options)
-
-    const isDirectory = entry.isDirectory()
-
-    if (isDirectory && options.nodir === true) {
-      match = false
-    }
-
-    if (match) {
-      yield options.absolute === true ? absoluteEntryPath : relativeEntryPath
-    }
-
-    if (isDirectory) {
-      yield * _glob(base, relativeEntryPath, pattern, options)
-    }
+  } finally {
+    d.closeSync()
   }
 }
 

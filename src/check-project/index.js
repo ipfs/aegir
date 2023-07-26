@@ -17,11 +17,13 @@ import { checkLicenseFiles } from './check-licence-files.js'
 import { checkMonorepoFiles } from './check-monorepo-files.js'
 import { checkMonorepoReadme } from './check-monorepo-readme.js'
 import { checkReadme } from './check-readme.js'
+import { checkTypedocFiles } from './check-typedoc-files.js'
 import { monorepoManifest } from './manifests/monorepo.js'
 import { typedCJSManifest } from './manifests/typed-cjs.js'
 import { typedESMManifest } from './manifests/typed-esm.js'
 import { typescriptManifest } from './manifests/typescript.js'
 import { untypedCJSManifest } from './manifests/untyped-cjs.js'
+import { untypedESMManifest } from './manifests/untyped-esm.js'
 import {
   sortManifest,
   ensureFileHasContents,
@@ -98,8 +100,9 @@ async function getConfig (projectDir) {
  * @param {any} manifest
  * @param {string} branchName
  * @param {string} repoUrl
+ * @param {string} ciFile
  */
-async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
+async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFile) {
   const workspaces = manifest.workspaces
 
   if (!workspaces || !Array.isArray(workspaces)) {
@@ -113,12 +116,24 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
       cwd: projectDir,
       absolute: true
     })) {
-      const pkg = fs.readJSONSync(path.join(subProjectDir, 'package.json'))
+      const stat = await fs.stat(subProjectDir)
+
+      if (!stat.isDirectory()) {
+        continue
+      }
+
+      const manfest = path.join(subProjectDir, 'package.json')
+
+      if (!fs.existsSync(manfest)) {
+        continue
+      }
+
+      const pkg = fs.readJSONSync(manfest)
       const homePage = `${repoUrl}/tree/master${subProjectDir.substring(projectDir.length)}`
 
       console.info('Found monorepo project', pkg.name)
 
-      await processModule(subProjectDir, pkg, branchName, repoUrl, homePage, manifest)
+      await processModule(subProjectDir, pkg, branchName, repoUrl, homePage, ciFile, manifest)
 
       projectDirs.push(subProjectDir)
     }
@@ -136,7 +151,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl) {
   }))
   await checkLicenseFiles(projectDir)
   await checkBuildFiles(projectDir, branchName, repoUrl)
-  await checkMonorepoReadme(projectDir, repoUrl, branchName, projectDirs)
+  await checkMonorepoReadme(projectDir, repoUrl, branchName, projectDirs, ciFile)
   await checkMonorepoFiles(projectDir)
 }
 
@@ -294,9 +309,10 @@ function addReferences (deps, references, refs) {
  * @param {any} manifest
  * @param {string} branchName
  * @param {string} repoUrl
+ * @param {string} ciFile
  */
-async function processProject (projectDir, manifest, branchName, repoUrl) {
-  await processModule(projectDir, manifest, branchName, repoUrl)
+async function processProject (projectDir, manifest, branchName, repoUrl, ciFile) {
+  await processModule(projectDir, manifest, branchName, repoUrl, repoUrl, ciFile)
   await checkBuildFiles(projectDir, branchName, repoUrl)
 }
 
@@ -314,9 +330,10 @@ function isAegirProject (manifest) {
  * @param {string} branchName
  * @param {string} repoUrl
  * @param {string} homePage
+ * @param {string} ciFile
  * @param {any} [rootManifest]
  */
-async function processModule (projectDir, manifest, branchName, repoUrl, homePage = repoUrl, rootManifest) {
+async function processModule (projectDir, manifest, branchName, repoUrl, homePage = repoUrl, ciFile, rootManifest) {
   if (!isAegirProject(manifest) && manifest.name !== 'aegir') {
     throw new Error(`"${projectDir}" is not an aegir project`)
   }
@@ -339,7 +356,10 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   // 3. CJS, no types
   let typedCJS = cjs && hasMain && types
 
-  // 3. CJS, no types
+  // 4. ESM, no types
+  let untypedESM = esm && hasMain
+
+  // 5. CJS, no types
   let untypedCJS = cjs && hasMain
 
   let proposedManifest = {}
@@ -349,10 +369,10 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
     const { projectType } = await prompt.get({
       properties: {
         projectType: {
-          description: 'Project type: typescript | typedESM | typedCJS | untypedCJS',
+          description: 'Project type: typescript | typedESM | typedCJS | untypedESM | untypedCJS',
           required: true,
           conform: (value) => {
-            return ['typescript', 'typedESM', 'typedCJS', 'untypedCJS'].includes(value)
+            return ['typescript', 'typedESM', 'typedCJS', 'untypedESM', 'untypedCJS'].includes(value)
           },
           default: 'typescript'
         }
@@ -365,6 +385,8 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
       typedESM = true
     } else if (projectType === 'typedCJS') {
       typedCJS = true
+    } else if (projectType === 'untypedESM') {
+      untypedESM = true
     } else if (projectType === 'untypedCJS') {
       untypedCJS = true
     } else {
@@ -381,6 +403,9 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   } else if (typedCJS) {
     console.info('Typed CJS project detected')
     proposedManifest = await typedCJSManifest(manifest, branchName, repoUrl, homePage)
+  } else if (untypedESM) {
+    console.info('Untyped ESM project detected')
+    proposedManifest = await untypedESMManifest(manifest, branchName, repoUrl, homePage)
   } else if (untypedCJS) {
     console.info('Untyped CJS project detected')
     proposedManifest = await untypedCJSManifest(manifest, branchName, repoUrl, homePage)
@@ -399,7 +424,8 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   }
 
   await checkLicenseFiles(projectDir)
-  await checkReadme(projectDir, repoUrl, branchName, rootManifest)
+  await checkReadme(projectDir, repoUrl, branchName, ciFile, rootManifest)
+  await checkTypedocFiles(projectDir, typescript)
 }
 
 export default new Listr([
@@ -412,11 +438,21 @@ export default new Listr([
       const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
       const monorepo = manifest.workspaces != null
 
+      const ciFile = (await prompt.get({
+        properties: {
+          ciFile: {
+            description: 'ciFile',
+            required: true,
+            default: 'js-test-and-release.yml'
+          }
+        }
+      })).ciFile.toString()
+
       if (monorepo) {
         console.info('monorepo project detected')
-        await processMonorepo(projectDir, manifest, branchName, repoUrl)
+        await processMonorepo(projectDir, manifest, branchName, repoUrl, ciFile)
       } else {
-        await processProject(projectDir, manifest, branchName, repoUrl)
+        await processProject(projectDir, manifest, branchName, repoUrl, ciFile)
       }
     }
   }

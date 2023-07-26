@@ -362,16 +362,28 @@ export async function everyMonorepoProject (projectDir, fn) {
  * @param {string} projectDir
  * @param {string[]} workspaces
  */
-async function parseProjects (projectDir, workspaces) {
+export function parseProjects (projectDir, workspaces) {
   /** @type {Record<string, Project>} */
   const projects = {}
 
   for (const workspace of workspaces) {
-    for await (const subProjectDir of glob('.', workspace, {
+    for (const subProjectDir of glob('.', workspace, {
       cwd: projectDir,
       absolute: true
     })) {
-      const pkg = fs.readJSONSync(path.join(subProjectDir, 'package.json'))
+      const stat = fs.statSync(subProjectDir)
+
+      if (!stat.isDirectory()) {
+        continue
+      }
+
+      const manfest = path.join(subProjectDir, 'package.json')
+
+      if (!fs.existsSync(manfest)) {
+        continue
+      }
+
+      const pkg = fs.readJSONSync(manfest)
 
       projects[pkg.name] = {
         manifest: pkg,
@@ -459,21 +471,21 @@ function checkForCircularDependencies (projects) {
  * @property {boolean} [absolute] If true produces absolute paths (default: false)
  * @property {boolean} [nodir] If true yields file paths and skip directories (default: false)
  *
- * Async iterable filename pattern matcher
+ * Iterable filename pattern matcher
  *
  * @param {string} dir
  * @param {string} pattern
  * @param {GlobOptions & import('minimatch').MinimatchOptions} [options]
- * @returns {AsyncGenerator<string, void, undefined>}
+ * @returns {Generator<string, void, undefined>}
  */
-export async function * glob (dir, pattern, options = {}) {
+export function * glob (dir, pattern, options = {}) {
   const absoluteDir = path.resolve(dir)
   const relativeDir = path.relative(options.cwd ?? process.cwd(), dir)
 
-  const stats = await fs.stat(absoluteDir)
+  const stats = fs.statSync(absoluteDir)
 
   if (stats.isDirectory()) {
-    for await (const entry of _glob(absoluteDir, '', pattern, options)) {
+    for (const entry of _glob(absoluteDir, '', pattern, options)) {
       yield entry
     }
 
@@ -490,10 +502,30 @@ export async function * glob (dir, pattern, options = {}) {
  * @param {string} dir
  * @param {string} pattern
  * @param {GlobOptions & import('minimatch').MinimatchOptions} options
- * @returns {AsyncGenerator<string, void, undefined>}
+ * @returns {Generator<string, void, undefined>}
  */
-async function * _glob (base, dir, pattern, options) {
-  for await (const entry of await fs.opendir(path.join(base, dir))) {
+function * _glob (base, dir, pattern, options) {
+  const p = path.join(base, dir)
+
+  if (!fs.existsSync(p)) {
+    return
+  }
+
+  const stats = fs.statSync(p)
+
+  if (!stats.isDirectory()) {
+    return
+  }
+
+  const d = fs.opendirSync(p)
+
+  while (true) {
+    const entry = d.readSync()
+
+    if (entry == null) {
+      break
+    }
+
     const relativeEntryPath = path.join(dir, entry.name)
     const absoluteEntryPath = path.join(base, dir, entry.name)
 

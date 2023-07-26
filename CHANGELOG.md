@@ -1,3 +1,52 @@
+## [40.0.0](https://github.com/ipfs/aegir/compare/v39.0.13...v40.0.0) (2023-07-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* update typescript to `5.1.6, typedoc to `0.24.8` and eslint-config-ipfs to `5.0.0`
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([48cc141](https://github.com/ipfs/aegir/commit/48cc1413972451fc58749b3cf4d91719d74e518c))
+
+
+### Dependencies
+
+* upgrade typescript and typedoc ([#1337](https://github.com/ipfs/aegir/issues/1337)) ([4ef4b62](https://github.com/ipfs/aegir/commit/4ef4b62f215316a24b58dac67c840c0dbd149d01))
+
+## [39.0.13](https://github.com/ipfs/aegir/compare/v39.0.12...v39.0.13) (2023-06-28)
+
+
+### Bug Fixes
+
+* when generating api doc link, check typedoc entry point ([#1318](https://github.com/ipfs/aegir/issues/1318)) ([8f4ab17](https://github.com/ipfs/aegir/commit/8f4ab172b7f46381e08d3c709e576197396c5331))
+
+## [39.0.12](https://github.com/ipfs/aegir/compare/v39.0.11...v39.0.12) (2023-06-28)
+
+
+### Bug Fixes
+
+* allow specifying ci file in check-project ([#1317](https://github.com/ipfs/aegir/issues/1317)) ([4c3ab55](https://github.com/ipfs/aegir/commit/4c3ab552b63017c896429cca9398592d703eeafc))
+
+## [39.0.11](https://github.com/ipfs/aegir/compare/v39.0.10...v39.0.11) (2023-06-27)
+
+
+### Bug Fixes
+
+* handle invalid workspace entries ([#1316](https://github.com/ipfs/aegir/issues/1316)) ([a95aec3](https://github.com/ipfs/aegir/commit/a95aec346270472fe635e508476a1eb844e80cfe))
+
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([369453f](https://github.com/ipfs/aegir/commit/369453f7543488d43e72721c48320d6d8d59b705))
+
+## [39.0.10](https://github.com/ipfs/aegir/compare/v39.0.9...v39.0.10) (2023-06-10)
+
+
+### Trivial Changes
+
+* fix linting ([#1305](https://github.com/ipfs/aegir/issues/1305)) ([17c0331](https://github.com/ipfs/aegir/commit/17c0331c9ebed841ccb00cb3ffb442f0e0c87549))
+
 ## [39.0.9](https://github.com/ipfs/aegir/compare/v39.0.8...v39.0.9) (2023-05-26)
 
 

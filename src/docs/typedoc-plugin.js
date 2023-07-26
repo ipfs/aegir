@@ -1,11 +1,11 @@
-const { Converter } = require('typedoc')
-const path = require('path')
-const fs = require('fs')
+import fs from 'fs'
+import path from 'path'
+import { Converter } from 'typedoc'
 
 /**
  * @param {import("typedoc/dist/lib/application").Application} Application
  */
-const plugin = function (Application) {
+export function load (Application) {
   const app = Application.owner
   const pkg = path.join(process.cwd(), 'package.json')
   /** @type {any} */
@@ -23,7 +23,6 @@ const plugin = function (Application) {
    * @param {import("typescript").Node} node
    */
   const cb = (context, reflection, node) => {
-
     if (pkgJson && reflection.name === 'export=') {
       let name
       if (node) {
@@ -35,8 +34,4 @@ const plugin = function (Application) {
   }
 
   app.converter.on(Converter.EVENT_CREATE_DECLARATION, cb)
-}
-
-module.exports = {
-  load: plugin
 }

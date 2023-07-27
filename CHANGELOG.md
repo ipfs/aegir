@@ -1,3 +1,10 @@
+## [40.0.2](https://github.com/ipfs/aegir/compare/v40.0.1...v40.0.2) (2023-07-27)
+
+
+### Bug Fixes
+
+* hard code mocha runner for pw-test ([#1343](https://github.com/ipfs/aegir/issues/1343)) ([02e36b6](https://github.com/ipfs/aegir/commit/02e36b64405da2045a5421de27307e33ec24ccf2))
+
 ## [40.0.1](https://github.com/ipfs/aegir/compare/v40.0.0...v40.0.1) (2023-07-26)
 
 

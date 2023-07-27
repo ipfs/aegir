@@ -45,6 +45,10 @@ export default async (argv, execaOptions) => {
     [
       ...files,
       '--mode', argv.runner === 'browser' ? 'main' : 'worker',
+      // autodetect is broken in pw-test
+      // https://github.com/hugomrdias/playwright-test/issues/573
+      // https://github.com/hugomrdias/playwright-test/issues/572
+      '--runner', 'mocha',
       ...watch,
       ...cov,
       '--config', fromAegir('src/config/pw-test.js'),

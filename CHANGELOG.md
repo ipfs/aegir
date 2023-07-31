@@ -1,3 +1,10 @@
+## [40.0.7](https://github.com/ipfs/aegir/compare/v40.0.6...v40.0.7) (2023-07-31)
+
+
+### Bug Fixes
+
+* override semantic-release version ([5362d24](https://github.com/ipfs/aegir/commit/5362d248f0dfc4c2b9cb84120d52324b88bc1cb4))
+
 ## [40.0.6](https://github.com/ipfs/aegir/compare/v40.0.5...v40.0.6) (2023-07-31)
 
 

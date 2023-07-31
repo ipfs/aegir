@@ -1,3 +1,15 @@
+## [40.0.4](https://github.com/ipfs/aegir/compare/v40.0.3...v40.0.4) (2023-07-31)
+
+
+### Bug Fixes
+
+* update versions ([d8c3ba1](https://github.com/ipfs/aegir/commit/d8c3ba1436d55f01cb201a586737eb6e59a301ca))
+
+
+### Trivial Changes
+
+* fix dep check ([40e56df](https://github.com/ipfs/aegir/commit/40e56dfffe9e7a1f58c2f6a42960923713e6f98f))
+
 ## [40.0.3](https://github.com/ipfs/aegir/compare/v40.0.2...v40.0.3) (2023-07-31)
 
 

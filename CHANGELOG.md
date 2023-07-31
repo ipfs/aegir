@@ -1,3 +1,10 @@
+## [40.0.5](https://github.com/ipfs/aegir/compare/v40.0.4...v40.0.5) (2023-07-31)
+
+
+### Bug Fixes
+
+* override semantic-release-monorepo version ([6a98707](https://github.com/ipfs/aegir/commit/6a98707147843f3f3ca3fb93f21cbd805f079297))
+
 ## [40.0.4](https://github.com/ipfs/aegir/compare/v40.0.3...v40.0.4) (2023-07-31)
 
 

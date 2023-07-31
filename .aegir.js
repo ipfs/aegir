@@ -5,6 +5,7 @@ export default {
     },
     dependencyCheck: {
         ignore: [
+            '@achingbrain/semantic-release-monorepo',
             '@typescript-eslint/eslint-plugin',
             'buffer',
             'c8',
@@ -17,7 +18,6 @@ export default {
             'playwright-test',
             'react-native-test-runner',
             'semantic-release',
-            'semantic-release-monorepo',
             'source-map-support',
             'typedoc-plugin-mdn-links',
             'typedoc-plugin-missing-exports',

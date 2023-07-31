@@ -1,3 +1,10 @@
+## [40.0.8](https://github.com/ipfs/aegir/compare/v40.0.7...v40.0.8) (2023-07-31)
+
+
+### Bug Fixes
+
+* use semantic-release with import instead of require ([0a018f3](https://github.com/ipfs/aegir/commit/0a018f30438984b4081c31f8ff0a80128e8803bb))
+
 ## [40.0.7](https://github.com/ipfs/aegir/compare/v40.0.6...v40.0.7) (2023-07-31)
 
 

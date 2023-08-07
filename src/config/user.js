@@ -101,7 +101,7 @@ const defaults = {
     preid: undefined,
     distTag: 'latest',
     remote: 'origin',
-    siblingDepUpdateMessage: 'deps: update sibling dependencies',
+    siblingDepUpdateMessage: 'chore: update sibling dependencies',
     siblingDepUpdateName: 'aegir[bot]',
     siblingDepUpdateEmail: 'aegir[bot]@users.noreply.github.com'
   },

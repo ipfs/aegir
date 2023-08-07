@@ -1,3 +1,10 @@
+## [40.0.9](https://github.com/ipfs/aegir/compare/v40.0.8...v40.0.9) (2023-08-07)
+
+
+### Bug Fixes
+
+* make updating sibling deps a chore ([#1349](https://github.com/ipfs/aegir/issues/1349)) ([8727b72](https://github.com/ipfs/aegir/commit/8727b72c128c55b2191f547366bd07f1d86261fc))
+
 ## [40.0.8](https://github.com/ipfs/aegir/compare/v40.0.7...v40.0.8) (2023-07-31)
 
 

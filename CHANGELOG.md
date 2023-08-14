@@ -1,3 +1,11 @@
+## [40.0.10](https://github.com/ipfs/aegir/compare/v40.0.9...v40.0.10) (2023-08-14)
+
+
+### Trivial Changes
+
+* add or force update .github/workflows/js-test-and-release.yml ([#1354](https://github.com/ipfs/aegir/issues/1354)) ([9537af8](https://github.com/ipfs/aegir/commit/9537af8f5c096a16081d9bbb90cfa8982d8e077e))
+* delete templates [skip ci] ([#1353](https://github.com/ipfs/aegir/issues/1353)) ([a84e5d3](https://github.com/ipfs/aegir/commit/a84e5d3e8847ff8a390525d79fec4a8cc565b9f6))
+
 ## [40.0.9](https://github.com/ipfs/aegir/compare/v40.0.8...v40.0.9) (2023-08-07)
 
 

@@ -1,3 +1,11 @@
+## [40.0.11](https://github.com/ipfs/aegir/compare/v40.0.10...v40.0.11) (2023-08-14)
+
+
+### Dependencies
+
+* bump esbuild from 0.18.20 to 0.19.2 ([#1355](https://github.com/ipfs/aegir/issues/1355)) ([9650470](https://github.com/ipfs/aegir/commit/9650470d8a2eb0e7272c5e4e5dd767e360d49607))
+* bump gh-pages from 5.0.0 to 6.0.0 ([#1352](https://github.com/ipfs/aegir/issues/1352)) ([df7b615](https://github.com/ipfs/aegir/commit/df7b61548fa8a779ba5399cfc701a5b281aeec67))
+
 ## [40.0.10](https://github.com/ipfs/aegir/compare/v40.0.9...v40.0.10) (2023-08-14)
 
 

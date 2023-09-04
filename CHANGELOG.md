@@ -1,3 +1,13 @@
+## [40.0.12](https://github.com/ipfs/aegir/compare/v40.0.11...v40.0.12) (2023-09-04)
+
+
+### Dependencies
+
+* bump execa from 7.2.0 to 8.0.1 ([#1358](https://github.com/ipfs/aegir/issues/1358)) ([214c028](https://github.com/ipfs/aegir/commit/214c028036264c14a1e2bde6f969aa2623f1260d))
+* bump p-retry from 5.1.2 to 6.0.0 ([#1361](https://github.com/ipfs/aegir/issues/1361)) ([b0ec35d](https://github.com/ipfs/aegir/commit/b0ec35d90fd56a79ef50573f076c213cf3fff9b5))
+* bump typedoc from 0.24.8 to 0.25.0 ([#1363](https://github.com/ipfs/aegir/issues/1363)) ([cf97994](https://github.com/ipfs/aegir/commit/cf97994f54c1a46b06e32a5cb92650b517889e6a))
+* **dev:** bump electron from 25.7.0 to 26.1.0 ([#1360](https://github.com/ipfs/aegir/issues/1360)) ([5d27366](https://github.com/ipfs/aegir/commit/5d2736611d0a872fc128436e1e60ef1e7434a063))
+
 ## [40.0.11](https://github.com/ipfs/aegir/compare/v40.0.10...v40.0.11) (2023-08-14)
 
 

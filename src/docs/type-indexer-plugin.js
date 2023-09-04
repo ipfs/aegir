@@ -2,30 +2,25 @@
 
 import fs from 'fs'
 import path from 'path'
-import { RendererEvent, ReflectionKind } from 'typedoc'
-import { parseProjects } from '../utils.js'
+import * as td from 'typedoc'
 
-/**
- * The types of models we want to store documentation URLs for
- */
-const MODELS = [
-  ReflectionKind.Interface,
-  ReflectionKind.Function,
-  ReflectionKind.TypeAlias,
-  ReflectionKind.Variable,
-  ReflectionKind.Class,
-  ReflectionKind.Enum
-]
+const MODELS =
+  td.ReflectionKind.Interface |
+  td.ReflectionKind.Function |
+  td.ReflectionKind.TypeAlias |
+  td.ReflectionKind.Variable |
+  td.ReflectionKind.Class |
+  td.ReflectionKind.Enum
 
 /**
  * @typedef {object} Documentation
  * @property {string} moduleName
  * @property {Record<string, string>} Documentation.typedocs
- * @property {string[]} Documentation.exported
+ * @property {Record<string, string>} Documentation.exports
  * @property {string} [Documentation.outputDir]
  *
  * @typedef {import('../utils.js').Project} Project
- * @typedef {import('typedoc/dist/lib/models/reflections').DeclarationReflection} DeclarationReflection
+ * @typedef {td.DeclarationReflection} DeclarationReflection
  */
 
 /**
@@ -35,20 +30,12 @@ const MODELS = [
  *
  * See `unknown-symbol-resolver-plugin.js` for how it is consumed.
  *
- * @param {import("typedoc/dist/lib/application").Application} Application
+ * @param {td.Application} app
  */
-export function load (Application) {
+export function load (app) {
   const manifestPath = `${process.cwd()}/package.json`
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
   const isMonorepo = Boolean(manifest.workspaces)
-
-  // workaround for https://github.com/TypeStrong/typedoc/issues/2338
-  /** @type {Record<string, Project>} */
-  let projects = {}
-
-  if (isMonorepo) {
-    projects = parseProjects(process.cwd(), manifest.workspaces)
-  }
 
   /** @type {string} */
   let ghPages
@@ -59,7 +46,7 @@ export function load (Application) {
     const [orgName, moduleName] = homepage.pathname.split('/').filter(Boolean)
     ghPages = `https://${orgName}.github.io/${moduleName}/`
   } catch (err) {
-    Application.logger.error('Could not detect gh-pages url - does the package.json have a valid homepage key?')
+    app.logger.error('Could not detect gh-pages url - does the package.json have a valid homepage key?')
     throw err
   }
 
@@ -68,7 +55,7 @@ export function load (Application) {
    */
   const onRendererBegin = event => {
     if (!event.urls) {
-      Application.logger.warn('No urls found in RendererEvent')
+      app.logger.warn('No urls found in RendererEvent')
       return
     }
 
@@ -76,63 +63,39 @@ export function load (Application) {
     const typedocs = {}
 
     for (const urlMapping of event.urls) {
+      // @ts-expect-error sources is not a property of Reflection
       if (!urlMapping.model.sources || urlMapping.model.sources.length === 0) {
-        Application.logger.info(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
+        app.logger.verbose(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
         continue
       }
 
-      if (!MODELS.includes(urlMapping.model.kind)) {
-        Application.logger.info(`Skipping model "${urlMapping.model.variant}" as it is not in the list of model types we are interested in`)
+      if (!urlMapping.model.kindOf(MODELS)) {
+        app.logger.verbose(`Skipping model "${urlMapping.model.variant}" as it is not in the list of model types we are interested in`)
         continue
       }
 
+      // @ts-expect-error sources is not a property of Reflection
       if (urlMapping.model.sources == null || urlMapping.model.sources.length === 0) {
-        Application.logger.info(`Skipping model "${urlMapping.model.variant}" as it has no url mapping sources`)
+        app.logger.verbose(`Skipping model "${urlMapping.model.variant}" as it has no url mapping sources`)
         continue
       }
 
+      // @ts-expect-error sources is not a property of Reflection
       const source = urlMapping.model.sources[0]
 
-      // workaround for https://github.com/TypeStrong/typedoc/issues/2338
-      if (!path.isAbsolute(source.fullFileName)) {
-        // did we get lucky?
-        const p = path.join(process.cwd(), source.fullFileName)
-
-        if (fs.existsSync(p)) {
-          source.fullFileName = p
-        } else {
-          const project = findParentProject(urlMapping.model)
-
-          if (project == null) {
-            Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute but could not detect containing module definition - see https://github.com/TypeStrong/typedoc/issues/2338`)
-            continue
-          }
-
-          const projectDir = projects[project.name]?.dir
-
-          if (projectDir == null) {
-            Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute but could not find containing project "${project.name}" - see https://github.com/TypeStrong/typedoc/issues/2338`)
-            continue
-          } else {
-            const fullFileName = `${projectDir}/src/${source.fullFileName}`
-
-            if (fs.existsSync(fullFileName)) {
-              Application.logger.info(`Full file name of source was not absolute, overriding ${source.fullFileName} -> ${fullFileName} - see https://github.com/TypeStrong/typedoc/issues/2338`)
-
-              source.fullFileName = fullFileName
-            } else {
-              Application.logger.warn(`Full file name "${source.fullFileName}" was not absolute, found containing project but could not locate source file in project - see https://github.com/TypeStrong/typedoc/issues/2338`)
-              continue
-            }
-          }
-        }
-      }
+      // @ts-expect-error reflectionSources is not a property of ProjectReflection
+      source.fullFileName = event.project.reflectionSources[urlMapping.model.id]
 
       const context = findContext(source, isMonorepo)
 
+      // skip dependencies to avoid exhausting memory
+      if (context.manifestPath.includes('node_modules')) {
+        continue
+      }
+
       // set up manifest to contain typedoc urls
       if (typedocs[context.manifestPath] == null) {
-        const details = loadManifest(Application, context)
+        const details = loadManifest(app, context)
 
         if (details == null) {
           continue
@@ -141,12 +104,34 @@ export function load (Application) {
         typedocs[context.manifestPath] = details
       }
 
+      // work out which exports map entry this symbol can be imported from
+      const manifestDir = path.dirname(context.manifestPath)
+      let defPath = source.fullFileName.replace(manifestDir, '')
+
+      if (defPath.endsWith('.ts')) {
+        defPath = defPath.replace(/(\.d)?\.ts$/, '.js')
+        if (!defPath.startsWith('/dist')) {
+          defPath = `/dist${defPath}`
+        }
+      }
+
+      defPath = `.${defPath}`
+      const exportPath = typedocs[context.manifestPath].exports[defPath]
+
       // cannot differentiate between types with duplicate names in the same module https://github.com/TypeStrong/typedoc/issues/2125
       if (typedocs[context.manifestPath].typedocs[urlMapping.model.name] != null) {
-        Application.logger.warn(`Duplicate exported type name ${urlMapping.model.name} defined in ${urlMapping.model.sources[0].fullFileName}`)
+        // @ts-expect-error sources is not a property of Reflection
+        app.logger.warn(`Duplicate exported type name ${urlMapping.model.name} defined in ${urlMapping.model.sources[0].fullFileName}`)
       } else {
         // store reference to generate doc url
         typedocs[context.manifestPath].typedocs[urlMapping.model.name] = `${ghPages}${urlMapping.url}`
+      }
+
+      // if the export map entry that this symbol can be loaded from is present,
+      // store it in the typedoc url list so we can attempt to choose a
+      // canonical documentation URL when duplicate symbol names are exported
+      if (exportPath != null) {
+        typedocs[context.manifestPath].typedocs[`${exportPath}:${urlMapping.model.name}`] = `${ghPages}${urlMapping.url}`
       }
     }
 
@@ -163,15 +148,74 @@ export function load (Application) {
       })
       fs.writeFileSync(`${context.outputDir}/typedoc-urls.json`, JSON.stringify(context.typedocs, null, 2))
 
-      Application.logger.info(`Wrote typedoc URLs to ${context.outputDir}/typedoc-urls.json`)
+      app.logger.info(`Wrote typedoc URLs to ${context.outputDir}/typedoc-urls.json`)
     })
 
     if (Object.keys(typedocs).length === 0) {
-      Application.logger.warn('No typedoc-urls.json written!')
+      app.logger.warn('No typedoc-urls.json written!')
     }
   }
 
-  Application.renderer.on(RendererEvent.BEGIN, onRendererBegin)
+  app.converter.on(td.Converter.EVENT_RESOLVE, onResolve)
+
+  app.serializer.addSerializer({
+    priority: 0,
+    supports (model) {
+      return model instanceof td.ProjectReflection
+    },
+    toObject (model, obj, _ser) {
+      obj.reflectionSources = model.reflectionSources
+      return obj
+    }
+  })
+  app.deserializer.addDeserializer({
+    priority: 0,
+    supports (_model, obj) {
+      // @ts-expect-error obj is unknown type
+      return typeof obj.reflectionSources === 'object'
+    },
+    fromObject (_model, obj) {
+      app.deserializer.defer((project) => {
+        // @ts-expect-error reflectionSources is not a property of ProjectReflection
+        project.reflectionSources ??= {}
+
+        // @ts-expect-error obj is unknown type
+        for (const [id, path] of Object.entries(obj.reflectionSources)) {
+          // @ts-expect-error reflectionSources is not a property of ProjectReflection
+          project.reflectionSources[app.deserializer.oldIdToNewId[id]] = path
+        }
+      })
+    }
+  })
+
+  app.renderer.on(td.RendererEvent.BEGIN, onRendererBegin)
+}
+
+/**
+ * @param {td.Context} context
+ * @param {td.DeclarationReflection} decl
+ */
+function onResolve (context, decl) {
+  if (!decl.kindOf(MODELS)) {
+    return
+  }
+
+  const symbol = context.project.getSymbolFromReflection(decl)
+
+  if (!symbol) {
+    return
+  }
+
+  const declarations = symbol.declarations
+
+  if (!declarations) {
+    return
+  }
+
+  // @ts-expect-error reflectionSources is not a property of ProjectReflection
+  context.project.reflectionSources ??= {}
+  // @ts-expect-error reflectionSources is not a property of ProjectReflection
+  context.project.reflectionSources[decl.id] = declarations[0].getSourceFile().fileName
 }
 
 /**
@@ -232,21 +276,32 @@ function loadManifest (Application, context) {
   }
 
   // store a list of all files exported by this project
-  /** @type {string[]} */
-  const exported = []
+  /** @type {Record<string, string>} */
+  const exports = {}
 
-  Object.keys(manifest.exports ?? {}).forEach(name => {
-    if (manifest.exports[name].import == null) {
-      Application.logger.warn(`Project export ${name} has no import field`)
-      return
+  if (manifest.exports != null) {
+    if (typeof manifest.exports === 'string') {
+      exports[manifest.exports] = '.'
+    } else {
+      Object.keys(manifest.exports).forEach(name => {
+        if (typeof manifest.exports[name] === 'string') {
+          exports[manifest.exports[name]] = name
+          return
+        }
+
+        if (manifest.exports[name].import == null) {
+          Application.logger.warn(`Project export ${name} has no import field`)
+          return
+        }
+
+        exports[manifest.exports[name].import] = name
+      })
     }
-
-    exported.push(manifest.exports[name].import)
-  })
+  }
 
   return {
     moduleName: manifest.name,
-    exported,
+    exports,
     typedocs: {},
     outputDir: context.outputDir
   }
@@ -265,25 +320,4 @@ function makeAbsolute (p) {
   }
 
   return p
-}
-
-/**
- * @param {any} model
- * @param {Set<any>} seen
- * @returns {DeclarationReflection | undefined}
- */
-function findParentProject (model, seen = new Set()) {
-  const parent = model.parent
-
-  if (seen.has(parent)) {
-    return
-  } else {
-    seen.add(parent)
-  }
-
-  if (parent.kind === ReflectionKind.Module) {
-    return parent
-  }
-
-  return findParentProject(parent, seen)
 }

@@ -1,3 +1,10 @@
+## [40.0.13](https://github.com/ipfs/aegir/compare/v40.0.12...v40.0.13) (2023-09-07)
+
+
+### Bug Fixes
+
+* check monorepo root for docs ([#1365](https://github.com/ipfs/aegir/issues/1365)) ([439a646](https://github.com/ipfs/aegir/commit/439a6469b04bed8969203b2bea44811921868f5f))
+
 ## [40.0.12](https://github.com/ipfs/aegir/compare/v40.0.11...v40.0.12) (2023-09-04)
 
 

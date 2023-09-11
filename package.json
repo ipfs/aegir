@@ -250,7 +250,7 @@
     "chai-parentheses": "^0.0.2",
     "chai-string": "^1.5.0",
     "chai-subset": "^1.6.0",
-    "conventional-changelog-conventionalcommits": "^6.1.0",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
     "cors": "^2.8.5",
     "depcheck": "^1.4.3",
     "diff": "^5.1.0",

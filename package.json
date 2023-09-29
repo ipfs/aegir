@@ -258,7 +258,7 @@
     "env-paths": "^3.0.0",
     "esbuild": "^0.19.2",
     "eslint": "^8.31.0",
-    "eslint-config-ipfs": "^5.0.0",
+    "eslint-config-ipfs": "^6.0.0",
     "eslint-plugin-etc": "^2.0.2",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jsdoc": "^46.4.3",

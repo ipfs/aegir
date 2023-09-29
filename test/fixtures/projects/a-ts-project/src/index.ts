@@ -14,7 +14,7 @@ export const useDerp = (): void => {
 }
 
 export interface AnExportedInterface {
-  aMethod: () => void
+  aMethod(): void
 }
 
 export type { ExportedButNotInExports } from './a-module.js'

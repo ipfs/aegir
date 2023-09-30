@@ -1,3 +1,28 @@
+## [41.0.0](https://github.com/ipfs/aegir/compare/v40.0.13...v41.0.0) (2023-09-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* All interfaces now need to use method signature style rather than property function style
+
+eg:
+before
+```ts
+interface Foo {
+  bar: (baz: number) => void
+}
+```
+after
+```ts
+interface Foo {
+  bar(baz: number): void
+}
+```
+
+### Dependencies
+
+* update eslint-config-ipfs ([#1374](https://github.com/ipfs/aegir/issues/1374)) ([5fadfb7](https://github.com/ipfs/aegir/commit/5fadfb70dc7874acb9265bcdc6b5da4a9d110ad1))
+
 ## [40.0.13](https://github.com/ipfs/aegir/compare/v40.0.12...v40.0.13) (2023-09-07)
 
 

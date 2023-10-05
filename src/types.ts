@@ -332,6 +332,11 @@ interface ReleaseRcOptions {
    * Which tag to publish the rc as
    */
   tag: string
+
+  /**
+   * Don't prefix output with the package name
+   */
+  noPrefix?: boolean
 }
 
 interface DependencyCheckOptions {
@@ -351,6 +356,11 @@ interface ExecOptions {
    * If false, the command will continue to be run in other packages
    */
   bail?: boolean
+
+  /**
+   * Don't prefix output with the package name
+   */
+  noPrefix?: boolean
 }
 
 interface RunOptions {
@@ -358,6 +368,11 @@ interface RunOptions {
    * If false, the command will continue to be run in other packages
    */
   bail?: boolean
+
+  /**
+   * Don't prefix output with the package name
+   */
+  noPrefix?: boolean
 }
 
 export type {

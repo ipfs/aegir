@@ -6,6 +6,7 @@ import fs from 'fs-extra'
 import Listr from 'listr'
 import retry from 'p-retry'
 import { isMonorepoParent, pkg, everyMonorepoProject } from './utils.js'
+import kleur from 'kleur'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -112,20 +113,21 @@ async function releaseRc (commit, ctx) {
   }
 
   console.info(`npm version ${pkg.version}-${commit} --no-git-tag-version`)
-  await execa('npm', ['version', `${pkg.version}-${commit}`, '--no-git-tag-version'], {
-    stdout: 'inherit',
-    stderr: 'inherit'
-  })
+  const subprocess = execa('npm', ['version', `${pkg.version}-${commit}`, '--no-git-tag-version'])
+  const prefix = ctx.noPrefix ? '' : kleur.gray(pkg.name + ': ')
+  subprocess.stdout?.on('data', (data) => process.stdout.write(`${prefix}${data}`))
+  subprocess.stderr?.on('data', (data) => process.stderr.write(`${prefix}${data}`))
+  await subprocess
 
   await retry(async () => {
     console.info(`npm publish --tag ${ctx.tag} --dry-run ${!process.env.CI}`)
 
     try {
-      await execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
-        stdout: 'inherit',
-        stderr: 'inherit',
-        all: true
-      })
+      const subprocess = execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`])
+      const prefix = ctx.noPrefix ? '' : kleur.gray(pkg.name + ': ')
+      subprocess.stdout?.on('data', (data) => process.stdout.write(`${prefix}${data}`))
+      subprocess.stderr?.on('data', (data) => process.stderr.write(`${prefix}${data}`))
+      await subprocess
     } catch (/** @type {any} */ err) {
       if (err.all?.includes('You cannot publish over the previously published versions')) {
         // this appears to be a bug in npm, sometimes you publish successfully but it also

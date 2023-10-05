@@ -30,11 +30,13 @@ export default {
         console.info(kleur.grey(`${project.manifest.name} > npm run ${script} ${forwardArgs.join(' ')}`)) // eslint-disable-line no-console
 
         try {
-          await execa('npm', ['run', script, ...forwardArgs], {
-            cwd: project.dir,
-            stderr: 'inherit',
-            stdout: 'inherit'
+          const subprocess = execa('npm', ['run', script, ...forwardArgs], {
+            cwd: project.dir
           })
+          const prefix = ctx.noPrefix ? '' : kleur.gray(project.manifest.name + ': ')
+          subprocess.stdout?.on('data', (data) => process.stdout.write(`${prefix}${data}`))
+          subprocess.stderr?.on('data', (data) => process.stderr.write(`${prefix}${data}`))
+          await subprocess
         } catch (/** @type {any} */ err) {
           if (ctx.bail !== false) {
             throw err

@@ -19,11 +19,13 @@ export default {
       console.info(kleur.grey(`${project.manifest.name} > ${ctx.command} ${forwardOptions.join(' ')}`)) // eslint-disable-line no-console
 
       try {
-        await execa(ctx.command, forwardOptions, {
-          cwd: project.dir,
-          stderr: 'inherit',
-          stdout: 'inherit'
+        const subprocess = execa(ctx.command, forwardOptions, {
+          cwd: project.dir
         })
+        const prefix = ctx.noPrefix ? '' : kleur.gray(project.manifest.name + ': ')
+        subprocess.stdout?.on('data', (data) => process.stdout.write(`${prefix}${data}`))
+        subprocess.stderr?.on('data', (data) => process.stderr.write(`${prefix}${data}`))
+        await subprocess
       } catch (/** @type {any} */ err) {
         if (ctx.bail !== false) {
           throw err

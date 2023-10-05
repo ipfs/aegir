@@ -29,6 +29,11 @@ export default {
           type: 'boolean',
           describe: '',
           default: userConfig.build.bundle
+        },
+        noPrefix: {
+          type: 'boolean',
+          describe: 'Don\'t prefix output with the package name',
+          default: userConfig.exec.noPrefix
         }
       })
       .positional('script', {

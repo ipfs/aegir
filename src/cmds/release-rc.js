@@ -35,6 +35,11 @@ export default {
           type: 'string',
           describe: 'Which tag to publish the version as',
           default: userConfig.releaseRc.tag
+        },
+        noPrefix: {
+          type: 'boolean',
+          describe: 'Don\'t prefix output with the package name',
+          default: userConfig.exec.noPrefix
         }
       })
   },

@@ -575,3 +575,15 @@ export const formatCode = (code, errorLines) => {
   })
   return '    ' + lines.join('\n    ')
 }
+
+/**
+ * Pipe subprocess output to stdio
+ * @param {import('execa').ExecaChildProcess} subprocess 
+ * @param {string} prefix 
+ * @param {boolean} [noPrefix]
+ */
+export function pipeOutput(subprocess, prefix, noPrefix) {
+  prefix = noPrefix ? '' : kleur.gray(prefix + ': ')
+  subprocess.stdout?.on('data', (data) => process.stdout.write(`${prefix}${data}`))
+  subprocess.stderr?.on('data', (data) => process.stderr.write(`${prefix}${data}`))
+}

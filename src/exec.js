@@ -1,6 +1,6 @@
 import { execa } from 'execa'
 import kleur from 'kleur'
-import { everyMonorepoProject } from './utils.js'
+import { everyMonorepoProject, pipeOutput } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -22,9 +22,7 @@ export default {
         const subprocess = execa(ctx.command, forwardOptions, {
           cwd: project.dir
         })
-        const prefix = ctx.noPrefix ? '' : kleur.gray(project.manifest.name + ': ')
-        subprocess.stdout?.on('data', (data) => process.stdout.write(`${prefix}${data}`))
-        subprocess.stderr?.on('data', (data) => process.stderr.write(`${prefix}${data}`))
+        pipeOutput(subprocess, project.manifest.name, ctx.noPrefix)
         await subprocess
       } catch (/** @type {any} */ err) {
         if (ctx.bail !== false) {

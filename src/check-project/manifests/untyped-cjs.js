@@ -23,7 +23,7 @@ export async function untypedCJSManifest (manifest, branchName, repoUrl, homePag
     eslintConfig: merge({
       extends: 'ipfs',
       parserOptions: {
-        package: true
+        project: true
       }
     }, manifest.eslintConfig),
     release: (manifest.scripts?.release?.includes('semantic-release') || manifest.scripts?.release?.includes('aegir release')) ? semanticReleaseConfig(branchName) : undefined

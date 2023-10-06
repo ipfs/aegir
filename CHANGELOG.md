@@ -1,3 +1,10 @@
+## [41.0.1](https://github.com/ipfs/aegir/compare/v41.0.0...v41.0.1) (2023-10-06)
+
+
+### Trivial Changes
+
+* fix linting errors ([#1380](https://github.com/ipfs/aegir/issues/1380)) ([2918ba9](https://github.com/ipfs/aegir/commit/2918ba9180c25f9f7e5e784f04a7c7d77905355b))
+
 ## [41.0.0](https://github.com/ipfs/aegir/compare/v40.0.13...v41.0.0) (2023-09-30)
 
 

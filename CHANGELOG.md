@@ -1,3 +1,10 @@
+## [41.0.3](https://github.com/ipfs/aegir/compare/v41.0.2...v41.0.3) (2023-10-06)
+
+
+### Bug Fixes
+
+* eslint option is project not package ([fc3b4e1](https://github.com/ipfs/aegir/commit/fc3b4e13a50b8bc35e7ce3ea79805772404f1ae2))
+
 ## [41.0.2](https://github.com/ipfs/aegir/compare/v41.0.1...v41.0.2) (2023-10-06)
 
 

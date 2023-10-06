@@ -8,14 +8,14 @@
 eg:
 before
 ```ts
-interface Foo {
+interface MyInterfaceBefore {
   bar: (baz: number) => void
 }
 ```
 after
 ```ts
-interface Foo {
-  bar(baz: number): void
+interface MyInterfaceAfter {
+  bar (baz: number): void
 }
 ```
 
@@ -1560,7 +1560,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 ### BREAKING CHANGES
 
-* Update all the deps except webpack. 
+* Update all the deps except webpack.
 
 
 
@@ -2247,7 +2247,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 ### BREAKING CHANGES
 
 * lots of deps updated hidden problems might still exist
-* console.* statement are NOW a lint error  
+* console.* statement are NOW a lint error
 
 
 

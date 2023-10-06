@@ -112,17 +112,20 @@ async function releaseRc (commit, ctx) {
   }
 
   console.info(`npm version ${pkg.version}-${commit} --no-git-tag-version`)
-  const subprocess = execa('npm', ['version', `${pkg.version}-${commit}`, '--no-git-tag-version'])
-  pipeOutput(subprocess, pkg.version, ctx.noPrefix)
-  await subprocess
+  await execa('npm', ['version', `${pkg.version}-${commit}`, '--no-git-tag-version'], {
+    stdout: 'inherit',
+    stderr: 'inherit'
+  })
 
   await retry(async () => {
     console.info(`npm publish --tag ${ctx.tag} --dry-run ${!process.env.CI}`)
 
     try {
-      const subprocess = execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`])
-      pipeOutput(subprocess, pkg.version, ctx.noPrefix)
-      await subprocess
+      await execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
+        stdout: 'inherit',
+        stderr: 'inherit',
+        all: true
+      })
     } catch (/** @type {any} */ err) {
       if (err.all?.includes('You cannot publish over the previously published versions')) {
         // this appears to be a bug in npm, sometimes you publish successfully but it also

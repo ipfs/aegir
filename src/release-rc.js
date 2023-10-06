@@ -78,12 +78,11 @@ async function releaseMonorepoRcs (commit, ctx) {
       console.info(`npm publish --tag ${ctx.tag} --dry-run ${!process.env.CI}`)
 
       try {
-        await execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
-          stdout: 'inherit',
-          stderr: 'inherit',
-          cwd: project.dir,
-          all: true
+        const subprocess = execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
+          cwd: project.dir
         })
+        pipeOutput(subprocess, project.manifest.name, ctx.noPrefix)
+        await subprocess
       } catch (/** @type {any} */ err) {
         if (err.all?.includes('You cannot publish over the previously published versions')) {
           // this appears to be a bug in npm, sometimes you publish successfully but it also

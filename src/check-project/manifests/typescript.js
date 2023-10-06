@@ -38,6 +38,7 @@ export async function typescriptManifest (manifest, branchName, repoUrl, homePag
     eslintConfig: merge({
       extends: 'ipfs',
       parserOptions: {
+        package: true,
         sourceType: 'module'
       }
     }, manifest.eslintConfig),

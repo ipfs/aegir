@@ -1,3 +1,10 @@
+## [41.0.2](https://github.com/ipfs/aegir/compare/v41.0.1...v41.0.2) (2023-10-06)
+
+
+### Bug Fixes
+
+* add package to eslint parser options ([#1379](https://github.com/ipfs/aegir/issues/1379)) ([eb9f72f](https://github.com/ipfs/aegir/commit/eb9f72f20b43d42e9baca4b04a08a7bcff008118))
+
 ## [41.0.1](https://github.com/ipfs/aegir/compare/v41.0.0...v41.0.1) (2023-10-06)
 
 

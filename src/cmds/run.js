@@ -33,7 +33,7 @@ export default {
         noPrefix: {
           type: 'boolean',
           describe: 'Don\'t prefix output with the package name',
-          default: userConfig.exec.noPrefix
+          default: userConfig.run.noPrefix
         }
       })
       .positional('script', {

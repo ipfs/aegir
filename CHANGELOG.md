@@ -1,3 +1,10 @@
+## [41.0.4](https://github.com/ipfs/aegir/compare/v41.0.3...v41.0.4) (2023-10-10)
+
+
+### Bug Fixes
+
+* set bail defaults correctly ([#1382](https://github.com/ipfs/aegir/issues/1382)) ([46cc114](https://github.com/ipfs/aegir/commit/46cc114f35a2870414d2d546c18991591a33cd7a))
+
 ## [41.0.3](https://github.com/ipfs/aegir/compare/v41.0.2...v41.0.3) (2023-10-06)
 
 

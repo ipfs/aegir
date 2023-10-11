@@ -1,3 +1,31 @@
+## [41.0.4](https://github.com/ipfs/aegir/compare/v41.0.3...v41.0.4) (2023-10-10)
+
+
+### Bug Fixes
+
+* set bail defaults correctly ([#1382](https://github.com/ipfs/aegir/issues/1382)) ([46cc114](https://github.com/ipfs/aegir/commit/46cc114f35a2870414d2d546c18991591a33cd7a))
+
+## [41.0.3](https://github.com/ipfs/aegir/compare/v41.0.2...v41.0.3) (2023-10-06)
+
+
+### Bug Fixes
+
+* eslint option is project not package ([fc3b4e1](https://github.com/ipfs/aegir/commit/fc3b4e13a50b8bc35e7ce3ea79805772404f1ae2))
+
+## [41.0.2](https://github.com/ipfs/aegir/compare/v41.0.1...v41.0.2) (2023-10-06)
+
+
+### Bug Fixes
+
+* add package to eslint parser options ([#1379](https://github.com/ipfs/aegir/issues/1379)) ([eb9f72f](https://github.com/ipfs/aegir/commit/eb9f72f20b43d42e9baca4b04a08a7bcff008118))
+
+## [41.0.1](https://github.com/ipfs/aegir/compare/v41.0.0...v41.0.1) (2023-10-06)
+
+
+### Trivial Changes
+
+* fix linting errors ([#1380](https://github.com/ipfs/aegir/issues/1380)) ([2918ba9](https://github.com/ipfs/aegir/commit/2918ba9180c25f9f7e5e784f04a7c7d77905355b))
+
 ## [41.0.0](https://github.com/ipfs/aegir/compare/v40.0.13...v41.0.0) (2023-09-30)
 
 

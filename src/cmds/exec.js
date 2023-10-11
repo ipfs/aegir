@@ -28,7 +28,7 @@ export default {
         bail: {
           type: 'boolean',
           describe: '',
-          default: userConfig.build.bundle
+          default: userConfig.exec.bail
         },
         noPrefix: {
           type: 'boolean',

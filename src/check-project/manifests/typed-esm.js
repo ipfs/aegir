@@ -51,6 +51,7 @@ export async function typedESMManifest (manifest, branchName, repoUrl, homePage 
     eslintConfig: merge({
       extends: 'ipfs',
       parserOptions: {
+        project: true,
         sourceType: 'module'
       }
     }, manifest.eslintConfig),

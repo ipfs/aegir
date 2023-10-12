@@ -81,7 +81,7 @@ async function releaseMonorepoRcs (commit, ctx) {
         const subprocess = execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
           cwd: project.dir
         })
-        pipeOutput(subprocess, project.manifest.name, ctx.noPrefix)
+        pipeOutput(subprocess, project.manifest.name, ctx.prefix)
         await subprocess
       } catch (/** @type {any} */ err) {
         if (err.all?.includes('You cannot publish over the previously published versions')) {

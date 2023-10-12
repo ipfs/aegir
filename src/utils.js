@@ -581,10 +581,10 @@ export const formatCode = (code, errorLines) => {
  *
  * @param {import('execa').ExecaChildProcess} subprocess
  * @param {string} prefix
- * @param {boolean} [noPrefix]
+ * @param {boolean} [shouldPrefix]
  */
-export function pipeOutput (subprocess, prefix, noPrefix) {
-  prefix = noPrefix ? '' : kleur.gray(prefix + ': ')
+export function pipeOutput (subprocess, prefix, shouldPrefix) {
+  prefix = shouldPrefix === false ? '' : kleur.gray(prefix + ': ')
   subprocess.stdout?.on('data', (data) => process.stdout.write(`${prefix}${data}`))
   subprocess.stderr?.on('data', (data) => process.stderr.write(`${prefix}${data}`))
 }

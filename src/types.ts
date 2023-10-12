@@ -334,9 +334,9 @@ interface ReleaseRcOptions {
   tag: string
 
   /**
-   * Don't prefix output with the package name
+   * Prefix output with the package name
    */
-  noPrefix?: boolean
+  prefix?: boolean
 }
 
 interface DependencyCheckOptions {
@@ -358,9 +358,9 @@ interface ExecOptions {
   bail?: boolean
 
   /**
-   * Don't prefix output with the package name
+   * Prefix output with the package name
    */
-  noPrefix?: boolean
+  prefix?: boolean
 }
 
 interface RunOptions {
@@ -370,9 +370,9 @@ interface RunOptions {
   bail?: boolean
 
   /**
-   * Don't prefix output with the package name
+   * Prefix output with the package name
    */
-  noPrefix?: boolean
+  prefix?: boolean
 }
 
 export type {

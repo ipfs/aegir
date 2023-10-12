@@ -33,7 +33,7 @@ export default {
           const subprocess = execa('npm', ['run', script, ...forwardArgs], {
             cwd: project.dir
           })
-          pipeOutput(subprocess, project.manifest.name, ctx.noPrefix)
+          pipeOutput(subprocess, project.manifest.name, ctx.prefix)
           await subprocess
         } catch (/** @type {any} */ err) {
           if (ctx.bail !== false) {

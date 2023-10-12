@@ -30,10 +30,10 @@ export default {
           describe: '',
           default: userConfig.exec.bail
         },
-        noPrefix: {
+        prefix: {
           type: 'boolean',
-          describe: 'Don\'t prefix output with the package name',
-          default: userConfig.exec.noPrefix
+          describe: 'Prefix output with the package name',
+          default: userConfig.exec.prefix
         }
       })
   },

@@ -30,10 +30,10 @@ export default {
           describe: '',
           default: userConfig.run.bail
         },
-        noPrefix: {
+        prefix: {
           type: 'boolean',
-          describe: 'Don\'t prefix output with the package name',
-          default: userConfig.run.noPrefix
+          describe: 'Prefix output with the package name',
+          default: userConfig.run.prefix
         }
       })
       .positional('script', {

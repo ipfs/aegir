@@ -36,10 +36,10 @@ export default {
           describe: 'Which tag to publish the version as',
           default: userConfig.releaseRc.tag
         },
-        noPrefix: {
+        prefix: {
           type: 'boolean',
-          describe: 'Don\'t prefix output with the package name',
-          default: userConfig.releaseRc.noPrefix
+          describe: 'Prefix output with the package name',
+          default: userConfig.releaseRc.prefix
         }
       })
   },

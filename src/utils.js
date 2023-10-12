@@ -585,6 +585,16 @@ export const formatCode = (code, errorLines) => {
  */
 export function pipeOutput (subprocess, prefix, shouldPrefix) {
   prefix = shouldPrefix === false ? '' : kleur.gray(prefix + ': ')
-  subprocess.stdout?.on('data', (data) => process.stdout.write(`${prefix}${data}`))
-  subprocess.stderr?.on('data', (data) => process.stderr.write(`${prefix}${data}`))
+  subprocess.stdout?.on('data', (data) => process.stdout.write(
+    data.toString('utf8')
+      .split('\n')
+      .map((/** @type {string} */ line) => `${prefix}${line}`)
+      .join('\n')
+  ))
+  subprocess.stderr?.on('data', (data) => process.stderr.write(
+    data.toString('utf8')
+      .split('\n')
+      .map((/** @type {string} */ line) => `${prefix}${line}`)
+      .join('\n')
+  ))
 }

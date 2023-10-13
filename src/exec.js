@@ -12,14 +12,14 @@ export default {
    * @param {GlobalOptions & ExecOptions & { command: string }} ctx
    */
   async run (ctx) {
-    const forwardOptions = ctx['--'] ? ctx['--'] : []
+    const forwardArgs = ctx['--'] ? ctx['--'] : []
 
     await everyMonorepoProject(process.cwd(), async (project) => {
       console.info('') // eslint-disable-line no-console
-      console.info(kleur.grey(`${project.manifest.name} > ${ctx.command} ${forwardOptions.join(' ')}`)) // eslint-disable-line no-console
+      console.info(kleur.grey(`${project.manifest.name}:`), `> ${ctx.command}${forwardArgs.length > 0 ? ` ${forwardArgs.join(' ')}` : ''}`) // eslint-disable-line no-console
 
       try {
-        const subprocess = execa(ctx.command, forwardOptions, {
+        const subprocess = execa(ctx.command, forwardArgs, {
           cwd: project.dir
         })
         pipeOutput(subprocess, project.manifest.name, ctx.prefix)

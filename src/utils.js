@@ -584,17 +584,22 @@ export const formatCode = (code, errorLines) => {
  * @param {boolean} [shouldPrefix]
  */
 export function pipeOutput (subprocess, prefix, shouldPrefix) {
-  prefix = shouldPrefix === false ? '' : kleur.gray(prefix + ': ')
+  prefix = shouldPrefix === false ? '' : kleur.gray(prefix + ':')
   subprocess.stdout?.on('data', (data) => process.stdout.write(
     data.toString('utf8')
       .split('\n')
-      .map((/** @type {string} */ line) => `${prefix}${line}`)
+      .map((/** @type {string} */ line) => [prefix, line].filter(Boolean)
+        .map(line => line.trim())
+        .join(' '))
       .join('\n')
   ))
   subprocess.stderr?.on('data', (data) => process.stderr.write(
     data.toString('utf8')
       .split('\n')
-      .map((/** @type {string} */ line) => `${prefix}${line}`)
+      .map((/** @type {string} */ line) => [prefix, line]
+        .filter(Boolean)
+        .map(line => line.trim())
+        .join(' '))
       .join('\n')
   ))
 }

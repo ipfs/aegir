@@ -27,7 +27,7 @@ export default {
         }
 
         console.info('') // eslint-disable-line no-console
-        console.info(kleur.grey(`${project.manifest.name} > npm run ${script} ${forwardArgs.join(' ')}`)) // eslint-disable-line no-console
+        console.info(kleur.grey(`${project.manifest.name}:`), `npm run ${script}${forwardArgs.length > 0 ? ` ${forwardArgs.join(' ')}` : ''}`) // eslint-disable-line no-console
 
         try {
           const subprocess = execa('npm', ['run', script, ...forwardArgs], {

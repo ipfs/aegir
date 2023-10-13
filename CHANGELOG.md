@@ -1,3 +1,10 @@
+## [41.0.5](https://github.com/ipfs/aegir/compare/v41.0.4...v41.0.5) (2023-10-13)
+
+
+### Documentation
+
+* update README.md ([#1381](https://github.com/ipfs/aegir/issues/1381)) ([6d71d94](https://github.com/ipfs/aegir/commit/6d71d9484040baf1ec4853dc45e85f11e6da9478))
+
 ## [41.0.4](https://github.com/ipfs/aegir/compare/v41.0.3...v41.0.4) (2023-10-10)
 
 

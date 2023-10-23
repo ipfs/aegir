@@ -577,6 +577,22 @@ export const formatCode = (code, errorLines) => {
 }
 
 /**
+ * @param {*} data
+ * @param {string} prefix
+ * @param {boolean} shouldPrefix
+ * @returns {string}
+ */
+function maybeAddPrefix (data, prefix, shouldPrefix) {
+  if (!shouldPrefix) {
+    return data.toString('utf8')
+  }
+  return data.toString('utf8')
+    .split('\n')
+    .map((/** @type {string} */ line) => `${prefix}${line.trim()}`)
+    .join('\n')
+}
+
+/**
  * Pipe subprocess output to stdio
  *
  * @param {import('execa').ExecaChildProcess} subprocess
@@ -584,22 +600,7 @@ export const formatCode = (code, errorLines) => {
  * @param {boolean} [shouldPrefix]
  */
 export function pipeOutput (subprocess, prefix, shouldPrefix) {
-  prefix = shouldPrefix === false ? '' : kleur.gray(prefix + ':')
-  subprocess.stdout?.on('data', (data) => process.stdout.write(
-    data.toString('utf8')
-      .split('\n')
-      .map((/** @type {string} */ line) => [prefix, line].filter(Boolean)
-        .map(line => line.trim())
-        .join(' '))
-      .join('\n')
-  ))
-  subprocess.stderr?.on('data', (data) => process.stderr.write(
-    data.toString('utf8')
-      .split('\n')
-      .map((/** @type {string} */ line) => [prefix, line]
-        .filter(Boolean)
-        .map(line => line.trim())
-        .join(' '))
-      .join('\n')
-  ))
+  prefix = kleur.gray(prefix + ': ')
+  subprocess.stdout?.on('data', (data) => process.stdout.write(maybeAddPrefix(data, prefix, shouldPrefix !== false)))
+  subprocess.stderr?.on('data', (data) => process.stderr.write(maybeAddPrefix(data, prefix, shouldPrefix !== false)))
 }

@@ -1,3 +1,10 @@
+## [41.0.6](https://github.com/ipfs/aegir/compare/v41.0.5...v41.0.6) (2023-10-24)
+
+
+### Bug Fixes
+
+* re-enable test coverage ([#1195](https://github.com/ipfs/aegir/issues/1195)) ([9b35013](https://github.com/ipfs/aegir/commit/9b3501310805fa2c26efc8ed1518b750e3791626))
+
 ## [41.0.5](https://github.com/ipfs/aegir/compare/v41.0.4...v41.0.5) (2023-10-13)
 
 

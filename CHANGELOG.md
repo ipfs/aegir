@@ -1,3 +1,164 @@
+## [41.0.5](https://github.com/ipfs/aegir/compare/v41.0.4...v41.0.5) (2023-10-13)
+
+
+### Documentation
+
+* update README.md ([#1381](https://github.com/ipfs/aegir/issues/1381)) ([6d71d94](https://github.com/ipfs/aegir/commit/6d71d9484040baf1ec4853dc45e85f11e6da9478))
+
+## [41.0.4](https://github.com/ipfs/aegir/compare/v41.0.3...v41.0.4) (2023-10-10)
+
+
+### Bug Fixes
+
+* set bail defaults correctly ([#1382](https://github.com/ipfs/aegir/issues/1382)) ([46cc114](https://github.com/ipfs/aegir/commit/46cc114f35a2870414d2d546c18991591a33cd7a))
+
+## [41.0.3](https://github.com/ipfs/aegir/compare/v41.0.2...v41.0.3) (2023-10-06)
+
+
+### Bug Fixes
+
+* eslint option is project not package ([fc3b4e1](https://github.com/ipfs/aegir/commit/fc3b4e13a50b8bc35e7ce3ea79805772404f1ae2))
+
+## [41.0.2](https://github.com/ipfs/aegir/compare/v41.0.1...v41.0.2) (2023-10-06)
+
+
+### Bug Fixes
+
+* add package to eslint parser options ([#1379](https://github.com/ipfs/aegir/issues/1379)) ([eb9f72f](https://github.com/ipfs/aegir/commit/eb9f72f20b43d42e9baca4b04a08a7bcff008118))
+
+## [41.0.1](https://github.com/ipfs/aegir/compare/v41.0.0...v41.0.1) (2023-10-06)
+
+
+### Trivial Changes
+
+* fix linting errors ([#1380](https://github.com/ipfs/aegir/issues/1380)) ([2918ba9](https://github.com/ipfs/aegir/commit/2918ba9180c25f9f7e5e784f04a7c7d77905355b))
+
+## [41.0.0](https://github.com/ipfs/aegir/compare/v40.0.13...v41.0.0) (2023-09-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* All interfaces now need to use method signature style rather than property function style
+
+eg:
+before
+```ts
+interface MyInterfaceBefore {
+  bar: (baz: number) => void
+}
+```
+after
+```ts
+interface MyInterfaceAfter {
+  bar (baz: number): void
+}
+```
+
+### Dependencies
+
+* update eslint-config-ipfs ([#1374](https://github.com/ipfs/aegir/issues/1374)) ([5fadfb7](https://github.com/ipfs/aegir/commit/5fadfb70dc7874acb9265bcdc6b5da4a9d110ad1))
+
+## [40.0.13](https://github.com/ipfs/aegir/compare/v40.0.12...v40.0.13) (2023-09-07)
+
+
+### Bug Fixes
+
+* check monorepo root for docs ([#1365](https://github.com/ipfs/aegir/issues/1365)) ([439a646](https://github.com/ipfs/aegir/commit/439a6469b04bed8969203b2bea44811921868f5f))
+
+## [40.0.12](https://github.com/ipfs/aegir/compare/v40.0.11...v40.0.12) (2023-09-04)
+
+
+### Dependencies
+
+* bump execa from 7.2.0 to 8.0.1 ([#1358](https://github.com/ipfs/aegir/issues/1358)) ([214c028](https://github.com/ipfs/aegir/commit/214c028036264c14a1e2bde6f969aa2623f1260d))
+* bump p-retry from 5.1.2 to 6.0.0 ([#1361](https://github.com/ipfs/aegir/issues/1361)) ([b0ec35d](https://github.com/ipfs/aegir/commit/b0ec35d90fd56a79ef50573f076c213cf3fff9b5))
+* bump typedoc from 0.24.8 to 0.25.0 ([#1363](https://github.com/ipfs/aegir/issues/1363)) ([cf97994](https://github.com/ipfs/aegir/commit/cf97994f54c1a46b06e32a5cb92650b517889e6a))
+* **dev:** bump electron from 25.7.0 to 26.1.0 ([#1360](https://github.com/ipfs/aegir/issues/1360)) ([5d27366](https://github.com/ipfs/aegir/commit/5d2736611d0a872fc128436e1e60ef1e7434a063))
+
+## [40.0.11](https://github.com/ipfs/aegir/compare/v40.0.10...v40.0.11) (2023-08-14)
+
+
+### Dependencies
+
+* bump esbuild from 0.18.20 to 0.19.2 ([#1355](https://github.com/ipfs/aegir/issues/1355)) ([9650470](https://github.com/ipfs/aegir/commit/9650470d8a2eb0e7272c5e4e5dd767e360d49607))
+* bump gh-pages from 5.0.0 to 6.0.0 ([#1352](https://github.com/ipfs/aegir/issues/1352)) ([df7b615](https://github.com/ipfs/aegir/commit/df7b61548fa8a779ba5399cfc701a5b281aeec67))
+
+## [40.0.10](https://github.com/ipfs/aegir/compare/v40.0.9...v40.0.10) (2023-08-14)
+
+
+### Trivial Changes
+
+* add or force update .github/workflows/js-test-and-release.yml ([#1354](https://github.com/ipfs/aegir/issues/1354)) ([9537af8](https://github.com/ipfs/aegir/commit/9537af8f5c096a16081d9bbb90cfa8982d8e077e))
+* delete templates [skip ci] ([#1353](https://github.com/ipfs/aegir/issues/1353)) ([a84e5d3](https://github.com/ipfs/aegir/commit/a84e5d3e8847ff8a390525d79fec4a8cc565b9f6))
+
+## [40.0.9](https://github.com/ipfs/aegir/compare/v40.0.8...v40.0.9) (2023-08-07)
+
+
+### Bug Fixes
+
+* make updating sibling deps a chore ([#1349](https://github.com/ipfs/aegir/issues/1349)) ([8727b72](https://github.com/ipfs/aegir/commit/8727b72c128c55b2191f547366bd07f1d86261fc))
+
+## [40.0.8](https://github.com/ipfs/aegir/compare/v40.0.7...v40.0.8) (2023-07-31)
+
+
+### Bug Fixes
+
+* use semantic-release with import instead of require ([0a018f3](https://github.com/ipfs/aegir/commit/0a018f30438984b4081c31f8ff0a80128e8803bb))
+
+## [40.0.7](https://github.com/ipfs/aegir/compare/v40.0.6...v40.0.7) (2023-07-31)
+
+
+### Bug Fixes
+
+* override semantic-release version ([5362d24](https://github.com/ipfs/aegir/commit/5362d248f0dfc4c2b9cb84120d52324b88bc1cb4))
+
+## [40.0.6](https://github.com/ipfs/aegir/compare/v40.0.5...v40.0.6) (2023-07-31)
+
+
+### Bug Fixes
+
+* update release version ([ad80bae](https://github.com/ipfs/aegir/commit/ad80bae6a9cb94631159e84f467fa91c7c1ddbc4))
+
+## [40.0.5](https://github.com/ipfs/aegir/compare/v40.0.4...v40.0.5) (2023-07-31)
+
+
+### Bug Fixes
+
+* override semantic-release-monorepo version ([6a98707](https://github.com/ipfs/aegir/commit/6a98707147843f3f3ca3fb93f21cbd805f079297))
+
+## [40.0.4](https://github.com/ipfs/aegir/compare/v40.0.3...v40.0.4) (2023-07-31)
+
+
+### Bug Fixes
+
+* update versions ([d8c3ba1](https://github.com/ipfs/aegir/commit/d8c3ba1436d55f01cb201a586737eb6e59a301ca))
+
+
+### Trivial Changes
+
+* fix dep check ([40e56df](https://github.com/ipfs/aegir/commit/40e56dfffe9e7a1f58c2f6a42960923713e6f98f))
+
+## [40.0.3](https://github.com/ipfs/aegir/compare/v40.0.2...v40.0.3) (2023-07-31)
+
+
+### Bug Fixes
+
+* downgrade semantic-release ([#1344](https://github.com/ipfs/aegir/issues/1344)) ([2a09f6c](https://github.com/ipfs/aegir/commit/2a09f6c9962c37343eb5433b19d20b7fb63cee63))
+
+## [40.0.2](https://github.com/ipfs/aegir/compare/v40.0.1...v40.0.2) (2023-07-27)
+
+
+### Bug Fixes
+
+* hard code mocha runner for pw-test ([#1343](https://github.com/ipfs/aegir/issues/1343)) ([02e36b6](https://github.com/ipfs/aegir/commit/02e36b64405da2045a5421de27307e33ec24ccf2))
+
+## [40.0.1](https://github.com/ipfs/aegir/compare/v40.0.0...v40.0.1) (2023-07-26)
+
+
+### Bug Fixes
+
+* handle more relative path cases in doc command ([#1342](https://github.com/ipfs/aegir/issues/1342)) ([57b7642](https://github.com/ipfs/aegir/commit/57b7642eb5da14e5b2ff354396f206d43b2f46d2))
+
 ## [40.0.0](https://github.com/ipfs/aegir/compare/v39.0.13...v40.0.0) (2023-07-19)
 
 
@@ -1434,7 +1595,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 ### BREAKING CHANGES
 
-* Update all the deps except webpack. 
+* Update all the deps except webpack.
 
 
 
@@ -2121,7 +2282,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 ### BREAKING CHANGES
 
 * lots of deps updated hidden problems might still exist
-* console.* statement are NOW a lint error  
+* console.* statement are NOW a lint error
 
 
 

@@ -70,29 +70,49 @@ Run `aegir --help`
 Usage: aegir <command> [options]
 
 Commands:
-  aegir build                        Builds a browser bundle and TS type declarations from the `src` folder.
-  aegir check                        Check project
-  aegir docs                         Generate documentation from TS type declarations.
-  aegir doc-check                    Verify TS code snippets in documentation.
-  aegir lint                         Lint all project files
-  aegir release                      Release your code onto the world
-  aegir test-dependant [repo]        Run the tests of an module that depends on this module to see if the current changes have caused a regression
-  aegir test                         Test your code in different environments
-  aegir dependency-check [input...]  Run `dependency-check` cli with aegir defaults.                                                                                                                              [aliases: dep-check, dep]
-  aegir lint-package-json            Lint package.json with aegir defaults.                                                                                                                                    [aliases: lint-package, lpj]
   aegir completion                   generate completion script
+  aegir build                        Builds a browser bundle and TS type declara
+                                     tions from the `src` folder.
+  aegir check-project                Ensure your project has the correct config.
+  aegir check                        Check project
+  aegir clean [files..]              Remove created build artifacts.
+  aegir dependency-check [input...]  Run `dependency-check` cli with aegir defau
+                                     lts.              [aliases: dep-check, dep]
+  aegir docs                         Generate documentation from TS type declara
+                                     tions.
+  aegir document-check [input...]    Run `document-check` cli with aegir default
+                                     s.                     [aliases: doc-check]
+  aegir lint-package-json            Lint package.json with aegir defaults.
+                                                    [aliases: lint-package, lpj]
+  aegir lint                         Lint all project files
+  aegir release                      Release using semantic-release
+  aegir release-rc                   Release an RC version of the current module
+                                      or monorepo
+  aegir test-dependant [repo]        Run the tests of an module that depends on
+                                     this module to see if the current changes h
+                                     ave caused a regression
+  aegir test                         Test your code in different environments
+  aegir exec <command>               Run a command in each project of a monorepo
+  aegir run <scripts..>              Run one or more npm scripts in each project
+                                      of a monorepo
 
 Global Options:
-  -h, --help     Show help                                                                                                                                                                                                        [boolean]
-  -v, --version  Show version number                                                                                                                                                                                              [boolean]
-  -d, --debug    Show debug output.                                                                                                                                                                              [boolean] [default: false]
-      --ts-repo  Enable support for Typescript repos.                                                                                                                                                            [boolean] [default: false]
+  -h, --help     Show help                                             [boolean]
+  -v, --version  Show version number                                   [boolean]
+  -d, --debug    Show debug output.                   [boolean] [default: false]
 
 Examples:
-  aegir build                                   Runs the build command to bundle JS code for the browser.
-  npx aegir build                               Can be used with `npx` to use a local version
-  aegir test -t webworker -- --browser firefox  If the command supports `--` can be used to forward options to the underlying tool.
-  npm test -- -- --browser firefox              If `npm test` translates to `aegir test -t browser` and you want to forward options you need to use `-- --` instead.
+  aegir build                               Runs the build command to bundle JS
+                                            code for the browser.
+  npx aegir build                           Can be used with `npx` to use a loca
+                                            l version
+  aegir test -t webworker -- --browser fir  If the command supports `--` can be
+  efox                                      used to forward options to the under
+                                            lying tool.
+  npm test -- -- --browser firefox          If `npm test` translates to `aegir t
+                                            est -t browser` and you want to forw
+                                            ard options you need to use `-- --`
+                                            instead.
 
 Use `aegir <command> --help` to learn more about each command.
 ```

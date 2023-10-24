@@ -3,11 +3,6 @@
  * @param {*} [parentManifest]
  */
 export const APIDOCS = (pkg, parentManifest) => {
-  // monorepo project - test for typedoc entry point
-  if (parentManifest != null && pkg.typedoc?.entryPoint == null) {
-    return ''
-  }
-
   // test for docs script in monorepo root or package
   const scripts = parentManifest?.scripts ?? pkg.scripts ?? {}
 

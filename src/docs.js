@@ -49,15 +49,11 @@ const docs = async (ctx, task) => {
       '--gitRevision',
       'master',
       '--plugin',
-      fromAegir('src/docs/typedoc-plugin.js'),
-      '--plugin',
       fromAegir('src/docs/unknown-symbol-resolver-plugin.js'),
       '--plugin',
       fromAegir('src/docs/type-indexer-plugin.js'),
       '--plugin',
       'typedoc-plugin-mdn-links',
-      '--plugin',
-      'typedoc-plugin-missing-exports',
       ...forwardOptions
     ],
     {

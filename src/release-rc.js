@@ -76,11 +76,23 @@ async function releaseMonorepoRcs (commit, ctx) {
 
     await retry(async () => {
       console.info(`npm publish --tag ${ctx.tag} --dry-run ${!process.env.CI}`)
-      await execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
-        stdout: 'inherit',
-        stderr: 'inherit',
-        cwd: project.dir
-      })
+
+      try {
+        await execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
+          stdout: 'inherit',
+          stderr: 'inherit',
+          cwd: project.dir,
+          all: true
+        })
+      } catch (/** @type {any} */ err) {
+        if (err.all?.includes('You cannot publish over the previously published versions')) {
+          // this appears to be a bug in npm, sometimes you publish successfully but it also
+          // returns an error
+          return
+        }
+
+        throw err
+      }
     }, {
       retries: ctx.retries
     })
@@ -107,10 +119,22 @@ async function releaseRc (commit, ctx) {
 
   await retry(async () => {
     console.info(`npm publish --tag ${ctx.tag} --dry-run ${!process.env.CI}`)
-    await execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
-      stdout: 'inherit',
-      stderr: 'inherit'
-    })
+
+    try {
+      await execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
+        stdout: 'inherit',
+        stderr: 'inherit',
+        all: true
+      })
+    } catch (/** @type {any} */ err) {
+      if (err.all?.includes('You cannot publish over the previously published versions')) {
+        // this appears to be a bug in npm, sometimes you publish successfully but it also
+        // returns an error
+        return
+      }
+
+      throw err
+    }
   }, {
     retries: ctx.retries
   })

@@ -7,8 +7,12 @@ const knownSymbols = {
     'Chai.ChaiStatic': 'https://www.chaijs.com/api/',
     'Chai.Assertion': 'https://www.chaijs.com/api/assert/'
   },
+  '@types/mocha': {
+    'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter'
+  },
   '@types/node': {
     EventEmitter: 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter',
+    'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter',
     Server: 'https://nodejs.org/dist/latest-v19.x/docs/api/net.html#class-netserver',
     IncomingMessage: 'https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpincomingmessage',
     ServerResponse: 'https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpserverresponse',
@@ -35,10 +39,10 @@ const ignoreModules = [
  * `typedoc-urls.json` files from the `dist` folder of types that need
  * documenting. See `type-indexer-plugin.cjs` for how this file is generated.
  *
- * @param {import("typedoc/dist/lib/application").Application} Application
+ * @param {import("typedoc/dist/lib/application").Application} app
  */
-export function load (Application) {
-  Application.converter.addUnknownSymbolResolver((ref) => {
+export function load (app) {
+  app.converter.addUnknownSymbolResolver((ref, refl, part, symbolId) => {
     const moduleName = ref.moduleSource
     const symbolName = calculateName(ref.symbolReference?.path)
 
@@ -58,15 +62,35 @@ export function load (Application) {
       return moduleDocs[symbolName]
     }
 
+    /** @type {string | undefined} */
+    let typeDocPath
+
+    if (symbolId != null) {
+      const fileName = symbolId.fileName
+      const importPath = resolveImportPath(fileName)
+
+      if (importPath != null) {
+        typeDocPath = `${importPath}:${symbolName}`
+      } else {
+        app.logger.warn(`Could not resolve import path for symbol ${symbolName} from module ${moduleName} using file name ${fileName}`)
+      }
+    }
+
     // try to load docs from package.json - if the manifest declares a
     // `docs` key use that to look up links to typedocs
     const typedocs = loadTypedocUrls(moduleName)
 
+    // attempt to use the canonical documentation URL
+    if (typeDocPath != null && typedocs[typeDocPath] != null) {
+      return typedocs[typeDocPath]
+    }
+
+    // fall back to plain symbol name, may not be the canonical documentation URL
     if (typedocs[symbolName] != null) {
       return typedocs[symbolName]
     }
 
-    Application.logger.warn(`Unknown symbol ${symbolName} from module ${moduleName}`)
+    app.logger.warn(`Unknown symbol ${symbolName} from module ${moduleName}`)
 
     return `https://www.npmjs.com/package/${moduleName}`
   })
@@ -74,12 +98,16 @@ export function load (Application) {
 
 /**
  * @param {string} moduleName
+ * @returns {Record<string, string>}
  */
 function loadTypedocUrls (moduleName) {
   const parts = process.cwd().split('/')
+  let modulePath = ''
 
   while (parts.length > 0) {
-    const typedocUrls = path.join(...parts, 'node_modules', moduleName, 'dist', 'typedoc-urls.json')
+    modulePath = path.join(...parts, 'node_modules', moduleName)
+
+    const typedocUrls = path.join(modulePath, 'dist', 'typedoc-urls.json')
 
     if (fs.existsSync(typedocUrls)) {
       return JSON.parse(fs.readFileSync(typedocUrls, 'utf-8'))
@@ -100,4 +128,46 @@ function calculateName (refs) {
   }
 
   return refs.map(ref => ref.path).join('.')
+}
+
+/**
+ * @param {string} fileName
+ * @returns {string | undefined}
+ */
+function resolveImportPath (fileName) {
+  if (!path.isAbsolute(fileName)) {
+    fileName = path.join(process.cwd(), fileName)
+  }
+
+  const parts = fileName.split('/')
+  parts.pop()
+
+  // find closest package.json to the imported file
+  while (parts.length > 0) {
+    const dirPath = path.join('/', ...parts)
+    const manifestPath = path.join(dirPath, 'package.json')
+
+    if (!fs.existsSync(manifestPath)) {
+      parts.pop()
+      continue
+    }
+
+    const sourcePath = fileName.replace(dirPath, '.')
+
+    // load manifest
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
+
+    if (manifest.exports == null) {
+      parts.pop()
+      continue
+    }
+
+    for (const [name, entry] of Object.entries(manifest.exports)) {
+      if (entry.import === sourcePath || entry.types === sourcePath) {
+        return name
+      }
+    }
+
+    return
+  }
 }

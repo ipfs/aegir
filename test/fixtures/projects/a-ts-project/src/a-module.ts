@@ -1,7 +1,7 @@
 export interface ExportedButNotInExports {
-  aMethod: () => void
+  aMethod(): void
 }
 
 export interface UsedButNotExported {
-  aMethod: () => void
+  aMethod(): void
 }

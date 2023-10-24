@@ -1,3 +1,3 @@
 export interface ExportedButNotInExports {
-  aMethod: () => void
+  aMethod(): void
 }

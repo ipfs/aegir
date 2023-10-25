@@ -9,7 +9,7 @@ import lintCmd from '../lint.js'
 
 const EPILOG = `
 Linting uses eslint (http://eslint.org/) and standard(https://github.com/feross/standard)
-with some custom rules(https://github.com/ipfs/eslint-config-aegir) to enforce some more strictness.
+with some custom rules (https://github.com/ipfs/eslint-config-ipfs) to enforce some more strictness.
 `
 
 /** @type {CommandModule} */

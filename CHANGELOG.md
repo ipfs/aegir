@@ -1,3 +1,10 @@
+## [41.0.9](https://github.com/ipfs/aegir/compare/v41.0.8...v41.0.9) (2023-10-25)
+
+
+### Bug Fixes
+
+* handle scoped deps in test-dependant ([#1393](https://github.com/ipfs/aegir/issues/1393)) ([fd6b7ab](https://github.com/ipfs/aegir/commit/fd6b7ab7eb9bd1cff86258304617adf7e2014d1b))
+
 ## [41.0.8](https://github.com/ipfs/aegir/compare/v41.0.7...v41.0.8) (2023-10-25)
 
 

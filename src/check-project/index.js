@@ -36,24 +36,39 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
  * @param {string} projectDir
  */
 async function getConfig (projectDir) {
-  if (process.env.CI) {
-    const branchName = await execa('git', ['symbolic-ref', '--short', 'refs/remotes/origin/HEAD'], {
-      cwd: projectDir
-    })
-      .then(res => execa('basename', [res.stdout]))
-      .then(res => res.stdout)
-      .catch(() => {
-        return 'master'
-      })
-    const repoUrl = await execa('git', ['remote', 'get-url', 'origin'], {
-      cwd: projectDir
-    })
-      .then(res => res.stdout.split(':')[1].split('.git')[0])
-      .then(res => `https://github.com/${res}`)
-      .catch(() => {
-        return ''
-      })
+  const branchName = await execa('git', ['symbolic-ref', '--short', 'refs/remotes/origin/HEAD'], {
+    cwd: projectDir
+  })
+    .catch(async err => {
+      // if this repo was not clone from the origin, update the default
+      // origin/HEAD and try again
+      if (err.stderr.includes('ref refs/remotes/origin/HEAD is not a symbolic ref')) {
+        await execa('git', ['remote', 'set-head', 'origin', '-a'], {
+          cwd: projectDir
+        })
 
+        return await execa('git', ['symbolic-ref', '--short', 'refs/remotes/origin/HEAD'], {
+          cwd: projectDir
+        })
+      }
+
+      throw err
+    })
+    .then(res => execa('basename', [res.stdout]))
+    .then(res => res.stdout)
+    .catch(() => {
+      return 'master'
+    })
+  const repoUrl = await execa('git', ['remote', 'get-url', 'origin'], {
+    cwd: projectDir
+  })
+    .then(res => res.stdout.split(':')[1].split('.git')[0])
+    .then(res => `https://github.com/${res}`)
+    .catch(() => {
+      return ''
+    })
+
+  if (process.env.CI) {
     return {
       projectDir,
       branchName,
@@ -66,24 +81,10 @@ async function getConfig (projectDir) {
   const res = await prompt.get({
     properties: {
       branchName: {
-        default: await execa('git', ['symbolic-ref', '--short', 'refs/remotes/origin/HEAD'], {
-          cwd: projectDir
-        })
-          .then(res => execa('basename', [res.stdout]))
-          .then(res => res.stdout)
-          .catch(() => {
-            return 'master'
-          })
+        default: branchName
       },
       repoUrl: {
-        default: await execa('git', ['remote', 'get-url', 'origin'], {
-          cwd: projectDir
-        })
-          .then(res => res.stdout.split(':')[1].split('.git')[0])
-          .then(res => `https://github.com/${res}`)
-          .catch(() => {
-            return ''
-          })
+        default: repoUrl
       }
     }
   })

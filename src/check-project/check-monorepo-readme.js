@@ -65,12 +65,17 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
   file.children.forEach((child, index) => {
     const rendered = writeMarkdown(child).toLowerCase()
 
-    if (child.type === 'heading' && index === 0) {
+    if (rendered.includes('https://raw.githubusercontent.com/ipfs/helia/main/assets/helia.png')) {
+      // skip helia logo
+      return
+    }
+
+    if (child.type === 'heading' && (index === 0 || rendered.includes(pkg.name))) {
       // skip heading
       return
     }
 
-    if (child.type === 'paragraph' && index === 1) {
+    if (child.type === 'paragraph' && (index === 1 || rendered.includes('![ci]'))) {
       // skip badges
       return
     }

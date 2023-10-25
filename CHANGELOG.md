@@ -1,3 +1,10 @@
+## [41.0.10](https://github.com/ipfs/aegir/compare/v41.0.9...v41.0.10) (2023-10-25)
+
+
+### Bug Fixes
+
+* support helia projecs in check-project ([#1394](https://github.com/ipfs/aegir/issues/1394)) ([6088b24](https://github.com/ipfs/aegir/commit/6088b2463ad3d0097259a5b68f1d34d1dc5e56eb))
+
 ## [41.0.9](https://github.com/ipfs/aegir/compare/v41.0.8...v41.0.9) (2023-10-25)
 
 

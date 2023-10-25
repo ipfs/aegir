@@ -1,3 +1,10 @@
+## [41.0.8](https://github.com/ipfs/aegir/compare/v41.0.7...v41.0.8) (2023-10-25)
+
+
+### Bug Fixes
+
+* update eslint repo url ([#1392](https://github.com/ipfs/aegir/issues/1392)) ([44070a1](https://github.com/ipfs/aegir/commit/44070a1ea4a9e7dd6b7e4ed3b14e212bdd730781)), closes [#1346](https://github.com/ipfs/aegir/issues/1346)
+
 ## [41.0.7](https://github.com/ipfs/aegir/compare/v41.0.6...v41.0.7) (2023-10-25)
 
 

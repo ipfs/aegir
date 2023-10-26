@@ -8,21 +8,23 @@ const knownSymbols = {
     'Chai.Assertion': 'https://www.chaijs.com/api/assert/'
   },
   '@types/mocha': {
-    'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter'
+    'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest/docs/api/events.html#class-eventemitter'
   },
   '@types/node': {
-    EventEmitter: 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter',
-    'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest-v19.x/docs/api/events.html#class-eventemitter',
-    Server: 'https://nodejs.org/dist/latest-v19.x/docs/api/net.html#class-netserver',
-    IncomingMessage: 'https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpincomingmessage',
-    ServerResponse: 'https://nodejs.org/dist/latest-v19.x/docs/api/http.html#class-httpserverresponse',
-    'global.NodeJS.ReadStream': 'https://nodejs.org/dist/latest-v19.x/docs/api/tty.html#class-ttyreadstream',
-    'global.NodeJS.WriteStream': 'https://nodejs.org/dist/latest-v19.x/docs/api/tty.html#class-ttywritestream',
-    'global.NodeJS.ProcessEnv': 'https://nodejs.org/dist/latest-v19.x/docs/api/process.html#processenv',
-    'internal.Duplex': 'https://nodejs.org/dist/latest-v19.x/docs/api/stream.html#class-streamduplex',
-    'internal.Readable': 'https://nodejs.org/dist/latest-v19.x/docs/api/stream.html#class-streamreadable',
-    'internal.Transform': 'https://nodejs.org/dist/latest-v19.x/docs/api/stream.html#class-streamtransform',
-    'internal.Writable': 'https://nodejs.org/dist/latest-v19.x/docs/api/stream.html#class-streamwritable'
+    EventEmitter: 'https://nodejs.org/dist/latest/docs/api/events.html#class-eventemitter',
+    'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest/docs/api/events.html#class-eventemitter',
+    Server: 'https://nodejs.org/dist/latest/docs/api/net.html#class-netserver',
+    IncomingMessage: 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpincomingmessage',
+    '"http".IncomingMessage': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpincomingmessage',
+    ServerResponse: 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserverresponse',
+    '"http".ServerResponse': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserverresponse',
+    'global.NodeJS.ReadStream': 'https://nodejs.org/dist/latest/docs/api/tty.html#class-ttyreadstream',
+    'global.NodeJS.WriteStream': 'https://nodejs.org/dist/latest/docs/api/tty.html#class-ttywritestream',
+    'global.NodeJS.ProcessEnv': 'https://nodejs.org/dist/latest/docs/api/process.html#processenv',
+    'internal.Duplex': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamduplex',
+    'internal.Readable': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamreadable',
+    'internal.Transform': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamtransform',
+    'internal.Writable': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamwritable'
   },
   esbuild: {
     BuildOptions: 'https://esbuild.github.io/api/#build-api'
@@ -72,7 +74,7 @@ export function load (app) {
       if (importPath != null) {
         typeDocPath = `${importPath}:${symbolName}`
       } else {
-        app.logger.warn(`Could not resolve import path for symbol ${symbolName} from module ${moduleName} using file name ${fileName}`)
+        app.logger.verbose(`Could not resolve import path for symbol ${symbolName} from module ${moduleName} using file name ${fileName}`)
       }
     }
 
@@ -131,6 +133,9 @@ function calculateName (refs) {
 }
 
 /**
+ * Load the closest package.json to the passed file with an exports map and
+ * attempt to detect the exports map entry that the file was imported from
+ *
  * @param {string} fileName
  * @returns {string | undefined}
  */

@@ -1,3 +1,10 @@
+## [41.0.11](https://github.com/ipfs/aegir/compare/v41.0.10...v41.0.11) (2023-10-26)
+
+
+### Bug Fixes
+
+* update doc urls to latest node version ([#1395](https://github.com/ipfs/aegir/issues/1395)) ([3ce413a](https://github.com/ipfs/aegir/commit/3ce413ad5a5fbf6c1f5baa27fd04b52de2187dc3))
+
 ## [41.0.10](https://github.com/ipfs/aegir/compare/v41.0.9...v41.0.10) (2023-10-25)
 
 

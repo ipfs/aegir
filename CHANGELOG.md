@@ -1,3 +1,10 @@
+## [41.0.12](https://github.com/ipfs/aegir/compare/v41.0.11...v41.0.12) (2023-10-26)
+
+
+### Bug Fixes
+
+* do not run `npm --if-present build` on npm cache hit ([#1396](https://github.com/ipfs/aegir/issues/1396)) ([7111f49](https://github.com/ipfs/aegir/commit/7111f49fc8ef5139264320c36d5040a7bb20a61d))
+
 ## [41.0.11](https://github.com/ipfs/aegir/compare/v41.0.10...v41.0.11) (2023-10-26)
 
 

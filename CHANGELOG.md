@@ -1,3 +1,10 @@
+## [41.0.13](https://github.com/ipfs/aegir/compare/v41.0.12...v41.0.13) (2023-10-27)
+
+
+### Bug Fixes
+
+* include stale and pr check workflows ([#1397](https://github.com/ipfs/aegir/issues/1397)) ([7e7c55f](https://github.com/ipfs/aegir/commit/7e7c55f123dcf08be396d24b9288e470de82a8c0))
+
 ## [41.0.12](https://github.com/ipfs/aegir/compare/v41.0.11...v41.0.12) (2023-10-26)
 
 

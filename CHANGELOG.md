@@ -1,3 +1,10 @@
+## [41.0.14](https://github.com/ipfs/aegir/compare/v41.0.13...v41.0.14) (2023-10-27)
+
+
+### Trivial Changes
+
+* cache interop output folders ([e6afe45](https://github.com/ipfs/aegir/commit/e6afe45c13ea2f10b04ae54dbb63a6ed6979810a))
+
 ## [41.0.13](https://github.com/ipfs/aegir/compare/v41.0.12...v41.0.13) (2023-10-27)
 
 

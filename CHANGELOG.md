@@ -1,3 +1,11 @@
+## [41.0.15](https://github.com/ipfs/aegir/compare/v41.0.14...v41.0.15) (2023-10-27)
+
+
+### Dependencies
+
+* **dev:** bump @types/gh-pages from 3.2.3 to 5.0.0 ([#1388](https://github.com/ipfs/aegir/issues/1388)) ([3e6e825](https://github.com/ipfs/aegir/commit/3e6e825625da798054f0ed3735ea9ee6dcdf9a84))
+* **dev:** bump electron from 26.4.1 to 27.0.2 ([#1387](https://github.com/ipfs/aegir/issues/1387)) ([e4fdb6a](https://github.com/ipfs/aegir/commit/e4fdb6a02ad8a6c61ee724ea61ce3841b6666ab4))
+
 ## [41.0.14](https://github.com/ipfs/aegir/compare/v41.0.13...v41.0.14) (2023-10-27)
 
 

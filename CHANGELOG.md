@@ -1,3 +1,10 @@
+## [41.0.16](https://github.com/ipfs/aegir/compare/v41.0.15...v41.0.16) (2023-10-27)
+
+
+### Trivial Changes
+
+* revert cache additions ([75c4505](https://github.com/ipfs/aegir/commit/75c450535e20c9bd0af09906b0e2360353fff57b))
+
 ## [41.0.15](https://github.com/ipfs/aegir/compare/v41.0.14...v41.0.15) (2023-10-27)
 
 

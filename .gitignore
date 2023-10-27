@@ -1,11 +1,9 @@
-package-lock.json
-yarn.lock
-# only the root node_modules folder since some of the test fixtures have them
-/node_modules
+node_modules
+build
 dist
 .docs
-.nyc_output
-*.log
-.vscode
 .coverage
-.DS_Store
+node_modules
+package-lock.json
+yarn.lock
+.vscode

@@ -16,10 +16,6 @@
     "lint",
     "standard"
   ],
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.6.0"
-  },
   "bin": {
     "aegir": "src/index.js"
   },

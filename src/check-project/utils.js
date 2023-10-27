@@ -188,7 +188,7 @@ export function sortExportsMap (obj) {
 
     let types = entry.types
 
-    if (!types) {
+    if (!types && entry.import != null) {
       types = entry.import.replace('.js', '.d.ts')
     }
 

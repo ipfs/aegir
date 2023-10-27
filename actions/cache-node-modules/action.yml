@@ -33,8 +33,6 @@ runs:
           ./packages/*/dist
           ./packages/*/types
           ./packages/*/node_modules
-          ./interop/*/dist
-          ./interop/*/node_modules
           ${{ inputs.directories }}
         key: ${{ runner.os }}-build-${{ inputs.cache_name }}-${{ github.sha }}
     - if: steps.cache.outputs.cache-hit != 'true'

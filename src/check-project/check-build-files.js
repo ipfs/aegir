@@ -40,6 +40,8 @@ export async function checkBuildFiles (projectDir, branchName, repoUrl) {
 
   await ensureFileNotPresent(projectDir, '.travis.yml')
   await ensureFileHasContents(projectDir, '.github/dependabot.yml')
+  await ensureFileHasContents(projectDir, '.github/workflows/semantic-pull-request.yml')
+  await ensureFileHasContents(projectDir, '.github/workflows/stale.yml')
 
   let defaultCiContent = await download(ciFileUrl)
   defaultCiContent = defaultCiContent.replaceAll('${{{ github.default_branch }}}', branchName) // eslint-disable-line no-template-curly-in-string

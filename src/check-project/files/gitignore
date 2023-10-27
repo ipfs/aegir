@@ -1,9 +1,8 @@
-node_modules
-build
-dist
-.docs
-.coverage
-node_modules
+/node_modules
+/build
+/dist
+/.docs
+/.coverage
+/.vscode
 package-lock.json
 yarn.lock
-.vscode

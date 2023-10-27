@@ -328,7 +328,7 @@ export async function everyMonorepoProject (projectDir, fn) {
   }
 
   /** @type {Record<string, Project>} */
-  const projects = await parseProjects(projectDir, workspaces)
+  const projects = parseProjects(projectDir, workspaces)
 
   checkForCircularDependencies(projects)
 

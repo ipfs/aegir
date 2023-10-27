@@ -1,26 +1,9 @@
-# aegir <!-- omit in toc -->
-
 [![ipfs.tech](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.tech)
 [![Discuss](https://img.shields.io/discourse/https/discuss.ipfs.tech/posts.svg?style=flat-square)](https://discuss.ipfs.tech)
 [![codecov](https://img.shields.io/codecov/c/github/ipfs/aegir.svg?style=flat-square)](https://codecov.io/gh/ipfs/aegir)
 [![CI](https://img.shields.io/github/actions/workflow/status/ipfs/aegir/js-test-and-release.yml?branch=master\&style=flat-square)](https://github.com/ipfs/aegir/actions/workflows/js-test-and-release.yml?query=branch%3Amaster)
 
 > JavaScript project management
-
-## Table of contents <!-- omit in toc -->
-
-- [Install](#install)
-  - [Browser `<script>` tag](#browser-script-tag)
-- [Project Structure](#project-structure)
-- [CLI](#cli)
-- [Configuration](#configuration)
-- [Continuous Integration](#continuous-integration)
-- [Testing helpers](#testing-helpers)
-- [Typescript](#typescript)
-- [Release steps](#release-steps)
-- [API Docs](#api-docs)
-- [License](#license)
-- [Contribute](#contribute)
 
 ## Install
 

@@ -1,3 +1,10 @@
+## [41.1.3](https://github.com/ipfs/aegir/compare/v41.1.2...v41.1.3) (2023-10-30)
+
+
+### Bug Fixes
+
+* join readme example descriptions with '' ([#1401](https://github.com/ipfs/aegir/issues/1401)) ([7d9f73c](https://github.com/ipfs/aegir/commit/7d9f73cf79b99a2404dc4658c5dafc377cffefe0))
+
 ## [41.1.2](https://github.com/ipfs/aegir/compare/v41.1.1...v41.1.2) (2023-10-30)
 
 

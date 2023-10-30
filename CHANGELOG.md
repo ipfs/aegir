@@ -1,3 +1,15 @@
+## [41.1.0](https://github.com/ipfs/aegir/compare/v41.0.16...v41.1.0) (2023-10-30)
+
+
+### Features
+
+* sync packageDocumentation between index.ts and README.md ([#1398](https://github.com/ipfs/aegir/issues/1398)) ([752d2bd](https://github.com/ipfs/aegir/commit/752d2bd26cdc3c7f6341ac5d08ccf32fac10d0b1))
+
+
+### Trivial Changes
+
+* remove redundant comment ([abc645d](https://github.com/ipfs/aegir/commit/abc645dc5a09d20dca38a5184ab62d2b7efe48df))
+
 ## [41.0.16](https://github.com/ipfs/aegir/compare/v41.0.15...v41.0.16) (2023-10-27)
 
 

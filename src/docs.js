@@ -55,7 +55,11 @@ const docs = async (ctx, task) => {
     {
       localDir: path.join(__dirname, '..'),
       preferLocal: true,
-      all: true
+      all: true,
+      env: {
+        // large projects can cause OOM errors
+        NODE_OPTIONS: '--max_old_space_size=8192'
+      }
     }
   )
   proc.all?.on('data', (chunk) => {

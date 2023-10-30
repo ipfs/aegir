@@ -1,3 +1,10 @@
+## [41.1.2](https://github.com/ipfs/aegir/compare/v41.1.1...v41.1.2) (2023-10-30)
+
+
+### Bug Fixes
+
+* increase doc ram ([#1400](https://github.com/ipfs/aegir/issues/1400)) ([88758ba](https://github.com/ipfs/aegir/commit/88758baf19acb417233f91dc51ed1aaf26fb4c51))
+
 ## [41.1.1](https://github.com/ipfs/aegir/compare/v41.1.0...v41.1.1) (2023-10-30)
 
 

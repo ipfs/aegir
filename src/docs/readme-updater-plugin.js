@@ -143,7 +143,6 @@ function updateReadme (aboutMd, manifestPath, readmePath, app) {
   const readme = parseMarkdown(readmeContents)
   const about = parseMarkdown(aboutMd)
 
-  // remove existing header, CI link, etc
   /** @type {import('mdast').Root} */
   const parsedReadme = {
     type: 'root',

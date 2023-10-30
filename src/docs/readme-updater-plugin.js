@@ -73,7 +73,7 @@ export function load (app) {
  */
 function updateModule (comment, manifestPath, readmePath, app) {
   const about = `
-## About
+# About
 
 ${
   comment.summary
@@ -85,7 +85,7 @@ ${
         .map(item => {
           if (item.tag === '@example') {
             return `
-### Example
+## Example
 
 ${
   item.content

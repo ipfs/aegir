@@ -1,3 +1,10 @@
+## [41.1.4](https://github.com/ipfs/aegir/compare/v41.1.3...v41.1.4) (2023-10-30)
+
+
+### Bug Fixes
+
+* increase header level for readme items ([#1402](https://github.com/ipfs/aegir/issues/1402)) ([e9d9a86](https://github.com/ipfs/aegir/commit/e9d9a86d55906571abe92b3f4b29c609377b92e0))
+
 ## [41.1.3](https://github.com/ipfs/aegir/compare/v41.1.2...v41.1.3) (2023-10-30)
 
 

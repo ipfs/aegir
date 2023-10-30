@@ -99,6 +99,7 @@ ${
 
         return ''
       })
+      .join('')
 }
 `.trim()
 

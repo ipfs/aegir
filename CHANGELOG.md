@@ -1,3 +1,10 @@
+## [41.1.1](https://github.com/ipfs/aegir/compare/v41.1.0...v41.1.1) (2023-10-30)
+
+
+### Bug Fixes
+
+* remove typedoc overrides ([#1399](https://github.com/ipfs/aegir/issues/1399)) ([94adcf9](https://github.com/ipfs/aegir/commit/94adcf9e58b39d9e47ee579de88bb72833c39878))
+
 ## [41.1.0](https://github.com/ipfs/aegir/compare/v41.0.16...v41.1.0) (2023-10-30)
 
 

@@ -8,7 +8,7 @@ export const INSTALL = (pkg) => {
   }
 
   const nodeInstall = `
-## Install
+# Install
 
 \`\`\`console
 $ npm i ${pkg.name}

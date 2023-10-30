@@ -18,7 +18,7 @@ export const STRUCTURE = (monorepoDir, projectDirs) => {
   }
 
   return `
-## Packages
+# Packages
 
 ${Object.entries(packages).map(([key, value]) => {
   return `* [\`${key}\`](.${key}) ${value}`

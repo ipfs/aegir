@@ -54,6 +54,8 @@ const docs = async (ctx, task) => {
       fromAegir('src/docs/type-indexer-plugin.js'),
       '--plugin',
       'typedoc-plugin-mdn-links',
+      '--plugin',
+      fromAegir('src/docs/readme-updater-plugin.js'),
       ...forwardOptions
     ],
     {

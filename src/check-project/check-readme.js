@@ -2,7 +2,6 @@
 
 import path from 'path'
 import fs from 'fs-extra'
-import { toc as makeToc } from 'mdast-util-toc'
 import { APIDOCS } from './readme/api-docs.js'
 import { HEADER } from './readme/header.js'
 import { INSTALL } from './readme/install.js'
@@ -50,84 +49,71 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, r
   // create basic readme with heading, CI link, etc
   const readme = parseMarkdown(HEADER(pkg, repoOwner, repoName, defaultBranch, ciFile))
 
-  // remove existing header, CI link, etc
-  /** @type {import('mdast').Root} */
-  const parsedReadme = {
-    type: 'root',
-    children: []
-  }
+  /** @type {import('mdast').RootContent[]} */
+  const header = []
 
-  let tocIndex = -1
-  let installIndex = -1
-  let apiDocsIndex = -1
-  let licenseFound = false
+  /** @type {import('mdast').RootContent[]} */
+  const other = []
 
-  /** @type {import('mdast').Content[]} */
+  /** @type {import('mdast').RootContent[]} */
+  const about = []
+
+  /** @type {import('mdast').RootContent[]} */
   const footer = []
 
-  file.children.forEach((child, index) => {
+  let skipBlockHeader = -1
+  let inAboutBlock = false
+  let foundBadges = false
+
+  // remove existing header, CI link, etc
+  file.children.forEach((child) => {
     const rendered = writeMarkdown(child).toLowerCase()
 
-    if (rendered.includes('https://raw.githubusercontent.com/ipfs/helia/main/assets/helia.png')) {
-      // skip helia logo
+    if (skipBlockHeader > -1 && child.type === 'heading' && child.depth <= skipBlockHeader) {
+      skipBlockHeader = -1
+      inAboutBlock = false
+    }
+
+    if (rendered === `> ${pkg.description.toLowerCase()}\n`) {
+      // skip project description
       return
     }
 
-    if (child.type === 'heading' && (index === 0 || rendered.includes(pkg.name))) {
-      // skip heading
-      return
-    }
-
-    if (child.type === 'paragraph' && (index === 1 || rendered.includes('![ci]'))) {
+    if (child.type === 'paragraph' && rendered.includes('![ci]')) {
       // skip badges
+      foundBadges = true
       return
     }
 
-    if (child.type === 'blockquote' && tocIndex === -1 && installIndex === -1) {
-      // skip project overview
+    if (child.type === 'heading' && rendered.includes('# about')) {
+      // collect about section
+      skipBlockHeader = child.depth
+      inAboutBlock = true
+      about.push(child)
       return
     }
 
-    if (rendered.includes('## table of')) {
-      // skip toc header
-      tocIndex = index
-      return
-    }
-
-    if (tocIndex !== -1 && index === tocIndex + 1) {
-      // skip toc header
-      return
-    }
-
-    if (child.type === 'heading' && rendered.includes('install')) {
+    if (child.type === 'heading' && rendered.includes('# install')) {
       // skip install
-      installIndex = index
+      skipBlockHeader = child.depth
       return
     }
 
-    if (installIndex !== -1 && index === installIndex + 1) {
-      // skip install
+    if (child.type === 'heading' && rendered.includes('# api docs')) {
+      // skip api docs
+      skipBlockHeader = child.depth
       return
     }
 
-    if (child.type === 'heading' && rendered.includes('browser `<script>` tag')) {
-      // skip browser install
+    if (child.type === 'heading' && rendered.includes('# license')) {
+      // skip license
+      skipBlockHeader = child.depth
       return
     }
 
-    if (rendered.includes('loading this module through a script tag') || rendered.includes('<script src="https://unpkg.com')) {
-      // skip browser install instructions
-      return
-    }
-
-    if (child.type === 'heading' && rendered.includes('api docs')) {
-      // skip api docs header
-      apiDocsIndex = index
-      return
-    }
-
-    if (apiDocsIndex !== -1 && index === apiDocsIndex + 1) {
-      // skip api docs link
+    if (child.type === 'heading' && (rendered.includes('# contribute') || rendered.includes('# contribution'))) {
+      // skip contribute
+      skipBlockHeader = child.depth
       return
     }
 
@@ -136,38 +122,47 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, r
       return
     }
 
-    if ((child.type === 'heading' && rendered.includes('license')) || licenseFound) {
-      licenseFound = true
+    if (inAboutBlock) {
+      about.push(child)
       return
     }
 
-    parsedReadme.children.push(child)
+    if (!foundBadges) {
+      header.push(child)
+      return
+    }
+
+    if (skipBlockHeader > -1) {
+      // skip this block
+      return
+    }
+
+    other.push(child)
   })
 
   const installation = parseMarkdown(INSTALL(pkg))
-  const apiDocs = parseMarkdown(APIDOCS(pkg, rootManifest))
+
+  /** @type {import('mdast').Root} */
+  let apiDocs = {
+    type: 'root',
+    children: []
+  }
+
+  if (fs.existsSync(path.join(projectDir, 'typedoc.json')) || pkg.scripts.docs != null) {
+    apiDocs = parseMarkdown(APIDOCS(pkg, rootManifest))
+  }
+
   const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
 
-  parsedReadme.children = [
+  readme.children = [
+    ...header,
+    ...readme.children,
+    ...about,
     ...installation.children,
-    ...parsedReadme.children,
+    ...other,
     ...apiDocs.children,
     ...license.children,
     ...footer
-  ]
-
-  const toc = makeToc(parsedReadme, {
-    tight: true
-  })
-
-  if (toc.map == null) {
-    throw new Error('Could not create TOC for README.md')
-  }
-
-  readme.children = [
-    ...readme.children,
-    toc.map,
-    ...parsedReadme.children
   ]
 
   await ensureFileHasContents(projectDir, 'README.md', writeMarkdown(readme))

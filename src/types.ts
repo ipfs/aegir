@@ -237,6 +237,10 @@ interface TestOptions {
    */
   cov: boolean
   /**
+   * How long to wait for collecting code coverage. Workaround for @see https://github.com/ipfs/aegir/issues/1206
+   */
+  covTimeout: number
+  /**
    * Runner enviroment
    */
   runner: 'node' | 'browser' | 'webworker' | 'electron-main' | 'electron-renderer' | 'react-native-android' | 'react-native-ios'

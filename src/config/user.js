@@ -25,6 +25,7 @@ const defaults = {
     bail: false,
     progress: false,
     cov: false,
+    covTimeout: 60000,
     browser: {
       config: {
         buildConfig: {

@@ -1,3 +1,10 @@
+## [41.1.5](https://github.com/ipfs/aegir/compare/v41.1.4...v41.1.5) (2023-11-02)
+
+
+### Bug Fixes
+
+* if a test run looks like it's hung during coverage, kill it ([#1406](https://github.com/ipfs/aegir/issues/1406)) ([8b526fc](https://github.com/ipfs/aegir/commit/8b526fc6dbaabca32ea0e8b95866bf1eb5df433b))
+
 ## [41.1.4](https://github.com/ipfs/aegir/compare/v41.1.3...v41.1.4) (2023-10-30)
 
 

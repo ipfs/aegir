@@ -115,7 +115,9 @@ export default async function testNode (argv, execaOptions) {
           console.warn(kleur.red('!!! Collecting coverage has hung, killing process')) // eslint-disable-line no-console
           console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
           killedWhileCollectingCoverage = true
-          proc.kill()
+          proc.kill('SIGTERM', {
+            forceKillAfterTimeout: 1000
+          })
         }, argv.covTimeout).unref()
       }
     })

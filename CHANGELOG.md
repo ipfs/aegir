@@ -1,3 +1,10 @@
+## [41.1.6](https://github.com/ipfs/aegir/compare/v41.1.5...v41.1.6) (2023-11-02)
+
+
+### Bug Fixes
+
+* kill process after timeout ([9909641](https://github.com/ipfs/aegir/commit/99096412f57c31f71d005086ce4431432b62e398))
+
 ## [41.1.5](https://github.com/ipfs/aegir/compare/v41.1.4...v41.1.5) (2023-11-02)
 
 

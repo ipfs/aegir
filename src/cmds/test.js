@@ -100,6 +100,11 @@ export default {
           describe: 'Enable coverage output. Output is already in Istanbul JSON format and can be uploaded directly to codecov.',
           type: 'boolean',
           default: userConfig.test.cov
+        },
+        covTimeout: {
+          describe: 'How long to wait for coverage collection. Workaround for https://github.com/ipfs/aegir/issues/1206',
+          type: 'number',
+          default: userConfig.test.covTimeout
         }
       })
   },

@@ -1,3 +1,10 @@
+## [41.1.8](https://github.com/ipfs/aegir/compare/v41.1.7...v41.1.8) (2023-11-02)
+
+
+### Bug Fixes
+
+* disable code coverage on windows ([7287099](https://github.com/ipfs/aegir/commit/728709946e2cab75eec6575f7a020dfcaa4ade74))
+
 ## [41.1.7](https://github.com/ipfs/aegir/compare/v41.1.6...v41.1.7) (2023-11-02)
 
 

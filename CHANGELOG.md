@@ -1,3 +1,10 @@
+## [41.1.7](https://github.com/ipfs/aegir/compare/v41.1.6...v41.1.7) (2023-11-02)
+
+
+### Bug Fixes
+
+* use taskkill to kill stuck coverage process on windows ([a49d572](https://github.com/ipfs/aegir/commit/a49d5729e19e6828dd9d9765b3ed2787a6c85fcf))
+
 ## [41.1.6](https://github.com/ipfs/aegir/compare/v41.1.5...v41.1.6) (2023-11-02)
 
 

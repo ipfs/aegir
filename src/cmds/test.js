@@ -1,3 +1,4 @@
+import os from 'os'
 import kleur from 'kleur'
 import { loadUserConfig } from '../config/user.js'
 import testCmd from '../test/index.js'
@@ -112,9 +113,10 @@ export default {
    * @param {any} argv
    */
   async handler (argv) {
-    // temporarily disable code coverage on node 18
-    if (argv.cov && process.version.startsWith('v18.')) {
+    // temporarily disable code coverage on Windows
+    if (argv.cov && os.platform() === 'win32') {
       console.warn(kleur.red('!!! Temporarily disabling code coverage\n')) // eslint-disable-line no-console
+      console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
       delete argv.cov
     }
 

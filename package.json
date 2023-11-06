@@ -295,7 +295,7 @@
     "prompt": "^1.2.2",
     "proper-lockfile": "^4.1.2",
     "react-native-test-runner": "^5.0.0",
-    "read-pkg-up": "^10.0.0",
+    "read-pkg-up": "^11.0.0",
     "rimraf": "^5.0.0",
     "semantic-release": "https://registry.npmjs.org/@achingbrain/semantic-release/-/semantic-release-21.0.9.tgz",
     "semantic-release-monorepo": "https://registry.npmjs.org/@achingbrain/semantic-release-monorepo/-/semantic-release-monorepo-8.0.2.tgz",

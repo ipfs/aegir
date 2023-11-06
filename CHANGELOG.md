@@ -1,3 +1,10 @@
+## [41.1.9](https://github.com/ipfs/aegir/compare/v41.1.8...v41.1.9) (2023-11-06)
+
+
+### Bug Fixes
+
+* browser install should be a h2 ([ff11815](https://github.com/ipfs/aegir/commit/ff11815d8125048e8e3c1a14e2a01763c06a1130))
+
 ## [41.1.8](https://github.com/ipfs/aegir/compare/v41.1.7...v41.1.8) (2023-11-02)
 
 

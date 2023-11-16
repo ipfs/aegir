@@ -35,13 +35,12 @@ another-workspace-project: package.json
 another-workspace-project: src
 another-workspace-project: tsconfig.json
 another-workspace-project: typedoc.json
-another-workspace-project:
+
 a-workspace-project: > ls
 a-workspace-project: package.json
 a-workspace-project: src
 a-workspace-project: tsconfig.json
-a-workspace-project: typedoc.json
-a-workspace-project:`)
+a-workspace-project: typedoc.json`)
   })
 
   it('should not prefix monorepo output with the project name with --no-prefix', async function () {

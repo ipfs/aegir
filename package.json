@@ -308,6 +308,7 @@
     "source-map-support": "^0.5.20",
     "strip-bom": "^5.0.0",
     "strip-json-comments": "^5.0.0",
+    "strong-log-transformer": "^2.1.0",
     "tempy": "^3.0.0",
     "typedoc": "^0.25.0",
     "typedoc-plugin-mdn-links": "^3.0.3",

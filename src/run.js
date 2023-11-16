@@ -31,7 +31,8 @@ export default {
 
         try {
           const subprocess = execa('npm', ['run', script, ...forwardArgs], {
-            cwd: project.dir
+            cwd: project.dir,
+            stdio: ['ignore', 'pipe', 'pipe']
           })
           pipeOutput(subprocess, project.manifest.name, ctx.prefix)
           await subprocess

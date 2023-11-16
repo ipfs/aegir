@@ -24,19 +24,14 @@ describe('run', () => {
 
     expect(result.stdout).to.equal(`
 another-workspace-project: npm run test
-another-workspace-project:
 another-workspace-project: > another-workspace-project@1.0.0 test
 another-workspace-project: > echo very test
-another-workspace-project:
 another-workspace-project: very test
-another-workspace-project:
+
 a-workspace-project: npm run test
-a-workspace-project:
 a-workspace-project: > a-workspace-project@1.0.0 test
 a-workspace-project: > echo very test
-a-workspace-project:
-a-workspace-project: very test
-a-workspace-project:`)
+a-workspace-project: very test`)
   })
 
   it('should not prefix monorepo output with the project name with --no-prefix', async function () {
@@ -47,20 +42,19 @@ a-workspace-project:`)
     })
 
     expect(result.stdout).to.equal(`
-npm run test
+another-workspace-project: npm run test
 
 > another-workspace-project@1.0.0 test
 > echo very test
 
 very test
 
-npm run test
+a-workspace-project: npm run test
 
 > a-workspace-project@1.0.0 test
 > echo very test
 
-very test
-`)
+very test`)
   })
 
   it('should not prefix monorepo output with the project name with --prefix=false', async function () {
@@ -71,19 +65,18 @@ very test
     })
 
     expect(result.stdout).to.equal(`
-npm run test
+another-workspace-project: npm run test
 
 > another-workspace-project@1.0.0 test
 > echo very test
 
 very test
 
-npm run test
+a-workspace-project: npm run test
 
 > a-workspace-project@1.0.0 test
 > echo very test
 
-very test
-`)
+very test`)
   })
 })

@@ -22,7 +22,6 @@ import lockfile from 'proper-lockfile'
 import { readPackageUpSync } from 'read-pkg-up'
 import stripBom from 'strip-bom'
 import stripComments from 'strip-json-comments'
-// @ts-expect-error no types
 import logTransformer from 'strong-log-transformer'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

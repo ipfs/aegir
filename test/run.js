@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 
 import { createRequire } from 'module'
+import os from 'os'
 import { execa } from 'execa'
 import { expect } from '../utils/chai.js'
 import { setUpProject } from './utils/set-up-project.js'
@@ -9,6 +10,12 @@ const require = createRequire(import.meta.url)
 const bin = require.resolve('../src/index.js')
 
 describe('run', () => {
+  if (os.platform() === 'win32') {
+    describe.skip('Skipping tests on windows because commands are different', () => {})
+
+    return
+  }
+
   let projectDir = ''
 
   before(async () => {

@@ -1,3 +1,10 @@
+## [41.1.10](https://github.com/ipfs/aegir/compare/v41.1.9...v41.1.10) (2023-11-27)
+
+
+### Bug Fixes
+
+* use example title if it is available ([#1418](https://github.com/ipfs/aegir/issues/1418)) ([a1d1fe7](https://github.com/ipfs/aegir/commit/a1d1fe712f179db4c40615c201814028cfab9741))
+
 ## [41.1.9](https://github.com/ipfs/aegir/compare/v41.1.8...v41.1.9) (2023-11-06)
 
 

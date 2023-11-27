@@ -85,7 +85,7 @@ ${
         .map(item => {
           if (item.tag === '@example') {
             return `
-## Example
+## Example${item.name ? ` - ${item.name}` : ''}
 
 ${
   item.content

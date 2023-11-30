@@ -27,8 +27,13 @@ export function load (app) {
         return false
       }
 
-      // single-module repo
+      // single-module repo, single export
       if (urlMapping.url === 'modules.html') {
+        return true
+      }
+
+      // single-module repo, multiple export
+      if (urlMapping.url === 'modules/index.html') {
         return true
       }
 

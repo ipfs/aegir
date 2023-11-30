@@ -1,3 +1,10 @@
+## [41.1.11](https://github.com/ipfs/aegir/compare/v41.1.10...v41.1.11) (2023-11-30)
+
+
+### Bug Fixes
+
+* use branch name for homepage ([646d6dc](https://github.com/ipfs/aegir/commit/646d6dc61f3f370c3ad6797a33aad344e44c904e))
+
 ## [41.1.10](https://github.com/ipfs/aegir/compare/v41.1.9...v41.1.10) (2023-11-27)
 
 

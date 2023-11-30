@@ -130,7 +130,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
       }
 
       const pkg = fs.readJSONSync(manfest)
-      const homePage = `${repoUrl}/tree/master${subProjectDir.substring(projectDir.length)}`
+      const homePage = `${repoUrl}/tree/${branchName}${subProjectDir.substring(projectDir.length)}`
 
       console.info('Found monorepo project', pkg.name)
 

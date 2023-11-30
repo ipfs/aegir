@@ -1,3 +1,10 @@
+## [41.1.13](https://github.com/ipfs/aegir/compare/v41.1.12...v41.1.13) (2023-11-30)
+
+
+### Bug Fixes
+
+* exit tests on windows ([ed81737](https://github.com/ipfs/aegir/commit/ed81737d1303a747f9cf752442235f1170b8a404))
+
 ## [41.1.12](https://github.com/ipfs/aegir/compare/v41.1.11...v41.1.12) (2023-11-30)
 
 

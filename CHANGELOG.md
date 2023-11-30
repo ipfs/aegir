@@ -1,3 +1,11 @@
+## [41.1.12](https://github.com/ipfs/aegir/compare/v41.1.11...v41.1.12) (2023-11-30)
+
+
+### Bug Fixes
+
+* ensure provenance is enabled ([475ccba](https://github.com/ipfs/aegir/commit/475ccbad59a7f8ff7eff695de3db60e702a2ac7f))
+* handle multi-export single module repo ([13f0c1b](https://github.com/ipfs/aegir/commit/13f0c1b547236c5c350aed032c578f552db16a16))
+
 ## [41.1.11](https://github.com/ipfs/aegir/compare/v41.1.10...v41.1.11) (2023-11-30)
 
 

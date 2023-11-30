@@ -1,3 +1,4 @@
+import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { execa } from 'execa'
@@ -62,6 +63,10 @@ export default async function testNode (argv, execaOptions) {
 
   if (argv['--']) {
     args.push(...argv['--'])
+  }
+
+  if (os.platform() === 'win32') {
+    args.push('--exit')
   }
 
   // before hook

@@ -1,3 +1,10 @@
+## [41.1.14](https://github.com/ipfs/aegir/compare/v41.1.13...v41.1.14) (2023-12-03)
+
+
+### Bug Fixes
+
+* try parent name if model name is index ([78a9e6b](https://github.com/ipfs/aegir/commit/78a9e6b01e06b49c4a37fb6371c11a2cd274864f))
+
 ## [41.1.13](https://github.com/ipfs/aegir/compare/v41.1.12...v41.1.13) (2023-11-30)
 
 

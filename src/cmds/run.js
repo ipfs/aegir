@@ -29,6 +29,11 @@ export default {
           type: 'boolean',
           describe: '',
           default: userConfig.run.bail
+        },
+        prefix: {
+          type: 'boolean',
+          describe: 'Prefix output with the package name',
+          default: userConfig.run.prefix
         }
       })
       .positional('script', {

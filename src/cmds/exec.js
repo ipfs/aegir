@@ -29,6 +29,11 @@ export default {
           type: 'boolean',
           describe: '',
           default: userConfig.exec.bail
+        },
+        prefix: {
+          type: 'boolean',
+          describe: 'Prefix output with the package name',
+          default: userConfig.exec.prefix
         }
       })
   },

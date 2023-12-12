@@ -108,7 +108,8 @@ const defaults = {
   },
   releaseRc: {
     retries: 5,
-    tag: 'next'
+    tag: 'next',
+    prefix: true
   },
   // dependency check cmd options
   dependencyCheck: {
@@ -116,10 +117,12 @@ const defaults = {
     ignore: []
   },
   exec: {
-    bail: true
+    bail: true,
+    prefix: true
   },
   run: {
-    bail: true
+    bail: true,
+    prefix: true
   }
 }
 

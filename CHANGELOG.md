@@ -1,3 +1,39 @@
+## [41.1.14](https://github.com/ipfs/aegir/compare/v41.1.13...v41.1.14) (2023-12-03)
+
+
+### Bug Fixes
+
+* try parent name if model name is index ([78a9e6b](https://github.com/ipfs/aegir/commit/78a9e6b01e06b49c4a37fb6371c11a2cd274864f))
+
+## [41.1.13](https://github.com/ipfs/aegir/compare/v41.1.12...v41.1.13) (2023-11-30)
+
+
+### Bug Fixes
+
+* exit tests on windows ([ed81737](https://github.com/ipfs/aegir/commit/ed81737d1303a747f9cf752442235f1170b8a404))
+
+## [41.1.12](https://github.com/ipfs/aegir/compare/v41.1.11...v41.1.12) (2023-11-30)
+
+
+### Bug Fixes
+
+* ensure provenance is enabled ([475ccba](https://github.com/ipfs/aegir/commit/475ccbad59a7f8ff7eff695de3db60e702a2ac7f))
+* handle multi-export single module repo ([13f0c1b](https://github.com/ipfs/aegir/commit/13f0c1b547236c5c350aed032c578f552db16a16))
+
+## [41.1.11](https://github.com/ipfs/aegir/compare/v41.1.10...v41.1.11) (2023-11-30)
+
+
+### Bug Fixes
+
+* use branch name for homepage ([646d6dc](https://github.com/ipfs/aegir/commit/646d6dc61f3f370c3ad6797a33aad344e44c904e))
+
+## [41.1.10](https://github.com/ipfs/aegir/compare/v41.1.9...v41.1.10) (2023-11-27)
+
+
+### Bug Fixes
+
+* use example title if it is available ([#1418](https://github.com/ipfs/aegir/issues/1418)) ([a1d1fe7](https://github.com/ipfs/aegir/commit/a1d1fe712f179db4c40615c201814028cfab9741))
+
 ## [41.1.9](https://github.com/ipfs/aegir/compare/v41.1.8...v41.1.9) (2023-11-06)
 
 

@@ -247,6 +247,10 @@ export function constructManifest (manifest, manifestFields, repoUrl, homePage =
     bugs: {
       url: `${repoUrl}/issues`
     },
+    publishConfig: {
+      access: 'public',
+      provenance: true
+    },
     keywords: manifest.keywords ? manifest.keywords.sort() : undefined,
     bin: manifest.bin,
     ...manifestFields,

@@ -27,8 +27,13 @@ export function load (app) {
         return false
       }
 
-      // single-module repo
+      // single-module repo, single export
       if (urlMapping.url === 'modules.html') {
+        return true
+      }
+
+      // single-module repo, multiple export
+      if (urlMapping.url === 'modules/index.html') {
         return true
       }
 
@@ -44,10 +49,20 @@ export function load (app) {
       }
 
       if (isMonorepoParent) {
+        let project = urlMapping.model.name
+
+        if (project === 'index' && urlMapping.model.parent != null) {
+          project = urlMapping.model.parent?.name
+        }
+
+        if (projects[project] == null) {
+          throw new Error(`Could not derive project name from url mapping model "${urlMapping.model.name}" with parent "${urlMapping.model.parent?.name}"`)
+        }
+
         return {
           comment: urlMapping.model.comment,
-          manifestPath: path.join(projects[urlMapping.model.name].dir, 'package.json'),
-          readmePath: path.join(projects[urlMapping.model.name].dir, 'README.md')
+          manifestPath: path.join(projects[project].dir, 'package.json'),
+          readmePath: path.join(projects[project].dir, 'README.md')
         }
       }
 
@@ -85,7 +100,7 @@ ${
         .map(item => {
           if (item.tag === '@example') {
             return `
-## Example
+## Example${item.name ? ` - ${item.name}` : ''}
 
 ${
   item.content

@@ -23,6 +23,7 @@ import lockfile from 'proper-lockfile'
 import { readPackageUpSync } from 'read-pkg-up'
 import stripBom from 'strip-bom'
 import stripComments from 'strip-json-comments'
+import logTransformer from 'strong-log-transformer'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -584,4 +585,31 @@ export const formatCode = (code, errorLines) => {
     }
   })
   return '    ' + lines.join('\n    ')
+}
+
+/**
+ * Pipe subprocess output to stdio
+ *
+ * @param {import('execa').ExecaChildProcess} subprocess
+ * @param {string} prefix
+ * @param {boolean} [shouldPrefix]
+ */
+export function pipeOutput (subprocess, prefix, shouldPrefix) {
+  if (shouldPrefix === false) {
+    subprocess.stdout?.pipe(process.stdout)
+    subprocess.stderr?.pipe(process.stderr)
+
+    return
+  }
+
+  const stdoutOpts = {
+    tag: kleur.gray(`${prefix}:`)
+  }
+
+  const stderrOpts = {
+    tag: kleur.gray(`${prefix}:`)
+  }
+
+  subprocess.stdout?.pipe(logTransformer(stdoutOpts)).pipe(process.stdout)
+  subprocess.stderr?.pipe(logTransformer(stderrOpts)).pipe(process.stderr)
 }

@@ -36,6 +36,11 @@ export default {
           describe: 'Which tag to publish the version as',
           default: userConfig.releaseRc.tag
         },
+        prefix: {
+          type: 'boolean',
+          describe: 'Prefix output with the package name',
+          default: userConfig.releaseRc.prefix
+        },
         concurrency: {
           type: 'number',
           describe: 'How many modules to release at the same time',

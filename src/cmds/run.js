@@ -30,6 +30,11 @@ export default {
           describe: '',
           default: userConfig.run.bail
         },
+        prefix: {
+          type: 'boolean',
+          describe: 'Prefix output with the package name',
+          default: userConfig.run.prefix
+        },
         concurrency: {
           type: 'number',
           describe: 'How many scripts to run at the same time',

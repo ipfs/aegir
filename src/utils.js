@@ -314,7 +314,6 @@ export function findBinary (bin) {
  * @property {string} dir
  * @property {string[]} siblingDependencies
  * @property {string[]} dependencies
- * @property {boolean} run
  */
 
 /**
@@ -337,34 +336,44 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
   checkForCircularDependencies(projects)
 
   /**
-   * @param {Project} project
-   * @param {import('p-queue').default} queue
+   * @type {Map<string, number>} Track the number of outstanding dependencies of each project
+   *
+   * This is mutated (decremented and deleted) as tasks are run for dependencies
    */
-  async function run (project, queue) {
-    if (project.run) {
-      return
-    }
-
-    await Promise.all(
-      project.siblingDependencies.map(siblingDep => {
-        return queue.add(() => run(projects[siblingDep], queue))
-      })
-    )
-
-    if (project.run) {
-      return
-    }
-
-    project.run = true
-    await fn(project)
+  const inDegree = new Map()
+  for (const [name, project] of Object.entries(projects)) {
+    inDegree.set(name, project.siblingDependencies.length)
   }
 
   const queue = new PQueue({
     concurrency: opts?.concurrency ?? Number.POSITIVE_INFINITY
   })
 
-  for (const project of Object.values(projects)) {
-    await run(project, queue)
+  while (inDegree.size) {
+    /** @type {string[]} */
+    const toRun = []
+
+    for (const [name, d] of inDegree) {
+      // when there are no more dependencies
+      // the project can be added to the queue
+      // and removed from the tracker
+      if (d === 0) {
+        toRun.push(name)
+        inDegree.delete(name)
+      }
+    }
+
+    await Promise.all(toRun.map((name) => queue.add(() => fn(projects[name]))))
+
+    // decrement projects whose dependencies were just run
+    for (const [name, d] of inDegree) {
+      const project = projects[name]
+      for (const ran of toRun) {
+        if (project.siblingDependencies.includes(ran)) {
+          inDegree.set(name, d - 1)
+        }
+      }
+    }
   }
 }
 
@@ -400,7 +409,6 @@ export function parseProjects (projectDir, workspaces) {
         manifest: pkg,
         dir: subProjectDir,
         siblingDependencies: [],
-        run: false,
         dependencies: [
           ...Object.keys(pkg.dependencies ?? {}),
           ...Object.keys(pkg.devDependencies ?? {}),

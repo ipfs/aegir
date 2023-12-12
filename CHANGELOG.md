@@ -1,3 +1,10 @@
+## [41.2.0](https://github.com/ipfs/aegir/compare/v41.1.14...v41.2.0) (2023-12-12)
+
+
+### Features
+
+* **monorepo:** prefix output with package name ([#1378](https://github.com/ipfs/aegir/issues/1378)) ([5ffac14](https://github.com/ipfs/aegir/commit/5ffac14a75faa4e9aba675eb3f2858d2050da550))
+
 ## [41.1.14](https://github.com/ipfs/aegir/compare/v41.1.13...v41.1.14) (2023-12-03)
 
 

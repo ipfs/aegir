@@ -367,12 +367,8 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
 
     // decrement projects whose dependencies were just run
     for (const [name, d] of inDegree) {
-      const project = projects[name]
-      for (const ran of toRun) {
-        if (project.siblingDependencies.includes(ran)) {
-          inDegree.set(name, d - 1)
-        }
-      }
+      const decrement = projects[name].siblingDependencies.filter(dep => toRun.includes(dep)).length
+      inDegree.set(name, d - decrement)
     }
   }
 }

@@ -1,0 +1,17 @@
+{
+  "name": "a",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ipfs/aegir#readme",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "test": "echo very test"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC"
+}

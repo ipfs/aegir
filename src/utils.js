@@ -346,7 +346,7 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
   }
 
   const queue = new PQueue({
-    concurrency: opts?.concurrency ?? Number.POSITIVE_INFINITY
+    concurrency: opts?.concurrency ?? os.availableParallelism?.() ?? os.cpus().length
   })
 
   while (inDegree.size) {

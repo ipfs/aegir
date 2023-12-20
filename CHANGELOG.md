@@ -1,3 +1,10 @@
+## [41.3.2](https://github.com/ipfs/aegir/compare/v41.3.1...v41.3.2) (2023-12-20)
+
+
+### Bug Fixes
+
+* revert CI change ([705c899](https://github.com/ipfs/aegir/commit/705c899b48e87e42486d3ee299f4273493280fce))
+
 ## [41.3.1](https://github.com/ipfs/aegir/compare/v41.3.0...v41.3.1) (2023-12-20)
 
 

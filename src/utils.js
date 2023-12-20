@@ -345,8 +345,18 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
     inDegree.set(name, project.siblingDependencies.length)
   }
 
+  let concurrency = opts?.concurrency
+
+  if (concurrency == null && process.env.CI != null) {
+    concurrency = 1
+  }
+
+  if (concurrency == null) {
+    concurrency = os.availableParallelism?.() ?? os.cpus().length
+  }
+
   const queue = new PQueue({
-    concurrency: opts?.concurrency ?? os.availableParallelism?.() ?? os.cpus().length
+    concurrency
   })
 
   while (inDegree.size) {

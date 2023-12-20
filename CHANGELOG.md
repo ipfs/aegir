@@ -1,3 +1,10 @@
+## [41.3.1](https://github.com/ipfs/aegir/compare/v41.3.0...v41.3.1) (2023-12-20)
+
+
+### Bug Fixes
+
+* default to concurrency 1 in ci ([f0750cb](https://github.com/ipfs/aegir/commit/f0750cbe05fe2b0d2c1ecdf09164f55f4bf63070))
+
 ## [41.3.0](https://github.com/ipfs/aegir/compare/v41.2.0...v41.3.0) (2023-12-20)
 
 

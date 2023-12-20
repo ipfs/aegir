@@ -44,6 +44,8 @@ export default {
           console.info(kleur.red(err.stack)) // eslint-disable-line no-console
         }
       }
+    }, {
+      concurrency: ctx.concurrency
     })
   }
 }

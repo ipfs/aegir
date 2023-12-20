@@ -34,6 +34,11 @@ export default {
           type: 'boolean',
           describe: 'Prefix output with the package name',
           default: userConfig.run.prefix
+        },
+        concurrency: {
+          type: 'number',
+          describe: 'How many scripts to run at the same time',
+          default: userConfig.run.concurrency
         }
       })
       .positional('script', {

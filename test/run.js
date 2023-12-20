@@ -86,4 +86,35 @@ a-workspace-project: npm run test
 
 very test`)
   })
+
+  it('should execute commands in dependency order', async function () {
+    this.timeout(120 * 1000) // slow ci is slow
+
+    /*
+      This testcase has the following dependencies:
+
+      d -> c
+      c -> a
+      b -> a
+
+      This means the test runner should batch the test runs like so:
+
+      [a]
+      [b, c]
+      [d]
+
+    */
+    const result = await execa(bin, ['run', 'test'], {
+      cwd: await setUpProject('a-large-monorepo')
+    })
+
+    const out = result.stdout
+    // a finishes before b or c starts
+    expect(out.indexOf('a: very test')).to.be.lt(out.indexOf('b: npm run test'))
+    expect(out.indexOf('a: very test')).to.be.lt(out.indexOf('c: npm run test'))
+
+    // b and c finish before d starts
+    expect(out.indexOf('b: very test')).to.be.lt(out.indexOf('d: npm run test'))
+    expect(out.indexOf('c: very test')).to.be.lt(out.indexOf('d: npm run test'))
+  })
 })

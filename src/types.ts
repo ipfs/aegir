@@ -341,6 +341,11 @@ interface ReleaseRcOptions {
    * Prefix output with the package name
    */
   prefix?: boolean
+
+  /**
+   * Release modules in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 interface DependencyCheckOptions {
@@ -365,11 +370,16 @@ interface ExecOptions {
    * Prefix output with the package name
    */
   prefix?: boolean
+
+  /**
+   * Run commands in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 interface RunOptions {
   /**
-   * If false, the command will continue to be run in other packages
+   * If false, the script will continue to be run in other packages
    */
   bail?: boolean
 
@@ -377,6 +387,11 @@ interface RunOptions {
    * Prefix output with the package name
    */
   prefix?: boolean
+
+  /**
+   * Run scripts in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 export type {

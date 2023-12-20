@@ -40,6 +40,11 @@ export default {
           type: 'boolean',
           describe: 'Prefix output with the package name',
           default: userConfig.releaseRc.prefix
+        },
+        concurrency: {
+          type: 'number',
+          describe: 'How many modules to release at the same time',
+          default: userConfig.releaseRc.concurrency
         }
       })
   },

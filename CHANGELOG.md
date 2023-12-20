@@ -1,3 +1,10 @@
+## [41.3.0](https://github.com/ipfs/aegir/compare/v41.2.0...v41.3.0) (2023-12-20)
+
+
+### Features
+
+* add concurrency option to run and exec ([#1312](https://github.com/ipfs/aegir/issues/1312)) ([4d3c319](https://github.com/ipfs/aegir/commit/4d3c319c830cff93472f2d0e0ba1c3e2ef709d1b))
+
 ## [41.2.0](https://github.com/ipfs/aegir/compare/v41.1.14...v41.2.0) (2023-12-12)
 
 

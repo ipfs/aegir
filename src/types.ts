@@ -350,14 +350,26 @@ interface ReleaseRcOptions {
 
 interface DependencyCheckOptions {
   /**
-   * throws error on unused dependencies, default is false
+   * throws error on unused dependencies
+   *
+   * @default true
    */
   unused: boolean
+
   /**
    * Ignore these dependencies when considering which are used and which are not
    */
   ignore: string[]
 
+  /**
+   * Files to ignore when checking production dependencies
+   */
+  productionIgnorePatterns: string[]
+
+  /**
+   * Files to ignore when checking dev dependencies
+   */
+  developmentIgnorePatterns: string[]
 }
 
 interface ExecOptions {

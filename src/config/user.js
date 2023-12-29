@@ -114,7 +114,16 @@ const defaults = {
   // dependency check cmd options
   dependencyCheck: {
     unused: false,
-    ignore: []
+    ignore: [],
+    productionIgnorePatterns: [
+      'dist',
+      'test',
+      '.aegir.js'
+    ],
+    developmentIgnorePatterns: [
+      'dist',
+      'src'
+    ]
   },
   exec: {
     bail: true,

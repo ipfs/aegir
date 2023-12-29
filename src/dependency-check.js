@@ -63,6 +63,8 @@ const tasks = new Listr(
             console.error(kleur.red(dep))
             console.error(' ', kleur.gray(path.join('\n  ')))
           })
+
+          console.error('')
         }
 
         if (productionOnlyResult.dependencies.length > 0) {
@@ -74,6 +76,8 @@ const tasks = new Listr(
           productionOnlyResult.dependencies.forEach(dep => {
             console.error(kleur.yellow(dep))
           })
+
+          console.error('')
         }
 
         // check dev dependencies
@@ -98,6 +102,8 @@ const tasks = new Listr(
             console.error(kleur.red(dep))
             console.error(' ', kleur.gray(path.join('\n  ')))
           })
+
+          console.error('')
         }
 
         if (devlopmentOnlyResult.devDependencies.length > 0) {
@@ -109,12 +115,10 @@ const tasks = new Listr(
           devlopmentOnlyResult.devDependencies.forEach(dep => {
             console.error(kleur.yellow(dep))
           })
+          console.error('')
         }
 
         if (missingOrUnusedPresent) {
-          // necessary because otherwise listr removes the last line of output
-          console.error(' ')
-
           throw new Error('Some dependencies are missing or unused')
         }
       }

@@ -116,13 +116,13 @@ const defaults = {
     unused: false,
     ignore: [],
     productionIgnorePatterns: [
-      'dist',
-      'test',
+      '/dist',
+      '/test',
       '.aegir.js'
     ],
     developmentIgnorePatterns: [
-      'dist',
-      'src'
+      '/dist',
+      '/src'
     ]
   },
   exec: {

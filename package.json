@@ -313,7 +313,7 @@
     "typescript-docs-verifier": "^2.5.0",
     "uint8arrays": "^4.0.2",
     "undici": "^5.0.0",
-    "update-notifier": "^6.0.2",
+    "update-notifier": "^7.0.0",
     "wherearewe": "^2.0.1",
     "yargs": "^17.1.1",
     "yargs-parser": "^21.1.1"

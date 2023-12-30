@@ -335,7 +335,7 @@
     "@types/strong-log-transformer": "^1.0.2",
     "@types/update-notifier": "^6.0.1",
     "@types/yargs": "^17.0.0",
-    "electron": "^27.0.2"
+    "electron": "^28.1.0"
   },
   "browser": {
     "fs": false,

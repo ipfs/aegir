@@ -20,7 +20,7 @@
         "sourceMap": true,
         // module resolution
         "esModuleInterop": true,
-        "moduleResolution": "node",
+        "moduleResolution": "Node16",
         // linter checks
         "noImplicitReturns": false,
         "noFallthroughCasesInSwitch": true,

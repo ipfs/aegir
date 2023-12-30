@@ -1,3 +1,11 @@
+## [41.3.5](https://github.com/ipfs/aegir/compare/v41.3.4...v41.3.5) (2023-12-30)
+
+
+### Dependencies
+
+* bump p-queue from 7.4.1 to 8.0.1 ([#1433](https://github.com/ipfs/aegir/issues/1433)) ([57934c9](https://github.com/ipfs/aegir/commit/57934c96ccbe244c779d1de78015c260b5ab1fda))
+* bump undici from 5.28.2 to 6.2.1 ([#1429](https://github.com/ipfs/aegir/issues/1429)) ([8189645](https://github.com/ipfs/aegir/commit/8189645a49a27b5afcf36749f49a58a555b6d701))
+
 ## [41.3.4](https://github.com/ipfs/aegir/compare/v41.3.3...v41.3.4) (2023-12-30)
 
 

@@ -176,7 +176,7 @@ export type IntersectionType = Type1 & Type2
 
 ```js
 // index.js
-/** @type { import('./types').IntersectionType } */
+/** @type { import("./types.js").IntersectionType } */
 const list
 ```
 You can also organise your source types in the same way as [vendored types](#vendor-type-declarations).
@@ -231,7 +231,7 @@ const fs = require('fs')
  * @typedef {import("interface-datastore/src/types").Batch} Batch
  * @typedef {import('interface-datastore/src/key')} Key
  * @typedef {import('interface-datastore/src/adapter').Query} Query
- * @typedef {import('./types').KeyTransform} KeyTransform
+ * @typedef {import("./types.js").KeyTransform} KeyTransform
  */
 ```
 

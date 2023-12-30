@@ -6,7 +6,7 @@ import merge from 'merge-options'
 import { isTypescript } from '../utils.js'
 
 /**
- * @typedef {import("./../types").Options} Options
+ * @typedef {import("../types.js").Options} Options
  */
 
 /** @type {Omit<Options, "fileConfig">} */

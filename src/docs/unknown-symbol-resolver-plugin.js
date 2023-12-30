@@ -41,7 +41,7 @@ const ignoreModules = [
  * `typedoc-urls.json` files from the `dist` folder of types that need
  * documenting. See `type-indexer-plugin.cjs` for how this file is generated.
  *
- * @param {import("typedoc/dist/lib/application").Application} app
+ * @param {import("typedoc").Application} app
  */
 export function load (app) {
   app.converter.addUnknownSymbolResolver((ref, refl, part, symbolId) => {
@@ -122,7 +122,7 @@ function loadTypedocUrls (moduleName) {
 }
 
 /**
- * @param {import("typedoc/dist/lib/converter/comments/declarationReference").ComponentPath[] | undefined} refs
+ * @param {import("typedoc").ComponentPath[] | undefined} refs
  */
 function calculateName (refs) {
   if (refs == null || refs.length === 0) {

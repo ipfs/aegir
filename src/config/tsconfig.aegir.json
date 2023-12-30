@@ -6,7 +6,7 @@
         "allowJs": true,
         "checkJs": true,
         "target": "ES2022",
-        "module": "ES2022",
+        "module": "Node16",
         "lib": ["ES2022", "DOM", "DOM.Iterable", "WebWorker"],
         "noEmit": false,
         "noEmitOnError": true,

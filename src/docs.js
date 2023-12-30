@@ -13,8 +13,8 @@ const publishPages = promisify(ghPages.publish)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").DocsOptions} DocsOptions
+ * @typedef {import("./types.js").GlobalOptions} GlobalOptions
+ * @typedef {import("./types.js").DocsOptions} DocsOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  */
 

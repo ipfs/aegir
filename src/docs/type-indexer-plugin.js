@@ -51,7 +51,7 @@ export function load (app) {
   }
 
   /**
-   * @param {import("typedoc/dist/lib/output/events").RendererEvent} event
+   * @param {import("typedoc").RendererEvent} event
    */
   const onRendererBegin = event => {
     if (!event.urls) {
@@ -228,7 +228,7 @@ function onResolve (context, decl) {
  * For a given UrlMapping, find the nearest package.json file
  * and work out if a `typedoc-urls.json` should be generated.
  *
- * @param {import("typedoc/dist/lib/models/sources/file").SourceReference} source
+ * @param {import("typedoc").SourceReference} source
  * @param {boolean} isMonorepo
  * @returns {ProjectContext}
  */
@@ -262,7 +262,7 @@ function findContext (source, isMonorepo) {
 }
 
 /**
- * @param {import("typedoc/dist/lib/application").Application} Application
+ * @param {import("typedoc").Application} Application
  * @param {ProjectContext} context
  * @returns {Documentation | undefined}
  */

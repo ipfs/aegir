@@ -14,10 +14,10 @@ import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary, hasDocCheck 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").LintOptions} LintOptions
+ * @typedef {import("./types.js").GlobalOptions} GlobalOptions
+ * @typedef {import("./types.js").LintOptions} LintOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
- * @typedef {import("./types").TSOptions} TSOptions
+ * @typedef {import("./types.js").TSOptions} TSOptions
  */
 
 const tasks = new Listr(

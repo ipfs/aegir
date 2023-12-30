@@ -5,9 +5,9 @@
       "outDir": "dist",
       "allowJs": true,
       "checkJs": true,
-      "target": "ES2020",
-      "module": "ES2020",
-      "lib": ["ES2021", "ES2021.Promise", "ES2021.String", "ES2020.BigInt", "DOM", "DOM.Iterable"],
+      "target": "ES2022",
+      "module": "Node16",
+      "lib": ["ES2022", "DOM", "DOM.Iterable", "WebWorker"],
       "noEmit": false,
       "noEmitOnError": true,
       "emitDeclarationOnly": true,
@@ -20,7 +20,7 @@
       "sourceMap": true,
       // module resolution
       "esModuleInterop": true,
-      "moduleResolution": "node",
+      "moduleResolution": "Node16",
       // linter checks
       "noImplicitReturns": false,
       "noFallthroughCasesInSwitch": true,

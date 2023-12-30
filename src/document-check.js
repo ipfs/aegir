@@ -8,8 +8,8 @@ import merge from 'merge-options'
 import { compileSnippets } from 'typescript-docs-verifier'
 import { formatCode, formatError, fromRoot, hasTsconfig, readJson } from './utils.js'
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").DocsVerifierOptions} DocsVerifierOptions
+ * @typedef {import("./types.js").GlobalOptions} GlobalOptions
+ * @typedef {import("./types.js").DocsVerifierOptions} DocsVerifierOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  */
 
@@ -51,8 +51,8 @@ const tasks = new Listr(
                 userTSConfig,
                 {
                   compilerOptions: {
-                    target: 'esnext',
-                    module: 'esnext',
+                    target: 'ES2022',
+                    module: 'Node16',
                     noImplicitAny: true,
                     noEmit: true
                   }

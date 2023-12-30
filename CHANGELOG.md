@@ -1,3 +1,13 @@
+## [41.3.4](https://github.com/ipfs/aegir/compare/v41.3.3...v41.3.4) (2023-12-30)
+
+
+### Dependencies
+
+* bump lilconfig from 2.1.0 to 3.0.0 ([#1427](https://github.com/ipfs/aegir/issues/1427)) ([e1c4dfc](https://github.com/ipfs/aegir/commit/e1c4dfcc31b0d270a63c8b5f6ef5a263cedb31e1))
+* bump p-map from 6.0.0 to 7.0.1 ([#1435](https://github.com/ipfs/aegir/issues/1435)) ([9869be9](https://github.com/ipfs/aegir/commit/9869be9dfa8b2e23625de4a5c9d5304b713742b6))
+* bump uint8arrays from 4.0.10 to 5.0.1 ([#1428](https://github.com/ipfs/aegir/issues/1428)) ([85abe2a](https://github.com/ipfs/aegir/commit/85abe2a25663f388da3042049fc2664b54122343))
+* **dev:** bump @types/gh-pages from 5.0.1 to 6.1.0 ([#1431](https://github.com/ipfs/aegir/issues/1431)) ([cfae15f](https://github.com/ipfs/aegir/commit/cfae15fe75dec7b957d9da2df67961c8539f9868))
+
 ## [41.3.3](https://github.com/ipfs/aegir/compare/v41.3.2...v41.3.3) (2023-12-30)
 
 

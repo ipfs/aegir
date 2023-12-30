@@ -116,6 +116,8 @@ const defaults = {
     unused: false,
     ignore: [],
     productionIgnorePatterns: [
+      '/benchmark',
+      '/benchmarks',
       '/dist',
       '/test',
       '.aegir.js'

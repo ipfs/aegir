@@ -290,7 +290,7 @@
     "p-retry": "^6.0.0",
     "pascalcase": "^2.0.0",
     "path": "^0.12.7",
-    "playwright-test": "^12.1.1",
+    "playwright-test": "^14.0.0",
     "polka": "^0.5.2",
     "premove": "^4.0.0",
     "prompt": "^1.2.2",

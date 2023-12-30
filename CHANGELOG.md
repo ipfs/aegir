@@ -1,3 +1,36 @@
+## [41.3.4](https://github.com/ipfs/aegir/compare/v41.3.3...v41.3.4) (2023-12-30)
+
+
+### Dependencies
+
+* bump lilconfig from 2.1.0 to 3.0.0 ([#1427](https://github.com/ipfs/aegir/issues/1427)) ([e1c4dfc](https://github.com/ipfs/aegir/commit/e1c4dfcc31b0d270a63c8b5f6ef5a263cedb31e1))
+* bump p-map from 6.0.0 to 7.0.1 ([#1435](https://github.com/ipfs/aegir/issues/1435)) ([9869be9](https://github.com/ipfs/aegir/commit/9869be9dfa8b2e23625de4a5c9d5304b713742b6))
+* bump uint8arrays from 4.0.10 to 5.0.1 ([#1428](https://github.com/ipfs/aegir/issues/1428)) ([85abe2a](https://github.com/ipfs/aegir/commit/85abe2a25663f388da3042049fc2664b54122343))
+* **dev:** bump @types/gh-pages from 5.0.1 to 6.1.0 ([#1431](https://github.com/ipfs/aegir/issues/1431)) ([cfae15f](https://github.com/ipfs/aegir/commit/cfae15fe75dec7b957d9da2df67961c8539f9868))
+
+## [41.3.3](https://github.com/ipfs/aegir/compare/v41.3.2...v41.3.3) (2023-12-30)
+
+
+### Trivial Changes
+
+* increase dependabot limit ([dbd0690](https://github.com/ipfs/aegir/commit/dbd06906d3cedd9876376093adf4b62bb1a16712))
+
+
+### Dependencies
+
+* bump @electron/get from 2.0.3 to 3.0.0 ([#1405](https://github.com/ipfs/aegir/issues/1405)) ([2b061c1](https://github.com/ipfs/aegir/commit/2b061c1e0be2dc3d2a9b7262f675c986fa9dc6ef))
+* bump globby from 13.2.2 to 14.0.0 ([#1412](https://github.com/ipfs/aegir/issues/1412)) ([239307d](https://github.com/ipfs/aegir/commit/239307d0a8a6f3e95cbe7ae9967324fa0e650d2a))
+* bump playwright-test from 12.6.1 to 14.0.0 ([#1417](https://github.com/ipfs/aegir/issues/1417)) ([5ea4468](https://github.com/ipfs/aegir/commit/5ea44682c3adee721fe58ef9cb69c787ec765b97))
+* bump read-pkg-up from 10.1.0 to 11.0.0 ([#1408](https://github.com/ipfs/aegir/issues/1408)) ([3ff7bac](https://github.com/ipfs/aegir/commit/3ff7bac0da95482780e04d007b57ce736d0294e4))
+* bump update-notifier from 6.0.2 to 7.0.0 ([#1404](https://github.com/ipfs/aegir/issues/1404)) ([3cd2fa0](https://github.com/ipfs/aegir/commit/3cd2fa02a54fc294c1665899fb328202f534b597))
+
+## [41.3.2](https://github.com/ipfs/aegir/compare/v41.3.1...v41.3.2) (2023-12-20)
+
+
+### Bug Fixes
+
+* revert CI change ([705c899](https://github.com/ipfs/aegir/commit/705c899b48e87e42486d3ee299f4273493280fce))
+
 ## [41.3.1](https://github.com/ipfs/aegir/compare/v41.3.0...v41.3.1) (2023-12-20)
 
 

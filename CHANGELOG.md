@@ -1,3 +1,14 @@
+## [42.0.0](https://github.com/ipfs/aegir/compare/v41.3.5...v42.0.0) (2024-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* previously undetected missing or unused deps will cause the dep-check command to fail
+
+### Bug Fixes
+
+* check for missing production dependencies ([#1426](https://github.com/ipfs/aegir/issues/1426)) ([a66384a](https://github.com/ipfs/aegir/commit/a66384acd40691981224615967cae74c6e3f328a))
+
 ## [41.3.5](https://github.com/ipfs/aegir/compare/v41.3.4...v41.3.5) (2023-12-30)
 
 

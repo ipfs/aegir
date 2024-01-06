@@ -1,3 +1,11 @@
+## [42.0.1](https://github.com/ipfs/aegir/compare/v42.0.0...v42.0.1) (2024-01-06)
+
+
+### Dependencies
+
+* bump c8 from 8.0.1 to 9.0.0 ([#1440](https://github.com/ipfs/aegir/issues/1440)) ([313cd61](https://github.com/ipfs/aegir/commit/313cd615afce27c4dfa6df7f1be26e7b1b407dca))
+* bump eslint-plugin-jsdoc from 46.10.1 to 48.0.2 ([#1439](https://github.com/ipfs/aegir/issues/1439)) ([4dde4a3](https://github.com/ipfs/aegir/commit/4dde4a38b626cf6d6528f2887bc77c3ad04ee63f))
+
 ## [42.0.0](https://github.com/ipfs/aegir/compare/v41.3.5...v42.0.0) (2024-01-06)
 
 

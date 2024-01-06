@@ -39,6 +39,18 @@ export default {
         default: true,
         type: 'boolean'
       })
+      .option('P', {
+        alias: 'productionIgnorePatterns',
+        describe: 'Patterns to ignore while checking production dependencies',
+        array: true,
+        default: userConfig.dependencyCheck.productionIgnorePatterns
+      })
+      .option('D', {
+        alias: 'developmentIgnorePatterns',
+        describe: 'Patterns to ignore while checking development dependencies',
+        array: true,
+        default: userConfig.dependencyCheck.developmentIgnorePatterns
+      })
   },
   /**
    * @param {any} argv

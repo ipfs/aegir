@@ -120,6 +120,7 @@ async function findMonorepoEntryPoints () {
  * @property {string} PublishDocsConfig.email
  * @property {string} PublishDocsConfig.message
  * @property {string} PublishDocsConfig.directory
+ * @property {string} [PublishDocsConfig.cname]
  */
 
 /**
@@ -138,7 +139,8 @@ const publishDocs = async (config) => {
       user: {
         name: config.user,
         email: config.email
-      }
+      },
+      cname: config.cname
     }
   )
 }

@@ -170,6 +170,10 @@ interface DocsOptions {
    * Where to build the documentation
    */
   directory: string
+  /**
+   * If set a CNAME file will be written with a custom domain
+   */
+  cname?: string
 }
 
 interface DocsVerifierOptions {

@@ -1,3 +1,10 @@
+## [42.1.0](https://github.com/ipfs/aegir/compare/v42.0.1...v42.1.0) (2024-01-08)
+
+
+### Features
+
+* support cname for docs publishing ([#1442](https://github.com/ipfs/aegir/issues/1442)) ([b705c13](https://github.com/ipfs/aegir/commit/b705c1385f1815192ef28776f394a5ffff3baac1))
+
 ## [42.0.1](https://github.com/ipfs/aegir/compare/v42.0.0...v42.0.1) (2024-01-06)
 
 

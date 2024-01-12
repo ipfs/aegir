@@ -265,6 +265,7 @@
     "fs-extra": "^11.1.0",
     "gh-pages": "^6.0.0",
     "globby": "^14.0.0",
+    "is-plain-obj": "^4.1.0",
     "kleur": "^4.1.4",
     "lilconfig": "^3.0.0",
     "listr": "~0.14.2",

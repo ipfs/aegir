@@ -1,3 +1,10 @@
+## [42.1.2](https://github.com/ipfs/aegir/compare/v42.1.1...v42.1.2) (2024-01-12)
+
+
+### Bug Fixes
+
+* update check-config command to handle release-please monorepos ([#1448](https://github.com/ipfs/aegir/issues/1448)) ([3794628](https://github.com/ipfs/aegir/commit/37946286aeb49d76559b58a92067258e5246737a))
+
 ## [42.1.1](https://github.com/ipfs/aegir/compare/v42.1.0...v42.1.1) (2024-01-12)
 
 

@@ -233,7 +233,7 @@ export function sortManifest (manifest) {
  * @param {string} homePage
  */
 export function constructManifest (manifest, manifestFields, repoUrl, homePage = repoUrl) {
-  return {
+  const output = {
     name: manifest.name,
     version: manifest.version,
     description: manifest.description,
@@ -262,6 +262,17 @@ export function constructManifest (manifest, manifestFields, repoUrl, homePage =
     optionalDependencies: manifest.optionalDependencies,
     bundledDependencies: manifest.bundledDependencies
   }
+
+  // remove publish-related fields if this module is not published
+  if (manifest.private === true) {
+    output.publishConfig = undefined
+    output.files = undefined
+    output.types = undefined
+    output.typesVersions = undefined
+    output.exports = undefined
+  }
+
+  return output
 }
 
 /**

@@ -3,6 +3,9 @@
 import path from 'path'
 import fs from 'fs-extra'
 import {
+  pkg
+} from '../utils.js'
+import {
   ensureFileHasContents
 } from './utils.js'
 
@@ -11,15 +14,22 @@ import {
  * @param {boolean} isTypescriptProject
  */
 export async function checkTypedocFiles (projectDir, isTypescriptProject) {
-  console.info('Check typedoc files')
+  const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
-  const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
-
-  if (pkg.exports == null) {
+  if (manifest.scripts.docs == null && pkg.scripts.docs == null) {
+    console.info('No "docs" npm script found, skipping typedoc.json check')
     return
   }
 
-  const entryPoints = Object.values(pkg.exports)
+  if (manifest.exports == null) {
+    console.info('No exports map found, skipping typedoc.json check')
+
+    return
+  }
+
+  console.info('Check typedoc files')
+
+  const entryPoints = Object.values(manifest.exports)
     .map(e => {
       const path = e.import
 

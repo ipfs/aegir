@@ -28,7 +28,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
     throw new Error(`Could not parse repo owner & name from ${repoUrl}`)
   }
 
-  console.info('Check README files')
+  console.info('Check monorepo README files')
 
   const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 

@@ -272,9 +272,25 @@ export const isTypedCJS = isCJS && hasMain && hasTypes
 export const isUntypedCJS = isCJS && hasMain
 
 export const isMonorepoProject = (dir = process.cwd()) => {
-  const parentManifestPath = path.resolve(dir, '..', '..', 'package.json')
+  const cwd = path.resolve(dir, '..')
+  const manifest = readPackageUpSync({
+    cwd
+  })
 
-  return Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)
+  return manifest?.packageJson.workspaces != null
+}
+
+export const usesReleasePlease = (dir = process.cwd()) => {
+  try {
+    const mainYmlPath = path.resolve(dir, '.github', 'workflows', 'main.yml')
+    const contents = fs.readFileSync(mainYmlPath, {
+      encoding: 'utf-8'
+    })
+
+    return contents.includes('uses: google-github-actions/release-please-action')
+  } catch {
+    return false
+  }
 }
 
 /**

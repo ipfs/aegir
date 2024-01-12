@@ -27,9 +27,14 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, r
     throw new Error(`Could not parse repo owner & name from ${repoUrl}`)
   }
 
-  console.info('Check README files')
-
   const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
+
+  if (pkg.private) {
+    console.info('Private module found, skipping README file check')
+    return
+  }
+
+  console.info('Check README files')
 
   const readmePath = path.join(projectDir, 'README.md')
   let readmeContents = ''

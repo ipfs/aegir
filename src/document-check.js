@@ -4,8 +4,8 @@ import fs from 'fs-extra'
 import { globby } from 'globby'
 import kleur from 'kleur'
 import Listr from 'listr'
-import merge from 'merge-options'
 import { compileSnippets } from 'typescript-docs-verifier'
+import merge from './utils/merge-options.js'
 import { formatCode, formatError, fromRoot, hasTsconfig, readJson } from './utils.js'
 /**
  * @typedef {import("./types.js").GlobalOptions} GlobalOptions

@@ -2,7 +2,7 @@
 
 import { pathToFileURL } from 'url'
 import { lilconfig } from 'lilconfig'
-import merge from 'merge-options'
+import merge from '../utils/merge-options.js'
 import { isTypescript } from '../utils.js'
 
 /**
@@ -114,7 +114,18 @@ const defaults = {
   // dependency check cmd options
   dependencyCheck: {
     unused: false,
-    ignore: []
+    ignore: [],
+    productionIgnorePatterns: [
+      '/benchmark',
+      '/benchmarks',
+      '/dist',
+      '/test',
+      '.aegir.js'
+    ],
+    developmentIgnorePatterns: [
+      '/dist',
+      '/src'
+    ]
   },
   exec: {
     bail: true,

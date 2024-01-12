@@ -8,7 +8,7 @@ import fs from 'fs-extra'
 import { globby } from 'globby'
 import kleur from 'kleur'
 import Listr from 'listr'
-import merge from 'merge-options'
+import merge from './utils/merge-options.js'
 import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary, hasDocCheck } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

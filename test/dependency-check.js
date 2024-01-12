@@ -76,7 +76,7 @@ describe('dependency check', () => {
   /**
    * depcheck removed this option as it caused too many false positives
    */
-  it.skip('should fail for missing production deps', async () => {
+  it('should fail for missing production deps', async () => {
     await expect(
       execa(bin, ['dependency-check', '-p'], {
         cwd: path.join(__dirname, 'fixtures/dependency-check/fail-prod')

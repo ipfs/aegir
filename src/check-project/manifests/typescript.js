@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import mergeOptions from 'merge-options'
+import mergeOptions from '../../utils/merge-options.js'
 import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,
@@ -45,7 +45,7 @@ export async function typescriptManifest (manifest, branchName, repoUrl, homePag
     release: (manifest.scripts?.release?.includes('semantic-release') || manifest.scripts?.release?.includes('aegir release')) ? semanticReleaseConfig(branchName) : undefined
   }, repoUrl, homePage)
 
-  if (Object.keys(proposedManifest.exports).length > 1) {
+  if (proposedManifest.exports != null && Object.keys(proposedManifest.exports).length > 1) {
     console.info('Multiple exports detected')
 
     proposedManifest.typesVersions = {

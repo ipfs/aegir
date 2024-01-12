@@ -6,8 +6,8 @@ import esbuild from 'esbuild'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'
-import merge from 'merge-options'
 import pascalcase from 'pascalcase'
+import merge from '../utils/merge-options.js'
 import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths, findBinary } from './../utils.js'
 
 const defaults = merge.bind({
@@ -95,8 +95,9 @@ const tasks = new Listr([
         const maxsize = bytes(ctx.bundlesizeMax)
         const diff = gzip - maxsize
 
-        task.output = 'Use https://www.bundle-buddy.com/ to load "./dist/stats.json".'
-        task.output = `Check previous sizes in https://bundlephobia.com/result?p=${pkg.name}@${pkg.version}`
+        task.output = 'Use https://esbuild.github.io/analyze/ to load "./dist/stats.json".'
+        // bundlephobia doesn't support exports maps properly
+        // task.output = `Check previous sizes in https://bundlephobia.com/result?p=${pkg.name}@${pkg.version}`
 
         if (diff > 0) {
           throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxsize)})`)

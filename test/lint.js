@@ -1,9 +1,8 @@
 /* eslint-env mocha */
 
-import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { premove as del } from 'premove/sync'
+import fs from 'fs-extra'
 import { loadUserConfig } from '../src/config/user.js'
 import lint from '../src/lint.js'
 import { expect } from '../utils/chai.js'
@@ -75,7 +74,11 @@ describe('lint', () => {
 
   after(() => {
     process.chdir(cwd)
-    del(TEMP_FOLDER)
+    if (fs.existsSync(TEMP_FOLDER)) {
+      fs.rmdirSync(TEMP_FOLDER, {
+        recursive: true
+      })
+    }
   })
 
   it('lint itself (aegir)', async function () {

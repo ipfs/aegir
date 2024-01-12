@@ -3,8 +3,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { execa } from 'execa'
 import kleur from 'kleur'
-import merge from 'merge-options'
 import * as tempy from 'tempy'
+import merge from '../utils/merge-options.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

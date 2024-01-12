@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import mergeOptions from 'merge-options'
+import mergeOptions from '../../utils/merge-options.js'
 import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,

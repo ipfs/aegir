@@ -6,8 +6,8 @@ import esbuild from 'esbuild'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'
-import merge from 'merge-options'
 import pascalcase from 'pascalcase'
+import merge from '../utils/merge-options.js'
 import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths, findBinary } from './../utils.js'
 
 const defaults = merge.bind({

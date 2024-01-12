@@ -2,7 +2,7 @@
 
 import { pathToFileURL } from 'url'
 import { lilconfig } from 'lilconfig'
-import merge from 'merge-options'
+import merge from '../utils/merge-options.js'
 import { isTypescript } from '../utils.js'
 
 /**

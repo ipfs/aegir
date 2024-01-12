@@ -1,3 +1,10 @@
+## [42.1.1](https://github.com/ipfs/aegir/compare/v42.1.0...v42.1.1) (2024-01-12)
+
+
+### Bug Fixes
+
+* point to esbuild bundle analysis tool instead of bundlebuddy ([#1447](https://github.com/ipfs/aegir/issues/1447)) ([c5b96a3](https://github.com/ipfs/aegir/commit/c5b96a393d741e42c090ab144da0eb18cf53f9e7))
+
 ## [42.1.0](https://github.com/ipfs/aegir/compare/v42.0.1...v42.1.0) (2024-01-08)
 
 

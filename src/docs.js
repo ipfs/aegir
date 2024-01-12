@@ -5,7 +5,6 @@ import { execa } from 'execa'
 import fs from 'fs-extra'
 import ghPages from 'gh-pages'
 import Listr from 'listr'
-import { premove as del } from 'premove/sync'
 import { hasTsconfig, fromAegir, fromRoot, readJson, isMonorepoParent } from './utils.js'
 
 const publishPages = promisify(ghPages.publish)
@@ -153,7 +152,11 @@ const tasks = new Listr(
        * @param {GlobalOptions & DocsOptions} ctx
        */
       task: (ctx) => {
-        del(ctx.directory)
+        if (fs.existsSync(ctx.directory)) {
+          fs.rmdirSync(ctx.directory, {
+            recursive: true
+          })
+        }
       }
     },
     {

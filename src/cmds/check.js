@@ -6,9 +6,9 @@ import path from 'path'
 import esbuild from 'esbuild'
 import fs from 'fs-extra'
 import kleur from 'kleur'
-import merge from 'merge-options'
 import { readPackageUp } from 'read-pkg-up'
 import { loadUserConfig } from '../config/user.js'
+import merge from '../utils/merge-options.js'
 import { fromRoot, paths } from '../utils.js'
 
 const defaults = merge.bind({

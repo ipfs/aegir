@@ -13,7 +13,7 @@ export const APIDOCS = (pkg, parentManifest) => {
   const ghPages = parseGhPagesUrl(pkg, parentManifest)
 
   return `
-## API Docs
+# API Docs
 
 * [${ghPages}](${ghPages})
 `

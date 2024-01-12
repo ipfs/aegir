@@ -8,6 +8,9 @@
       "import": "./src/index.js"
     }
   },
+  "scripts": {
+    "test": "echo very test"
+  },
   "type": "module",
   "author": "",
   "license": "ISC"

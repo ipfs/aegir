@@ -170,6 +170,10 @@ interface DocsOptions {
    * Where to build the documentation
    */
   directory: string
+  /**
+   * If set a CNAME file will be written with a custom domain
+   */
+  cname?: string
 }
 
 interface DocsVerifierOptions {
@@ -236,6 +240,10 @@ interface TestOptions {
    * Enable coverage output
    */
   cov: boolean
+  /**
+   * How long to wait for collecting code coverage. Workaround for @see https://github.com/ipfs/aegir/issues/1206
+   */
+  covTimeout: number
   /**
    * Runner enviroment
    */
@@ -332,18 +340,40 @@ interface ReleaseRcOptions {
    * Which tag to publish the rc as
    */
   tag: string
+
+  /**
+   * Prefix output with the package name
+   */
+  prefix?: boolean
+
+  /**
+   * Release modules in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 interface DependencyCheckOptions {
   /**
-   * throws error on unused dependencies, default is false
+   * throws error on unused dependencies
+   *
+   * @default true
    */
   unused: boolean
+
   /**
    * Ignore these dependencies when considering which are used and which are not
    */
   ignore: string[]
 
+  /**
+   * Files to ignore when checking production dependencies
+   */
+  productionIgnorePatterns: string[]
+
+  /**
+   * Files to ignore when checking dev dependencies
+   */
+  developmentIgnorePatterns: string[]
 }
 
 interface ExecOptions {
@@ -351,13 +381,33 @@ interface ExecOptions {
    * If false, the command will continue to be run in other packages
    */
   bail?: boolean
+
+  /**
+   * Prefix output with the package name
+   */
+  prefix?: boolean
+
+  /**
+   * Run commands in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 interface RunOptions {
   /**
-   * If false, the command will continue to be run in other packages
+   * If false, the script will continue to be run in other packages
    */
   bail?: boolean
+
+  /**
+   * Prefix output with the package name
+   */
+  prefix?: boolean
+
+  /**
+   * Run scripts in parallel up to this limit
+   */
+  concurrency?: number
 }
 
 export type {

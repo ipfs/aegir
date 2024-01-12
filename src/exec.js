@@ -1,6 +1,6 @@
 import { execa } from 'execa'
 import kleur from 'kleur'
-import { everyMonorepoProject } from './utils.js'
+import { everyMonorepoProject, pipeOutput } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -12,18 +12,18 @@ export default {
    * @param {GlobalOptions & ExecOptions & { command: string }} ctx
    */
   async run (ctx) {
-    const forwardOptions = ctx['--'] ? ctx['--'] : []
+    const forwardArgs = ctx['--'] ? ctx['--'] : []
 
     await everyMonorepoProject(process.cwd(), async (project) => {
       console.info('') // eslint-disable-line no-console
-      console.info(kleur.grey(`${project.manifest.name} > ${ctx.command} ${forwardOptions.join(' ')}`)) // eslint-disable-line no-console
+      console.info(kleur.grey(`${project.manifest.name}:`), `> ${ctx.command}${forwardArgs.length > 0 ? ` ${forwardArgs.join(' ')}` : ''}`) // eslint-disable-line no-console
 
       try {
-        await execa(ctx.command, forwardOptions, {
-          cwd: project.dir,
-          stderr: 'inherit',
-          stdout: 'inherit'
+        const subprocess = execa(ctx.command, forwardArgs, {
+          cwd: project.dir
         })
+        pipeOutput(subprocess, project.manifest.name, ctx.prefix)
+        await subprocess
       } catch (/** @type {any} */ err) {
         if (ctx.bail !== false) {
           throw err
@@ -31,6 +31,8 @@ export default {
 
         console.info(kleur.red(err.stack)) // eslint-disable-line no-console
       }
+    }, {
+      concurrency: ctx.concurrency
     })
   }
 }

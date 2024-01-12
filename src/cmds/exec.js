@@ -29,6 +29,16 @@ export default {
           type: 'boolean',
           describe: '',
           default: userConfig.exec.bail
+        },
+        prefix: {
+          type: 'boolean',
+          describe: 'Prefix output with the package name',
+          default: userConfig.exec.prefix
+        },
+        concurrency: {
+          type: 'number',
+          describe: 'How many commands to run at the same time',
+          default: userConfig.exec.concurrency
         }
       })
   },

@@ -25,6 +25,7 @@ const defaults = {
     bail: false,
     progress: false,
     cov: false,
+    covTimeout: 60000,
     browser: {
       config: {
         buildConfig: {
@@ -107,18 +108,32 @@ const defaults = {
   },
   releaseRc: {
     retries: 5,
-    tag: 'next'
+    tag: 'next',
+    prefix: true
   },
   // dependency check cmd options
   dependencyCheck: {
     unused: false,
-    ignore: []
+    ignore: [],
+    productionIgnorePatterns: [
+      '/benchmark',
+      '/benchmarks',
+      '/dist',
+      '/test',
+      '.aegir.js'
+    ],
+    developmentIgnorePatterns: [
+      '/dist',
+      '/src'
+    ]
   },
   exec: {
-    bail: true
+    bail: true,
+    prefix: true
   },
   run: {
-    bail: true
+    bail: true,
+    prefix: true
   }
 }
 

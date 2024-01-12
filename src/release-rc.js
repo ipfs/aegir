@@ -5,7 +5,7 @@ import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'
 import retry from 'p-retry'
-import { isMonorepoParent, pkg, everyMonorepoProject } from './utils.js'
+import { isMonorepoParent, pkg, everyMonorepoProject, pipeOutput } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -29,6 +29,8 @@ async function releaseMonorepoRcs (commit, ctx) {
     }
 
     versions[project.manifest.name] = `${project.manifest.version}-${commit}`
+  }, {
+    concurrency: ctx.concurrency
   })
 
   console.info('Will release the following packages:')
@@ -78,12 +80,11 @@ async function releaseMonorepoRcs (commit, ctx) {
       console.info(`npm publish --tag ${ctx.tag} --dry-run ${!process.env.CI}`)
 
       try {
-        await execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
-          stdout: 'inherit',
-          stderr: 'inherit',
-          cwd: project.dir,
-          all: true
+        const subprocess = execa('npm', ['publish', '--tag', ctx.tag, '--dry-run', `${!process.env.CI}`], {
+          cwd: project.dir
         })
+        pipeOutput(subprocess, project.manifest.name, ctx.prefix)
+        await subprocess
       } catch (/** @type {any} */ err) {
         if (err.all?.includes('You cannot publish over the previously published versions')) {
           // this appears to be a bug in npm, sometimes you publish successfully but it also
@@ -98,6 +99,8 @@ async function releaseMonorepoRcs (commit, ctx) {
     })
 
     console.info('')
+  }, {
+    concurrency: ctx.concurrency
   })
 }
 

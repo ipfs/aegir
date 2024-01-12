@@ -1,8 +1,8 @@
+/* eslint-disable complexity */
 /* eslint-disable no-console */
 
 import path from 'path'
 import fs from 'fs-extra'
-import { toc as makeToc } from 'mdast-util-toc'
 import { APIDOCS } from './readme/api-docs.js'
 import { HEADER } from './readme/header.js'
 import { LICENSE } from './readme/license.js'
@@ -50,100 +50,120 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
   // create basic readme with heading, CI link, etc
   const readme = parseMarkdown(HEADER(pkg, repoOwner, repoName, defaultBranch, ciFile))
 
+  /** @type {import('mdast').RootContent[]} */
+  const header = []
+
+  /** @type {import('mdast').RootContent[]} */
+  const other = []
+
+  /** @type {import('mdast').RootContent[]} */
+  const about = []
+
+  /** @type {import('mdast').RootContent[]} */
+  const footer = []
+
+  let skipBlockHeader = -1
+  let inAboutBlock = false
+  let foundBadges = false
+
   // remove existing header, CI link, etc
+  file.children.forEach((child) => {
+    const rendered = writeMarkdown(child).toLowerCase()
+
+    if (skipBlockHeader > -1 && child.type === 'heading' && child.depth <= skipBlockHeader) {
+      skipBlockHeader = -1
+      inAboutBlock = false
+    }
+
+    if (rendered === `> ${pkg.description.toLowerCase()}\n`) {
+      // skip project description
+      return
+    }
+
+    if (child.type === 'paragraph' && rendered.includes('![ci]')) {
+      // skip badges
+      foundBadges = true
+      return
+    }
+
+    if (child.type === 'heading' && rendered.includes('# about')) {
+      // collect about section
+      skipBlockHeader = child.depth
+      inAboutBlock = true
+      about.push(child)
+      return
+    }
+
+    if (child.type === 'heading' && rendered.includes('# packages')) {
+      // skip packages
+      skipBlockHeader = child.depth
+      return
+    }
+
+    if (child.type === 'heading' && rendered.includes('# api docs')) {
+      // skip api docs
+      skipBlockHeader = child.depth
+      return
+    }
+
+    if (child.type === 'heading' && rendered.includes('# license')) {
+      // skip license
+      skipBlockHeader = child.depth
+      return
+    }
+
+    if (child.type === 'heading' && (rendered.includes('# contribute') || rendered.includes('# contribution'))) {
+      // skip contribute
+      skipBlockHeader = child.depth
+      return
+    }
+
+    if (child.type === 'definition') {
+      footer.push(child)
+      return
+    }
+
+    if (inAboutBlock) {
+      about.push(child)
+      return
+    }
+
+    if (!foundBadges) {
+      header.push(child)
+      return
+    }
+
+    if (skipBlockHeader > -1) {
+      // skip this block
+      return
+    }
+
+    other.push(child)
+  })
+
+  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+
   /** @type {import('mdast').Root} */
-  const parsedReadme = {
+  let apiDocs = {
     type: 'root',
     children: []
   }
 
-  let structureIndex = -1
-  let tocIndex = -1
-  let apiDocsIndex = -1
-  let licenseFound = false
-
-  file.children.forEach((child, index) => {
-    const rendered = writeMarkdown(child).toLowerCase()
-
-    if (child.type === 'heading' && index === 0) {
-      // skip heading
-      return
-    }
-
-    if (child.type === 'paragraph' && index === 1) {
-      // skip badges
-      return
-    }
-
-    if (child.type === 'blockquote' && tocIndex === -1 && tocIndex === -1) {
-      // skip project overview
-      return
-    }
-
-    if (rendered.includes('## table of')) {
-      // skip toc header
-      tocIndex = index
-      return
-    }
-
-    if (tocIndex !== -1 && index === tocIndex + 1) {
-      // skip toc
-      return
-    }
-
-    if (child.type === 'heading' && rendered.includes('structure')) {
-      // skip structure header
-      structureIndex = index
-      return
-    }
-
-    if (structureIndex !== -1 && index === structureIndex + 1) {
-      // skip structure
-      return
-    }
-
-    if (child.type === 'heading' && rendered.includes('api docs')) {
-      // skip api docs header
-      apiDocsIndex = index
-      return
-    }
-
-    if (apiDocsIndex !== -1 && index === apiDocsIndex + 1) {
-      // skip api docs link
-      return
-    }
-
-    if ((child.type === 'heading' && rendered.includes('license')) || licenseFound) {
-      licenseFound = true
-      return
-    }
-
-    parsedReadme.children.push(child)
-  })
-
-  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
-  const apiDocs = parseMarkdown(APIDOCS(pkg))
-  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
-
-  parsedReadme.children = [
-    ...structure.children,
-    ...parsedReadme.children,
-    ...apiDocs.children,
-    ...license.children
-  ]
-
-  const toc = makeToc(parsedReadme, {
-    tight: true
-  })
-
-  if (toc.map == null) {
-    throw new Error('Could not create TOC for README.md')
+  if (fs.existsSync(path.join(projectDir, 'typedoc.json')) || pkg.scripts.docs != null) {
+    apiDocs = parseMarkdown(APIDOCS(pkg))
   }
 
+  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
+
   readme.children = [
+    ...header,
     ...readme.children,
-    toc.map,
-    ...parsedReadme.children
+    ...about,
+    ...structure.children,
+    ...other,
+    ...apiDocs.children,
+    ...license.children,
+    ...footer
   ]
 
   await ensureFileHasContents(projectDir, 'README.md', writeMarkdown(readme))

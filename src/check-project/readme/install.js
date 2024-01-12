@@ -2,20 +2,25 @@
  * @param {*} pkg
  */
 export const INSTALL = (pkg) => {
+  if (pkg.exports == null && pkg.main == null && pkg.bin == null) {
+    // this module has no external API, skip installation instructions
+    return ''
+  }
+
   const nodeInstall = `
-  ## Install
+# Install
 
-  \`\`\`console
-  $ npm i ${pkg.name}
-  \`\`\`
+\`\`\`console
+$ npm i ${pkg.name}
+\`\`\`
 `
-  const browserInstall = `### Browser \`<script>\` tag
+  const browserInstall = `## Browser \`<script>\` tag
 
-  Loading this module through a script tag will make it's exports available as \`${nameToGlobalSymbol(pkg.name)}\` in the global namespace.
+Loading this module through a script tag will make it's exports available as \`${nameToGlobalSymbol(pkg.name)}\` in the global namespace.
 
-  \`\`\`html
-  <script src="https://unpkg.com/${pkg.name}/dist/index.min.js"></script>
-  \`\`\`
+\`\`\`html
+<script src="https://unpkg.com/${pkg.name}/dist/index.min.js"></script>
+\`\`\`
 `
   const scripts = pkg.scripts ?? {}
 

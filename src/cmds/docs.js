@@ -55,6 +55,11 @@ export default {
           type: 'string',
           describe: 'Where to build the documentation',
           default: userConfig.docs.directory
+        },
+        cname: {
+          type: 'string',
+          describe: 'A custom domain pointed at the gh-pages branch',
+          default: userConfig.docs.cname
         }
       })
   },

@@ -6,9 +6,7 @@ import {
   ensureFileNotPresent
 } from './utils.js'
 
-const managedRepos = 'https://raw.githubusercontent.com/protocol/.github/master/configs/js.json'
-const ciFileUrl = 'https://raw.githubusercontent.com/protocol/.github/master/templates/.github/workflows/js-test-and-release.yml'
-const mergeFileUrl = 'https://raw.githubusercontent.com/protocol/.github/master/templates/.github/workflows/automerge.yml'
+const ciFileUrl = 'https://raw.githubusercontent.com/pl-strflt/uci/main/templates/.github/workflows/js-test-and-release.yml'
 
 /**
  * @param {string} url
@@ -33,21 +31,6 @@ async function download (url) {
 }
 
 /**
- * @param {string} repoName
- */
-async function isManagedRepo (repoName) {
-  const repos = JSON.parse(await download(managedRepos)).repositories
-
-  for (const { target } of repos) {
-    if (target === repoName) {
-      return true
-    }
-  }
-
-  return false
-}
-
-/**
  * @param {string} projectDir
  * @param {string} branchName
  * @param {string} repoUrl
@@ -57,21 +40,12 @@ export async function checkBuildFiles (projectDir, branchName, repoUrl) {
 
   await ensureFileNotPresent(projectDir, '.travis.yml')
   await ensureFileHasContents(projectDir, '.github/dependabot.yml')
-
-  // if this repo is managed by https://github.com/protocol/.github don't try to update the ci files
-  const isManaged = await isManagedRepo(repoUrl.replace('https://github.com/', ''))
-
-  if (isManaged) {
-    console.info('CI files are managed by https://github.com/protocol/.github')
-    return
-  }
+  await ensureFileHasContents(projectDir, '.github/workflows/semantic-pull-request.yml')
+  await ensureFileHasContents(projectDir, '.github/workflows/stale.yml')
 
   let defaultCiContent = await download(ciFileUrl)
-  defaultCiContent = defaultCiContent.replace(/\${{{ github.default_branch }}}/g, branchName)
+  defaultCiContent = defaultCiContent.replaceAll('${{{ github.default_branch }}}', branchName) // eslint-disable-line no-template-curly-in-string
+  defaultCiContent = defaultCiContent.replaceAll('${{{ .config.versions.uci // (.source.tag | sub("\\\\.[^.\\\\-\\\\+]+(?=\\\\-|\\\\+|$)"; "")) }}}', 'v0.0') // eslint-disable-line no-template-curly-in-string
 
   await ensureFileHasContents(projectDir, '.github/workflows/js-test-and-release.yml', defaultCiContent)
-
-  const defaultMergeContent = await download(mergeFileUrl)
-
-  await ensureFileHasContents(projectDir, '.github/workflows/automerge.yml', defaultMergeContent)
 }

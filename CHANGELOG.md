@@ -1,3 +1,287 @@
+## [42.1.1](https://github.com/ipfs/aegir/compare/v42.1.0...v42.1.1) (2024-01-12)
+
+
+### Bug Fixes
+
+* point to esbuild bundle analysis tool instead of bundlebuddy ([#1447](https://github.com/ipfs/aegir/issues/1447)) ([c5b96a3](https://github.com/ipfs/aegir/commit/c5b96a393d741e42c090ab144da0eb18cf53f9e7))
+
+## [42.1.0](https://github.com/ipfs/aegir/compare/v42.0.1...v42.1.0) (2024-01-08)
+
+
+### Features
+
+* support cname for docs publishing ([#1442](https://github.com/ipfs/aegir/issues/1442)) ([b705c13](https://github.com/ipfs/aegir/commit/b705c1385f1815192ef28776f394a5ffff3baac1))
+
+## [42.0.1](https://github.com/ipfs/aegir/compare/v42.0.0...v42.0.1) (2024-01-06)
+
+
+### Dependencies
+
+* bump c8 from 8.0.1 to 9.0.0 ([#1440](https://github.com/ipfs/aegir/issues/1440)) ([313cd61](https://github.com/ipfs/aegir/commit/313cd615afce27c4dfa6df7f1be26e7b1b407dca))
+* bump eslint-plugin-jsdoc from 46.10.1 to 48.0.2 ([#1439](https://github.com/ipfs/aegir/issues/1439)) ([4dde4a3](https://github.com/ipfs/aegir/commit/4dde4a38b626cf6d6528f2887bc77c3ad04ee63f))
+
+## [42.0.0](https://github.com/ipfs/aegir/compare/v41.3.5...v42.0.0) (2024-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* previously undetected missing or unused deps will cause the dep-check command to fail
+
+### Bug Fixes
+
+* check for missing production dependencies ([#1426](https://github.com/ipfs/aegir/issues/1426)) ([a66384a](https://github.com/ipfs/aegir/commit/a66384acd40691981224615967cae74c6e3f328a))
+
+## [41.3.5](https://github.com/ipfs/aegir/compare/v41.3.4...v41.3.5) (2023-12-30)
+
+
+### Dependencies
+
+* bump p-queue from 7.4.1 to 8.0.1 ([#1433](https://github.com/ipfs/aegir/issues/1433)) ([57934c9](https://github.com/ipfs/aegir/commit/57934c96ccbe244c779d1de78015c260b5ab1fda))
+* bump undici from 5.28.2 to 6.2.1 ([#1429](https://github.com/ipfs/aegir/issues/1429)) ([8189645](https://github.com/ipfs/aegir/commit/8189645a49a27b5afcf36749f49a58a555b6d701))
+
+## [41.3.4](https://github.com/ipfs/aegir/compare/v41.3.3...v41.3.4) (2023-12-30)
+
+
+### Dependencies
+
+* bump lilconfig from 2.1.0 to 3.0.0 ([#1427](https://github.com/ipfs/aegir/issues/1427)) ([e1c4dfc](https://github.com/ipfs/aegir/commit/e1c4dfcc31b0d270a63c8b5f6ef5a263cedb31e1))
+* bump p-map from 6.0.0 to 7.0.1 ([#1435](https://github.com/ipfs/aegir/issues/1435)) ([9869be9](https://github.com/ipfs/aegir/commit/9869be9dfa8b2e23625de4a5c9d5304b713742b6))
+* bump uint8arrays from 4.0.10 to 5.0.1 ([#1428](https://github.com/ipfs/aegir/issues/1428)) ([85abe2a](https://github.com/ipfs/aegir/commit/85abe2a25663f388da3042049fc2664b54122343))
+* **dev:** bump @types/gh-pages from 5.0.1 to 6.1.0 ([#1431](https://github.com/ipfs/aegir/issues/1431)) ([cfae15f](https://github.com/ipfs/aegir/commit/cfae15fe75dec7b957d9da2df67961c8539f9868))
+
+## [41.3.3](https://github.com/ipfs/aegir/compare/v41.3.2...v41.3.3) (2023-12-30)
+
+
+### Trivial Changes
+
+* increase dependabot limit ([dbd0690](https://github.com/ipfs/aegir/commit/dbd06906d3cedd9876376093adf4b62bb1a16712))
+
+
+### Dependencies
+
+* bump @electron/get from 2.0.3 to 3.0.0 ([#1405](https://github.com/ipfs/aegir/issues/1405)) ([2b061c1](https://github.com/ipfs/aegir/commit/2b061c1e0be2dc3d2a9b7262f675c986fa9dc6ef))
+* bump globby from 13.2.2 to 14.0.0 ([#1412](https://github.com/ipfs/aegir/issues/1412)) ([239307d](https://github.com/ipfs/aegir/commit/239307d0a8a6f3e95cbe7ae9967324fa0e650d2a))
+* bump playwright-test from 12.6.1 to 14.0.0 ([#1417](https://github.com/ipfs/aegir/issues/1417)) ([5ea4468](https://github.com/ipfs/aegir/commit/5ea44682c3adee721fe58ef9cb69c787ec765b97))
+* bump read-pkg-up from 10.1.0 to 11.0.0 ([#1408](https://github.com/ipfs/aegir/issues/1408)) ([3ff7bac](https://github.com/ipfs/aegir/commit/3ff7bac0da95482780e04d007b57ce736d0294e4))
+* bump update-notifier from 6.0.2 to 7.0.0 ([#1404](https://github.com/ipfs/aegir/issues/1404)) ([3cd2fa0](https://github.com/ipfs/aegir/commit/3cd2fa02a54fc294c1665899fb328202f534b597))
+
+## [41.3.2](https://github.com/ipfs/aegir/compare/v41.3.1...v41.3.2) (2023-12-20)
+
+
+### Bug Fixes
+
+* revert CI change ([705c899](https://github.com/ipfs/aegir/commit/705c899b48e87e42486d3ee299f4273493280fce))
+
+## [41.3.1](https://github.com/ipfs/aegir/compare/v41.3.0...v41.3.1) (2023-12-20)
+
+
+### Bug Fixes
+
+* default to concurrency 1 in ci ([f0750cb](https://github.com/ipfs/aegir/commit/f0750cbe05fe2b0d2c1ecdf09164f55f4bf63070))
+
+## [41.3.0](https://github.com/ipfs/aegir/compare/v41.2.0...v41.3.0) (2023-12-20)
+
+
+### Features
+
+* add concurrency option to run and exec ([#1312](https://github.com/ipfs/aegir/issues/1312)) ([4d3c319](https://github.com/ipfs/aegir/commit/4d3c319c830cff93472f2d0e0ba1c3e2ef709d1b))
+
+## [41.2.0](https://github.com/ipfs/aegir/compare/v41.1.14...v41.2.0) (2023-12-12)
+
+
+### Features
+
+* **monorepo:** prefix output with package name ([#1378](https://github.com/ipfs/aegir/issues/1378)) ([5ffac14](https://github.com/ipfs/aegir/commit/5ffac14a75faa4e9aba675eb3f2858d2050da550))
+
+## [41.1.14](https://github.com/ipfs/aegir/compare/v41.1.13...v41.1.14) (2023-12-03)
+
+
+### Bug Fixes
+
+* try parent name if model name is index ([78a9e6b](https://github.com/ipfs/aegir/commit/78a9e6b01e06b49c4a37fb6371c11a2cd274864f))
+
+## [41.1.13](https://github.com/ipfs/aegir/compare/v41.1.12...v41.1.13) (2023-11-30)
+
+
+### Bug Fixes
+
+* exit tests on windows ([ed81737](https://github.com/ipfs/aegir/commit/ed81737d1303a747f9cf752442235f1170b8a404))
+
+## [41.1.12](https://github.com/ipfs/aegir/compare/v41.1.11...v41.1.12) (2023-11-30)
+
+
+### Bug Fixes
+
+* ensure provenance is enabled ([475ccba](https://github.com/ipfs/aegir/commit/475ccbad59a7f8ff7eff695de3db60e702a2ac7f))
+* handle multi-export single module repo ([13f0c1b](https://github.com/ipfs/aegir/commit/13f0c1b547236c5c350aed032c578f552db16a16))
+
+## [41.1.11](https://github.com/ipfs/aegir/compare/v41.1.10...v41.1.11) (2023-11-30)
+
+
+### Bug Fixes
+
+* use branch name for homepage ([646d6dc](https://github.com/ipfs/aegir/commit/646d6dc61f3f370c3ad6797a33aad344e44c904e))
+
+## [41.1.10](https://github.com/ipfs/aegir/compare/v41.1.9...v41.1.10) (2023-11-27)
+
+
+### Bug Fixes
+
+* use example title if it is available ([#1418](https://github.com/ipfs/aegir/issues/1418)) ([a1d1fe7](https://github.com/ipfs/aegir/commit/a1d1fe712f179db4c40615c201814028cfab9741))
+
+## [41.1.9](https://github.com/ipfs/aegir/compare/v41.1.8...v41.1.9) (2023-11-06)
+
+
+### Bug Fixes
+
+* browser install should be a h2 ([ff11815](https://github.com/ipfs/aegir/commit/ff11815d8125048e8e3c1a14e2a01763c06a1130))
+
+## [41.1.8](https://github.com/ipfs/aegir/compare/v41.1.7...v41.1.8) (2023-11-02)
+
+
+### Bug Fixes
+
+* disable code coverage on windows ([7287099](https://github.com/ipfs/aegir/commit/728709946e2cab75eec6575f7a020dfcaa4ade74))
+
+## [41.1.7](https://github.com/ipfs/aegir/compare/v41.1.6...v41.1.7) (2023-11-02)
+
+
+### Bug Fixes
+
+* use taskkill to kill stuck coverage process on windows ([a49d572](https://github.com/ipfs/aegir/commit/a49d5729e19e6828dd9d9765b3ed2787a6c85fcf))
+
+## [41.1.6](https://github.com/ipfs/aegir/compare/v41.1.5...v41.1.6) (2023-11-02)
+
+
+### Bug Fixes
+
+* kill process after timeout ([9909641](https://github.com/ipfs/aegir/commit/99096412f57c31f71d005086ce4431432b62e398))
+
+## [41.1.5](https://github.com/ipfs/aegir/compare/v41.1.4...v41.1.5) (2023-11-02)
+
+
+### Bug Fixes
+
+* if a test run looks like it's hung during coverage, kill it ([#1406](https://github.com/ipfs/aegir/issues/1406)) ([8b526fc](https://github.com/ipfs/aegir/commit/8b526fc6dbaabca32ea0e8b95866bf1eb5df433b))
+
+## [41.1.4](https://github.com/ipfs/aegir/compare/v41.1.3...v41.1.4) (2023-10-30)
+
+
+### Bug Fixes
+
+* increase header level for readme items ([#1402](https://github.com/ipfs/aegir/issues/1402)) ([e9d9a86](https://github.com/ipfs/aegir/commit/e9d9a86d55906571abe92b3f4b29c609377b92e0))
+
+## [41.1.3](https://github.com/ipfs/aegir/compare/v41.1.2...v41.1.3) (2023-10-30)
+
+
+### Bug Fixes
+
+* join readme example descriptions with '' ([#1401](https://github.com/ipfs/aegir/issues/1401)) ([7d9f73c](https://github.com/ipfs/aegir/commit/7d9f73cf79b99a2404dc4658c5dafc377cffefe0))
+
+## [41.1.2](https://github.com/ipfs/aegir/compare/v41.1.1...v41.1.2) (2023-10-30)
+
+
+### Bug Fixes
+
+* increase doc ram ([#1400](https://github.com/ipfs/aegir/issues/1400)) ([88758ba](https://github.com/ipfs/aegir/commit/88758baf19acb417233f91dc51ed1aaf26fb4c51))
+
+## [41.1.1](https://github.com/ipfs/aegir/compare/v41.1.0...v41.1.1) (2023-10-30)
+
+
+### Bug Fixes
+
+* remove typedoc overrides ([#1399](https://github.com/ipfs/aegir/issues/1399)) ([94adcf9](https://github.com/ipfs/aegir/commit/94adcf9e58b39d9e47ee579de88bb72833c39878))
+
+## [41.1.0](https://github.com/ipfs/aegir/compare/v41.0.16...v41.1.0) (2023-10-30)
+
+
+### Features
+
+* sync packageDocumentation between index.ts and README.md ([#1398](https://github.com/ipfs/aegir/issues/1398)) ([752d2bd](https://github.com/ipfs/aegir/commit/752d2bd26cdc3c7f6341ac5d08ccf32fac10d0b1))
+
+
+### Trivial Changes
+
+* remove redundant comment ([abc645d](https://github.com/ipfs/aegir/commit/abc645dc5a09d20dca38a5184ab62d2b7efe48df))
+
+## [41.0.16](https://github.com/ipfs/aegir/compare/v41.0.15...v41.0.16) (2023-10-27)
+
+
+### Trivial Changes
+
+* revert cache additions ([75c4505](https://github.com/ipfs/aegir/commit/75c450535e20c9bd0af09906b0e2360353fff57b))
+
+## [41.0.15](https://github.com/ipfs/aegir/compare/v41.0.14...v41.0.15) (2023-10-27)
+
+
+### Dependencies
+
+* **dev:** bump @types/gh-pages from 3.2.3 to 5.0.0 ([#1388](https://github.com/ipfs/aegir/issues/1388)) ([3e6e825](https://github.com/ipfs/aegir/commit/3e6e825625da798054f0ed3735ea9ee6dcdf9a84))
+* **dev:** bump electron from 26.4.1 to 27.0.2 ([#1387](https://github.com/ipfs/aegir/issues/1387)) ([e4fdb6a](https://github.com/ipfs/aegir/commit/e4fdb6a02ad8a6c61ee724ea61ce3841b6666ab4))
+
+## [41.0.14](https://github.com/ipfs/aegir/compare/v41.0.13...v41.0.14) (2023-10-27)
+
+
+### Trivial Changes
+
+* cache interop output folders ([e6afe45](https://github.com/ipfs/aegir/commit/e6afe45c13ea2f10b04ae54dbb63a6ed6979810a))
+
+## [41.0.13](https://github.com/ipfs/aegir/compare/v41.0.12...v41.0.13) (2023-10-27)
+
+
+### Bug Fixes
+
+* include stale and pr check workflows ([#1397](https://github.com/ipfs/aegir/issues/1397)) ([7e7c55f](https://github.com/ipfs/aegir/commit/7e7c55f123dcf08be396d24b9288e470de82a8c0))
+
+## [41.0.12](https://github.com/ipfs/aegir/compare/v41.0.11...v41.0.12) (2023-10-26)
+
+
+### Bug Fixes
+
+* do not run `npm --if-present build` on npm cache hit ([#1396](https://github.com/ipfs/aegir/issues/1396)) ([7111f49](https://github.com/ipfs/aegir/commit/7111f49fc8ef5139264320c36d5040a7bb20a61d))
+
+## [41.0.11](https://github.com/ipfs/aegir/compare/v41.0.10...v41.0.11) (2023-10-26)
+
+
+### Bug Fixes
+
+* update doc urls to latest node version ([#1395](https://github.com/ipfs/aegir/issues/1395)) ([3ce413a](https://github.com/ipfs/aegir/commit/3ce413ad5a5fbf6c1f5baa27fd04b52de2187dc3))
+
+## [41.0.10](https://github.com/ipfs/aegir/compare/v41.0.9...v41.0.10) (2023-10-25)
+
+
+### Bug Fixes
+
+* support helia projecs in check-project ([#1394](https://github.com/ipfs/aegir/issues/1394)) ([6088b24](https://github.com/ipfs/aegir/commit/6088b2463ad3d0097259a5b68f1d34d1dc5e56eb))
+
+## [41.0.9](https://github.com/ipfs/aegir/compare/v41.0.8...v41.0.9) (2023-10-25)
+
+
+### Bug Fixes
+
+* handle scoped deps in test-dependant ([#1393](https://github.com/ipfs/aegir/issues/1393)) ([fd6b7ab](https://github.com/ipfs/aegir/commit/fd6b7ab7eb9bd1cff86258304617adf7e2014d1b))
+
+## [41.0.8](https://github.com/ipfs/aegir/compare/v41.0.7...v41.0.8) (2023-10-25)
+
+
+### Bug Fixes
+
+* update eslint repo url ([#1392](https://github.com/ipfs/aegir/issues/1392)) ([44070a1](https://github.com/ipfs/aegir/commit/44070a1ea4a9e7dd6b7e4ed3b14e212bdd730781)), closes [#1346](https://github.com/ipfs/aegir/issues/1346)
+
+## [41.0.7](https://github.com/ipfs/aegir/compare/v41.0.6...v41.0.7) (2023-10-25)
+
+
+### Bug Fixes
+
+* disable test coverage again ([#1390](https://github.com/ipfs/aegir/issues/1390)) ([cfeffc2](https://github.com/ipfs/aegir/commit/cfeffc2392bf9972d43e7156064e59471a3655e8)), closes [ipfs/aegir#1195](https://github.com/ipfs/aegir/issues/1195)
+
+## [41.0.6](https://github.com/ipfs/aegir/compare/v41.0.5...v41.0.6) (2023-10-24)
+
+
+### Bug Fixes
+
+* re-enable test coverage ([#1195](https://github.com/ipfs/aegir/issues/1195)) ([9b35013](https://github.com/ipfs/aegir/commit/9b3501310805fa2c26efc8ed1518b750e3791626))
+
 ## [41.0.5](https://github.com/ipfs/aegir/compare/v41.0.4...v41.0.5) (2023-10-13)
 
 

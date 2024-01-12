@@ -18,10 +18,12 @@ import fs from 'fs-extra'
 import kleur from 'kleur'
 import Listr from 'listr'
 import { minimatch } from 'minimatch'
+import PQueue from 'p-queue'
 import lockfile from 'proper-lockfile'
 import { readPackageUpSync } from 'read-pkg-up'
 import stripBom from 'strip-bom'
 import stripComments from 'strip-json-comments'
+import logTransformer from 'strong-log-transformer'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -312,14 +314,15 @@ export function findBinary (bin) {
  * @property {string} dir
  * @property {string[]} siblingDependencies
  * @property {string[]} dependencies
- * @property {boolean} run
  */
 
 /**
  * @param {string} projectDir
  * @param {(project: Project) => Promise<void>} fn
+ * @param {object} [opts]
+ * @param {number} [opts.concurrency]
  */
-export async function everyMonorepoProject (projectDir, fn) {
+export async function everyMonorepoProject (projectDir, fn, opts) {
   const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
   const workspaces = manifest.workspaces
 
@@ -328,32 +331,45 @@ export async function everyMonorepoProject (projectDir, fn) {
   }
 
   /** @type {Record<string, Project>} */
-  const projects = await parseProjects(projectDir, workspaces)
+  const projects = parseProjects(projectDir, workspaces)
 
   checkForCircularDependencies(projects)
 
   /**
-   * @param {Project} project
+   * @type {Map<string, number>} Track the number of outstanding dependencies of each project
+   *
+   * This is mutated (decremented and deleted) as tasks are run for dependencies
    */
-  async function run (project) {
-    if (project.run) {
-      return
-    }
-
-    for (const siblingDep of project.siblingDependencies) {
-      await run(projects[siblingDep])
-    }
-
-    if (project.run) {
-      return
-    }
-
-    project.run = true
-    await fn(project)
+  const inDegree = new Map()
+  for (const [name, project] of Object.entries(projects)) {
+    inDegree.set(name, project.siblingDependencies.length)
   }
 
-  for (const project of Object.values(projects)) {
-    await run(project)
+  const queue = new PQueue({
+    concurrency: opts?.concurrency ?? os.availableParallelism?.() ?? os.cpus().length
+  })
+
+  while (inDegree.size) {
+    /** @type {string[]} */
+    const toRun = []
+
+    for (const [name, d] of inDegree) {
+      // when there are no more dependencies
+      // the project can be added to the queue
+      // and removed from the tracker
+      if (d === 0) {
+        toRun.push(name)
+        inDegree.delete(name)
+      }
+    }
+
+    await Promise.all(toRun.map((name) => queue.add(() => fn(projects[name]))))
+
+    // decrement projects whose dependencies were just run
+    for (const [name, d] of inDegree) {
+      const decrement = projects[name].siblingDependencies.filter(dep => toRun.includes(dep)).length
+      inDegree.set(name, d - decrement)
+    }
   }
 }
 
@@ -389,7 +405,6 @@ export function parseProjects (projectDir, workspaces) {
         manifest: pkg,
         dir: subProjectDir,
         siblingDependencies: [],
-        run: false,
         dependencies: [
           ...Object.keys(pkg.dependencies ?? {}),
           ...Object.keys(pkg.devDependencies ?? {}),
@@ -574,4 +589,31 @@ export const formatCode = (code, errorLines) => {
     }
   })
   return '    ' + lines.join('\n    ')
+}
+
+/**
+ * Pipe subprocess output to stdio
+ *
+ * @param {import('execa').ExecaChildProcess} subprocess
+ * @param {string} prefix
+ * @param {boolean} [shouldPrefix]
+ */
+export function pipeOutput (subprocess, prefix, shouldPrefix) {
+  if (shouldPrefix === false) {
+    subprocess.stdout?.pipe(process.stdout)
+    subprocess.stderr?.pipe(process.stderr)
+
+    return
+  }
+
+  const stdoutOpts = {
+    tag: kleur.gray(`${prefix}:`)
+  }
+
+  const stderrOpts = {
+    tag: kleur.gray(`${prefix}:`)
+  }
+
+  subprocess.stdout?.pipe(logTransformer(stdoutOpts)).pipe(process.stdout)
+  subprocess.stderr?.pipe(logTransformer(stderrOpts)).pipe(process.stderr)
 }

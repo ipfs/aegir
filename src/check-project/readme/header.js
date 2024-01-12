@@ -34,12 +34,8 @@ const BADGES = {
  */
 export const HEADER = (pkg, repoOwner, repoName, defaultBranch, ciFile) => {
   return `
-# ${pkg.name} <!-- omit in toc -->
-
 ${(BADGES[repoOwner] ?? BADGES.default)(repoOwner, repoName, defaultBranch, ciFile).trim()}
 
 > ${pkg.description}
-
-## Table of contents <!-- omit in toc -->
 `
 }

@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 
-import { cwd } from 'process'
+import fs from 'node:fs'
+import path from 'node:path'
+import { cwd } from 'node:process'
 import depcheck from 'depcheck'
 import kleur from 'kleur'
 import Listr from 'listr'
@@ -31,51 +33,92 @@ const tasks = new Listr(
        * @param {Task} task
        */
       task: async (ctx, task) => {
-        const result = await depcheck(cwd(), {
+        let missingOrUnusedPresent = false
+
+        // check production dependencies
+        const manifest = JSON.parse(fs.readFileSync(path.join(cwd(), 'package.json'), 'utf-8'))
+
+        const productionOnlyResult = await depcheck(cwd(), {
           parsers: {
             '**/*.js': depcheck.parser.es6,
             '**/*.ts': depcheck.parser.typescript,
             '**/*.cjs': depcheck.parser.es6,
             '**/*.mjs': depcheck.parser.es6
           },
-          ignoreMatches: ignoredDevDependencies.concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore)
+          ignoreMatches: ignoredDevDependencies.concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore),
+          ignorePatterns: ctx.productionIgnorePatterns,
+          package: {
+            ...manifest,
+            devDependencies: {}
+          }
         })
 
-        if (Object.keys(result.missing).length > 0 || result.dependencies.length > 0 || result.devDependencies.length > 0) {
-          if (Object.keys(result.missing).length > 0) {
-            console.error('')
-            console.error('Missing dependencies:')
-            console.error('')
+        if (Object.keys(productionOnlyResult.missing).length > 0) {
+          missingOrUnusedPresent = true
+          console.error('')
+          console.error('Missing production dependencies:')
+          console.error('')
 
-            Object.entries(result.missing).forEach(([dep, path]) => {
-              console.error(kleur.red(dep))
-              console.error(' ', kleur.gray(path.join('\n  ')))
-            })
-          }
+          Object.entries(productionOnlyResult.missing).forEach(([dep, path]) => {
+            console.error(kleur.red(dep))
+            console.error(' ', kleur.gray(path.join('\n  ')))
+          })
 
-          if (result.dependencies.length > 0) {
-            console.error('')
-            console.error('Unused production dependencies:')
-            console.error('')
+          console.error('')
+        }
 
-            result.dependencies.forEach(dep => {
-              console.error(kleur.yellow(dep))
-            })
-          }
+        if (productionOnlyResult.dependencies.length > 0) {
+          missingOrUnusedPresent = true
+          console.error('')
+          console.error('Unused production dependencies:')
+          console.error('')
 
-          if (result.devDependencies.length > 0) {
-            console.error('')
-            console.error('Unused dev dependencies:')
-            console.error('')
+          productionOnlyResult.dependencies.forEach(dep => {
+            console.error(kleur.yellow(dep))
+          })
 
-            result.devDependencies.forEach(dep => {
-              console.error(kleur.yellow(dep))
-            })
-          }
+          console.error('')
+        }
 
-          // necessary because otherwise listr removes the last line of output
-          console.error(' ')
+        // check dev dependencies
+        const devlopmentOnlyResult = await depcheck(cwd(), {
+          parsers: {
+            '**/*.js': depcheck.parser.es6,
+            '**/*.ts': depcheck.parser.typescript,
+            '**/*.cjs': depcheck.parser.es6,
+            '**/*.mjs': depcheck.parser.es6
+          },
+          ignoreMatches: ignoredDevDependencies.concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore),
+          ignorePatterns: ctx.developmentIgnorePatterns
+        })
 
+        if (Object.keys(devlopmentOnlyResult.missing).length > 0) {
+          missingOrUnusedPresent = true
+          console.error('')
+          console.error('Missing development dependencies:')
+          console.error('')
+
+          Object.entries(devlopmentOnlyResult.missing).forEach(([dep, path]) => {
+            console.error(kleur.red(dep))
+            console.error(' ', kleur.gray(path.join('\n  ')))
+          })
+
+          console.error('')
+        }
+
+        if (devlopmentOnlyResult.devDependencies.length > 0) {
+          missingOrUnusedPresent = true
+          console.error('')
+          console.error('Unused development dependencies:')
+          console.error('')
+
+          devlopmentOnlyResult.devDependencies.forEach(dep => {
+            console.error(kleur.yellow(dep))
+          })
+          console.error('')
+        }
+
+        if (missingOrUnusedPresent) {
           throw new Error('Some dependencies are missing or unused')
         }
       }

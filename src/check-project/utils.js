@@ -188,7 +188,7 @@ export function sortExportsMap (obj) {
 
     let types = entry.types
 
-    if (!types) {
+    if (!types && entry.import != null) {
       types = entry.import.replace('.js', '.d.ts')
     }
 
@@ -246,6 +246,10 @@ export function constructManifest (manifest, manifestFields, repoUrl, homePage =
     },
     bugs: {
       url: `${repoUrl}/issues`
+    },
+    publishConfig: {
+      access: 'public',
+      provenance: true
     },
     keywords: manifest.keywords ? manifest.keywords.sort() : undefined,
     bin: manifest.bin,

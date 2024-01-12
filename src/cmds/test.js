@@ -1,3 +1,4 @@
+import os from 'os'
 import kleur from 'kleur'
 import { loadUserConfig } from '../config/user.js'
 import testCmd from '../test/index.js'
@@ -100,6 +101,11 @@ export default {
           describe: 'Enable coverage output. Output is already in Istanbul JSON format and can be uploaded directly to codecov.',
           type: 'boolean',
           default: userConfig.test.cov
+        },
+        covTimeout: {
+          describe: 'How long to wait for coverage collection. Workaround for https://github.com/ipfs/aegir/issues/1206',
+          type: 'number',
+          default: userConfig.test.covTimeout
         }
       })
   },
@@ -107,12 +113,6 @@ export default {
    * @param {any} argv
    */
   async handler (argv) {
-    // temporarily disable code coverage on node targets running node 18
-    if (argv.cov && process.version.startsWith('v18.') && argv.target === 'node') {
-      console.warn(kleur.red('!!! Temporarily disabling code coverage - https://github.com/ipfs/aegir/issues/1206\n')) // eslint-disable-line no-console
-      delete argv.cov
-    }
-
     await testCmd.run({
       ...argv,
       bundle: false

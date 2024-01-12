@@ -42,24 +42,24 @@ const docs = async (ctx, task) => {
       ...entryPoints,
       '--out',
       ctx.directory,
-      '--hideGenerator',
-      '--includeVersion',
-      '--exclude',
-      '**/node_modules/**',
-      '--gitRevision',
-      'master',
       '--plugin',
       fromAegir('src/docs/unknown-symbol-resolver-plugin.js'),
       '--plugin',
       fromAegir('src/docs/type-indexer-plugin.js'),
       '--plugin',
       'typedoc-plugin-mdn-links',
+      '--plugin',
+      fromAegir('src/docs/readme-updater-plugin.js'),
       ...forwardOptions
     ],
     {
       localDir: path.join(__dirname, '..'),
       preferLocal: true,
-      all: true
+      all: true,
+      env: {
+        // large projects can cause OOM errors
+        NODE_OPTIONS: '--max_old_space_size=8192'
+      }
     }
   )
   proc.all?.on('data', (chunk) => {
@@ -120,6 +120,7 @@ async function findMonorepoEntryPoints () {
  * @property {string} PublishDocsConfig.email
  * @property {string} PublishDocsConfig.message
  * @property {string} PublishDocsConfig.directory
+ * @property {string} [PublishDocsConfig.cname]
  */
 
 /**
@@ -138,7 +139,8 @@ const publishDocs = async (config) => {
       user: {
         name: config.user,
         email: config.email
-      }
+      },
+      cname: config.cname
     }
   )
 }

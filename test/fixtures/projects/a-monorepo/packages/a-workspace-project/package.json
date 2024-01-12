@@ -8,6 +8,12 @@
       "import": "./src/index.js"
     }
   },
+  "dependencies": {
+    "another-workspace-project": "1.0.0"
+  },
+  "scripts": {
+    "test": "echo very test"
+  },
   "type": "module",
   "author": "",
   "license": "ISC"

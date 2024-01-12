@@ -44,6 +44,13 @@ export default {
 
             for (const dep of val.split(',')) {
               const parts = dep.split('@')
+
+              if (parts.length === 3) {
+                // @foo/bar
+                parts[0] = `@${parts[1]}`
+                parts[1] = parts[2]
+              }
+
               deps[parts[0]] = parts[1]
             }
 

@@ -1,0 +1,12 @@
+{
+  "name": "a-large-monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ipfs/aegir#readme",
+  "scripts": {
+    "docs": "aegir docs"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

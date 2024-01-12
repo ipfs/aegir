@@ -1,3 +1,11 @@
+## [42.1.3](https://github.com/ipfs/aegir/compare/v42.1.2...v42.1.3) (2024-01-12)
+
+
+### Bug Fixes
+
+* add missing @types/mdast dep ([#1445](https://github.com/ipfs/aegir/issues/1445)) ([1a3dffc](https://github.com/ipfs/aegir/commit/1a3dffc5e7d9a6b5293cec9b8ace375cb5b4a266))
+* remove premove and merge-options ([#1449](https://github.com/ipfs/aegir/issues/1449)) ([889b03a](https://github.com/ipfs/aegir/commit/889b03a6addd550ed62f4c269409773a92bc879e)), closes [#1434](https://github.com/ipfs/aegir/issues/1434)
+
 ## [42.1.2](https://github.com/ipfs/aegir/compare/v42.1.1...v42.1.2) (2024-01-12)
 
 

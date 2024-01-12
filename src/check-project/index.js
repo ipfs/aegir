@@ -10,7 +10,8 @@ import semver from 'semver'
 import yargsParser from 'yargs-parser'
 import {
   isMonorepoProject,
-  glob
+  glob,
+  usesReleasePlease
 } from '../utils.js'
 import { checkBuildFiles } from './check-build-files.js'
 import { checkLicenseFiles } from './check-licence-files.js'
@@ -227,9 +228,14 @@ function chooseVersions (deps, list) {
  * @param {Record<string, string>} siblingVersions
  */
 function selectVersions (deps, list, siblingVersions) {
+  // release-please updates sibling versions to the latest patch releases but
+  // we try to update to the latest minor so skip that if release please is
+  // in use
+  const ignoreSiblingDeps = usesReleasePlease()
+
   Object.entries(list).forEach(([key, value]) => {
     if (deps[key] != null) {
-      if (siblingVersions[key] != null) {
+      if (siblingVersions[key] != null && !ignoreSiblingDeps) {
         // take sibling version if available
         deps[key] = siblingVersions[key]
       } else {
@@ -438,13 +444,14 @@ export default new Listr([
       const { branchName, repoUrl } = await getConfig(projectDir)
       const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
       const monorepo = manifest.workspaces != null
+      const defaultCiFile = fs.existsSync(path.resolve(process.cwd(), '.github', 'workflows', 'main.yml')) ? 'main.yml' : 'js-test-and-release.yml'
 
       const ciFile = (await prompt.get({
         properties: {
           ciFile: {
             description: 'ciFile',
             required: true,
-            default: 'js-test-and-release.yml'
+            default: defaultCiFile
           }
         }
       })).ciFile.toString()

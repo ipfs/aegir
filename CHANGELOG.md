@@ -1,3 +1,10 @@
+## [42.2.0](https://github.com/ipfs/aegir/compare/v42.1.3...v42.2.0) (2024-01-15)
+
+
+### Features
+
+* switch to @anolilab/multi-semantic-release ([#1450](https://github.com/ipfs/aegir/issues/1450)) ([5dbd120](https://github.com/ipfs/aegir/commit/5dbd12027b27021adabe43b8257661168c002c07))
+
 ## [42.1.3](https://github.com/ipfs/aegir/compare/v42.1.2...v42.1.3) (2024-01-12)
 
 

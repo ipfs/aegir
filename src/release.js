@@ -5,7 +5,7 @@ import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'
 import { calculateSiblingVersion } from './check-project/utils.js'
-import { isMonorepoProject, hasDocs, glob } from './utils.js'
+import { isMonorepoProject, isMonorepoRoot, hasDocs, glob } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -29,16 +29,25 @@ const tasks = new Listr([
      * @param {GlobalOptions} ctx
      */
     task: async (ctx) => {
-      let args = ctx['--'] ?? []
+      const args = ctx['--'] ?? []
 
-      if (isMonorepoProject()) {
-        args = ['-e', 'semantic-release-monorepo', ...args]
+      if (isMonorepoRoot()) {
+        await execa('multi-semantic-release', [
+          // eslint-disable-next-line no-template-curly-in-string
+          '--tag-format', '${name}-${version}',
+          '--deps.bump', 'satisfy',
+          '--deps.release', 'minor',
+          ...args
+        ], {
+          preferLocal: true,
+          stdio: 'inherit'
+        })
+      } else {
+        await execa('semantic-release', args, {
+          preferLocal: true,
+          stdio: 'inherit'
+        })
       }
-
-      await execa('semantic-release', args, {
-        preferLocal: true,
-        stdio: 'inherit'
-      })
     }
   },
   {

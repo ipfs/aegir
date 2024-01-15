@@ -280,6 +280,14 @@ export const isMonorepoProject = (dir = process.cwd()) => {
   return manifest?.packageJson.workspaces != null
 }
 
+export const isMonorepoRoot = (dir = process.cwd()) => {
+  const manifest = readPackageUpSync({
+    cwd: dir
+  })
+
+  return manifest?.packageJson.workspaces != null
+}
+
 export const usesReleasePlease = (dir = process.cwd()) => {
   try {
     const mainYmlPath = path.resolve(dir, '.github', 'workflows', 'main.yml')

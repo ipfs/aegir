@@ -17,7 +17,7 @@ export default {
             'playwright-test',
             'react-native-test-runner',
             'semantic-release',
-            'semantic-release-monorepo',
+            '@anolilab/multi-semantic-release',
             'source-map-support',
             'typedoc-plugin-mdn-links',
             'typedoc-plugin-missing-exports',

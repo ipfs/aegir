@@ -1,3 +1,10 @@
+## [42.2.1](https://github.com/ipfs/aegir/compare/v42.2.0...v42.2.1) (2024-01-17)
+
+
+### Bug Fixes
+
+* handle multiple export modules in readme updater ([969f22a](https://github.com/ipfs/aegir/commit/969f22a07f9b357f9287d2233210ec73153b5085))
+
 ## [42.2.0](https://github.com/ipfs/aegir/compare/v42.1.3...v42.2.0) (2024-01-15)
 
 

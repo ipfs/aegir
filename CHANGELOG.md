@@ -1,3 +1,10 @@
+## [42.2.2](https://github.com/ipfs/aegir/compare/v42.2.1...v42.2.2) (2024-01-17)
+
+
+### Bug Fixes
+
+* remove update notifier ([2171a21](https://github.com/ipfs/aegir/commit/2171a217ea14fbf1b20d4216e0097eabc890b357))
+
 ## [42.2.1](https://github.com/ipfs/aegir/compare/v42.2.0...v42.2.1) (2024-01-17)
 
 

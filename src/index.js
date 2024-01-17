@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 
 import { readPackageUpSync } from 'read-pkg-up'
-import updateNotifier from 'update-notifier'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import buildCmd from './cmds/build.js'
@@ -45,10 +44,6 @@ async function main () {
   if (!pkg) {
     throw new Error('Could not read package.json')
   }
-
-  updateNotifier({
-    pkg: pkg.packageJson
-  }).notify()
 
   const userConfig = await loadUserConfig()
 

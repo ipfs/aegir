@@ -310,7 +310,6 @@
     "typedoc-plugin-missing-exports": "^2.0.0",
     "typescript": "^5.1.6",
     "typescript-docs-verifier": "^2.5.0",
-    "update-notifier": "^7.0.0",
     "wherearewe": "^2.0.1",
     "yargs": "^17.1.1",
     "yargs-parser": "^21.1.1"
@@ -331,7 +330,6 @@
     "@types/proper-lockfile": "^4.1.1",
     "@types/semver": "^7.3.4",
     "@types/strong-log-transformer": "^1.0.2",
-    "@types/update-notifier": "^6.0.1",
     "@types/yargs": "^17.0.0",
     "electron": "^27.0.2",
     "uint8arrays": "^5.0.1",

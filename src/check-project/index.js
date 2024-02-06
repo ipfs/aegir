@@ -4,6 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { execa } from 'execa'
 import fs from 'fs-extra'
+import latestVersion from 'latest-version'
 import Listr from 'listr'
 import prompt from 'prompt'
 import semver from 'semver'
@@ -161,38 +162,33 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
  * @param {string[]} projectDirs
  */
 async function alignMonorepoProjectDependencies (projectDirs) {
-  console.info('Align monorepo project dependencies')
-
   /** @type {Record<string, string>} */
   const siblingVersions = {}
   /** @type {Record<string, string>} */
   const deps = {}
-  /** @type {Record<string, string>} */
-  const devDeps = {}
-  /** @type {Record<string, string>} */
-  const optionalDeps = {}
-  /** @type {Record<string, string>} */
-  const peerDeps = {}
 
   // first loop over every project and choose the most recent version of a given dep
   for (const projectDir of projectDirs) {
     const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
     siblingVersions[pkg.name] = calculateSiblingVersion(pkg.version)
 
-    chooseVersions(pkg.dependencies || {}, deps)
-    chooseVersions(pkg.devDependencies || {}, devDeps)
-    chooseVersions(pkg.optionalDependencies || {}, optionalDeps)
-    chooseVersions(pkg.peerDependencies || {}, peerDeps)
+    chooseVersions(pkg.dependencies ?? {}, deps)
+    chooseVersions(pkg.devDependencies ?? {}, deps)
+    chooseVersions(pkg.optionalDependencies ?? {}, deps)
+    chooseVersions(pkg.peerDependencies ?? {}, deps)
   }
+
+  // get the latest patch release of every dep from npm
+  await findLatestVersions(deps)
 
   // now propose the most recent version of a dep for all projects
   for (const projectDir of projectDirs) {
     const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
-    selectVersions(pkg.dependencies || {}, deps, siblingVersions)
-    selectVersions(pkg.devDependencies || {}, devDeps, siblingVersions)
-    selectVersions(pkg.optionalDependencies || {}, optionalDeps, siblingVersions)
-    selectVersions(pkg.peerDependencies || {}, peerDeps, siblingVersions)
+    selectVersions(pkg.dependencies ?? {}, deps, siblingVersions)
+    selectVersions(pkg.devDependencies ?? {}, deps, siblingVersions)
+    selectVersions(pkg.optionalDependencies ?? {}, deps, siblingVersions)
+    selectVersions(pkg.peerDependencies ?? {}, deps, siblingVersions)
 
     await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(pkg, null, 2))
   }
@@ -203,23 +199,36 @@ async function alignMonorepoProjectDependencies (projectDirs) {
  * @param {Record<string, string>} list
  */
 function chooseVersions (deps, list) {
-  Object.entries(deps).forEach(([key, value]) => {
+  for (const [dep, version] of Object.entries(deps)) {
     // not seen this dep before
-    if (!list[key]) {
-      list[key] = value
-      return
+    if (list[dep] == null) {
+      list[dep] = version
+      continue
     }
 
-    const existingVersion = semver.minVersion(list[key])
-    const moduleVersion = semver.minVersion(value)
-
-    // take the most recent range or version
-    const res = semver.compare(existingVersion ?? '0.0.0', moduleVersion ?? '0.0.0')
-
-    if (res === -1) {
-      list[key] = value
+    // test for later version
+    if (semver.gt(version.replace(/\^|~/, ''), list[dep].replace(/\^|~/, ''))) {
+      list[dep] = version
     }
-  })
+  }
+}
+
+/**
+ * @param {Record<string, string>} deps
+ */
+async function findLatestVersions (deps) {
+  // find the latest semver-compatible release from npm
+  for (const [key, value] of Object.entries(deps)) {
+    try {
+      const npmVersion = `^${await latestVersion(key, { version: value })}`
+
+      console.info(key, 'local version:', value, 'npm version:', npmVersion)
+
+      deps[key] = npmVersion
+    } catch (err) {
+      console.error(`Could not load latest npm version of "${key}"`, err)
+    }
+  }
 }
 
 /**
@@ -227,13 +236,13 @@ function chooseVersions (deps, list) {
  * @param {Record<string, string>} list
  * @param {Record<string, string>} siblingVersions
  */
-function selectVersions (deps, list, siblingVersions) {
+async function selectVersions (deps, list, siblingVersions) {
   // release-please updates sibling versions to the latest patch releases but
   // we try to update to the latest minor so skip that if release please is
   // in use
   const ignoreSiblingDeps = usesReleasePlease()
 
-  Object.entries(list).forEach(([key, value]) => {
+  for (const [key, value] of Object.entries(list)) {
     if (deps[key] != null) {
       if (siblingVersions[key] != null && !ignoreSiblingDeps) {
         // take sibling version if available
@@ -243,7 +252,7 @@ function selectVersions (deps, list, siblingVersions) {
         deps[key] = value
       }
     }
-  })
+  }
 }
 
 /**

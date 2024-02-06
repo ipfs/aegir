@@ -1,3 +1,20 @@
+## [42.2.3](https://github.com/ipfs/aegir/compare/v42.2.2...v42.2.3) (2024-02-06)
+
+
+### Bug Fixes
+
+* update patch deps during check-project ([#1460](https://github.com/ipfs/aegir/issues/1460)) ([505ada6](https://github.com/ipfs/aegir/commit/505ada657c4727a5d66379816e241069ff754c19))
+
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([72d2fcd](https://github.com/ipfs/aegir/commit/72d2fcd061a7aa22cd0fadbff99610eee83cec0c))
+
+
+### Dependencies
+
+* bump esbuild from 0.19.12 to 0.20.0 ([#1456](https://github.com/ipfs/aegir/issues/1456)) ([4d3b48d](https://github.com/ipfs/aegir/commit/4d3b48d1ef8ac0a5e917eea8915344077166f876))
+
 ## [42.2.2](https://github.com/ipfs/aegir/compare/v42.2.1...v42.2.2) (2024-01-17)
 
 

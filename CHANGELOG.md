@@ -1,3 +1,11 @@
+## [42.2.4](https://github.com/ipfs/aegir/compare/v42.2.3...v42.2.4) (2024-02-12)
+
+
+### Bug Fixes
+
+* add note to readmes about editing index.ts instead ([#1465](https://github.com/ipfs/aegir/issues/1465)) ([a8522a9](https://github.com/ipfs/aegir/commit/a8522a9a544a03b10696617a4700765eaebad784))
+* add test for gzipped fixtures ([#1464](https://github.com/ipfs/aegir/issues/1464)) ([cfe7c2d](https://github.com/ipfs/aegir/commit/cfe7c2dae39eeee8a6c8328f6396402cf6785585))
+
 ## [42.2.3](https://github.com/ipfs/aegir/compare/v42.2.2...v42.2.3) (2024-02-06)
 
 

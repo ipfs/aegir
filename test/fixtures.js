@@ -15,4 +15,9 @@ describe('fixtures', () => {
     const myFixture = loadFixture(path.join('test', 'fixtures', 'test.txt'))
     expect(uint8ArrayToString(myFixture).trim()).to.be.eql('Hello Fixture')
   })
+
+  it('should load tar.gz fixures', () => {
+    const myFixture = loadFixture(path.join('test', 'fixtures', 'file.tar.gz'))
+    expect(uint8ArrayToString(myFixture, 'base64')).to.equal('H4sICIlTHVIACw')
+  })
 })

@@ -70,6 +70,11 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
   file.children.forEach((child) => {
     const rendered = writeMarkdown(child).toLowerCase()
 
+    if (child.type === 'heading' && rendered.includes(pkg.name)) {
+      // skip heading
+      return
+    }
+
     if (skipBlockHeader > -1 && child.type === 'heading' && child.depth <= skipBlockHeader) {
       skipBlockHeader = -1
       inAboutBlock = false

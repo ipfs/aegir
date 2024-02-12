@@ -1,3 +1,4 @@
+import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,
   constructManifest
@@ -6,11 +7,18 @@ import {
 /**
  * @param {any} manifest
  * @param {string} repoUrl
- * @param {string} [homePage]
+ * @param {string} homePage
+ * @param {string} branchName
  */
-export async function monorepoManifest (manifest, repoUrl, homePage = repoUrl) {
+export async function monorepoManifest (manifest, repoUrl, homePage, branchName) {
   let proposedManifest = constructManifest(manifest, {
-    private: true
+    private: true,
+    release: (
+      Object.values(manifest.scripts ?? {})
+        .some(script => script.includes('semantic-release') || script.includes('aegir release'))
+    )
+      ? semanticReleaseConfig(branchName)
+      : undefined
   }, repoUrl, homePage)
 
   const rest = {

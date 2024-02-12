@@ -145,7 +145,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
   await alignMonorepoProjectDependencies(projectDirs)
   await configureMonorepoProjectReferences(projectDirs)
 
-  let proposedManifest = await monorepoManifest(manifest, repoUrl)
+  let proposedManifest = await monorepoManifest(manifest, repoUrl, repoUrl, branchName)
   proposedManifest = sortManifest(proposedManifest)
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
@@ -378,6 +378,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   // 5. CJS, no types
   let untypedCJS = cjs && hasMain
 
+  /** @type any */
   let proposedManifest = {}
 
   if (!typescript && !typedESM && !typedCJS && !untypedCJS) {
@@ -427,6 +428,12 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
     proposedManifest = await untypedCJSManifest(manifest, branchName, repoUrl, homePage)
   } else {
     throw new Error('Cannot determine project type')
+  }
+
+  // remove release config from monorepo projects as multi-semantic-release
+  // wants it defined in the root manifest
+  if (rootManifest != null) {
+    proposedManifest.release = undefined
   }
 
   proposedManifest = sortManifest(proposedManifest)

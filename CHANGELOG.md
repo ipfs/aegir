@@ -1,3 +1,15 @@
+## [42.2.5](https://github.com/ipfs/aegir/compare/v42.2.4...v42.2.5) (2024-02-27)
+
+
+### Bug Fixes
+
+* update to actions/cache@v4 ([#1471](https://github.com/ipfs/aegir/issues/1471)) ([f6f5279](https://github.com/ipfs/aegir/commit/f6f52798a02c9d5b463db4e2e7044e98a7cc327b))
+
+
+### Dependencies
+
+* bump latest-version from 8.0.0 to 9.0.0 ([#1474](https://github.com/ipfs/aegir/issues/1474)) ([792eec2](https://github.com/ipfs/aegir/commit/792eec2d426af4cc687069dd098f6349fb871cba))
+
 ## [42.2.4](https://github.com/ipfs/aegir/compare/v42.2.3...v42.2.4) (2024-02-12)
 
 

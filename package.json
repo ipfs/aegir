@@ -332,7 +332,7 @@
     "@types/semver": "^7.3.4",
     "@types/strong-log-transformer": "^1.0.2",
     "@types/yargs": "^17.0.0",
-    "electron": "^27.0.2",
+    "electron": "^29.1.5",
     "uint8arrays": "^5.0.1",
     "undici": "^6.2.1"
   },

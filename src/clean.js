@@ -4,7 +4,7 @@ import Listr from 'listr'
 import { rimraf } from 'rimraf'
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
+ * @typedef {import("./types.js").GlobalOptions} GlobalOptions
  */
 
 export default new Listr([

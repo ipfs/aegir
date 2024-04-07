@@ -10,8 +10,8 @@ import prompt from 'prompt'
 import semver from 'semver'
 import yargsParser from 'yargs-parser'
 import {
+  getSubprojectDirectories,
   isMonorepoProject,
-  glob,
   usesReleasePlease
 } from '../utils.js'
 import { checkBuildFiles } from './check-build-files.js'
@@ -114,32 +114,27 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
 
   const projectDirs = []
 
-  for (const workspace of workspaces) {
-    for await (const subProjectDir of glob('.', workspace, {
-      cwd: projectDir,
-      absolute: true
-    })) {
-      const stat = await fs.stat(subProjectDir)
+  for (const subProjectDir of await getSubprojectDirectories(projectDir, workspaces)) {
+    const stat = await fs.stat(subProjectDir)
 
-      if (!stat.isDirectory()) {
-        continue
-      }
-
-      const manfest = path.join(subProjectDir, 'package.json')
-
-      if (!fs.existsSync(manfest)) {
-        continue
-      }
-
-      const pkg = fs.readJSONSync(manfest)
-      const homePage = `${repoUrl}/tree/${branchName}${subProjectDir.substring(projectDir.length)}`
-
-      console.info('Found monorepo project', pkg.name)
-
-      await processModule(subProjectDir, pkg, branchName, repoUrl, homePage, ciFile, manifest)
-
-      projectDirs.push(subProjectDir)
+    if (!stat.isDirectory()) {
+      continue
     }
+
+    const manfest = path.join(subProjectDir, 'package.json')
+
+    if (!fs.existsSync(manfest)) {
+      continue
+    }
+
+    const pkg = fs.readJSONSync(manfest)
+    const homePage = `${repoUrl}/tree/${branchName}${subProjectDir.substring(projectDir.length)}`
+
+    console.info('Found monorepo project', pkg.name)
+
+    await processModule(subProjectDir, pkg, branchName, repoUrl, homePage, ciFile, manifest)
+
+    projectDirs.push(subProjectDir)
   }
 
   await alignMonorepoProjectDependencies(projectDirs)

@@ -5,7 +5,7 @@ import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'
 import { calculateSiblingVersion } from './check-project/utils.js'
-import { isMonorepoProject, isMonorepoRoot, hasDocs, glob } from './utils.js'
+import { isMonorepoProject, isMonorepoRoot, hasDocs, getSubprojectDirectories } from './utils.js'
 
 /**
  * @typedef {import("./types").GlobalOptions} GlobalOptions
@@ -151,18 +151,13 @@ async function calculateSiblingVersions (rootDir, workspaces) {
   /** @type {Record<string, string>} */
   const siblingVersions = {}
 
-  for (const workspace of workspaces) {
-    for await (const subProjectDir of glob(rootDir, workspace, {
-      cwd: rootDir,
-      absolute: true
-    })) {
-      const pkg = JSON.parse(fs.readFileSync(path.join(subProjectDir, 'package.json'), {
-        encoding: 'utf-8'
-      }))
+  for (const subProjectDir of await getSubprojectDirectories(rootDir, workspaces)) {
+    const pkg = JSON.parse(fs.readFileSync(path.join(subProjectDir, 'package.json'), {
+      encoding: 'utf-8'
+    }))
 
-      siblingVersions[pkg.name] = calculateSiblingVersion(pkg.version)
-      packageDirs.push(subProjectDir)
-    }
+    siblingVersions[pkg.name] = calculateSiblingVersion(pkg.version)
+    packageDirs.push(subProjectDir)
   }
 
   return {

@@ -109,6 +109,7 @@ interface GlobalOptions {
    * Full config from configuration file
    */
   fileConfig: Options
+
 }
 
 interface BuildOptions {
@@ -391,9 +392,11 @@ interface ExecOptions {
    * Run commands in parallel up to this limit
    */
   concurrency?: number
+
 }
 
 interface RunOptions {
+
   /**
    * If false, the script will continue to be run in other packages
    */
@@ -408,6 +411,12 @@ interface RunOptions {
    * Run scripts in parallel up to this limit
    */
   concurrency?: number
+
+  /**
+   * Workspaces to run the command in
+   */
+  workspaces?: string[]
+
 }
 
 export type {

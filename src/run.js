@@ -20,7 +20,7 @@ export default {
 
     const forwardArgs = ctx['--'] == null ? [] : ['--', ...ctx['--']]
 
-    await everyMonorepoProject(process.cwd(), async (project) => {
+    await everyMonorepoProject(async (project) => {
       for (const script of scripts) {
         if (project.manifest.scripts[script] == null) {
           continue
@@ -45,6 +45,7 @@ export default {
         }
       }
     }, {
+      workspaces: ctx.workspaces,
       concurrency: ctx.concurrency
     })
   }

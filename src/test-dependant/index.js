@@ -196,7 +196,7 @@ const testMonoRepo = async (targetDir, deps, scriptName) => {
   }
 
   // test each package that depends on passed deps
-  for (const match of await getSubprojectDirectories(targetDir, config.workspaces)) {
+  for (const match of await getSubprojectDirectories(config.workspaces, targetDir)) {
     await testModule(path.join(targetDir, match), deps, scriptName)
   }
 }

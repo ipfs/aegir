@@ -114,7 +114,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
 
   const projectDirs = []
 
-  for (const subProjectDir of await getSubprojectDirectories(projectDir, workspaces)) {
+  for (const subProjectDir of await getSubprojectDirectories(workspaces, projectDir)) {
     const stat = await fs.stat(subProjectDir)
 
     if (!stat.isDirectory()) {

@@ -22,7 +22,7 @@ async function releaseMonorepoRcs (commit, ctx) {
   /** @type {Record<string, string>} */
   const versions = {}
 
-  await everyMonorepoProject(process.cwd(), async (project) => {
+  await everyMonorepoProject(async (project) => {
     if (project.manifest.private === true) {
       console.info(`Skipping private package ${project.manifest.name}`)
       return
@@ -43,7 +43,7 @@ async function releaseMonorepoRcs (commit, ctx) {
   console.info('')
 
   // publish packages
-  await everyMonorepoProject(process.cwd(), async (project) => {
+  await everyMonorepoProject(async (project) => {
     if (project.manifest.private === true) {
       console.info(`Skipping private package ${project.manifest.name}`)
       return

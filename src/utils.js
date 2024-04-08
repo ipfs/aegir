@@ -410,7 +410,8 @@ export async function everyMonorepoProject (fn, opts) {
  */
 export const getSubprojectDirectories = async (workspaces, cwd = process.cwd()) => fg.glob(workspaces, {
   cwd,
-  onlyFiles: false
+  onlyFiles: false,
+  followSymbolicLinks: false
 })
 
 /**

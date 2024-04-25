@@ -1,3 +1,10 @@
+## [42.2.7](https://github.com/ipfs/aegir/compare/v42.2.6...v42.2.7) (2024-04-25)
+
+
+### Bug Fixes
+
+* use ES2023.Array ([#1509](https://github.com/ipfs/aegir/issues/1509)) ([18dde31](https://github.com/ipfs/aegir/commit/18dde3196d18b9b90f612021054dc2cd1a3cde11))
+
 ## [42.2.6](https://github.com/ipfs/aegir/compare/v42.2.5...v42.2.6) (2024-04-25)
 
 

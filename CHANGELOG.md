@@ -1,3 +1,10 @@
+## [42.2.8](https://github.com/ipfs/aegir/compare/v42.2.7...v42.2.8) (2024-04-25)
+
+
+### Bug Fixes
+
+* update web root ([6a694ec](https://github.com/ipfs/aegir/commit/6a694eca72e70d7363479377a5654f1d24685073))
+
 ## [42.2.7](https://github.com/ipfs/aegir/compare/v42.2.6...v42.2.7) (2024-04-25)
 
 

@@ -8,8 +8,8 @@ import { calculateSiblingVersion } from './check-project/utils.js'
 import { isMonorepoProject, isMonorepoRoot, hasDocs, getSubprojectDirectories } from './utils.js'
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").ReleaseOptions} ReleaseOptions
+ * @typedef {import("./types.js").GlobalOptions} GlobalOptions
+ * @typedef {import("./types.js").ReleaseOptions} ReleaseOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  */
 

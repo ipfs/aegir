@@ -5,6 +5,7 @@
   "homepage": "https://github.com/ipfs/aegir#readme",
   "exports": {
     ".": {
+      "types": "./dist/src/index.d.ts",
       "import": "./dist/src/index.js"
     }
   },

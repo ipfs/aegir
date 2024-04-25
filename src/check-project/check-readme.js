@@ -14,11 +14,12 @@ import {
 /**
  * @param {string} projectDir
  * @param {string} repoUrl
+ * @param {string} webRoot
  * @param {string} defaultBranch
  * @param {string} ciFile
  * @param {any} [rootManifest]
  */
-export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, rootManifest) {
+export async function checkReadme (projectDir, repoUrl, webRoot, defaultBranch, ciFile, rootManifest) {
   const repoParts = repoUrl.split('/')
   const repoName = repoParts.pop()
   const repoOwner = repoParts.pop()
@@ -162,7 +163,7 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, r
     apiDocs = parseMarkdown(APIDOCS(pkg, rootManifest))
   }
 
-  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, webRoot, defaultBranch))
 
   readme.children = [
     ...header,

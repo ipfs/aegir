@@ -148,13 +148,15 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
   let proposedManifest = await monorepoManifest(manifest, repoUrl, repoUrl, branchName)
   proposedManifest = sortManifest(proposedManifest)
 
+  const webRoot = `${repoUrl}/tree/${branchName}`
+
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
   await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {
     encoding: 'utf-8'
   }))
   await checkLicenseFiles(projectDir)
   await checkBuildFiles(projectDir, branchName, repoUrl)
-  await checkMonorepoReadme(projectDir, repoUrl, branchName, projectDirs, ciFile)
+  await checkMonorepoReadme(projectDir, repoUrl, webRoot, branchName, projectDirs, ciFile)
   await checkMonorepoFiles(projectDir)
 }
 
@@ -386,17 +388,20 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
     const { projectType } = await prompt.get({
       properties: {
         projectType: {
-          description: 'Project type: typescript | typedESM | typedCJS | untypedESM | untypedCJS',
+          description: 'Project type: typescript | typedESM | typedCJS | untypedESM | untypedCJS | skip',
           required: true,
           conform: (value) => {
-            return ['typescript', 'typedESM', 'typedCJS', 'untypedESM', 'untypedCJS'].includes(value)
+            return ['typescript', 'typedESM', 'typedCJS', 'untypedESM', 'untypedCJS', 'skip'].includes(value)
           },
-          default: 'typescript'
+          default: 'skip'
         }
       }
     })
 
-    if (projectType === 'typescript') {
+    if (projectType === 'skip') {
+      console.info('Skipping', manifest.name)
+      return
+    } else if (projectType === 'typescript') {
       typescript = true
     } else if (projectType === 'typedESM') {
       typedESM = true
@@ -447,7 +452,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   }
 
   await checkLicenseFiles(projectDir)
-  await checkReadme(projectDir, repoUrl, branchName, ciFile, rootManifest)
+  await checkReadme(projectDir, repoUrl, homePage, branchName, ciFile, rootManifest)
   await checkTypedocFiles(projectDir, typescript)
 }
 

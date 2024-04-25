@@ -1,3 +1,11 @@
+## [42.2.6](https://github.com/ipfs/aegir/compare/v42.2.5...v42.2.6) (2024-04-25)
+
+
+### Bug Fixes
+
+* use absolute links in generated readme ([#1508](https://github.com/ipfs/aegir/issues/1508)) ([8974445](https://github.com/ipfs/aegir/commit/89744455d79a19fee84fc07f458e918bae92d827))
+* use fast-glob for resolving projects ([#1494](https://github.com/ipfs/aegir/issues/1494)) ([c45c922](https://github.com/ipfs/aegir/commit/c45c9225296a9ee5636ec83671516168bcf92041))
+
 ## [42.2.5](https://github.com/ipfs/aegir/compare/v42.2.4...v42.2.5) (2024-02-27)
 
 

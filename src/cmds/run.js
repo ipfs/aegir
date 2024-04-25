@@ -1,5 +1,6 @@
 import { loadUserConfig } from '../config/user.js'
 import runCmd from '../run.js'
+import { listWorkspaces } from '../utils.js'
 
 /**
  * @typedef {import("yargs").Argv} Argv
@@ -39,6 +40,14 @@ export default {
           type: 'number',
           describe: 'How many scripts to run at the same time',
           default: userConfig.run.concurrency
+        },
+
+        workspaces: {
+          // an array of strings
+          array: true,
+          describe: 'Run the script in a specific workspace',
+          default: await listWorkspaces(process.cwd()),
+          alias: ['workspace', 'roots']
         }
       })
       .positional('script', {

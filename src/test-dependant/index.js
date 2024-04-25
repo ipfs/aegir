@@ -4,8 +4,7 @@ import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
 import {
-  exec,
-  glob
+  exec, getSubprojectDirectories
 } from '../utils.js'
 
 /**
@@ -197,10 +196,8 @@ const testMonoRepo = async (targetDir, deps, scriptName) => {
   }
 
   // test each package that depends on passed deps
-  for (const pattern of config.workspaces) {
-    for await (const match of glob(targetDir, pattern)) {
-      await testModule(path.join(targetDir, match), deps, scriptName)
-    }
+  for (const match of await getSubprojectDirectories(config.workspaces, targetDir)) {
+    await testModule(path.join(targetDir, match), deps, scriptName)
   }
 }
 

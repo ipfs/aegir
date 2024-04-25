@@ -117,4 +117,18 @@ very test`)
     expect(out.indexOf('b: very test')).to.be.lt(out.indexOf('d: npm run test'))
     expect(out.indexOf('c: very test')).to.be.lt(out.indexOf('d: npm run test'))
   })
+
+  it('can run in specifc workspaces', async function () {
+    this.timeout(120 * 1000) // slow ci is slow
+
+    const result = await execa(bin, ['run', 'test', '--workspaces=**/a-workspace-project'], {
+      cwd: projectDir
+    })
+
+    expect(result.stdout).to.equal(`
+a-workspace-project: npm run test
+a-workspace-project: > a-workspace-project@1.0.0 test
+a-workspace-project: > echo very test
+a-workspace-project: very test`)
+  })
 })

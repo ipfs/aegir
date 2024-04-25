@@ -15,7 +15,7 @@ export function load (app) {
   let projects = {}
 
   if (isMonorepoParent) {
-    projects = parseProjects(process.cwd(), pkg.workspaces)
+    projects = parseProjects(pkg.workspaces)
   }
 
   // when rendering has finished, work out which UrlMappings refer to the index

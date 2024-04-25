@@ -14,7 +14,7 @@ export default {
   async run (ctx) {
     const forwardArgs = ctx['--'] ? ctx['--'] : []
 
-    await everyMonorepoProject(process.cwd(), async (project) => {
+    await everyMonorepoProject(async (project) => {
       console.info('') // eslint-disable-line no-console
       console.info(kleur.grey(`${project.manifest.name}:`), `> ${ctx.command}${forwardArgs.length > 0 ? ` ${forwardArgs.join(' ')}` : ''}`) // eslint-disable-line no-console
 

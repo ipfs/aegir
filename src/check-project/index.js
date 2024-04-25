@@ -113,6 +113,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
   }
 
   const projectDirs = []
+  const webRoot = `${repoUrl}/tree/${branchName}`
 
   for (const subProjectDir of await getSubprojectDirectories(projectDir, workspaces)) {
     const stat = await fs.stat(subProjectDir)
@@ -128,7 +129,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
     }
 
     const pkg = fs.readJSONSync(manfest)
-    const homePage = `${repoUrl}/tree/${branchName}${subProjectDir.substring(projectDir.length)}`
+    const homePage = `${webRoot}/${subProjectDir.includes(projectDir) ? subProjectDir.substring(projectDir.length) : subProjectDir}`
 
     console.info('Found monorepo project', pkg.name)
 
@@ -142,8 +143,6 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
 
   let proposedManifest = await monorepoManifest(manifest, repoUrl, repoUrl, branchName)
   proposedManifest = sortManifest(proposedManifest)
-
-  const webRoot = `${repoUrl}/tree/${branchName}`
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
   await ensureFileHasContents(projectDir, '.gitignore', fs.readFileSync(path.join(__dirname, 'files', 'gitignore'), {

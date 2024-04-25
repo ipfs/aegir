@@ -1,14 +1,14 @@
 /**
- * @type {Record<string, (repoOwner: string, repoName: string, defaultBranch: string) => string>}
+ * @type {Record<string, (repoOwner: string, repoName: string, repoUrl: string, defaultBranch: string) => string>}
  */
 const licenses = {
-  ipfs: (repoOwner, repoName, defaultBranch) => `
+  ipfs: (repoOwner, repoName, webRoot, defaultBranch) => `
 # License
 
 Licensed under either of
 
-  * Apache 2.0, ([LICENSE-APACHE](LICENSE-APACHE) / http://www.apache.org/licenses/LICENSE-2.0)
-  * MIT ([LICENSE-MIT](LICENSE-MIT) / http://opensource.org/licenses/MIT)
+  * Apache 2.0, ([LICENSE-APACHE](${webRoot.replace('/tree/', '/blob/')}/LICENSE-APACHE) / http://www.apache.org/licenses/LICENSE-2.0)
+  * MIT ([LICENSE-MIT](${webRoot.replace('/tree/', '/blob/')}/LICENSE-MIT) / http://opensource.org/licenses/MIT)
 
 # Contribute
 
@@ -22,13 +22,13 @@ Unless you explicitly state otherwise, any contribution intentionally submitted 
 
 [![](https://cdn.rawgit.com/jbenet/contribute-ipfs-gif/master/img/contribute.gif)](https://github.com/ipfs/community/blob/master/CONTRIBUTING.md)
 `,
-  default: (repoOwner, repoName, defaultBranch) => `
+  default: (repoOwner, repoName, webRoot, defaultBranch) => `
 # License
 
 Licensed under either of
 
-  * Apache 2.0, ([LICENSE-APACHE](LICENSE-APACHE) / http://www.apache.org/licenses/LICENSE-2.0)
-  * MIT ([LICENSE-MIT](LICENSE-MIT) / http://opensource.org/licenses/MIT)
+  * Apache 2.0, ([LICENSE-APACHE](${webRoot.replace('/tree/', '/blob/')}/LICENSE-APACHE) / http://www.apache.org/licenses/LICENSE-2.0)
+  * MIT ([LICENSE-MIT](${webRoot.replace('/tree/', '/blob/')}/LICENSE-MIT) / http://opensource.org/licenses/MIT)
 
 # Contribution
 
@@ -40,8 +40,9 @@ Unless you explicitly state otherwise, any contribution intentionally submitted 
  * @param {*} pkg
  * @param {string} repoOwner
  * @param {string} repoName
+ * @param {string} webRoot
  * @param {string} defaultBranch
  */
-export const LICENSE = (pkg, repoOwner, repoName, defaultBranch) => {
-  return (licenses[repoOwner] ?? licenses.default)(repoOwner, repoName, defaultBranch)
+export const LICENSE = (pkg, repoOwner, repoName, webRoot, defaultBranch) => {
+  return (licenses[repoOwner] ?? licenses.default)(repoOwner, repoName, webRoot, defaultBranch)
 }

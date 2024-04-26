@@ -355,7 +355,7 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
   }
 
   /** @type {Record<string, Project>} */
-  const projects = await parseProjects(projectDir, workspaces)
+  const projects = parseProjects(projectDir, workspaces)
 
   checkForCircularDependencies(projects)
 
@@ -402,21 +402,23 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
  * @param {string} projectDir
  * @param {string[]} workspaces
  */
-export const getSubprojectDirectories = async (projectDir, workspaces) => fg.glob(workspaces, {
-  cwd: projectDir,
-  onlyFiles: false
-})
+export const getSubprojectDirectories = (projectDir, workspaces) => {
+  return fg.globSync(workspaces, {
+    cwd: projectDir,
+    onlyFiles: false
+  })
+}
 
 /**
  *
  * @param {string} projectDir
  * @param {string[]} workspaces
  */
-export async function parseProjects (projectDir, workspaces) {
+export function parseProjects (projectDir, workspaces) {
   /** @type {Record<string, Project>} */
   const projects = {}
 
-  for (const subProjectDir of await getSubprojectDirectories(projectDir, workspaces)) {
+  for (const subProjectDir of getSubprojectDirectories(projectDir, workspaces)) {
     const stat = fs.statSync(subProjectDir)
 
     if (!stat.isDirectory()) {

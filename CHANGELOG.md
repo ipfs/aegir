@@ -1,3 +1,10 @@
+## [42.2.9](https://github.com/ipfs/aegir/compare/v42.2.8...v42.2.9) (2024-04-26)
+
+
+### Bug Fixes
+
+* use sync glob ([#1510](https://github.com/ipfs/aegir/issues/1510)) ([1b85876](https://github.com/ipfs/aegir/commit/1b85876332ca1c20d9446bd5af7657a1e11ae68c))
+
 ## [42.2.8](https://github.com/ipfs/aegir/compare/v42.2.7...v42.2.8) (2024-04-25)
 
 

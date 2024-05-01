@@ -1,3 +1,10 @@
+## [42.2.11](https://github.com/ipfs/aegir/compare/v42.2.10...v42.2.11) (2024-05-01)
+
+
+### Bug Fixes
+
+* revert [#1512](https://github.com/ipfs/aegir/issues/1512) ([eea2bd1](https://github.com/ipfs/aegir/commit/eea2bd14bf9d22a03ae34d81982d89021a2930a3))
+
 ## [42.2.10](https://github.com/ipfs/aegir/compare/v42.2.9...v42.2.10) (2024-05-01)
 
 

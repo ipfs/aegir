@@ -1,3 +1,10 @@
+## [42.2.10](https://github.com/ipfs/aegir/compare/v42.2.9...v42.2.10) (2024-05-01)
+
+
+### Bug Fixes
+
+* do not escape GitHub alerts in readmes ([#1512](https://github.com/ipfs/aegir/issues/1512)) ([3b58126](https://github.com/ipfs/aegir/commit/3b5812649fb6faa3bb78d7e15f078fbc80e8555f))
+
 ## [42.2.9](https://github.com/ipfs/aegir/compare/v42.2.8...v42.2.9) (2024-04-26)
 
 

@@ -237,15 +237,7 @@ function updateReadme (aboutMd, manifestPath, readmePath, app) {
     parsedReadme.children.push(child)
   })
 
-  let updatedReadmeContents = writeMarkdown(parsedReadme)
-
-  // workaround for https://github.com/syntax-tree/mdast-util-to-markdown/issues/61
-  updatedReadmeContents = updatedReadmeContents
-    .replaceAll('\\[!NOTE]', '[!NOTE]')
-    .replaceAll('\\[!TIP]', '[!TIP]')
-    .replaceAll('\\[!IMPORTANT]', '[!IMPORTANT]')
-    .replaceAll('\\[!WARNING]', '[!WARNING]')
-    .replaceAll('\\[!CAUTION]', '[!CAUTION]')
+  const updatedReadmeContents = writeMarkdown(parsedReadme)
 
   fs.writeFileSync(readmePath, updatedReadmeContents, {
     encoding: 'utf-8'

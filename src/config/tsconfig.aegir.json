@@ -21,11 +21,6 @@
         // module resolution
         "esModuleInterop": true,
         "moduleResolution": "node",
-        // linter checks
-        "noImplicitReturns": false,
-        "noFallthroughCasesInSwitch": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": false,
         // advanced
         "verbatimModuleSyntax": true,
         "forceConsistentCasingInFileNames": true,

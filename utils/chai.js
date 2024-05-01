@@ -18,11 +18,11 @@
  * ```
  */
 
-import chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
+import chaiAsPromised from '@achingbrain/chai-as-promised'
+import chaiString from '@achingbrain/chai-string'
+import * as chai from 'chai'
 import chaiBites from 'chai-bites'
 import chaiParentheses from 'chai-parentheses'
-import chaiString from 'chai-string'
 import chaiSubset from 'chai-subset'
 
 // Do not reorder these statements - https://github.com/chaijs/chai/issues/1298

@@ -243,7 +243,7 @@
     "c8": "^9.0.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "chai-bites": "^0.1.2",
+    "chai-bites": "^0.2.0",
     "chai-parentheses": "^0.0.2",
     "chai-string": "^1.5.0",
     "chai-subset": "^1.6.0",

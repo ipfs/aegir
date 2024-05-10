@@ -1,3 +1,46 @@
+## [42.2.11](https://github.com/ipfs/aegir/compare/v42.2.10...v42.2.11) (2024-05-01)
+
+
+### Bug Fixes
+
+* revert [#1512](https://github.com/ipfs/aegir/issues/1512) ([eea2bd1](https://github.com/ipfs/aegir/commit/eea2bd14bf9d22a03ae34d81982d89021a2930a3))
+
+## [42.2.10](https://github.com/ipfs/aegir/compare/v42.2.9...v42.2.10) (2024-05-01)
+
+
+### Bug Fixes
+
+* do not escape GitHub alerts in readmes ([#1512](https://github.com/ipfs/aegir/issues/1512)) ([3b58126](https://github.com/ipfs/aegir/commit/3b5812649fb6faa3bb78d7e15f078fbc80e8555f))
+
+## [42.2.9](https://github.com/ipfs/aegir/compare/v42.2.8...v42.2.9) (2024-04-26)
+
+
+### Bug Fixes
+
+* use sync glob ([#1510](https://github.com/ipfs/aegir/issues/1510)) ([1b85876](https://github.com/ipfs/aegir/commit/1b85876332ca1c20d9446bd5af7657a1e11ae68c))
+
+## [42.2.8](https://github.com/ipfs/aegir/compare/v42.2.7...v42.2.8) (2024-04-25)
+
+
+### Bug Fixes
+
+* update web root ([6a694ec](https://github.com/ipfs/aegir/commit/6a694eca72e70d7363479377a5654f1d24685073))
+
+## [42.2.7](https://github.com/ipfs/aegir/compare/v42.2.6...v42.2.7) (2024-04-25)
+
+
+### Bug Fixes
+
+* use ES2023.Array ([#1509](https://github.com/ipfs/aegir/issues/1509)) ([18dde31](https://github.com/ipfs/aegir/commit/18dde3196d18b9b90f612021054dc2cd1a3cde11))
+
+## [42.2.6](https://github.com/ipfs/aegir/compare/v42.2.5...v42.2.6) (2024-04-25)
+
+
+### Bug Fixes
+
+* use absolute links in generated readme ([#1508](https://github.com/ipfs/aegir/issues/1508)) ([8974445](https://github.com/ipfs/aegir/commit/89744455d79a19fee84fc07f458e918bae92d827))
+* use fast-glob for resolving projects ([#1494](https://github.com/ipfs/aegir/issues/1494)) ([c45c922](https://github.com/ipfs/aegir/commit/c45c9225296a9ee5636ec83671516168bcf92041))
+
 ## [42.2.5](https://github.com/ipfs/aegir/compare/v42.2.4...v42.2.5) (2024-02-27)
 
 

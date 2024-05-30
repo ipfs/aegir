@@ -21,6 +21,11 @@ const tasks = new Listr([
      * @param {GlobalOptions & ReleaseOptions} ctx
      */
     task: async (ctx) => {
+      if (!process.env.CI) {
+        console.info('⚠ This run was not triggered in a known CI environment, running in dry-run mode.') // eslint-disable-line no-console
+        return
+      }
+
       const rootDir = process.cwd()
       const workspaces = pkg.workspaces
 
@@ -45,6 +50,8 @@ const tasks = new Listr([
       for (const packageDir of packageDirs) {
         const manifestPath = path.join(packageDir, 'package.json')
         const manifest = fs.readJSONSync(path.join(packageDir, 'package.json'))
+
+        console.info('check project', manifest.name)
 
         for (const type of dependencyTypes) {
           for (const [dep, version] of Object.entries(siblingVersions)) {
@@ -71,7 +78,7 @@ const tasks = new Listr([
       }
 
       if (!process.env.CI) {
-        console.info('CI env var is not set, not pushing to git') // eslint-disable-line no-console
+        // do not push to remote repo if in dry-run mode
         return
       }
 

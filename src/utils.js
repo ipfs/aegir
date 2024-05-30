@@ -301,6 +301,24 @@ export const usesReleasePlease = (dir = process.cwd()) => {
   }
 }
 
+export const usesSemanticReleaseMonorepo = (dir = process.cwd()) => {
+  try {
+    if (pkg.private) {
+      return false
+    }
+
+    const cwd = path.resolve(dir, '..')
+    const rootManifest = readPackageUpSync({
+      cwd
+    })
+
+    return Object.values(rootManifest?.packageJson.scripts ?? {})
+      .some(script => script.includes('aegir run release'))
+  } catch {
+    return false
+  }
+}
+
 /**
  * Binaries we need are normally in `node_modules/.bin` of the root project
  * unless a sibling dependency has caused a different version to be hoisted

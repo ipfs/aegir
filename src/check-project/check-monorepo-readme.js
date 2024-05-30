@@ -159,7 +159,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, webRoot, default
     apiDocs = parseMarkdown(APIDOCS(pkg))
   }
 
-  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
+  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs, webRoot))
 
   readme.children = [
     ...header,

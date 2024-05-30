@@ -1,3 +1,29 @@
+## [43.0.0](https://github.com/ipfs/aegir/compare/v42.2.11...v43.0.0) (2024-05-30)
+
+### ⚠ BREAKING CHANGES
+
+* if using `aegir release` in the scripts of a monorepo package, config must be updated:
+
+1. Change `"release": "aegir release"` in the monorepo root to `"release": "aegir run release"`
+2. Add `"release": "aegir release"` to each monorepo package
+3. Add semantic release config to each monorepo package
+
+### Bug Fixes
+
+* remove unused types that break compilation ([#1535](https://github.com/ipfs/aegir/issues/1535)) ([a020beb](https://github.com/ipfs/aegir/commit/a020beb8fcb318767430a37bac87ebefc277a183))
+* revert to semantic-release-monorepo ([#1536](https://github.com/ipfs/aegir/issues/1536)) ([00bebd4](https://github.com/ipfs/aegir/commit/00bebd405458749af43a3ce7fc86e237edb2d957))
+* update check-project to use semantic-release-monorepo again ([#1537](https://github.com/ipfs/aegir/issues/1537)) ([aa65b02](https://github.com/ipfs/aegir/commit/aa65b026a53213b0e289cb00782c98976a5d099a))
+* use semantic-release beta release ([#1539](https://github.com/ipfs/aegir/issues/1539)) ([a16e7c2](https://github.com/ipfs/aegir/commit/a16e7c225835b87abeb1a1d15ea143e5f8a95c4e))
+
+### Dependencies
+
+* bump @semantic-release/commit-analyzer from 11.1.0 to 12.0.0 ([#1484](https://github.com/ipfs/aegir/issues/1484)) ([9f10341](https://github.com/ipfs/aegir/commit/9f103413ccdae1f0f4c02276110c770ab45b9300))
+* bump @semantic-release/github from 9.2.6 to 10.0.3 ([#1497](https://github.com/ipfs/aegir/issues/1497)) ([295fa01](https://github.com/ipfs/aegir/commit/295fa018bf2564ce04dc830117d6dba2f92afead))
+* bump @semantic-release/npm from 11.0.3 to 12.0.0 ([#1483](https://github.com/ipfs/aegir/issues/1483)) ([0ab5632](https://github.com/ipfs/aegir/commit/0ab5632ce841b648c08b65f37f8cf9a317171d26))
+* bump @semantic-release/release-notes-generator from 12.1.0 to 13.0.0 ([#1489](https://github.com/ipfs/aegir/issues/1489)) ([db9e2e7](https://github.com/ipfs/aegir/commit/db9e2e74c77bd51f24deca095af3ba5a90cf26bf))
+* bump conventional-changelog-conventionalcommits from 7.0.2 to 8.0.0 ([#1518](https://github.com/ipfs/aegir/issues/1518)) ([a566958](https://github.com/ipfs/aegir/commit/a566958428f4a148026bd377cdba4a297439bd9e))
+* bump esbuild from 0.20.2 to 0.21.1 ([#1520](https://github.com/ipfs/aegir/issues/1520)) ([74ff688](https://github.com/ipfs/aegir/commit/74ff688574f0fe0c2f55b05e268c82c5bda70678))
+
 ## [42.2.11](https://github.com/ipfs/aegir/compare/v42.2.10...v42.2.11) (2024-05-01)
 
 

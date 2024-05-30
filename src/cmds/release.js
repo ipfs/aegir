@@ -1,4 +1,3 @@
-import { loadUserConfig } from '../config/user.js'
 import releaseCmd from '../release.js'
 
 /**
@@ -19,28 +18,9 @@ export default {
    * @param {Argv} yargs
    */
   builder: async (yargs) => {
-    const userConfig = await loadUserConfig()
-
     return yargs
       .epilog(EPILOG)
-      .options({
-        siblingDepUpdateMessage: {
-          alias: 'm',
-          type: 'string',
-          describe: 'The commit message to use when updating sibling dependencies',
-          default: userConfig.release.siblingDepUpdateMessage
-        },
-        siblingDepUpdateName: {
-          type: 'string',
-          describe: 'The user name to use when updating sibling dependencies',
-          default: userConfig.release.siblingDepUpdateName
-        },
-        siblingDepUpdateEmail: {
-          type: 'string',
-          describe: 'The email to use when updating sibling dependencies',
-          default: userConfig.release.siblingDepUpdateEmail
-        }
-      })
+      .options({})
   },
   /**
    * @param {any} argv

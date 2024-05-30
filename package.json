@@ -222,7 +222,6 @@
     "release": "node src/index.js release --no-bundle"
   },
   "dependencies": {
-    "@anolilab/multi-semantic-release": "^1.0.3",
     "@electron/get": "^3.0.0",
     "@polka/send-type": "^0.5.2",
     "@semantic-release/changelog": "^6.0.1",
@@ -263,6 +262,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "execa": "^8.0.1",
     "extract-zip": "^2.0.1",
+    "fast-glob": "^3.3.2",
     "fs-extra": "^11.1.0",
     "gh-pages": "^6.0.0",
     "globby": "^14.0.0",
@@ -283,7 +283,6 @@
     "micromark-extension-gfm-strikethrough": "^2.0.0",
     "micromark-extension-gfm-table": "^2.0.0",
     "micromark-extension-gfm-task-list-item": "^2.0.1",
-    "fast-glob": "^3.3.2",
     "mocha": "^10.0.0",
     "npm-package-json-lint": "^7.0.0",
     "nyc": "^15.1.0",
@@ -300,6 +299,7 @@
     "read-pkg-up": "^11.0.0",
     "rimraf": "^5.0.0",
     "semantic-release": "^23.0.0",
+    "semantic-release-monorepo": "^8.0.2",
     "semver": "^7.3.8",
     "source-map-support": "^0.5.20",
     "strip-bom": "^5.0.0",

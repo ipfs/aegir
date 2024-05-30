@@ -1,3 +1,10 @@
+## [43.0.1](https://github.com/ipfs/aegir/compare/v43.0.0...v43.0.1) (2024-05-30)
+
+
+### Bug Fixes
+
+* downgrade conventional-changelog-conventionalcommits ([3d063ce](https://github.com/ipfs/aegir/commit/3d063cec7ca69473539479d6b2e0cb1236235ce4))
+
 ## [43.0.0](https://github.com/ipfs/aegir/compare/v42.2.11...v43.0.0) (2024-05-30)
 
 ### ⚠ BREAKING CHANGES

@@ -239,7 +239,7 @@
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "buffer": "^6.0.3",
     "bytes": "^3.1.0",
-    "c8": "^9.0.0",
+    "c8": "^10.0.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "chai-bites": "^0.1.2",

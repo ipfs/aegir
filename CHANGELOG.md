@@ -4,6 +4,23 @@
 ### Bug Fixes
 
 * format changelog ([#1561](https://github.com/ipfs/aegir/issues/1561)) ([5c68eaa](https://github.com/ipfs/aegir/commit/5c68eaa6923f71d21b5e98bc02ff7b1b637b3b42))
+* format log ([7cd095d](https://github.com/ipfs/aegir/commit/7cd095de74e1bf578f6bd66ea8054dc08bcb3883))
+* revert dep updates ([7f3617d](https://github.com/ipfs/aegir/commit/7f3617d9a58a5df5e1d85421da51eb9a46b445c3))
+* update version ([773708d](https://github.com/ipfs/aegir/commit/773708da68fd6bd770df4dd50a1148663f587d41))
+
+
+### Trivial Changes
+
+* **release:** 43.0.2 [skip ci] ([2080a34](https://github.com/ipfs/aegir/commit/2080a34e65af8752c74c3be276badc243c813aff)), closes [#1561](https://github.com/ipfs/aegir/issues/1561) [#1561](https://github.com/ipfs/aegir/issues/1561)
+* **release:** 43.0.2 [skip ci] ([3c0555b](https://github.com/ipfs/aegir/commit/3c0555bac4b2504340cb61e12ec8792530740b04)), closes [#1561](https://github.com/ipfs/aegir/issues/1561)
+* **release:** 43.0.2 [skip ci] ([aa88f15](https://github.com/ipfs/aegir/commit/aa88f15527ad92eec903fb47c5968e1b36449e78))
+
+## [43.0.2](https://github.com/ipfs/aegir/compare/v43.0.1...v43.0.2) (2024-06-21)
+
+
+### Bug Fixes
+
+* format changelog ([#1561](https://github.com/ipfs/aegir/issues/1561)) ([5c68eaa](https://github.com/ipfs/aegir/commit/5c68eaa6923f71d21b5e98bc02ff7b1b637b3b42))
 * revert dep updates ([7f3617d](https://github.com/ipfs/aegir/commit/7f3617d9a58a5df5e1d85421da51eb9a46b445c3))
 * update version ([773708d](https://github.com/ipfs/aegir/commit/773708da68fd6bd770df4dd50a1148663f587d41))
 

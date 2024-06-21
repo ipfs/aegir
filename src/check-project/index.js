@@ -115,6 +115,23 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
   const projectDirs = []
   const webRoot = `${repoUrl}/tree/${branchName}`
 
+  const { releaseType } = await prompt.get({
+    properties: {
+      releaseType: {
+        description: 'Monorepo release type: semantic-release | release-please',
+        required: true,
+        conform: (value) => {
+          return ['semantic-release', 'release-please'].includes(value)
+        },
+        default: usesReleasePlease() ? 'release-please' : 'semantic-release'
+      }
+    }
+  })
+
+  if (releaseType !== 'release-please' && releaseType !== 'semantic-release') {
+    throw new Error('Invalid release type specified')
+  }
+
   for (const subProjectDir of await getSubprojectDirectories(projectDir, workspaces)) {
     const stat = await fs.stat(subProjectDir)
 
@@ -133,7 +150,16 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
 
     console.info('Found monorepo project', pkg.name)
 
-    await processModule(subProjectDir, pkg, branchName, repoUrl, homePage, ciFile, manifest)
+    await processModule({
+      projectDir: subProjectDir,
+      manifest: pkg,
+      branchName,
+      repoUrl,
+      homePage,
+      ciFile,
+      rootManifest: manifest,
+      releaseType
+    })
 
     projectDirs.push(subProjectDir)
   }
@@ -141,7 +167,13 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
   await alignMonorepoProjectDependencies(projectDirs)
   await configureMonorepoProjectReferences(projectDirs)
 
-  let proposedManifest = await monorepoManifest(manifest, repoUrl, repoUrl, branchName)
+  let proposedManifest = await monorepoManifest({
+    manifest,
+    repoUrl,
+    homePage: repoUrl,
+    branchName,
+    releaseType
+  })
   proposedManifest = sortManifest(proposedManifest)
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
@@ -324,7 +356,9 @@ function addReferences (deps, references, refs) {
  * @param {string} ciFile
  */
 async function processProject (projectDir, manifest, branchName, repoUrl, ciFile) {
-  await processModule(projectDir, manifest, branchName, repoUrl, repoUrl, ciFile)
+  const releaseType = 'semantic-release'
+
+  await processModule({ projectDir, manifest, branchName, repoUrl, homePage: repoUrl, ciFile, releaseType })
   await checkBuildFiles(projectDir, branchName, repoUrl)
 }
 
@@ -336,16 +370,32 @@ function isAegirProject (manifest) {
 }
 
 /**
- *
- * @param {string} projectDir
- * @param {any} manifest
- * @param {string} branchName
- * @param {string} repoUrl
- * @param {string} homePage
- * @param {string} ciFile
- * @param {any} [rootManifest]
+ * @typedef {object} ProcessModuleContext
+ * @property {string} projectDir
+ * @property {any} manifest
+ * @property {string} branchName
+ * @property {string} repoUrl
+ * @property {string} homePage
+ * @property {string} ciFile
+ * @property {any} [rootManifest]
+ * @property {"semantic-release" | "release-please"} releaseType
  */
-async function processModule (projectDir, manifest, branchName, repoUrl, homePage = repoUrl, ciFile, rootManifest) {
+
+/**
+ * @typedef {object} ProcessManifestContext
+ * @property {any} manifest
+ * @property {string} branchName
+ * @property {string} repoUrl
+ * @property {string} homePage
+ * @property {"semantic-release" | "release-please"} releaseType
+ */
+
+/**
+ * @param {ProcessModuleContext} context
+ */
+async function processModule (context) {
+  const { projectDir, manifest, branchName, repoUrl, homePage = repoUrl, ciFile, rootManifest, releaseType } = context
+
   if (!isAegirProject(manifest) && manifest.name !== 'aegir') {
     throw new Error(`"${projectDir}" is not an aegir project`)
   }
@@ -412,27 +462,21 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
 
   if (typescript) {
     console.info('TypeScript project detected')
-    proposedManifest = await typescriptManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await typescriptManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else if (typedESM) {
     console.info('Typed ESM project detected')
-    proposedManifest = await typedESMManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await typedESMManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else if (typedCJS) {
     console.info('Typed CJS project detected')
-    proposedManifest = await typedCJSManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await typedCJSManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else if (untypedESM) {
     console.info('Untyped ESM project detected')
-    proposedManifest = await untypedESMManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await untypedESMManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else if (untypedCJS) {
     console.info('Untyped CJS project detected')
-    proposedManifest = await untypedCJSManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await untypedCJSManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else {
     throw new Error('Cannot determine project type')
-  }
-
-  // remove release config from monorepo projects as multi-semantic-release
-  // wants it defined in the root manifest
-  if (rootManifest != null) {
-    proposedManifest.release = undefined
   }
 
   proposedManifest = sortManifest(proposedManifest)

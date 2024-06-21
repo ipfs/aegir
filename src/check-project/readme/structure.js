@@ -4,8 +4,9 @@ import fs from 'fs-extra'
 /**
  * @param {string} monorepoDir
  * @param {string[]} projectDirs
+ * @param {string} webRoot
  */
-export const STRUCTURE = (monorepoDir, projectDirs) => {
+export const STRUCTURE = (monorepoDir, projectDirs, webRoot) => {
   /** @type {Record<string, string>} */
   const packages = {}
 
@@ -21,7 +22,7 @@ export const STRUCTURE = (monorepoDir, projectDirs) => {
 # Packages
 
 ${Object.entries(packages).map(([key, value]) => {
-  return `* [\`${key}\`](.${key}) ${value}`
+  return `* [\`${key}\`](${webRoot}/${key}) ${value}`
 }).join('\n')}
 `
 }

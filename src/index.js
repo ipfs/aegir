@@ -4,6 +4,7 @@
 import { readPackageUpSync } from 'read-pkg-up'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import alignVersionsCmd from './cmds/align-versions.js'
 import buildCmd from './cmds/build.js'
 import checkProjectCmd from './cmds/check-project.js'
 import checkCmd from './cmds/check.js'
@@ -92,6 +93,7 @@ async function main () {
   res.command(testCmd)
   res.command(execCmd)
   res.command(runCmd)
+  res.command(alignVersionsCmd)
 
   try {
     await res.parse()

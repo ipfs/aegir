@@ -8,12 +8,24 @@ import {
 const merge = mergeOptions.bind({ ignoreUndefined: true })
 
 /**
- * @param {any} manifest
- * @param {string} branchName
- * @param {string} repoUrl
- * @param {string} [homePage]
+ * @param {import('../index.js').ProcessManifestContext} context
  */
-export async function typedCJSManifest (manifest, branchName, repoUrl, homePage = repoUrl) {
+export async function typedCJSManifest (context) {
+  const { manifest, branchName, repoUrl, homePage } = context
+  let release
+  const scripts = {
+    ...manifest.scripts
+  }
+
+  if (context.releaseType === 'semantic-release') {
+    scripts.release = 'aegir release'
+    release = semanticReleaseConfig(branchName)
+  }
+
+  if (context.releaseType === 'release-please') {
+    delete scripts.release
+  }
+
   let proposedManifest = constructManifest(manifest, {
     main: 'src/index.js',
     types: 'dist/src/index.d.ts',
@@ -41,7 +53,8 @@ export async function typedCJSManifest (manifest, branchName, repoUrl, homePage 
         project: true
       }
     }, manifest.eslintConfig),
-    release: (manifest.scripts?.release?.includes('semantic-release') || manifest.scripts?.release?.includes('aegir release')) ? semanticReleaseConfig(branchName) : undefined
+    scripts,
+    release
   }, repoUrl, homePage)
 
   const rest = {

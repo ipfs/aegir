@@ -1482,7 +1482,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [36.1.0](https://github.com/ipfs/aegir/compare/v36.0.2...v36.1.0) (2021-12-13)
+## [36.1.0](https://github.com/ipfs/aegir/compare/v36.0.2...v36.1.0) (2021-12-13)
 
 
 ### Bug Fixes
@@ -1504,7 +1504,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [36.0.0](https://github.com/ipfs/aegir/compare/v35.2.1...v36.0.0) (2021-11-06)
+## [36.0.0](https://github.com/ipfs/aegir/compare/v35.2.1...v36.0.0) (2021-11-06)
 
 
 ### chore
@@ -1527,7 +1527,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [35.2.0](https://github.com/ipfs/aegir/compare/v35.1.1...v35.2.0) (2021-11-05)
+## [35.2.0](https://github.com/ipfs/aegir/compare/v35.1.1...v35.2.0) (2021-11-05)
 
 
 ### Bug Fixes
@@ -1549,7 +1549,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [35.1.0](https://github.com/ipfs/aegir/compare/v35.0.4...v35.1.0) (2021-09-21)
+## [35.1.0](https://github.com/ipfs/aegir/compare/v35.0.4...v35.1.0) (2021-09-21)
 
 
 ### Features
@@ -1595,7 +1595,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [35.0.0](https://github.com/ipfs/aegir/compare/v34.1.0...v35.0.0) (2021-08-14)
+## [35.0.0](https://github.com/ipfs/aegir/compare/v34.1.0...v35.0.0) (2021-08-14)
 
 
 ### Bug Fixes
@@ -1609,7 +1609,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [34.1.0](https://github.com/ipfs/aegir/compare/v34.0.3...v34.1.0) (2021-07-29)
+## [34.1.0](https://github.com/ipfs/aegir/compare/v34.0.3...v34.1.0) (2021-07-29)
 
 
 ### Features
@@ -1630,7 +1630,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [34.0.0](https://github.com/ipfs/aegir/compare/v33.2.2...v34.0.0) (2021-07-09)
+## [34.0.0](https://github.com/ipfs/aegir/compare/v33.2.2...v34.0.0) (2021-07-09)
 
 
 ### Features
@@ -1652,7 +1652,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [33.2.0](https://github.com/ipfs/aegir/compare/v33.1.2...v33.2.0) (2021-05-21)
+## [33.2.0](https://github.com/ipfs/aegir/compare/v33.1.2...v33.2.0) (2021-05-21)
 
 
 ### Features
@@ -1674,7 +1674,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [33.1.0](https://github.com/ipfs/aegir/compare/v33.0.0...v33.1.0) (2021-04-14)
+## [33.1.0](https://github.com/ipfs/aegir/compare/v33.0.0...v33.1.0) (2021-04-14)
 
 
 ### Features
@@ -1683,7 +1683,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [33.0.0](https://github.com/ipfs/aegir/compare/v32.2.0...v33.0.0) (2021-04-06)
+## [33.0.0](https://github.com/ipfs/aegir/compare/v32.2.0...v33.0.0) (2021-04-06)
 
 
 ### Features
@@ -1692,7 +1692,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [32.2.0](https://github.com/ipfs/aegir/compare/v32.1.0...v32.2.0) (2021-03-30)
+## [32.2.0](https://github.com/ipfs/aegir/compare/v32.1.0...v32.2.0) (2021-03-30)
 
 
 ### Bug Fixes
@@ -1703,7 +1703,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [32.1.0](https://github.com/ipfs/aegir/compare/v32.0.2...v32.1.0) (2021-03-17)
+## [32.1.0](https://github.com/ipfs/aegir/compare/v32.0.2...v32.1.0) (2021-03-17)
 
 
 ### Bug Fixes
@@ -1732,7 +1732,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [32.0.0](https://github.com/ipfs/aegir/compare/v31.0.4...v32.0.0) (2021-03-13)
+## [32.0.0](https://github.com/ipfs/aegir/compare/v31.0.4...v32.0.0) (2021-03-13)
 
 
 ### Bug Fixes
@@ -1788,7 +1788,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [31.0.0](https://github.com/ipfs/aegir/compare/v30.3.0...v31.0.0) (2021-02-23)
+## [31.0.0](https://github.com/ipfs/aegir/compare/v30.3.0...v31.0.0) (2021-02-23)
 
 
 ### Bug Fixes
@@ -1835,7 +1835,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [31.0.0-next.2](https://github.com/ipfs/aegir/compare/v31.0.0-next.1...v31.0.0-next.2) (2021-02-23)
+## [31.0.0-next.2](https://github.com/ipfs/aegir/compare/v31.0.0-next.1...v31.0.0-next.2) (2021-02-23)
 
 
 ### Bug Fixes
@@ -1844,11 +1844,11 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [31.0.0-next.1](https://github.com/ipfs/aegir/compare/v31.0.0-next.0...v31.0.0-next.1) (2021-02-23)
+## [31.0.0-next.1](https://github.com/ipfs/aegir/compare/v31.0.0-next.0...v31.0.0-next.1) (2021-02-23)
 
 
 
-# [31.0.0-next.0](https://github.com/ipfs/aegir/compare/v30.3.0...v31.0.0-next.0) (2021-02-23)
+## [31.0.0-next.0](https://github.com/ipfs/aegir/compare/v30.3.0...v31.0.0-next.0) (2021-02-23)
 
 
 ### Bug Fixes

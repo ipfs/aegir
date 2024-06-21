@@ -1956,7 +1956,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [30.3.0](https://github.com/ipfs/aegir/compare/v30.2.0...v30.3.0) (2021-01-05)
+## [30.3.0](https://github.com/ipfs/aegir/compare/v30.2.0...v30.3.0) (2021-01-05)
 
 
 ### Features
@@ -1965,7 +1965,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [30.2.0](https://github.com/ipfs/aegir/compare/v30.1.0...v30.2.0) (2020-12-20)
+## [30.2.0](https://github.com/ipfs/aegir/compare/v30.1.0...v30.2.0) (2020-12-20)
 
 
 ### Bug Fixes
@@ -1974,7 +1974,7 @@ Co-authored-by: Alex Potsides <alex@achingbrain.net>
 
 
 
-# [30.1.0](https://github.com/ipfs/aegir/compare/v30.0.0...v30.1.0) (2020-12-18)
+## [30.1.0](https://github.com/ipfs/aegir/compare/v30.0.0...v30.1.0) (2020-12-18)
 
 
 ### Features

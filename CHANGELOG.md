@@ -1,3 +1,17 @@
+## [43.0.2](https://github.com/ipfs/aegir/compare/v43.0.1...v43.0.2) (2024-06-21)
+
+### Dependencies
+
+* bump @semantic-release/commit-analyzer from 12.0.0 to 13.0.0 ([#1544](https://github.com/ipfs/aegir/issues/1544)) ([253b97f](https://github.com/ipfs/aegir/commit/253b97f441524a97d5910fdd0dbab603a833beed))
+* bump @semantic-release/release-notes-generator ([#1543](https://github.com/ipfs/aegir/issues/1543)) ([c0433df](https://github.com/ipfs/aegir/commit/c0433df9ffa6e2dab55c204b1071d9704bf12855))
+* bump @typescript-eslint/eslint-plugin from 5.62.0 to 7.13.1 ([#1558](https://github.com/ipfs/aegir/issues/1558)) ([c5c456d](https://github.com/ipfs/aegir/commit/c5c456d07a7c076acd1a87dabf2e2d1ae61c2f77))
+* bump c8 from 9.1.0 to 10.1.2 ([#1555](https://github.com/ipfs/aegir/issues/1555)) ([39641ea](https://github.com/ipfs/aegir/commit/39641ea33eb1f26eca18ad79b02a0d76d9e65d8f))
+* bump conventional-changelog-conventionalcommits ([#1540](https://github.com/ipfs/aegir/issues/1540)) ([3227743](https://github.com/ipfs/aegir/commit/3227743c5357a13312a79f11727d6cb0e0a53c19))
+* bump eslint-config-ipfs from 6.0.2 to 7.0.0 ([#1516](https://github.com/ipfs/aegir/issues/1516)) ([f8a397d](https://github.com/ipfs/aegir/commit/f8a397dfe439e8c4b13af0320ac813aa9b8c3939))
+* bump npm-package-json-lint from 7.1.0 to 8.0.0 ([#1550](https://github.com/ipfs/aegir/issues/1550)) ([4e1af51](https://github.com/ipfs/aegir/commit/4e1af51aa6d84f61ff99e14c02800593ae2df1e9))
+* bump nyc from 15.1.0 to 17.0.0 ([#1548](https://github.com/ipfs/aegir/issues/1548)) ([061eeab](https://github.com/ipfs/aegir/commit/061eeab609b3f7697cb37260b31c44a1baaff05f))
+* bump semantic-release from 23.1.1 to 24.0.0 ([#1541](https://github.com/ipfs/aegir/issues/1541)) ([e7b655d](https://github.com/ipfs/aegir/commit/e7b655de9753de393c954d4443aaf6be61ff1a99))
+
 ## [43.0.1](https://github.com/ipfs/aegir/compare/v43.0.0...v43.0.1) (2024-05-30)
 
 

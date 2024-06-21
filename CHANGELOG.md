@@ -1,3 +1,10 @@
+## [43.0.2](https://github.com/ipfs/aegir/compare/v43.0.1...v43.0.2) (2024-06-21)
+
+
+### Bug Fixes
+
+* revert dep updates ([7f3617d](https://github.com/ipfs/aegir/commit/7f3617d9a58a5df5e1d85421da51eb9a46b445c3))
+
 ## [43.0.1](https://github.com/ipfs/aegir/compare/v43.0.0...v43.0.1) (2024-05-30)
 
 

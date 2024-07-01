@@ -1,3 +1,9 @@
+## [44.0.1](https://github.com/ipfs/aegir/compare/v44.0.0...v44.0.1) (2024-07-01)
+
+### Documentation
+
+* fix typo - it's -> its ([#1566](https://github.com/ipfs/aegir/issues/1566)) ([559395f](https://github.com/ipfs/aegir/commit/559395f9d34b1253dfdea0ee378dd6cfdf382a67))
+
 ## [44.0.0](https://github.com/ipfs/aegir/compare/v43.0.1...v44.0.0) (2024-06-21)
 
 ### ⚠ BREAKING CHANGES

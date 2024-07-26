@@ -15,11 +15,12 @@ import {
 /**
  * @param {string} projectDir
  * @param {string} repoUrl
+ * @param {string} webRoot
  * @param {string} defaultBranch
  * @param {string[]} projectDirs
  * @param {string} ciFile
  */
-export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, projectDirs, ciFile) {
+export async function checkMonorepoReadme (projectDir, repoUrl, webRoot, defaultBranch, projectDirs, ciFile) {
   const repoParts = repoUrl.split('/')
   const repoName = repoParts.pop()
   const repoOwner = repoParts.pop()
@@ -146,7 +147,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
     other.push(child)
   })
 
-  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, webRoot, defaultBranch))
 
   /** @type {import('mdast').Root} */
   let apiDocs = {
@@ -158,7 +159,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
     apiDocs = parseMarkdown(APIDOCS(pkg))
   }
 
-  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
+  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs, webRoot))
 
   readme.children = [
     ...header,

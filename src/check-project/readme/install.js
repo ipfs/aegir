@@ -16,7 +16,7 @@ $ npm i ${pkg.name}
 `
   const browserInstall = `## Browser \`<script>\` tag
 
-Loading this module through a script tag will make it's exports available as \`${nameToGlobalSymbol(pkg.name)}\` in the global namespace.
+Loading this module through a script tag will make its exports available as \`${nameToGlobalSymbol(pkg.name)}\` in the global namespace.
 
 \`\`\`html
 <script src="https://unpkg.com/${pkg.name}/dist/index.min.js"></script>

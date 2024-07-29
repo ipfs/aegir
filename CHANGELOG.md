@@ -1,3 +1,9 @@
+## [44.1.0](https://github.com/ipfs/aegir/compare/v44.0.3...v44.1.0) (2024-07-29)
+
+### Features
+
+* move tsc linter rules to eslint ([#1513](https://github.com/ipfs/aegir/issues/1513)) ([f78c9ac](https://github.com/ipfs/aegir/commit/f78c9ac808fd259be95c660ca12967a408fb0f5b))
+
 ## [44.0.3](https://github.com/ipfs/aegir/compare/v44.0.2...v44.0.3) (2024-07-29)
 
 ### Bug Fixes

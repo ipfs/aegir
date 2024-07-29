@@ -1,3 +1,9 @@
+## [44.0.3](https://github.com/ipfs/aegir/compare/v44.0.2...v44.0.3) (2024-07-29)
+
+### Bug Fixes
+
+* unpin eslint-plugin-jsdoc ([#1580](https://github.com/ipfs/aegir/issues/1580)) ([545af7c](https://github.com/ipfs/aegir/commit/545af7c33231a2b5bfdf3dd5dd5ae0fa7d571844))
+
 ## [44.0.2](https://github.com/ipfs/aegir/compare/v44.0.1...v44.0.2) (2024-07-29)
 
 ### Bug Fixes

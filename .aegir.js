@@ -9,7 +9,7 @@ export default {
             'buffer',
             'c8',
             'conventional-changelog-conventionalcommits',
-            'electron-mocha-main',
+            'electron-mocha',
             'mocha',
             'npm-package-json-lint',
             'nyc',

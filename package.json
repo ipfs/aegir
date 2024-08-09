@@ -250,7 +250,7 @@
     "cors": "^2.8.5",
     "depcheck": "^1.4.3",
     "diff": "^5.1.0",
-    "electron-mocha-main": "^11.0.3",
+    "electron-mocha": "^13.0.0",
     "env-paths": "^3.0.0",
     "esbuild": "^0.21.1",
     "eslint": "^8.31.0",
@@ -331,7 +331,7 @@
     "@types/semver": "^7.3.4",
     "@types/strong-log-transformer": "^1.0.2",
     "@types/yargs": "^17.0.0",
-    "electron": "^27.0.2",
+    "electron": "^31.3.1",
     "uint8arrays": "^5.0.1",
     "undici": "^6.2.1"
   },

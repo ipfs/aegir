@@ -1,3 +1,9 @@
+## [44.1.1](https://github.com/ipfs/aegir/compare/v44.1.0...v44.1.1) (2024-08-09)
+
+### Dependencies
+
+* **dev:** bump electron from 27.3.11 to 31.3.1 ([#1582](https://github.com/ipfs/aegir/issues/1582)) ([7e3d579](https://github.com/ipfs/aegir/commit/7e3d57961fd145d73b236868293f8f67ab899a5e))
+
 ## [44.1.0](https://github.com/ipfs/aegir/compare/v44.0.3...v44.1.0) (2024-07-29)
 
 ### Features

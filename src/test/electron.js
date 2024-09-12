@@ -1,8 +1,10 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { execa } from 'execa'
+import kleur from 'kleur'
 import merge from '../utils/merge-options.js'
 import { getElectron, findBinary } from '../utils.js'
+import { killProcessIfHangs } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -37,7 +39,7 @@ export default async (argv, execaOptions) => {
   const beforeEnv = before && before.env ? before.env : {}
   const electronPath = await getElectron()
 
-  await execa(findBinary('electron-mocha'),
+  const proc = execa(findBinary('electron-mocha'),
     [
       ...files,
       ...watch,
@@ -51,18 +53,26 @@ export default async (argv, execaOptions) => {
       ...forwardOptions
     ],
     merge({
-      localDir: path.join(__dirname, '../..'),
-      preferLocal: true,
-      stdio: 'inherit',
       env: {
         AEGIR_RUNNER: argv.runner,
         NODE_ENV: process.env.NODE_ENV || 'test',
         ELECTRON_PATH: electronPath,
         ...beforeEnv
-      }
+      },
+      preferLocal: true,
+      localDir: path.join(__dirname, '../..'),
+      stdio: 'pipe'
     },
     execaOptions)
   )
+
+  const killedWhileCollectingCoverage = await killProcessIfHangs(proc, argv.covTimeout)
+
+  if (argv.cov && killedWhileCollectingCoverage) {
+    console.warn(kleur.red('!!! Collecting coverage has hung, killing process')) // eslint-disable-line no-console
+    console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
+  }
+
   // after hook
   await argv.fileConfig.test.after(argv, before)
 }

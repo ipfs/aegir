@@ -1,7 +1,9 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { execa } from 'execa'
+import kleur from 'kleur'
 import merge from '../utils/merge-options.js'
+import { killProcessIfHangs } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -50,7 +52,7 @@ export default async (argv, execaOptions) => {
   }
 
   // run pw-test
-  await execa('rn-test',
+  const proc = execa('rn-test',
     [
       ...files,
       '--platform', argv.runner === 'react-native-android' ? 'android' : 'ios',
@@ -67,11 +69,18 @@ export default async (argv, execaOptions) => {
         },
         preferLocal: true,
         localDir: path.join(__dirname, '../..'),
-        stdio: 'inherit'
+        stdio: 'pipe'
       },
       execaOptions
     )
   )
+
+  const killedWhileCollectingCoverage = await killProcessIfHangs(proc, argv.covTimeout)
+
+  if (argv.cov && killedWhileCollectingCoverage) {
+    console.warn(kleur.red('!!! Collecting coverage has hung, killing process')) // eslint-disable-line no-console
+    console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
+  }
 
   // after hook
   await argv.fileConfig.test.after(argv, before)

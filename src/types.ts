@@ -242,6 +242,8 @@ interface TestOptions {
   cov: boolean
   /**
    * How long to wait for collecting code coverage. Workaround for @see https://github.com/ipfs/aegir/issues/1206
+   *
+   * @default 60000
    */
   covTimeout: number
   /**

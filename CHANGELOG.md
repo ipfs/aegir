@@ -1,3 +1,9 @@
+## [44.1.2](https://github.com/ipfs/aegir/compare/v44.1.1...v44.1.2) (2024-09-28)
+
+### Trivial Changes
+
+* allow setting docker registry in login action ([d842ee0](https://github.com/ipfs/aegir/commit/d842ee0f15d2ce85db6c7d56f3681f61651b088e))
+
 ## [44.1.1](https://github.com/ipfs/aegir/compare/v44.1.0...v44.1.1) (2024-08-09)
 
 ### Dependencies

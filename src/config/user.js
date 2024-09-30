@@ -15,7 +15,9 @@ const defaults = {
   debug: false,
   // test cmd options
   test: {
-    build: true,
+    // no need to build before testing in CI since we build after installing
+    // deps so building again is redundant
+    build: process.env.CI == null,
     runner: 'node',
     target: ['node', 'browser', 'webworker'],
     watch: false,

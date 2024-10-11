@@ -39,6 +39,7 @@ export default async (argv, execaOptions) => {
 
   await execa(findBinary('electron-mocha'),
     [
+      '--no-sandbox',
       ...files,
       ...watch,
       ...grep,

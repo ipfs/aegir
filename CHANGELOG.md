@@ -1,3 +1,13 @@
+## [44.1.3](https://github.com/ipfs/aegir/compare/v44.1.2...v44.1.3) (2024-10-11)
+
+### Dependencies
+
+* bump @semantic-release/github from 10.3.5 to 11.0.0 ([#1632](https://github.com/ipfs/aegir/issues/1632)) ([1521c8b](https://github.com/ipfs/aegir/commit/1521c8be7503d5415e4c63f3c41ad6129ede692c))
+* bump diff from 5.2.0 to 7.0.0 ([#1616](https://github.com/ipfs/aegir/issues/1616)) ([b6b088d](https://github.com/ipfs/aegir/commit/b6b088d3ce83a68d529bca9ab525208dea05303e))
+* bump esbuild from 0.21.5 to 0.24.0 ([#1626](https://github.com/ipfs/aegir/issues/1626)) ([3138352](https://github.com/ipfs/aegir/commit/3138352f14d4c1af469deb3f4ee1f19f49847e3a))
+* bump rimraf from 5.0.9 to 6.0.1 ([#1572](https://github.com/ipfs/aegir/issues/1572)) ([2f66a9e](https://github.com/ipfs/aegir/commit/2f66a9ee63b4a1ab266a0dfd26e16ff16a4bb866))
+* **dev:** bump electron from 31.7.0 to 32.2.0 ([#1643](https://github.com/ipfs/aegir/issues/1643)) ([e40b011](https://github.com/ipfs/aegir/commit/e40b011840e1cd731b91cac0fd4ede30c24255c7))
+
 ## [44.1.2](https://github.com/ipfs/aegir/compare/v44.1.1...v44.1.2) (2024-09-28)
 
 ### Trivial Changes

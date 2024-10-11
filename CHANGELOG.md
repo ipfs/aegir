@@ -1,3 +1,13 @@
+## [44.1.4](https://github.com/ipfs/aegir/compare/v44.1.3...v44.1.4) (2024-10-11)
+
+### Bug Fixes
+
+* run electron without sandbox ([ac3ec40](https://github.com/ipfs/aegir/commit/ac3ec4000d999aa204d16367feea22004a619686))
+
+### Trivial Changes
+
+* add why ([1087ac5](https://github.com/ipfs/aegir/commit/1087ac544802708238e33b6bcaaaa19e06bd6067))
+
 ## [44.1.3](https://github.com/ipfs/aegir/compare/v44.1.2...v44.1.3) (2024-10-11)
 
 ### Dependencies

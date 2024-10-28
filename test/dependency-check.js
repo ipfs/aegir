@@ -137,4 +137,42 @@ describe('dependency check', () => {
       })
     ).to.eventually.be.fulfilled()
   })
+
+  it('should pass for jsx files', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/jsx-pass')
+      })
+    ).to.eventually.be.fulfilled()
+  })
+
+  it('should fail for jsx files', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/jsx-fail')
+      })
+    ).to.eventually.be.rejected()
+      .with.property('message')
+      .that.matches(/react-icons$/mg)
+      .and.include('react-icons')
+  })
+
+  it('should pass for tsx files', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/tsx-pass')
+      })
+    ).to.eventually.be.fulfilled()
+  })
+
+  it('should fail for tsx files', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/tsx-fail')
+      })
+    ).to.eventually.be.rejected()
+      .with.property('message')
+      .that.matches(/react-icons$/mg)
+      .and.include('react-icons')
+  })
 })

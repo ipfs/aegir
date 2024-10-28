@@ -41,7 +41,9 @@ const tasks = new Listr(
         const productionOnlyResult = await depcheck(cwd(), {
           parsers: {
             '**/*.js': depcheck.parser.es6,
+            '**/*.jsx': depcheck.parser.jsx,
             '**/*.ts': depcheck.parser.typescript,
+            '**/*.tsx': depcheck.parser.jsx,
             '**/*.cjs': depcheck.parser.es6,
             '**/*.mjs': depcheck.parser.es6
           },

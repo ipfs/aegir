@@ -1,0 +1,12 @@
+{
+    "name": "jsx-dep-check-fail",
+    "version": "1.0.0",
+    "main": "index.jsx",
+    "type": "module",
+    "dependencies": {
+        "react": "18.3.1"
+    },
+    "devDependencies": {
+        "@types/react": "^18.3.12"
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "name": "tsx-dep-check-pass",
+    "version": "1.0.0",
+    "main": "index.tsx",
+    "type": "module",
+    "dependencies": {
+        "react": "18.3.1"
+    },
+    "devDependencies": {
+        "@types/react": "^18.3.12"
+    }
+}

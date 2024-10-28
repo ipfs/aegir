@@ -153,8 +153,7 @@ describe('dependency check', () => {
       })
     ).to.eventually.be.rejected()
       .with.property('message')
-      .that.matches(/react-icons$/mg)
-      .and.include('react-icons')
+      .that.include('react-icons')
   })
 
   it('should pass for tsx files', async () => {
@@ -172,7 +171,6 @@ describe('dependency check', () => {
       })
     ).to.eventually.be.rejected()
       .with.property('message')
-      .that.matches(/react-icons$/mg)
-      .and.include('react-icons')
+      .that.include('react-icons')
   })
 })

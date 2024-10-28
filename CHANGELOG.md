@@ -1,3 +1,13 @@
+## [45.0.0](https://github.com/ipfs/aegir/compare/v44.1.4...v45.0.0) (2024-10-28)
+
+### ⚠ BREAKING CHANGES
+
+* `.tsx` and `.jsx` files are now checked for missing/unused dependencies
+
+### Bug Fixes
+
+* dep-check tsx and jsx ([#1661](https://github.com/ipfs/aegir/issues/1661)) ([326e281](https://github.com/ipfs/aegir/commit/326e2812bc2267f389a8e5ecfda8db64e30dd384))
+
 ## [44.1.4](https://github.com/ipfs/aegir/compare/v44.1.3...v44.1.4) (2024-10-11)
 
 ### Bug Fixes

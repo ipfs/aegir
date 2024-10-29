@@ -56,8 +56,11 @@ const defaults = {
       'src/**/*.{js,ts}',
       'tasks/**/*.{js,ts}',
       'benchmarks/**/*.{js,ts}',
+      '!benchmarks/**/node_modules/**'
       'utils/**/*.{js,ts}',
-      '!**/node_modules/**'
+      '!**/node_modules/**',
+      'examples/**/*.{js,ts}',
+      '!examples/**/node_modules/**'
     ]
   },
   // docs cmd options

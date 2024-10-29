@@ -1,3 +1,13 @@
+## [45.0.1](https://github.com/ipfs/aegir/compare/v45.0.0...v45.0.1) (2024-10-29)
+
+### Bug Fixes
+
+* lint examples ([19d3003](https://github.com/ipfs/aegir/commit/19d3003d64c73060db91d19f76f64c1adc4de0f7))
+
+### Trivial Changes
+
+* fix typo ([88b6da6](https://github.com/ipfs/aegir/commit/88b6da68bd95ec9b2a142e9c737490dbb1b027d4))
+
 ## [45.0.0](https://github.com/ipfs/aegir/compare/v44.1.4...v45.0.0) (2024-10-28)
 
 ### ⚠ BREAKING CHANGES

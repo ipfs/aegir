@@ -1,3 +1,9 @@
+## [45.0.2](https://github.com/ipfs/aegir/compare/v45.0.1...v45.0.2) (2024-11-19)
+
+### Bug Fixes
+
+* override playwright core version ([#1679](https://github.com/ipfs/aegir/issues/1679)) ([bf5a947](https://github.com/ipfs/aegir/commit/bf5a947dfe26a6e7285883cbfa124b42c247f407))
+
 ## [45.0.1](https://github.com/ipfs/aegir/compare/v45.0.0...v45.0.1) (2024-10-29)
 
 ### Bug Fixes

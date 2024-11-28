@@ -295,7 +295,7 @@ export const usesReleasePlease = (dir = process.cwd()) => {
       encoding: 'utf-8'
     })
 
-    return contents.includes('uses: google-github-actions/release-please-action')
+    return contents.includes('release-please-action')
   } catch {
     return false
   }

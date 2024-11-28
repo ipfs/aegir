@@ -1,3 +1,9 @@
+## [45.0.4](https://github.com/ipfs/aegir/compare/v45.0.3...v45.0.4) (2024-11-28)
+
+### Bug Fixes
+
+* fix license files ([b8698fa](https://github.com/ipfs/aegir/commit/b8698faff538cde9cc08b336efdcef65a78411a4))
+
 ## [45.0.3](https://github.com/ipfs/aegir/compare/v45.0.2...v45.0.3) (2024-11-28)
 
 ### Bug Fixes

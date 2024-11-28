@@ -1,17 +1,19 @@
+# aegir
+
 [![ipfs.tech](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.tech)
 [![Discuss](https://img.shields.io/discourse/https/discuss.ipfs.tech/posts.svg?style=flat-square)](https://discuss.ipfs.tech)
 [![codecov](https://img.shields.io/codecov/c/github/ipfs/aegir.svg?style=flat-square)](https://codecov.io/gh/ipfs/aegir)
-[![CI](https://img.shields.io/github/actions/workflow/status/ipfs/aegir/js-test-and-release.yml?branch=master\&style=flat-square)](https://github.com/ipfs/aegir/actions/workflows/js-test-and-release.yml?query=branch%3Amaster)
+[![CI](https://img.shields.io/github/actions/workflow/status/ipfs/aegir/js-test-and-release.yml?branch=main\&style=flat-square)](https://github.com/ipfs/aegir/actions/workflows/js-test-and-release.yml?query=branch%3Amain)
 
 > JavaScript project management
 
-## Install
+# Install
 
 ```console
 $ npm i aegir
 ```
 
-### Browser `<script>` tag
+## Browser `<script>` tag
 
 Loading this module through a script tag will make its exports available as `Aegir` in the global namespace.
 
@@ -136,11 +138,11 @@ module.exports = {
 }
 ```
 
-You can find the complete default config [here](https://github.com/ipfs/aegir/blob/master/src/config/user.js#L12) and the types [here](https://github.com/ipfs/aegir/blob/master/src/types.d.ts).
+You can find the complete default config [here](https://github.com/ipfs/aegir/blob/main/src/config/user.js#L12) and the types [here](https://github.com/ipfs/aegir/blob/main/src/types.d.ts).
 
 ## Continuous Integration
 
-Check this template for Github Actions <https://github.com/ipfs/aegir/blob/master/md/github-actions.md>
+Check this template for Github Actions <https://github.com/ipfs/aegir/blob/main/md/github-actions.md>
 
 ## Testing helpers
 
@@ -163,7 +165,7 @@ Aegir will detect the presence of `tsconfig.json` files and build typescript as 
 7. Generate a changelog based on the git log
 8. Commit the version change & `CHANGELOG.md`
 9. Create a git tag
-10. Run `git push` to `origin/master`
+10. Run `git push` to `origin/main`
 11. Publish a release to Github releases
 12. Generate documentation and push to Github Pages
 13. Publish to npm
@@ -172,18 +174,18 @@ Aegir will detect the presence of `tsconfig.json` files and build typescript as 
 aegir release --help
 ```
 
-## API Docs
+# API Docs
 
 - <https://ipfs.github.io/aegir>
 
-## License
+# License
 
 Licensed under either of
 
-- Apache 2.0, ([LICENSE-APACHE](LICENSE-APACHE) / <http://www.apache.org/licenses/LICENSE-2.0>)
-- MIT ([LICENSE-MIT](LICENSE-MIT) / <http://opensource.org/licenses/MIT>)
+- Apache 2.0, ([LICENSE-APACHE](https://github.com/ipfs/aegir/LICENSE-APACHE) / <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT ([LICENSE-MIT](https://github.com/ipfs/aegir/LICENSE-MIT) / <http://opensource.org/licenses/MIT>)
 
-## Contribute
+# Contribute
 
 Contributions welcome! Please check out [the issues](https://github.com/ipfs/aegir/issues).
 

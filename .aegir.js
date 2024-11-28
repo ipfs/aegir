@@ -21,7 +21,9 @@ export default {
             'source-map-support',
             'typedoc-plugin-mdn-links',
             'typedoc-plugin-missing-exports',
-            'electron'
+            'electron',
+            'bytes',
+            'pascalcase'
         ]
     }
 }

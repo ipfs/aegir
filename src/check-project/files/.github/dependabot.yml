@@ -3,6 +3,10 @@ updates:
 - package-ecosystem: npm
   directories:
     - "/"
+    - "/benchmarks/*"
+    - "/docs/*"
+    - "/examples/*"
+    - "/interop/*"
     - "/packages/*"
   schedule:
     interval: daily

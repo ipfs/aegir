@@ -1,3 +1,15 @@
+## [45.0.3](https://github.com/ipfs/aegir/compare/v45.0.2...v45.0.3) (2024-11-28)
+
+### Bug Fixes
+
+* revert "fix: override playwright core version" ([#1681](https://github.com/ipfs/aegir/issues/1681)) ([1a4c2b6](https://github.com/ipfs/aegir/commit/1a4c2b692f56b81a2f9ca6fd59369cf3250dc490))
+
+### Trivial Changes
+
+* ignore other deps ([950d32e](https://github.com/ipfs/aegir/commit/950d32e101b96170a8b1141025ec96fbc597128e))
+* remove redundant readme section ([b0520be](https://github.com/ipfs/aegir/commit/b0520be1d6f57e8a65464891713d42d6f637fdd3))
+* update branch references ([abacaa3](https://github.com/ipfs/aegir/commit/abacaa3ea5c7afc54d8aa654fc06e869483d76d4))
+
 ## [45.0.2](https://github.com/ipfs/aegir/compare/v45.0.1...v45.0.2) (2024-11-19)
 
 ### Bug Fixes

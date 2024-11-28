@@ -1,3 +1,9 @@
+## [45.0.6](https://github.com/ipfs/aegir/compare/v45.0.5...v45.0.6) (2024-11-28)
+
+### Bug Fixes
+
+* delete file using full path ([ebf332c](https://github.com/ipfs/aegir/commit/ebf332c290a77376610c42ecad38859fb3420a31))
+
 ## [45.0.5](https://github.com/ipfs/aegir/compare/v45.0.4...v45.0.5) (2024-11-28)
 
 ### Bug Fixes

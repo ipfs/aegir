@@ -1,3 +1,13 @@
+## [45.0.7](https://github.com/ipfs/aegir/compare/v45.0.6...v45.0.7) (2024-11-28)
+
+### Bug Fixes
+
+* add coc ([9518ea9](https://github.com/ipfs/aegir/commit/9518ea93835758e005fb0137156f33575ec3ddc1))
+
+### Trivial Changes
+
+* reword coc ([9eb4045](https://github.com/ipfs/aegir/commit/9eb4045ce62ec45a2931bcdf6668cc795f6351e7))
+
 ## [45.0.6](https://github.com/ipfs/aegir/compare/v45.0.5...v45.0.6) (2024-11-28)
 
 ### Bug Fixes

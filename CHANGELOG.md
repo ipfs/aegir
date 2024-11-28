@@ -1,3 +1,11 @@
+## [45.0.5](https://github.com/ipfs/aegir/compare/v45.0.4...v45.0.5) (2024-11-28)
+
+### Bug Fixes
+
+* add gh actions to dependabot ([41a4cc2](https://github.com/ipfs/aegir/commit/41a4cc249ba264b87fddb7a9a64fc963e062ad17))
+* group dependabot updates ([#1682](https://github.com/ipfs/aegir/issues/1682)) ([b1fee41](https://github.com/ipfs/aegir/commit/b1fee41a04e4e4c65dc22b63c50c01238024341a))
+* use chore for dev deps ([263bc50](https://github.com/ipfs/aegir/commit/263bc505c0f6ddc5f86a214eadba8da848a93a6d))
+
 ## [45.0.4](https://github.com/ipfs/aegir/compare/v45.0.3...v45.0.4) (2024-11-28)
 
 ### Bug Fixes

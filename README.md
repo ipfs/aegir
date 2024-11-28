@@ -13,14 +13,6 @@
 $ npm i aegir
 ```
 
-## Browser `<script>` tag
-
-Loading this module through a script tag will make its exports available as `Aegir` in the global namespace.
-
-```html
-<script src="https://unpkg.com/aegir/dist/index.min.js"></script>
-```
-
 ## Project Structure
 
 The project structure when using this is quite strict, to ease replication and configuration overhead.

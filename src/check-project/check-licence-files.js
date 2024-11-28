@@ -29,4 +29,5 @@ export async function checkLicenseFiles (projectDir) {
   await ensureFileNotPresent(projectDir, 'LICENSE')
   await ensureFileHasContents(projectDir, 'LICENSE-APACHE')
   await ensureFileHasContents(projectDir, 'LICENSE-MIT')
+  await ensureFileHasContents(projectDir, 'CODE_OF_CONDUCT.md')
 }

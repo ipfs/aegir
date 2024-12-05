@@ -113,13 +113,6 @@ export default {
    * @param {any} argv
    */
   async handler (argv) {
-    // temporarily disable code coverage on Windows
-    if (argv.cov && os.platform() === 'win32') {
-      console.warn(kleur.red('!!! Temporarily disabling code coverage\n')) // eslint-disable-line no-console
-      console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
-      delete argv.cov
-    }
-
     await testCmd.run({
       ...argv,
       bundle: false

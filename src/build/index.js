@@ -93,6 +93,11 @@ const tasks = new Listr([
       if (ctx.bundlesize) {
         const gzip = await gzipSize(outfile)
         const maxsize = bytes(ctx.bundlesizeMax)
+
+        if (maxsize == null) {
+          throw new Error(`Could not parse bytes from "${ctx.bundlesizeMax}"`)
+        }
+
         const diff = gzip - maxsize
 
         task.output = 'Use https://esbuild.github.io/analyze/ to load "./dist/stats.json".'

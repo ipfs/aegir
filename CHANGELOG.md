@@ -1,3 +1,55 @@
+## [45.0.8](https://github.com/ipfs/aegir/compare/v45.0.7...v45.0.8) (2024-12-05)
+
+### Bug Fixes
+
+* ignore module-not-found errors in doc-check ([#1701](https://github.com/ipfs/aegir/issues/1701)) ([41726f8](https://github.com/ipfs/aegir/commit/41726f83bee4603dafd6a387ff789be5468a4804))
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([9bb06f9](https://github.com/ipfs/aegir/commit/9bb06f982d069f36354743051d5813d379ee3368))
+
+## [45.0.7](https://github.com/ipfs/aegir/compare/v45.0.6...v45.0.7) (2024-11-28)
+
+### Bug Fixes
+
+* add coc ([9518ea9](https://github.com/ipfs/aegir/commit/9518ea93835758e005fb0137156f33575ec3ddc1))
+
+### Trivial Changes
+
+* reword coc ([9eb4045](https://github.com/ipfs/aegir/commit/9eb4045ce62ec45a2931bcdf6668cc795f6351e7))
+
+## [45.0.6](https://github.com/ipfs/aegir/compare/v45.0.5...v45.0.6) (2024-11-28)
+
+### Bug Fixes
+
+* delete file using full path ([ebf332c](https://github.com/ipfs/aegir/commit/ebf332c290a77376610c42ecad38859fb3420a31))
+
+## [45.0.5](https://github.com/ipfs/aegir/compare/v45.0.4...v45.0.5) (2024-11-28)
+
+### Bug Fixes
+
+* add gh actions to dependabot ([41a4cc2](https://github.com/ipfs/aegir/commit/41a4cc249ba264b87fddb7a9a64fc963e062ad17))
+* group dependabot updates ([#1682](https://github.com/ipfs/aegir/issues/1682)) ([b1fee41](https://github.com/ipfs/aegir/commit/b1fee41a04e4e4c65dc22b63c50c01238024341a))
+* use chore for dev deps ([263bc50](https://github.com/ipfs/aegir/commit/263bc505c0f6ddc5f86a214eadba8da848a93a6d))
+
+## [45.0.4](https://github.com/ipfs/aegir/compare/v45.0.3...v45.0.4) (2024-11-28)
+
+### Bug Fixes
+
+* fix license files ([b8698fa](https://github.com/ipfs/aegir/commit/b8698faff538cde9cc08b336efdcef65a78411a4))
+
+## [45.0.3](https://github.com/ipfs/aegir/compare/v45.0.2...v45.0.3) (2024-11-28)
+
+### Bug Fixes
+
+* revert "fix: override playwright core version" ([#1681](https://github.com/ipfs/aegir/issues/1681)) ([1a4c2b6](https://github.com/ipfs/aegir/commit/1a4c2b692f56b81a2f9ca6fd59369cf3250dc490))
+
+### Trivial Changes
+
+* ignore other deps ([950d32e](https://github.com/ipfs/aegir/commit/950d32e101b96170a8b1141025ec96fbc597128e))
+* remove redundant readme section ([b0520be](https://github.com/ipfs/aegir/commit/b0520be1d6f57e8a65464891713d42d6f637fdd3))
+* update branch references ([abacaa3](https://github.com/ipfs/aegir/commit/abacaa3ea5c7afc54d8aa654fc06e869483d76d4))
+
 ## [45.0.2](https://github.com/ipfs/aegir/compare/v45.0.1...v45.0.2) (2024-11-19)
 
 ### Bug Fixes

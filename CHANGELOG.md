@@ -1,3 +1,13 @@
+## [45.0.8](https://github.com/ipfs/aegir/compare/v45.0.7...v45.0.8) (2024-12-05)
+
+### Bug Fixes
+
+* ignore module-not-found errors in doc-check ([#1701](https://github.com/ipfs/aegir/issues/1701)) ([41726f8](https://github.com/ipfs/aegir/commit/41726f83bee4603dafd6a387ff789be5468a4804))
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([9bb06f9](https://github.com/ipfs/aegir/commit/9bb06f982d069f36354743051d5813d379ee3368))
+
 ## [45.0.7](https://github.com/ipfs/aegir/compare/v45.0.6...v45.0.7) (2024-11-28)
 
 ### Bug Fixes

@@ -123,14 +123,15 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
  * @param {string} filePath
  */
 export async function ensureFileNotPresent (projectDir, filePath) {
-  const fileExists = fs.existsSync(path.join(projectDir, filePath))
+  const fullPath = path.join(projectDir, filePath)
+  const fileExists = fs.existsSync(fullPath)
 
   if (fileExists) {
     if (process.env.CI) {
       throw new Error(`${filePath} exists`)
     }
 
-    console.warn(kleur.yellow(`${filePath} exist`))
+    console.warn(kleur.yellow(`${filePath} exists`))
 
     const { removeFile } = await prompt.get({
       properties: {
@@ -146,7 +147,7 @@ export async function ensureFileNotPresent (projectDir, filePath) {
       throw new Error(`Not removing ${filePath} file`)
     }
 
-    fs.rmSync(filePath)
+    fs.rmSync(fullPath)
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "45.0.2",
+  "version": "45.0.8",
   "description": "JavaScript project management",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/ipfs/aegir#readme",
@@ -10,6 +10,10 @@
   },
   "bugs": {
     "url": "https://github.com/ipfs/aegir/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "keywords": [
     "build",
@@ -105,12 +109,13 @@
   "eslintConfig": {
     "extends": "ipfs",
     "parserOptions": {
+      "project": true,
       "sourceType": "module"
     }
   },
   "release": {
     "branches": [
-      "master"
+      "main"
     ],
     "plugins": [
       [
@@ -135,19 +140,15 @@
               "release": "patch"
             },
             {
-              "type": "chore",
-              "release": "patch"
-            },
-            {
               "type": "docs",
               "release": "patch"
             },
             {
-              "type": "deps",
+              "type": "test",
               "release": "patch"
             },
             {
-              "type": "test",
+              "type": "deps",
               "release": "patch"
             },
             {
@@ -166,14 +167,6 @@
               {
                 "type": "feat",
                 "section": "Features"
-              },
-              {
-                "type": "fix",
-                "section": "Bug Fixes"
-              },
-              {
-                "type": "chore",
-                "section": "Trivial Changes"
               },
               {
                 "type": "fix",

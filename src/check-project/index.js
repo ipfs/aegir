@@ -59,7 +59,7 @@ async function getConfig (projectDir) {
     .then(res => execa('basename', [res.stdout]))
     .then(res => res.stdout)
     .catch(() => {
-      return 'master'
+      return 'main'
     })
   const repoUrl = await execa('git', ['remote', 'get-url', 'origin'], {
     cwd: projectDir

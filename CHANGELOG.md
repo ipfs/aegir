@@ -1,3 +1,15 @@
+## [45.0.9](https://github.com/ipfs/aegir/compare/v45.0.8...v45.0.9) (2025-01-20)
+
+### Trivial Changes
+
+* remove undici ([#1722](https://github.com/ipfs/aegir/issues/1722)) ([cf5a038](https://github.com/ipfs/aegir/commit/cf5a03831a13c511bae4ccaca4de07416c8e0b88))
+
+### Dependencies
+
+* bump @types/node from 20.17.14 to 22.10.7 ([#1719](https://github.com/ipfs/aegir/issues/1719)) ([8e0cd26](https://github.com/ipfs/aegir/commit/8e0cd2663f8ab30328906c41d8f4f3aa2f557a47))
+* bump mocha from 10.8.2 to 11.0.1 ([#1699](https://github.com/ipfs/aegir/issues/1699)) ([6302164](https://github.com/ipfs/aegir/commit/6302164641e6fa4f8df7ce6cf2f87aaff618b852))
+* **dev:** bump electron from 32.2.6 to 33.2.1 ([#1693](https://github.com/ipfs/aegir/issues/1693)) ([c694bec](https://github.com/ipfs/aegir/commit/c694bec91a44f5e3f77266f8bb02bc730a828cfe))
+
 ## [45.0.8](https://github.com/ipfs/aegir/compare/v45.0.7...v45.0.8) (2024-12-05)
 
 ### Bug Fixes

@@ -27,9 +27,11 @@ runs:
         path: |
           ~/.npm
           ~/.cache
+          ./package-lock.json
           ./dist
           ./types
           ./node_modules
+          ./packages/*/package-lock.json
           ./packages/*/dist
           ./packages/*/types
           ./packages/*/node_modules

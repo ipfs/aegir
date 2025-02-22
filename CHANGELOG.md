@@ -1,3 +1,13 @@
+## [45.0.10](https://github.com/ipfs/aegir/compare/v45.0.9...v45.0.10) (2025-02-22)
+
+### Trivial Changes
+
+* cache lockfiles ([1ee5459](https://github.com/ipfs/aegir/commit/1ee5459271c5b0567ce7f51251e0f89d21e535e9))
+
+### Dependencies
+
+* bump esbuild from 0.24.2 to 0.25.0 ([#1732](https://github.com/ipfs/aegir/issues/1732)) ([0140a17](https://github.com/ipfs/aegir/commit/0140a17fed89512ad36cba4253f3dc42c63b081f))
+
 ## [45.0.9](https://github.com/ipfs/aegir/compare/v45.0.8...v45.0.9) (2025-01-20)
 
 ### Trivial Changes

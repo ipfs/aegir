@@ -1,3 +1,13 @@
+## [45.1.0](https://github.com/ipfs/aegir/compare/v45.0.10...v45.1.0) (2025-02-24)
+
+### Features
+
+* add spell check command ([#1738](https://github.com/ipfs/aegir/issues/1738)) ([9696e26](https://github.com/ipfs/aegir/commit/9696e26069254b69ccf15fb440a6801b51a83d57))
+
+### Dependencies
+
+* **dev:** bump electron from 33.4.0 to 34.2.0 ([#1734](https://github.com/ipfs/aegir/issues/1734)) ([4177dec](https://github.com/ipfs/aegir/commit/4177decafd8dd9911590ab74347c6a42e374f458))
+
 ## [45.0.10](https://github.com/ipfs/aegir/compare/v45.0.9...v45.0.10) (2025-02-22)
 
 ### Trivial Changes

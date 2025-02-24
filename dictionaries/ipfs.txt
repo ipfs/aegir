@@ -66,7 +66,7 @@ dnsaddrs
 dnslink
 dumbsub
 encrypter
-Encrypters
+encrypters
 esm
 ethereum
 eventloop
@@ -119,6 +119,7 @@ keypair
 keypairs
 keystore
 kubo
+ldelim
 libjuice
 libp
 maconn
@@ -126,7 +127,7 @@ mafmt
 marshaled
 matcher
 mdns
-mDNS
+mdns
 meshsub
 millis
 monorepo

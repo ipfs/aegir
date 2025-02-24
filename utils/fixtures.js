@@ -9,7 +9,7 @@ import resolve from './resolve.js'
  * // test/awesome.spec.js
  * const loadFixture = require('aegir/utils/fixtures')
  *
- * const myFixture = loadFixture('test/fixtures/largefixture')
+ * const myFixture = loadFixture('test/fixtures/large-fixture')
  * ```
  * The path to the fixture is relative to the module root.
  *
@@ -21,7 +21,7 @@ import resolve from './resolve.js'
  * // awesome-tests module
  * const loadFixture = require('aegir/utils/fixtures')
  *
- * const myFixture = loadFixture('test/fixtures/coolfixture', 'awesome-tests')
+ * const myFixture = loadFixture('test/fixtures/cool-fixture', 'awesome-tests')
  * ```
  *
  * @param {string} filePath

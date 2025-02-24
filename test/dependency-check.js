@@ -85,7 +85,7 @@ describe('dependency check', () => {
   })
 
   /**
-   * not supporting depchecking individual files
+   * not supporting dep checking individual files
    */
   it.skip('should pass for passed files', async () => {
     const file = 'derp/foo.js'
@@ -102,7 +102,7 @@ describe('dependency check', () => {
   })
 
   /**
-   * not supporting depchecking individual files
+   * not supporting dep checking individual files
    */
   it.skip('should pass for passed production files', async () => {
     const file = 'derp/foo.js'

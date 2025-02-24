@@ -83,7 +83,7 @@ const tasks = new Listr(
         }
 
         // check dev dependencies
-        const devlopmentOnlyResult = await depcheck(cwd(), {
+        const developmentOnlyResult = await depcheck(cwd(), {
           parsers: {
             '**/*.js': depcheck.parser.es6,
             '**/*.ts': depcheck.parser.typescript,
@@ -94,13 +94,13 @@ const tasks = new Listr(
           ignorePatterns: ctx.developmentIgnorePatterns
         })
 
-        if (Object.keys(devlopmentOnlyResult.missing).length > 0) {
+        if (Object.keys(developmentOnlyResult.missing).length > 0) {
           missingOrUnusedPresent = true
           console.error('')
           console.error('Missing development dependencies:')
           console.error('')
 
-          Object.entries(devlopmentOnlyResult.missing).forEach(([dep, path]) => {
+          Object.entries(developmentOnlyResult.missing).forEach(([dep, path]) => {
             console.error(kleur.red(dep))
             console.error(' ', kleur.gray(path.join('\n  ')))
           })
@@ -108,13 +108,13 @@ const tasks = new Listr(
           console.error('')
         }
 
-        if (devlopmentOnlyResult.devDependencies.length > 0) {
+        if (developmentOnlyResult.devDependencies.length > 0) {
           missingOrUnusedPresent = true
           console.error('')
           console.error('Unused development dependencies:')
           console.error('')
 
-          devlopmentOnlyResult.devDependencies.forEach(dep => {
+          developmentOnlyResult.devDependencies.forEach(dep => {
             console.error(kleur.yellow(dep))
           })
           console.error('')

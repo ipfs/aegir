@@ -2,7 +2,7 @@
 
 import path from 'path'
 import fs from 'fs-extra'
-import { APIDOCS } from './readme/api-docs.js'
+import { API_DOCS } from './readme/api-docs.js'
 import { HEADER } from './readme/header.js'
 import { INSTALL } from './readme/install.js'
 import { LICENSE } from './readme/license.js'
@@ -160,7 +160,7 @@ export async function checkReadme (projectDir, repoUrl, webRoot, defaultBranch, 
   }
 
   if (fs.existsSync(path.join(projectDir, 'typedoc.json')) || pkg.scripts.docs != null) {
-    apiDocs = parseMarkdown(APIDOCS(pkg, rootManifest))
+    apiDocs = parseMarkdown(API_DOCS(pkg, rootManifest))
   }
 
   const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, webRoot, defaultBranch))

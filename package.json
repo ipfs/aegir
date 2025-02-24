@@ -208,6 +208,7 @@
     "docs": "node src/index.js docs",
     "dep-check": "node src/index.js dep-check",
     "doc-check": "node src/index.js doc-check",
+    "spell-check": "node src/index.js spell-check",
     "test:node": "node src/index.js test -t node --cov",
     "test:chrome": "node src/index.js test -t browser --cov",
     "test:chrome-webworker": "node src/index.js test -t webworker",

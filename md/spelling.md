@@ -6,37 +6,33 @@ current module.
 By default it will spell check all `.ts`, `.js` and `.md` files not in `dist` or
 `node_modules` except `CHANGELOG.md` because it is automatically generated.
 
-A [default dictionary](../dictionaries/ipfs.txt) is provided and if an
-additional dictionary is detected at `.github/dictionary.txt` it will also be
-used.
+A [default dictionary](../dictionaries/ipfs.txt) is provided, additional
+dictionaries can be configured in your project's `.cspell.json` file.
 
-All options can be overridden by passing forward args to the command. E.g.:
+Cspell can be configured by passing forward args to the command. E.g.:
 
 ```console
 % aegir spell-check -- [cspell args here]
 ```
-
-If forward args are specified, no automatic configuration will take place.
 
 ## Configuration
 
 1. Create a `./.github/dictionary.txt` file to hold custom words for your
 project.
 2. Create a `.cspell.json` file in the root of your repo. Configure it to load the default aegir config and your custom dictionary:
-
-```json
-{
-  "import": [
-    "./node_modules/aegir/cspell.json"
-  ],
-  "dictionaries": ["project"],
-  "dictionaryDefinitions": [{
-    "name": "project",
-    "path": "./.github/dictionary.txt",
-    "addWords": true
-  }]
-}
-```
+    ```json
+    {
+      "import": [
+        "./node_modules/aegir/cspell.json"
+      ],
+      "dictionaries": ["project"],
+      "dictionaryDefinitions": [{
+        "name": "project",
+        "path": "./.github/dictionary.txt",
+        "addWords": true
+      }]
+    }
+    ```
 
 ## VSCode
 
@@ -52,13 +48,16 @@ Load the cspell config by putting this in your `.vscode/settings.json`:
 
 ## GitHub actions
 
-Test spelling in CI with:
+To test spelling in CI:
 
-```
-- uses: streetsidesoftware/cspell-action@ef95dc49d631fc2a9e9ea089ae2b2127b7c4588e # v6.10.0
-  with:
-    use_cspell_files: true
-```
+1. Add a `spell-check` script to your `package.json`:
+    ```
+    "spell-check": "aegir spell-check"
+    ```
+2. If running `js-test-and-release.yml` there's nothing else to do, otherwise add it to your workflow somewhere:
+    ```
+    - run: npm run --if-present spell-check
+    ```
 
 ## Tips
 

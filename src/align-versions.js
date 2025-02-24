@@ -5,7 +5,7 @@ import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'
 import { calculateSiblingVersion } from './check-project/utils.js'
-import { isMonorepoRoot, getSubprojectDirectories, pkg } from './utils.js'
+import { isMonorepoRoot, getSubProjectDirectories, pkg } from './utils.js'
 
 /**
  * @typedef {import("./types.js").GlobalOptions} GlobalOptions
@@ -82,7 +82,7 @@ const tasks = new Listr([
         return
       }
 
-      // When running on CI, set the commits author and commiter info and prevent the `git` CLI to prompt for username/password.
+      // When running on CI, set the commits author and committer info and prevent the `git` CLI to prompt for username/password.
       // Borrowed from `semantic-release`
       process.env.GIT_AUTHOR_NAME = ctx.siblingDepUpdateName
       process.env.GIT_AUTHOR_EMAIL = ctx.siblingDepUpdateEmail
@@ -117,7 +117,7 @@ async function calculateSiblingVersions (rootDir, workspaces) {
   /** @type {Record<string, string>} */
   const siblingVersions = {}
 
-  for (const subProjectDir of await getSubprojectDirectories(rootDir, workspaces)) {
+  for (const subProjectDir of await getSubProjectDirectories(rootDir, workspaces)) {
     const pkg = JSON.parse(fs.readFileSync(path.join(subProjectDir, 'package.json'), {
       encoding: 'utf-8'
     }))

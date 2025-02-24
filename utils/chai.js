@@ -1,7 +1,7 @@
 /**
  * @packageDocumentation
  *
- * Chai instance preconfigured with several useful plugins:
+ * Chai instance pre-configured with several useful plugins:
  *
  * - {@link https://www.npmjs.com/package/chai-as-promised chai-as-promised}
  * - {@link https://www.npmjs.com/package/chai-parentheses chai-parentheses}

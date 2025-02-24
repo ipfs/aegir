@@ -65,7 +65,9 @@
     }
   },
   "files": [
+    "cspell.json",
     "src",
+    "dictionaries",
     "dist",
     "utils",
     "!dist/test",
@@ -241,6 +243,7 @@
     "chai-subset": "^1.6.0",
     "conventional-changelog-conventionalcommits": "^8.0.0",
     "cors": "^2.8.5",
+    "cspell": "^8.17.5",
     "depcheck": "^1.4.3",
     "diff": "^7.0.0",
     "electron-mocha": "^13.0.0",

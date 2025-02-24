@@ -10,7 +10,7 @@ import prompt from 'prompt'
 import semver from 'semver'
 import yargsParser from 'yargs-parser'
 import {
-  getSubprojectDirectories,
+  getSubProjectDirectories,
   isMonorepoProject,
   usesReleasePlease
 } from '../utils.js'
@@ -132,20 +132,20 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
     throw new Error('Invalid release type specified')
   }
 
-  for (const subProjectDir of await getSubprojectDirectories(projectDir, workspaces)) {
+  for (const subProjectDir of await getSubProjectDirectories(projectDir, workspaces)) {
     const stat = await fs.stat(subProjectDir)
 
     if (!stat.isDirectory()) {
       continue
     }
 
-    const manfest = path.join(subProjectDir, 'package.json')
+    const manifest = path.join(subProjectDir, 'package.json')
 
-    if (!fs.existsSync(manfest)) {
+    if (!fs.existsSync(manifest)) {
       continue
     }
 
-    const pkg = fs.readJSONSync(manfest)
+    const pkg = fs.readJSONSync(manifest)
     const homePage = `${webRoot}/${subProjectDir.includes(projectDir) ? subProjectDir.substring(projectDir.length) : subProjectDir}`
 
     console.info('Found monorepo project', pkg.name)

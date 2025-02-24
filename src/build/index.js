@@ -6,7 +6,7 @@ import esbuild from 'esbuild'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'
-import pascalcase from 'pascalcase'
+import pascalCase from 'pascalcase'
 import merge from '../utils/merge-options.js'
 import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths, findBinary } from './../utils.js'
 
@@ -27,7 +27,7 @@ const defaults = merge.bind({
  */
 const build = async (argv) => {
   const outfile = path.join(paths.dist, 'index.min.js')
-  const globalName = pascalcase(pkg.name)
+  const globalName = pascalCase(pkg.name)
   const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
   const umdPost = `return ${globalName}}));`
   let entryPoint = fromRoot('src', 'index.js')
@@ -92,22 +92,20 @@ const tasks = new Listr([
 
       if (ctx.bundlesize) {
         const gzip = await gzipSize(outfile)
-        const maxsize = bytes(ctx.bundlesizeMax)
+        const maxSize = bytes(ctx.bundlesizeMax)
 
-        if (maxsize == null) {
+        if (maxSize == null) {
           throw new Error(`Could not parse bytes from "${ctx.bundlesizeMax}"`)
         }
 
-        const diff = gzip - maxsize
+        const diff = gzip - maxSize
 
         task.output = 'Use https://esbuild.github.io/analyze/ to load "./dist/stats.json".'
-        // bundlephobia doesn't support exports maps properly
-        // task.output = `Check previous sizes in https://bundlephobia.com/result?p=${pkg.name}@${pkg.version}`
 
         if (diff > 0) {
-          throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxsize)})`)
+          throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxSize)})`)
         } else {
-          task.output = `${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxsize)})`
+          task.output = `${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxSize)})`
         }
       }
     }

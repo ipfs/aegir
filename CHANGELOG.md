@@ -1,3 +1,9 @@
+## [45.1.1](https://github.com/ipfs/aegir/compare/v45.1.0...v45.1.1) (2025-02-24)
+
+### Bug Fixes
+
+* update dictionary ([f2a0415](https://github.com/ipfs/aegir/commit/f2a04154271d9c9654ec7dd829d2da5d4b75eebe))
+
 ## [45.1.0](https://github.com/ipfs/aegir/compare/v45.0.10...v45.1.0) (2025-02-24)
 
 ### Features

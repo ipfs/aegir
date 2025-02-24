@@ -1,3 +1,9 @@
+## [45.1.2](https://github.com/ipfs/aegir/compare/v45.1.1...v45.1.2) (2025-02-24)
+
+### Documentation
+
+* update spelling docs ([bb0c400](https://github.com/ipfs/aegir/commit/bb0c4000f45baf12516a52351767a2faa2be94a5))
+
 ## [45.1.1](https://github.com/ipfs/aegir/compare/v45.1.0...v45.1.1) (2025-02-24)
 
 ### Bug Fixes

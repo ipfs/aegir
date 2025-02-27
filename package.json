@@ -240,7 +240,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-bites": "^0.1.2",
     "chai-parentheses": "^0.0.2",
-    "chai-string": "^1.5.0",
+    "chai-string": "^2.0.0",
     "chai-subset": "^1.6.0",
     "conventional-changelog-conventionalcommits": "^8.0.0",
     "cors": "^2.8.5",

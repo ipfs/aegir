@@ -30,13 +30,24 @@
     // multiaddrs are not spell checked
     "/multiaddr(.*)/",
 
-    // peer ids are not spell checked
-    "/peerIdFromString(.*)/",
-
     // string encoded binary is not spell checked
     "/uint8ArrayFromString(.*)/",
 
     // CIDs are not spell checked
-    "/CID(.*)/"
+    "/CID(.*)/",
+
+    // string CIDs are not spell checked
+    "'baf(.*)'",
+    "\"baf(.*)\"",
+    "'Qm(.*)'",
+    "\"Qm(.*)\"",
+
+    // string PeerIds are not spell checked
+    "'12D3Koo(.*)'", // Ed25519
+    "\"12D3Koo(.*)\"", // Ed25519
+    "'16Uiu(.*)'", // secp256k1
+    "\"16Uiu(.*)\"", // secp256k1
+    "'k51(.*)'", // base36 PeerId as CID
+    "\"k51(.*)\"" // base36 PeerId as CID
   ]
 }

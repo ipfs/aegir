@@ -1,3 +1,9 @@
+## [45.1.3](https://github.com/ipfs/aegir/compare/v45.1.2...v45.1.3) (2025-03-10)
+
+### Bug Fixes
+
+* do not spell check string CIDs/PeerIds ([ef44dee](https://github.com/ipfs/aegir/commit/ef44deebe1050859cd47b0c399f95119deebfdca))
+
 ## [45.1.2](https://github.com/ipfs/aegir/compare/v45.1.1...v45.1.2) (2025-02-24)
 
 ### Documentation

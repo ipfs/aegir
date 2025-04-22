@@ -26,7 +26,6 @@ const defaults = merge.bind({
  * @param {GlobalOptions & BuildOptions} argv
  */
 const build = async (argv) => {
-  const outfile = path.join(paths.dist, 'index.min.js')
   const globalName = pascalCase(pkg.name)
   const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
   const umdPost = `return ${globalName}}));`
@@ -36,32 +35,47 @@ const build = async (argv) => {
     entryPoint = fromRoot('dist', 'src', 'index.js')
   }
 
-  const result = await esbuild.build(defaults(
-    {
-      entryPoints: [entryPoint],
-      bundle: true,
-      format: 'iife',
-      conditions: ['production'],
-      sourcemap: argv.bundlesize,
-      minify: true,
-      globalName,
-      banner: { js: umdPre },
-      footer: { js: umdPost },
-      metafile: argv.bundlesize,
-      outfile,
-      define: {
-        global: 'globalThis',
-        'process.env.NODE_ENV': '"production"'
-      }
-    },
-    argv.fileConfig.build.config
-  ))
+  /** @type {esbuild.BuildOptions} */
+  const config = defaults({
+    bundle: true,
+    format: 'iife',
+    conditions: ['production'],
+    sourcemap: true,
+    minify: true,
+    globalName,
+    banner: { js: umdPre },
+    footer: { js: umdPost },
+    metafile: true,
+    define: {
+      global: 'globalThis',
+      'process.env.NODE_ENV': '"production"'
+    }
+  }, argv.fileConfig.build.config)
 
-  if (result.metafile) {
+  // use default single-file build
+  if (config.entryPoints == null) {
+    config.entryPoints = [entryPoint]
+    config.outfile = path.join(paths.dist, 'index.min.js')
+  }
+
+  const entryPoints = Array.isArray(config.entryPoints) ? config.entryPoints : Object.keys(config.entryPoints)
+
+  // support multi-output-file build
+  if (entryPoints.length > 1) {
+    delete config.outfile
+
+    if (config.outdir == null) {
+      config.outdir = 'dist'
+    }
+  }
+
+  const result = await esbuild.build(config)
+
+  if (result.metafile && argv.bundlesize) {
     fs.writeJSONSync(path.join(paths.dist, 'stats.json'), result.metafile)
   }
 
-  return outfile
+  return result.metafile?.outputs
 }
 
 const tasks = new Listr([
@@ -88,24 +102,41 @@ const tasks = new Listr([
      * @param {Task} task
      */
     task: async (ctx, task) => {
-      const outfile = await build(ctx)
+      const outputs = await build(ctx)
 
-      if (ctx.bundlesize) {
-        const gzip = await gzipSize(outfile)
-        const maxSize = bytes(ctx.bundlesizeMax)
-
-        if (maxSize == null) {
-          throw new Error(`Could not parse bytes from "${ctx.bundlesizeMax}"`)
-        }
-
-        const diff = gzip - maxSize
-
+      if (ctx.bundlesize && outputs != null) {
         task.output = 'Use https://esbuild.github.io/analyze/ to load "./dist/stats.json".'
 
-        if (diff > 0) {
-          throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxSize)})`)
-        } else {
-          task.output = `${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxSize)})`
+        const maxSizes = typeof ctx.bundlesizeMax === 'string'
+          ? {
+              'dist/index.min.js': ctx.bundlesizeMax
+            }
+          : ctx.bundlesizeMax
+
+        for (const file of Object.keys(outputs)) {
+          if (file.endsWith('.map')) {
+            continue
+          }
+
+          if (maxSizes[file] == null) {
+            task.output = `Size for ${file} missing from bundlesizeMax in .aegir.js`
+            continue
+          }
+
+          const gzip = await gzipSize(file)
+          const maxSize = bytes(maxSizes[file])
+
+          if (maxSize == null) {
+            throw new Error(`Could not parse bytes from "${ctx.bundlesizeMax}"`)
+          }
+
+          const diff = gzip - maxSize
+
+          if (diff > 0) {
+            throw new Error(`${file} ${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxSize)})`)
+          } else {
+            task.output = `${file} ${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxSize)})`
+          }
         }
       }
     }

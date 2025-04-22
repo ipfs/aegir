@@ -121,9 +121,19 @@ interface BuildOptions {
    */
   bundlesize: boolean
   /**
-   * Max threshold for the bundle size.
+   * Max threshold for the bundle size(s).  Either a single string for when only
+   * `dist/index.min.js` is built or an object of key/value pairs, e.g.
+   *
+   * ```json
+   * {
+   *   "bundlesizeMax": {
+   *     "dist/index.min.js": "50KB",
+   *     "dist/worker.min.js": "80KB"
+   *   }
+   * }
+   * ```
    */
-  bundlesizeMax: string
+  bundlesizeMax: string | Record<string, string>
   /**
    * Build the Typescript type declarations.
    */

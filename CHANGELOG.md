@@ -1,3 +1,9 @@
+## [45.2.0](https://github.com/ipfs/aegir/compare/v45.1.4...v45.2.0) (2025-04-22)
+
+### Features
+
+* support multiple output files ([#1785](https://github.com/ipfs/aegir/issues/1785)) ([d13229c](https://github.com/ipfs/aegir/commit/d13229ce7918c322136ab07f2db29d9b7b005f16))
+
 ## [45.1.4](https://github.com/ipfs/aegir/compare/v45.1.3...v45.1.4) (2025-03-19)
 
 ### Bug Fixes

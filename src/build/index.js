@@ -26,7 +26,6 @@ const defaults = merge.bind({
  * @param {GlobalOptions & BuildOptions} argv
  */
 const build = async (argv) => {
-  const outfile = path.join(paths.dist, 'index.min.js')
   const globalName = pascalCase(pkg.name)
   const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
   const umdPost = `return ${globalName}}));`
@@ -56,7 +55,7 @@ const build = async (argv) => {
   // use default single-file build
   if (config.entryPoints == null) {
     config.entryPoints = [entryPoint]
-    config.outfile = outfile
+    config.outfile = path.join(paths.dist, 'index.min.js')
   }
 
   // support multi-output-file build

@@ -61,8 +61,8 @@ describe('build', () => {
         cwd: projectDir
       })
 
-      expect(fs.existsSync(join(projectDir, 'dist', 'index.min.js'))).to.be.true()
-      expect(fs.existsSync(join(projectDir, 'dist', 'sw.min.js'))).to.be.true()
+      expect(fs.existsSync(join(projectDir, 'dist', 'index.js'))).to.be.true()
+      expect(fs.existsSync(join(projectDir, 'dist', 'sw.js'))).to.be.true()
     })
   })
 })

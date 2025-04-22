@@ -58,8 +58,10 @@ const build = async (argv) => {
     config.outfile = path.join(paths.dist, 'index.min.js')
   }
 
+  const entryPoints = Array.isArray(config.entryPoints) ? config.entryPoints : Object.keys(config.entryPoints)
+
   // support multi-output-file build
-  if (Array.isArray(config.entryPoints) && config.entryPoints.length > 1) {
+  if (entryPoints.length > 1) {
     delete config.outfile
 
     if (config.outdir == null) {

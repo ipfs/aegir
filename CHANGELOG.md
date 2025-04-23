@@ -1,3 +1,53 @@
+## [45.2.0](https://github.com/ipfs/aegir/compare/v45.1.4...v45.2.0) (2025-04-22)
+
+### Features
+
+* support multiple output files ([#1785](https://github.com/ipfs/aegir/issues/1785)) ([d13229c](https://github.com/ipfs/aegir/commit/d13229ce7918c322136ab07f2db29d9b7b005f16))
+
+## [45.1.4](https://github.com/ipfs/aegir/compare/v45.1.3...v45.1.4) (2025-03-19)
+
+### Bug Fixes
+
+* update dictionary ([07eeb7b](https://github.com/ipfs/aegir/commit/07eeb7b3e708b792ff22b71c786b4462f3d141bf))
+
+## [45.1.3](https://github.com/ipfs/aegir/compare/v45.1.2...v45.1.3) (2025-03-10)
+
+### Bug Fixes
+
+* do not spell check string CIDs/PeerIds ([ef44dee](https://github.com/ipfs/aegir/commit/ef44deebe1050859cd47b0c399f95119deebfdca))
+
+## [45.1.2](https://github.com/ipfs/aegir/compare/v45.1.1...v45.1.2) (2025-02-24)
+
+### Documentation
+
+* update spelling docs ([bb0c400](https://github.com/ipfs/aegir/commit/bb0c4000f45baf12516a52351767a2faa2be94a5))
+
+## [45.1.1](https://github.com/ipfs/aegir/compare/v45.1.0...v45.1.1) (2025-02-24)
+
+### Bug Fixes
+
+* update dictionary ([f2a0415](https://github.com/ipfs/aegir/commit/f2a04154271d9c9654ec7dd829d2da5d4b75eebe))
+
+## [45.1.0](https://github.com/ipfs/aegir/compare/v45.0.10...v45.1.0) (2025-02-24)
+
+### Features
+
+* add spell check command ([#1738](https://github.com/ipfs/aegir/issues/1738)) ([9696e26](https://github.com/ipfs/aegir/commit/9696e26069254b69ccf15fb440a6801b51a83d57))
+
+### Dependencies
+
+* **dev:** bump electron from 33.4.0 to 34.2.0 ([#1734](https://github.com/ipfs/aegir/issues/1734)) ([4177dec](https://github.com/ipfs/aegir/commit/4177decafd8dd9911590ab74347c6a42e374f458))
+
+## [45.0.10](https://github.com/ipfs/aegir/compare/v45.0.9...v45.0.10) (2025-02-22)
+
+### Trivial Changes
+
+* cache lockfiles ([1ee5459](https://github.com/ipfs/aegir/commit/1ee5459271c5b0567ce7f51251e0f89d21e535e9))
+
+### Dependencies
+
+* bump esbuild from 0.24.2 to 0.25.0 ([#1732](https://github.com/ipfs/aegir/issues/1732)) ([0140a17](https://github.com/ipfs/aegir/commit/0140a17fed89512ad36cba4253f3dc42c63b081f))
+
 ## [45.0.9](https://github.com/ipfs/aegir/compare/v45.0.8...v45.0.9) (2025-01-20)
 
 ### Trivial Changes

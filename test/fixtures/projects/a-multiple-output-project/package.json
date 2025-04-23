@@ -1,0 +1,25 @@
+{
+  "name": "a-ts-project",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ipfs/aegir#readme",
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js"
+    }
+  },
+  "type": "module",
+  "types": "./dist/src/index.d.ts",
+  "scripts": {
+    "build": "aegir build",
+    "test": "aegir test"
+  },
+  "author": "",
+  "license": "ISC",
+  "eslintConfig": {
+    "extends": "ipfs",
+    "parserOptions": {
+      "sourceType": "module"
+    }
+  }
+}

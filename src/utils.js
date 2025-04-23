@@ -420,7 +420,7 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
  * @param {string} projectDir
  * @param {string[]} workspaces
  */
-export const getSubprojectDirectories = (projectDir, workspaces) => {
+export const getSubProjectDirectories = (projectDir, workspaces) => {
   return fg.globSync(workspaces, {
     cwd: projectDir,
     onlyFiles: false
@@ -436,20 +436,20 @@ export function parseProjects (projectDir, workspaces) {
   /** @type {Record<string, Project>} */
   const projects = {}
 
-  for (const subProjectDir of getSubprojectDirectories(projectDir, workspaces)) {
+  for (const subProjectDir of getSubProjectDirectories(projectDir, workspaces)) {
     const stat = fs.statSync(subProjectDir)
 
     if (!stat.isDirectory()) {
       continue
     }
 
-    const manfest = path.join(subProjectDir, 'package.json')
+    const manifest = path.join(subProjectDir, 'package.json')
 
-    if (!fs.existsSync(manfest)) {
+    if (!fs.existsSync(manifest)) {
       continue
     }
 
-    const pkg = fs.readJSONSync(manfest)
+    const pkg = fs.readJSONSync(manifest)
 
     projects[pkg.name] = {
       manifest: pkg,

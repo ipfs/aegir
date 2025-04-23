@@ -161,7 +161,7 @@ describe('lint', () => {
     })
   })
 
-  it('should fail if .eslintrc overules ipfs and code does not follow it', async () => {
+  it('should fail if .eslintrc overrules ipfs and code does not follow it', async () => {
     await projectShouldFailLint({
       'package.json': JSON.stringify({
         name: 'with-config-fail',
@@ -181,7 +181,7 @@ describe('lint', () => {
     })
   })
 
-  it('should pass if .eslintrc overules ipfs and code follows it', async () => {
+  it('should pass if .eslintrc overrules ipfs and code follows it', async () => {
     await projectShouldPassLint({
       'package.json': JSON.stringify({
         name: 'with-config-fail',

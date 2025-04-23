@@ -32,7 +32,7 @@ export default {
         bundlesize: {
           alias: 'b',
           type: 'boolean',
-          describe: 'Analyse bundle size.',
+          describe: 'Analyze bundle size.',
           default: userConfig.build.bundlesize
         },
         bundlesizeMax: {

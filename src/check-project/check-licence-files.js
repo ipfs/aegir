@@ -15,7 +15,7 @@ export async function checkLicenseFiles (projectDir) {
   const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
   if (pkg.private === true) {
-    console.info('Private module found, skipping licence file check')
+    console.info('Private module found, skipping license file check')
     return
   }
 

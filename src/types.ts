@@ -117,13 +117,23 @@ interface BuildOptions {
    */
   bundle: boolean
   /**
-   * Analyse bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize.maxSize`.
+   * Analyze bundle size. Default threshold is 100kB, you can override that in `.aegir.js` with the property `bundlesize.maxSize`.
    */
   bundlesize: boolean
   /**
-   * Max threshold for the bundle size.
+   * Max threshold for the bundle size(s).  Either a single string for when only
+   * `dist/index.min.js` is built or an object of key/value pairs, e.g.
+   *
+   * ```json
+   * {
+   *   "bundlesizeMax": {
+   *     "dist/index.min.js": "50KB",
+   *     "dist/worker.min.js": "80KB"
+   *   }
+   * }
+   * ```
    */
-  bundlesizeMax: string
+  bundlesizeMax: string | Record<string, string>
   /**
    * Build the Typescript type declarations.
    */
@@ -183,7 +193,7 @@ interface DocsVerifierOptions {
   inputFiles?: string[]
 
   /**
-   * An alternative `.tsconfig.json` path to be used seperately from the default
+   * An alternative `.tsconfig.json` path to be used separately from the default
    */
   tsConfigPath?: string
 }
@@ -245,7 +255,7 @@ interface TestOptions {
    */
   covTimeout: number
   /**
-   * Runner enviroment
+   * Runner environment
    */
   runner: 'node' | 'browser' | 'webworker' | 'electron-main' | 'electron-renderer' | 'react-native-android' | 'react-native-ios'
   /**

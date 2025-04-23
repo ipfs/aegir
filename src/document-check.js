@@ -17,7 +17,7 @@ import { formatCode, formatError, fromRoot, hasTsconfig, readJson } from './util
 /**
  * A list of tsc errors to ignore when compiling code snippets in documentation.
  */
-const TS_ERRORS_TO_SUPRESS = [
+const TS_ERRORS_TO_SUPPRESS = [
   2307 // Cannot find module '...' or its corresponding type declarations
 ]
 
@@ -75,7 +75,7 @@ const tasks = new Listr(
               if (result.error) {
                 // ignore some diagnostic codes
                 if (isTSError(result.error)) {
-                  const diagnosticCodes = result.error?.diagnosticCodes?.filter(code => !TS_ERRORS_TO_SUPRESS.includes(code))
+                  const diagnosticCodes = result.error?.diagnosticCodes?.filter(code => !TS_ERRORS_TO_SUPPRESS.includes(code))
 
                   if (diagnosticCodes.length === 0) {
                     return

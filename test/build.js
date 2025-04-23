@@ -46,4 +46,23 @@ describe('build', () => {
       expect(fs.existsSync(join(projectDir, 'dist', 'index.min.js'))).to.be.true()
     })
   })
+
+  describe('multiple output files', () => {
+    let projectDir = ''
+
+    before(async () => {
+      projectDir = await setUpProject('a-multiple-output-project')
+    })
+
+    it('should build a typescript project with multiple outputs', async function () {
+      this.timeout(120 * 1000) // slow ci is slow
+
+      await execa(bin, ['build'], {
+        cwd: projectDir
+      })
+
+      expect(fs.existsSync(join(projectDir, 'dist', 'index.js'))).to.be.true()
+      expect(fs.existsSync(join(projectDir, 'dist', 'sw.js'))).to.be.true()
+    })
+  })
 })

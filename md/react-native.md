@@ -4,7 +4,7 @@
 
 Go to https://reactnative.dev/docs/environment-setup click in "React Native CLI Quickstart" and follow instructions.
 
-If you don't want to fill your system with the full android studio or XCode follow the instructions below but be aware that there are dragons ahead! 
+If you don't want to fill your system with the full android studio or XCode follow the instructions below but be aware that there are dragons ahead!
 
 ## Android
 
@@ -32,7 +32,7 @@ Now all the tools are in the `$PATH` , no need for absolute paths anymore.
 
 ### Some examples
 
-You normally dont need to run any of these
+You normally don't need to run any of these
 
 ```bash
 # install new platforms, build tools and system images
@@ -51,7 +51,7 @@ emulator @aegir-android
 # list avds
 emulator -list-avds
 
-# redirect port trafic
+# redirect port traffic
 adb -s emulator-5554 reverse tcp:3000 tcp:3000
 adb reverse --list
 adb reverse --remove-all
@@ -78,7 +78,7 @@ module.exports = {
       if(options.runner === 'react-native-android') {
         hostname = '10.0.2.2'
       }
-      
+
       return {
         echoServer,
         env: { ECHO_SERVER : format({ protocol: 'http:', hostname, port })}

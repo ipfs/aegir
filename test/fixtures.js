@@ -18,6 +18,7 @@ describe('fixtures', () => {
 
   it('should load tar.gz fixures', () => {
     const myFixture = loadFixture(path.join('test', 'fixtures', 'file.tar.gz'))
+    // spell-checker: disable-next-line
     expect(uint8ArrayToString(myFixture, 'base64')).to.equal('H4sICIlTHVIACw')
   })
 })

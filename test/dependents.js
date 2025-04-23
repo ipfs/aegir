@@ -60,7 +60,7 @@ const git =
    }
  }
 
-describe('dependants', function () {
+describe('dependents', function () {
   this.timeout(900000)
 
   if (os.platform() === 'win32') {

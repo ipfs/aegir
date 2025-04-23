@@ -18,6 +18,7 @@ import lintCmd from './cmds/lint.js'
 import releaseRcCmd from './cmds/release-rc.js'
 import releaseCmd from './cmds/release.js'
 import runCmd from './cmds/run.js'
+import spellCheckCmd from './cmds/spell-check.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
 import { loadUserConfig } from './config/user.js'
@@ -94,6 +95,7 @@ async function main () {
   res.command(execCmd)
   res.command(runCmd)
   res.command(alignVersionsCmd)
+  res.command(spellCheckCmd)
 
   try {
     await res.parse()

@@ -34,10 +34,10 @@ export default async function testNode (argv, execaOptions) {
   const files = argv.files.length > 0
     ? argv.files
     : [
-        'test/node.{js,cjs,mjs}',
-        'test/**/*.spec.{js,cjs,mjs}',
-        'dist/test/node.{js,cjs,mjs}',
-        'dist/test/**/*.spec.{js,cjs,mjs}'
+        'test/node.*js',
+        'test/**/*.spec.*js',
+        'dist/test/node.*js',
+        'dist/test/**/*.spec.*js'
       ]
 
   const args = [

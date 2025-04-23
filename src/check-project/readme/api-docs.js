@@ -2,7 +2,7 @@
  * @param {*} pkg
  * @param {*} [parentManifest]
  */
-export const APIDOCS = (pkg, parentManifest) => {
+export const API_DOCS = (pkg, parentManifest) => {
   // test for docs script in monorepo root or package
   const scripts = parentManifest?.scripts ?? pkg.scripts ?? {}
 

@@ -66,7 +66,7 @@ const docs = async (ctx, task) => {
   })
   await proc
 
-  // write .nojekyll file
+  // write `.nojekyll` file
   fs.writeFileSync(`${ctx.directory}/.nojekyll`, '')
 }
 

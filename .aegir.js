@@ -23,7 +23,8 @@ export default {
             'typedoc-plugin-missing-exports',
             'electron',
             'bytes',
-            'pascalcase'
+            'pascalcase',
+            'cspell'
         ]
     }
 }

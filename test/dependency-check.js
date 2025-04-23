@@ -85,7 +85,7 @@ describe('dependency check', () => {
   })
 
   /**
-   * not supporting depchecking individual files
+   * not supporting dep checking individual files
    */
   it.skip('should pass for passed files', async () => {
     const file = 'derp/foo.js'
@@ -102,7 +102,7 @@ describe('dependency check', () => {
   })
 
   /**
-   * not supporting depchecking individual files
+   * not supporting dep checking individual files
    */
   it.skip('should pass for passed production files', async () => {
     const file = 'derp/foo.js'
@@ -136,5 +136,41 @@ describe('dependency check', () => {
         )
       })
     ).to.eventually.be.fulfilled()
+  })
+
+  it('should pass for jsx files', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/jsx-pass')
+      })
+    ).to.eventually.be.fulfilled()
+  })
+
+  it('should fail for jsx files', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/jsx-fail')
+      })
+    ).to.eventually.be.rejected()
+      .with.property('message')
+      .that.include('react-icons')
+  })
+
+  it('should pass for tsx files', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/tsx-pass')
+      })
+    ).to.eventually.be.fulfilled()
+  })
+
+  it('should fail for tsx files', async () => {
+    await expect(
+      execa(bin, ['dependency-check'], {
+        cwd: path.join(__dirname, 'fixtures/dependency-check/tsx-fail')
+      })
+    ).to.eventually.be.rejected()
+      .with.property('message')
+      .that.include('react-icons')
   })
 })

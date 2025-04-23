@@ -22,11 +22,6 @@ export function load (app) {
   // pages of the current module or monorepo packages
   app.renderer.on(td.RendererEvent.END, (/** @type {td.RendererEvent} */ evt) => {
     const urlMappings = evt.urls?.filter(urlMapping => {
-      // skip anything without a model-level comment
-      if (urlMapping.model?.comment == null) {
-        return false
-      }
-
       // single-module repo, single export
       if (urlMapping.url === 'modules.html') {
         return true
@@ -44,10 +39,6 @@ export function load (app) {
 
       return false
     }).map(urlMapping => {
-      if (urlMapping.model?.comment == null) {
-        throw new Error('Model comment was null')
-      }
-
       if (isMonorepoParent) {
         let project = urlMapping.model.name
 
@@ -59,11 +50,28 @@ export function load (app) {
           throw new Error(`Could not derive project name from url mapping model "${urlMapping.model.name}" with parent "${urlMapping.model.parent?.name}"`)
         }
 
+        let comment = urlMapping.model?.comment
+
+        if (comment == null && urlMapping.model instanceof td.DeclarationReflection && urlMapping.model.children != null && urlMapping.model.children.length > 0) {
+          // multi-export modules have a different structure
+          comment = urlMapping.model.children
+            .find(child => child.name === 'index')
+            ?.comment
+        }
+
+        if (comment == null) {
+          return null
+        }
+
         return {
-          comment: urlMapping.model.comment,
+          comment,
           manifestPath: path.join(projects[project].dir, 'package.json'),
           readmePath: path.join(projects[project].dir, 'README.md')
         }
+      }
+
+      if (urlMapping.model?.comment == null) {
+        return null
       }
 
       return {
@@ -73,7 +81,17 @@ export function load (app) {
       }
     })
 
-    urlMappings?.forEach(urlMapping => updateModule(urlMapping.comment, urlMapping.manifestPath, urlMapping.readmePath, app))
+    if (urlMappings == null) {
+      return
+    }
+
+    for (const urlMapping of urlMappings) {
+      if (urlMapping == null) {
+        continue
+      }
+
+      updateModule(urlMapping.comment, urlMapping.manifestPath, urlMapping.readmePath, app)
+    }
   })
 }
 
@@ -89,6 +107,21 @@ export function load (app) {
 function updateModule (comment, manifestPath, readmePath, app) {
   const about = `
 # About
+
+<!--
+
+!IMPORTANT!
+
+Everything in this README between "# About" and "# Install" is automatically
+generated and will be overwritten the next time the doc generator is run.
+
+To make changes to this section, please update the @packageDocumentation section
+of src/index.js or src/index.ts
+
+To experiment with formatting, please run "npm run docs" from the root of this
+repo and examine the changes made.
+
+-->
 
 ${
   comment.summary

@@ -6,8 +6,8 @@ import esbuild from 'esbuild'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'
-import merge from 'merge-options'
-import pascalcase from 'pascalcase'
+import pascalCase from 'pascalcase'
+import merge from '../utils/merge-options.js'
 import { gzipSize, pkg, hasTsconfig, isTypescript, fromRoot, paths, findBinary } from './../utils.js'
 
 const defaults = merge.bind({
@@ -26,8 +26,7 @@ const defaults = merge.bind({
  * @param {GlobalOptions & BuildOptions} argv
  */
 const build = async (argv) => {
-  const outfile = path.join(paths.dist, 'index.min.js')
-  const globalName = pascalcase(pkg.name)
+  const globalName = pascalCase(pkg.name)
   const umdPre = `(function (root, factory) {(typeof module === 'object' && module.exports) ? module.exports = factory() : root.${globalName} = factory()}(typeof self !== 'undefined' ? self : this, function () {`
   const umdPost = `return ${globalName}}));`
   let entryPoint = fromRoot('src', 'index.js')
@@ -36,32 +35,47 @@ const build = async (argv) => {
     entryPoint = fromRoot('dist', 'src', 'index.js')
   }
 
-  const result = await esbuild.build(defaults(
-    {
-      entryPoints: [entryPoint],
-      bundle: true,
-      format: 'iife',
-      conditions: ['production'],
-      sourcemap: argv.bundlesize,
-      minify: true,
-      globalName,
-      banner: { js: umdPre },
-      footer: { js: umdPost },
-      metafile: argv.bundlesize,
-      outfile,
-      define: {
-        global: 'globalThis',
-        'process.env.NODE_ENV': '"production"'
-      }
-    },
-    argv.fileConfig.build.config
-  ))
+  /** @type {esbuild.BuildOptions} */
+  const config = defaults({
+    bundle: true,
+    format: 'iife',
+    conditions: ['production'],
+    sourcemap: true,
+    minify: true,
+    globalName,
+    banner: { js: umdPre },
+    footer: { js: umdPost },
+    metafile: true,
+    define: {
+      global: 'globalThis',
+      'process.env.NODE_ENV': '"production"'
+    }
+  }, argv.fileConfig.build.config)
 
-  if (result.metafile) {
+  // use default single-file build
+  if (config.entryPoints == null) {
+    config.entryPoints = [entryPoint]
+    config.outfile = path.join(paths.dist, 'index.min.js')
+  }
+
+  const entryPoints = Array.isArray(config.entryPoints) ? config.entryPoints : Object.keys(config.entryPoints)
+
+  // support multi-output-file build
+  if (entryPoints.length > 1) {
+    delete config.outfile
+
+    if (config.outdir == null) {
+      config.outdir = 'dist'
+    }
+  }
+
+  const result = await esbuild.build(config)
+
+  if (result.metafile && argv.bundlesize) {
     fs.writeJSONSync(path.join(paths.dist, 'stats.json'), result.metafile)
   }
 
-  return outfile
+  return result.metafile?.outputs
 }
 
 const tasks = new Listr([
@@ -88,21 +102,41 @@ const tasks = new Listr([
      * @param {Task} task
      */
     task: async (ctx, task) => {
-      const outfile = await build(ctx)
+      const outputs = await build(ctx)
 
-      if (ctx.bundlesize) {
-        const gzip = await gzipSize(outfile)
-        const maxsize = bytes(ctx.bundlesizeMax)
-        const diff = gzip - maxsize
-
+      if (ctx.bundlesize && outputs != null) {
         task.output = 'Use https://esbuild.github.io/analyze/ to load "./dist/stats.json".'
-        // bundlephobia doesn't support exports maps properly
-        // task.output = `Check previous sizes in https://bundlephobia.com/result?p=${pkg.name}@${pkg.version}`
 
-        if (diff > 0) {
-          throw new Error(`${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxsize)})`)
-        } else {
-          task.output = `${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxsize)})`
+        const maxSizes = typeof ctx.bundlesizeMax === 'string'
+          ? {
+              'dist/index.min.js': ctx.bundlesizeMax
+            }
+          : ctx.bundlesizeMax
+
+        for (const file of Object.keys(outputs)) {
+          if (file.endsWith('.map')) {
+            continue
+          }
+
+          if (maxSizes[file] == null) {
+            task.output = `Size for ${file} missing from bundlesizeMax in .aegir.js`
+            continue
+          }
+
+          const gzip = await gzipSize(file)
+          const maxSize = bytes(maxSizes[file])
+
+          if (maxSize == null) {
+            throw new Error(`Could not parse bytes from "${ctx.bundlesizeMax}"`)
+          }
+
+          const diff = gzip - maxSize
+
+          if (diff > 0) {
+            throw new Error(`${file} ${bytes(gzip)} (▲${bytes(diff)} / ${bytes(maxSize)})`)
+          } else {
+            task.output = `${file} ${bytes(gzip)} (▼${bytes(diff)} / ${bytes(maxSize)})`
+          }
         }
       }
     }

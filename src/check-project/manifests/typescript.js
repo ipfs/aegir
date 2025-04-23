@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import mergeOptions from 'merge-options'
+import mergeOptions from '../../utils/merge-options.js'
 import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,
@@ -11,12 +11,21 @@ import {
 const merge = mergeOptions.bind({ ignoreUndefined: true })
 
 /**
- * @param {any} manifest
- * @param {string} branchName
- * @param {string} repoUrl
- * @param {string} [homePage]
+ * @param {import('../index.js').ProcessManifestContext} context
  */
-export async function typescriptManifest (manifest, branchName, repoUrl, homePage = repoUrl) {
+export async function typescriptManifest (context) {
+  const { manifest, branchName, repoUrl, homePage } = context
+  let release
+
+  if (context.releaseType === 'semantic-release') {
+    manifest.scripts.release = 'aegir release'
+    release = semanticReleaseConfig(branchName)
+  }
+
+  if (context.releaseType === 'release-please') {
+    delete manifest.scripts.release
+  }
+
   let proposedManifest = constructManifest(manifest, {
     type: 'module',
     types: './dist/src/index.d.ts',
@@ -42,10 +51,10 @@ export async function typescriptManifest (manifest, branchName, repoUrl, homePag
         sourceType: 'module'
       }
     }, manifest.eslintConfig),
-    release: (manifest.scripts?.release?.includes('semantic-release') || manifest.scripts?.release?.includes('aegir release')) ? semanticReleaseConfig(branchName) : undefined
+    release
   }, repoUrl, homePage)
 
-  if (Object.keys(proposedManifest.exports).length > 1) {
+  if (proposedManifest.exports != null && Object.keys(proposedManifest.exports).length > 1) {
     console.info('Multiple exports detected')
 
     proposedManifest.typesVersions = {

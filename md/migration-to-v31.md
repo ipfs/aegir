@@ -17,13 +17,13 @@ Actions:
 
 More info in this PR [https://github.com/ipfs/aegir/pull/727](https://github.com/ipfs/aegir/pull/727)
 
-Actions: 
+Actions:
 
 - Change your script to the new command
 
 ## `aegir docs` has a new flag
 
-The docs command has a new flag `entryPoint` to setup Typedoc, the defaults should work for most repos. 
+The docs command has a new flag `entryPoint` to setup Typedoc, the defaults should work for most repos.
 
 Actions:
 
@@ -41,7 +41,7 @@ Actions:
 
 ## Old npm dependencies semver linting removed
 
-We had this manual rule for a long time, but npm evolved and the current behaviour is exactly what this rule enforced.
+We had this manual rule for a long time, but npm evolved and the current behavior is exactly what this rule enforced.
 
 No action necessary
 
@@ -128,7 +128,7 @@ module.exports = {
 
 The new browser test runner automatically serves the current folder (`process.cwd()`) to be accessible through HTTP.
 
-If you need to customise the folder to be served by the test runner use this config option `test.browser.config.assets` 
+If you need to customize the folder to be served by the test runner use this config option `test.browser.config.assets`
 
 ## Running tests in the browser
 
@@ -173,7 +173,7 @@ We already discussed the usage of commit-lint and decided to stop using it.
 
 Actions:
 
-- remove commil-lint from you scripts
+- remove commit-lint from your scripts
 
 ## Hooks
 

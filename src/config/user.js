@@ -2,7 +2,7 @@
 
 import { pathToFileURL } from 'url'
 import { lilconfig } from 'lilconfig'
-import merge from 'merge-options'
+import merge from '../utils/merge-options.js'
 import { isTypescript } from '../utils.js'
 
 /**
@@ -56,8 +56,11 @@ const defaults = {
       'src/**/*.{js,ts}',
       'tasks/**/*.{js,ts}',
       'benchmarks/**/*.{js,ts}',
+      '!benchmarks/**/node_modules/**',
       'utils/**/*.{js,ts}',
-      '!**/node_modules/**'
+      '!**/node_modules/**',
+      'examples/**/*.{js,ts}',
+      '!examples/**/node_modules/**'
     ]
   },
   // docs cmd options

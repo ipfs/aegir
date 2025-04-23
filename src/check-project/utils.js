@@ -123,14 +123,15 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
  * @param {string} filePath
  */
 export async function ensureFileNotPresent (projectDir, filePath) {
-  const fileExists = fs.existsSync(path.join(projectDir, filePath))
+  const fullPath = path.join(projectDir, filePath)
+  const fileExists = fs.existsSync(fullPath)
 
   if (fileExists) {
     if (process.env.CI) {
       throw new Error(`${filePath} exists`)
     }
 
-    console.warn(kleur.yellow(`${filePath} exist`))
+    console.warn(kleur.yellow(`${filePath} exists`))
 
     const { removeFile } = await prompt.get({
       properties: {
@@ -146,7 +147,7 @@ export async function ensureFileNotPresent (projectDir, filePath) {
       throw new Error(`Not removing ${filePath} file`)
     }
 
-    fs.rmSync(filePath)
+    fs.rmSync(fullPath)
   }
 }
 
@@ -233,7 +234,7 @@ export function sortManifest (manifest) {
  * @param {string} homePage
  */
 export function constructManifest (manifest, manifestFields, repoUrl, homePage = repoUrl) {
-  return {
+  const output = {
     name: manifest.name,
     version: manifest.version,
     description: manifest.description,
@@ -262,6 +263,17 @@ export function constructManifest (manifest, manifestFields, repoUrl, homePage =
     optionalDependencies: manifest.optionalDependencies,
     bundledDependencies: manifest.bundledDependencies
   }
+
+  // remove publish-related fields if this module is not published
+  if (manifest.private === true) {
+    output.publishConfig = undefined
+    output.files = undefined
+    output.types = undefined
+    output.typesVersions = undefined
+    output.exports = undefined
+  }
+
+  return output
 }
 
 /**

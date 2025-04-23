@@ -2,7 +2,7 @@
 
 import path from 'path'
 import fs from 'fs-extra'
-import { APIDOCS } from './readme/api-docs.js'
+import { API_DOCS } from './readme/api-docs.js'
 import { HEADER } from './readme/header.js'
 import { INSTALL } from './readme/install.js'
 import { LICENSE } from './readme/license.js'
@@ -14,11 +14,12 @@ import {
 /**
  * @param {string} projectDir
  * @param {string} repoUrl
+ * @param {string} webRoot
  * @param {string} defaultBranch
  * @param {string} ciFile
  * @param {any} [rootManifest]
  */
-export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, rootManifest) {
+export async function checkReadme (projectDir, repoUrl, webRoot, defaultBranch, ciFile, rootManifest) {
   const repoParts = repoUrl.split('/')
   const repoName = repoParts.pop()
   const repoOwner = repoParts.pop()
@@ -27,9 +28,14 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, r
     throw new Error(`Could not parse repo owner & name from ${repoUrl}`)
   }
 
-  console.info('Check README files')
-
   const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
+
+  if (pkg.private) {
+    console.info('Private module found, skipping README file check')
+    return
+  }
+
+  console.info('Check README files')
 
   const readmePath = path.join(projectDir, 'README.md')
   let readmeContents = ''
@@ -68,6 +74,11 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, r
   // remove existing header, CI link, etc
   file.children.forEach((child) => {
     const rendered = writeMarkdown(child).toLowerCase()
+
+    if (child.type === 'heading' && rendered.includes(pkg.name)) {
+      // skip heading
+      return
+    }
 
     if (skipBlockHeader > -1 && child.type === 'heading' && child.depth <= skipBlockHeader) {
       skipBlockHeader = -1
@@ -149,10 +160,10 @@ export async function checkReadme (projectDir, repoUrl, defaultBranch, ciFile, r
   }
 
   if (fs.existsSync(path.join(projectDir, 'typedoc.json')) || pkg.scripts.docs != null) {
-    apiDocs = parseMarkdown(APIDOCS(pkg, rootManifest))
+    apiDocs = parseMarkdown(API_DOCS(pkg, rootManifest))
   }
 
-  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, webRoot, defaultBranch))
 
   readme.children = [
     ...header,

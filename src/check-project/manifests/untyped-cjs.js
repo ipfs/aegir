@@ -1,4 +1,4 @@
-import mergeOptions from 'merge-options'
+import mergeOptions from '../../utils/merge-options.js'
 import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,
@@ -8,12 +8,24 @@ import {
 const merge = mergeOptions.bind({ ignoreUndefined: true })
 
 /**
- * @param {any} manifest
- * @param {string} branchName
- * @param {string} repoUrl
- * @param {string} [homePage]
+ * @param {import('../index.js').ProcessManifestContext} context
  */
-export async function untypedCJSManifest (manifest, branchName, repoUrl, homePage = repoUrl) {
+export async function untypedCJSManifest (context) {
+  const { manifest, branchName, repoUrl, homePage } = context
+  let release
+  const scripts = {
+    ...manifest.scripts
+  }
+
+  if (context.releaseType === 'semantic-release') {
+    scripts.release = 'aegir release'
+    release = semanticReleaseConfig(branchName)
+  }
+
+  if (context.releaseType === 'release-please') {
+    delete scripts.release
+  }
+
   let proposedManifest = constructManifest(manifest, {
     main: 'src/index.js',
     files: [
@@ -26,7 +38,8 @@ export async function untypedCJSManifest (manifest, branchName, repoUrl, homePag
         project: true
       }
     }, manifest.eslintConfig),
-    release: (manifest.scripts?.release?.includes('semantic-release') || manifest.scripts?.release?.includes('aegir release')) ? semanticReleaseConfig(branchName) : undefined
+    release,
+    scripts
   }, repoUrl, homePage)
 
   const rest = {

@@ -4,8 +4,7 @@ import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
 import {
-  exec,
-  glob
+  exec, getSubProjectDirectories
 } from '../utils.js'
 
 /**
@@ -26,10 +25,10 @@ const isDevDep = (name, pkg) => {
 
 /**
  * @param {string} name
- * @param {{ optionalDendencies: any; }} pkg
+ * @param {{ optionalDependencies: any; }} pkg
  */
 const isOptionalDep = (name, pkg) => {
-  return Object.keys(pkg.optionalDendencies || {}).filter(dep => dep === name).pop()
+  return Object.keys(pkg.optionalDependencies || {}).filter(dep => dep === name).pop()
 }
 
 /**
@@ -197,10 +196,8 @@ const testMonoRepo = async (targetDir, deps, scriptName) => {
   }
 
   // test each package that depends on passed deps
-  for (const pattern of config.workspaces) {
-    for await (const match of glob(targetDir, pattern)) {
-      await testModule(path.join(targetDir, match), deps, scriptName)
-    }
+  for (const match of await getSubProjectDirectories(targetDir, config.workspaces)) {
+    await testModule(path.join(targetDir, match), deps, scriptName)
   }
 }
 

@@ -1,5 +1,5 @@
 import { execa } from 'execa'
-import pmap from 'p-map'
+import pMap from 'p-map'
 import browser from './browser.js'
 import electron from './electron.js'
 import node from './node.js'
@@ -111,7 +111,7 @@ export default {
    * @param {ExecaOptions} execaOptions
    */
   run (opts, execaOptions = {}) {
-    return pmap(TASKS, (task) => {
+    return pMap(TASKS, (task) => {
       if (!task.enabled(opts)) {
         return Promise.resolve()
       }

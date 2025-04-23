@@ -7,11 +7,15 @@ inputs:
   docker-username:
     description: 'Docker username'
     required: false
+  docker-registry:
+    description: 'Docker registry'
+    default: 'ghcr.io'
+    required: false
 runs:
   using: composite
   steps:
     - run: |
           if [[ -n "${{ inputs.docker-token }}" ]] && [[ -n "${{ inputs.docker-username }}" ]]; then
-            echo "${{ inputs.docker-token }}" | docker login -u "${{ inputs.docker-username }}" --password-stdin
+            echo "${{ inputs.docker-token }}" | docker login -u "${{ inputs.docker-username }}" --password-stdin ${{ inputs.docker-registry }}
           fi
       shell: bash

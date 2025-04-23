@@ -1,7 +1,7 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { execa } from 'execa'
-import merge from 'merge-options'
+import merge from '../utils/merge-options.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -29,8 +29,10 @@ export default async (argv, execaOptions) => {
   const files = argv.files.length > 0
     ? argv.files
     : [
-        'test/**/*.spec.{js,ts,cjs,mjs}',
-        'test/browser.{js,ts,cjs,mjs}'
+        'test/**/*.spec.*js',
+        'test/**/*.spec.ts',
+        'test/browser.*js',
+        'test/browser.ts'
       ]
 
   // before hook

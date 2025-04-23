@@ -4,13 +4,38 @@ import {
 } from '../utils.js'
 
 /**
- * @param {any} manifest
- * @param {string} repoUrl
- * @param {string} [homePage]
+ * @param {import('../index.js').ProcessManifestContext} context
  */
-export async function monorepoManifest (manifest, repoUrl, homePage = repoUrl) {
+export async function monorepoManifest (context) {
+  const { manifest, repoUrl, homePage } = context
+
+  const scripts = {
+    ...manifest.scripts
+  }
+
+  const devDependencies = manifest.devDependencies ?? {}
+
+  if (context.releaseType === 'semantic-release') {
+    scripts.release = 'run-s build npm:release docs'
+    scripts['npm:release'] = 'aegir run release'
+    scripts.docs = 'aegir docs'
+
+    delete manifest.release
+    devDependencies['npm-run-all'] = '^4.1.5'
+  }
+
+  if (context.releaseType === 'release-please') {
+    scripts.release = 'run-s build npm:release docs'
+    scripts['npm:release'] = 'aegir exec --bail false npm -- publish'
+    scripts['release:rc'] = 'aegir release-rc'
+    scripts.docs = 'aegir docs'
+
+    devDependencies['npm-run-all'] = '^4.1.5'
+  }
+
   let proposedManifest = constructManifest(manifest, {
-    private: true
+    private: true,
+    scripts
   }, repoUrl, homePage)
 
   const rest = {

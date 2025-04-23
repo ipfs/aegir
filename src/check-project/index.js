@@ -4,13 +4,15 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { execa } from 'execa'
 import fs from 'fs-extra'
+import latestVersion from 'latest-version'
 import Listr from 'listr'
 import prompt from 'prompt'
 import semver from 'semver'
 import yargsParser from 'yargs-parser'
 import {
+  getSubProjectDirectories,
   isMonorepoProject,
-  glob
+  usesReleasePlease
 } from '../utils.js'
 import { checkBuildFiles } from './check-build-files.js'
 import { checkLicenseFiles } from './check-licence-files.js'
@@ -57,7 +59,7 @@ async function getConfig (projectDir) {
     .then(res => execa('basename', [res.stdout]))
     .then(res => res.stdout)
     .catch(() => {
-      return 'master'
+      return 'main'
     })
   const repoUrl = await execa('git', ['remote', 'get-url', 'origin'], {
     cwd: projectDir
@@ -111,39 +113,67 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
   }
 
   const projectDirs = []
+  const webRoot = `${repoUrl}/tree/${branchName}`
 
-  for (const workspace of workspaces) {
-    for await (const subProjectDir of glob('.', workspace, {
-      cwd: projectDir,
-      absolute: true
-    })) {
-      const stat = await fs.stat(subProjectDir)
-
-      if (!stat.isDirectory()) {
-        continue
+  const { releaseType } = await prompt.get({
+    properties: {
+      releaseType: {
+        description: 'Monorepo release type: semantic-release | release-please',
+        required: true,
+        conform: (value) => {
+          return ['semantic-release', 'release-please'].includes(value)
+        },
+        default: usesReleasePlease() ? 'release-please' : 'semantic-release'
       }
-
-      const manfest = path.join(subProjectDir, 'package.json')
-
-      if (!fs.existsSync(manfest)) {
-        continue
-      }
-
-      const pkg = fs.readJSONSync(manfest)
-      const homePage = `${repoUrl}/tree/${branchName}${subProjectDir.substring(projectDir.length)}`
-
-      console.info('Found monorepo project', pkg.name)
-
-      await processModule(subProjectDir, pkg, branchName, repoUrl, homePage, ciFile, manifest)
-
-      projectDirs.push(subProjectDir)
     }
+  })
+
+  if (releaseType !== 'release-please' && releaseType !== 'semantic-release') {
+    throw new Error('Invalid release type specified')
+  }
+
+  for (const subProjectDir of await getSubProjectDirectories(projectDir, workspaces)) {
+    const stat = await fs.stat(subProjectDir)
+
+    if (!stat.isDirectory()) {
+      continue
+    }
+
+    const manifest = path.join(subProjectDir, 'package.json')
+
+    if (!fs.existsSync(manifest)) {
+      continue
+    }
+
+    const pkg = fs.readJSONSync(manifest)
+    const homePage = `${webRoot}/${subProjectDir.includes(projectDir) ? subProjectDir.substring(projectDir.length) : subProjectDir}`
+
+    console.info('Found monorepo project', pkg.name)
+
+    await processModule({
+      projectDir: subProjectDir,
+      manifest: pkg,
+      branchName,
+      repoUrl,
+      homePage,
+      ciFile,
+      rootManifest: manifest,
+      releaseType
+    })
+
+    projectDirs.push(subProjectDir)
   }
 
   await alignMonorepoProjectDependencies(projectDirs)
   await configureMonorepoProjectReferences(projectDirs)
 
-  let proposedManifest = await monorepoManifest(manifest, repoUrl)
+  let proposedManifest = await monorepoManifest({
+    manifest,
+    repoUrl,
+    homePage: repoUrl,
+    branchName,
+    releaseType
+  })
   proposedManifest = sortManifest(proposedManifest)
 
   await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(proposedManifest, null, 2))
@@ -152,7 +182,7 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
   }))
   await checkLicenseFiles(projectDir)
   await checkBuildFiles(projectDir, branchName, repoUrl)
-  await checkMonorepoReadme(projectDir, repoUrl, branchName, projectDirs, ciFile)
+  await checkMonorepoReadme(projectDir, repoUrl, webRoot, branchName, projectDirs, ciFile)
   await checkMonorepoFiles(projectDir)
 }
 
@@ -160,38 +190,33 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
  * @param {string[]} projectDirs
  */
 async function alignMonorepoProjectDependencies (projectDirs) {
-  console.info('Align monorepo project dependencies')
-
   /** @type {Record<string, string>} */
   const siblingVersions = {}
   /** @type {Record<string, string>} */
   const deps = {}
-  /** @type {Record<string, string>} */
-  const devDeps = {}
-  /** @type {Record<string, string>} */
-  const optionalDeps = {}
-  /** @type {Record<string, string>} */
-  const peerDeps = {}
 
   // first loop over every project and choose the most recent version of a given dep
   for (const projectDir of projectDirs) {
     const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
     siblingVersions[pkg.name] = calculateSiblingVersion(pkg.version)
 
-    chooseVersions(pkg.dependencies || {}, deps)
-    chooseVersions(pkg.devDependencies || {}, devDeps)
-    chooseVersions(pkg.optionalDependencies || {}, optionalDeps)
-    chooseVersions(pkg.peerDependencies || {}, peerDeps)
+    chooseVersions(pkg.dependencies ?? {}, deps)
+    chooseVersions(pkg.devDependencies ?? {}, deps)
+    chooseVersions(pkg.optionalDependencies ?? {}, deps)
+    chooseVersions(pkg.peerDependencies ?? {}, deps)
   }
+
+  // get the latest patch release of every dep from npm
+  await findLatestVersions(deps)
 
   // now propose the most recent version of a dep for all projects
   for (const projectDir of projectDirs) {
     const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
-    selectVersions(pkg.dependencies || {}, deps, siblingVersions)
-    selectVersions(pkg.devDependencies || {}, devDeps, siblingVersions)
-    selectVersions(pkg.optionalDependencies || {}, optionalDeps, siblingVersions)
-    selectVersions(pkg.peerDependencies || {}, peerDeps, siblingVersions)
+    selectVersions(pkg.dependencies ?? {}, deps, siblingVersions)
+    selectVersions(pkg.devDependencies ?? {}, deps, siblingVersions)
+    selectVersions(pkg.optionalDependencies ?? {}, deps, siblingVersions)
+    selectVersions(pkg.peerDependencies ?? {}, deps, siblingVersions)
 
     await ensureFileHasContents(projectDir, 'package.json', JSON.stringify(pkg, null, 2))
   }
@@ -202,23 +227,36 @@ async function alignMonorepoProjectDependencies (projectDirs) {
  * @param {Record<string, string>} list
  */
 function chooseVersions (deps, list) {
-  Object.entries(deps).forEach(([key, value]) => {
+  for (const [dep, version] of Object.entries(deps)) {
     // not seen this dep before
-    if (!list[key]) {
-      list[key] = value
-      return
+    if (list[dep] == null) {
+      list[dep] = version
+      continue
     }
 
-    const existingVersion = semver.minVersion(list[key])
-    const moduleVersion = semver.minVersion(value)
-
-    // take the most recent range or version
-    const res = semver.compare(existingVersion ?? '0.0.0', moduleVersion ?? '0.0.0')
-
-    if (res === -1) {
-      list[key] = value
+    // test for later version
+    if (semver.gt(version.replace(/\^|~/, ''), list[dep].replace(/\^|~/, ''))) {
+      list[dep] = version
     }
-  })
+  }
+}
+
+/**
+ * @param {Record<string, string>} deps
+ */
+async function findLatestVersions (deps) {
+  // find the latest semver-compatible release from npm
+  for (const [key, value] of Object.entries(deps)) {
+    try {
+      const npmVersion = `^${await latestVersion(key, { version: value })}`
+
+      console.info(key, 'local version:', value, 'npm version:', npmVersion)
+
+      deps[key] = npmVersion
+    } catch (err) {
+      console.error(`Could not load latest npm version of "${key}"`, err)
+    }
+  }
 }
 
 /**
@@ -226,10 +264,15 @@ function chooseVersions (deps, list) {
  * @param {Record<string, string>} list
  * @param {Record<string, string>} siblingVersions
  */
-function selectVersions (deps, list, siblingVersions) {
-  Object.entries(list).forEach(([key, value]) => {
+async function selectVersions (deps, list, siblingVersions) {
+  // release-please updates sibling versions to the latest patch releases but
+  // we try to update to the latest minor so skip that if release please is
+  // in use
+  const ignoreSiblingDeps = usesReleasePlease()
+
+  for (const [key, value] of Object.entries(list)) {
     if (deps[key] != null) {
-      if (siblingVersions[key] != null) {
+      if (siblingVersions[key] != null && !ignoreSiblingDeps) {
         // take sibling version if available
         deps[key] = siblingVersions[key]
       } else {
@@ -237,7 +280,7 @@ function selectVersions (deps, list, siblingVersions) {
         deps[key] = value
       }
     }
-  })
+  }
 }
 
 /**
@@ -313,7 +356,9 @@ function addReferences (deps, references, refs) {
  * @param {string} ciFile
  */
 async function processProject (projectDir, manifest, branchName, repoUrl, ciFile) {
-  await processModule(projectDir, manifest, branchName, repoUrl, repoUrl, ciFile)
+  const releaseType = 'semantic-release'
+
+  await processModule({ projectDir, manifest, branchName, repoUrl, homePage: repoUrl, ciFile, releaseType })
   await checkBuildFiles(projectDir, branchName, repoUrl)
 }
 
@@ -325,16 +370,32 @@ function isAegirProject (manifest) {
 }
 
 /**
- *
- * @param {string} projectDir
- * @param {any} manifest
- * @param {string} branchName
- * @param {string} repoUrl
- * @param {string} homePage
- * @param {string} ciFile
- * @param {any} [rootManifest]
+ * @typedef {object} ProcessModuleContext
+ * @property {string} projectDir
+ * @property {any} manifest
+ * @property {string} branchName
+ * @property {string} repoUrl
+ * @property {string} homePage
+ * @property {string} ciFile
+ * @property {any} [rootManifest]
+ * @property {"semantic-release" | "release-please"} releaseType
  */
-async function processModule (projectDir, manifest, branchName, repoUrl, homePage = repoUrl, ciFile, rootManifest) {
+
+/**
+ * @typedef {object} ProcessManifestContext
+ * @property {any} manifest
+ * @property {string} branchName
+ * @property {string} repoUrl
+ * @property {string} homePage
+ * @property {"semantic-release" | "release-please"} releaseType
+ */
+
+/**
+ * @param {ProcessModuleContext} context
+ */
+async function processModule (context) {
+  const { projectDir, manifest, branchName, repoUrl, homePage = repoUrl, ciFile, rootManifest, releaseType } = context
+
   if (!isAegirProject(manifest) && manifest.name !== 'aegir') {
     throw new Error(`"${projectDir}" is not an aegir project`)
   }
@@ -363,6 +424,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   // 5. CJS, no types
   let untypedCJS = cjs && hasMain
 
+  /** @type any */
   let proposedManifest = {}
 
   if (!typescript && !typedESM && !typedCJS && !untypedCJS) {
@@ -370,17 +432,20 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
     const { projectType } = await prompt.get({
       properties: {
         projectType: {
-          description: 'Project type: typescript | typedESM | typedCJS | untypedESM | untypedCJS',
+          description: 'Project type: typescript | typedESM | typedCJS | untypedESM | untypedCJS | skip',
           required: true,
           conform: (value) => {
-            return ['typescript', 'typedESM', 'typedCJS', 'untypedESM', 'untypedCJS'].includes(value)
+            return ['typescript', 'typedESM', 'typedCJS', 'untypedESM', 'untypedCJS', 'skip'].includes(value)
           },
-          default: 'typescript'
+          default: 'skip'
         }
       }
     })
 
-    if (projectType === 'typescript') {
+    if (projectType === 'skip') {
+      console.info('Skipping', manifest.name)
+      return
+    } else if (projectType === 'typescript') {
       typescript = true
     } else if (projectType === 'typedESM') {
       typedESM = true
@@ -397,19 +462,19 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
 
   if (typescript) {
     console.info('TypeScript project detected')
-    proposedManifest = await typescriptManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await typescriptManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else if (typedESM) {
     console.info('Typed ESM project detected')
-    proposedManifest = await typedESMManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await typedESMManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else if (typedCJS) {
     console.info('Typed CJS project detected')
-    proposedManifest = await typedCJSManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await typedCJSManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else if (untypedESM) {
     console.info('Untyped ESM project detected')
-    proposedManifest = await untypedESMManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await untypedESMManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else if (untypedCJS) {
     console.info('Untyped CJS project detected')
-    proposedManifest = await untypedCJSManifest(manifest, branchName, repoUrl, homePage)
+    proposedManifest = await untypedCJSManifest({ manifest, branchName, repoUrl, homePage, releaseType })
   } else {
     throw new Error('Cannot determine project type')
   }
@@ -425,7 +490,7 @@ async function processModule (projectDir, manifest, branchName, repoUrl, homePag
   }
 
   await checkLicenseFiles(projectDir)
-  await checkReadme(projectDir, repoUrl, branchName, ciFile, rootManifest)
+  await checkReadme(projectDir, repoUrl, homePage, branchName, ciFile, rootManifest)
   await checkTypedocFiles(projectDir, typescript)
 }
 
@@ -438,13 +503,14 @@ export default new Listr([
       const { branchName, repoUrl } = await getConfig(projectDir)
       const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
       const monorepo = manifest.workspaces != null
+      const defaultCiFile = fs.existsSync(path.resolve(process.cwd(), '.github', 'workflows', 'main.yml')) ? 'main.yml' : 'js-test-and-release.yml'
 
       const ciFile = (await prompt.get({
         properties: {
           ciFile: {
             description: 'ciFile',
             required: true,
-            default: 'js-test-and-release.yml'
+            default: defaultCiFile
           }
         }
       })).ciFile.toString()

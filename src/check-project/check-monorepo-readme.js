@@ -3,7 +3,7 @@
 
 import path from 'path'
 import fs from 'fs-extra'
-import { APIDOCS } from './readme/api-docs.js'
+import { API_DOCS } from './readme/api-docs.js'
 import { HEADER } from './readme/header.js'
 import { LICENSE } from './readme/license.js'
 import { STRUCTURE } from './readme/structure.js'
@@ -15,11 +15,12 @@ import {
 /**
  * @param {string} projectDir
  * @param {string} repoUrl
+ * @param {string} webRoot
  * @param {string} defaultBranch
  * @param {string[]} projectDirs
  * @param {string} ciFile
  */
-export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, projectDirs, ciFile) {
+export async function checkMonorepoReadme (projectDir, repoUrl, webRoot, defaultBranch, projectDirs, ciFile) {
   const repoParts = repoUrl.split('/')
   const repoName = repoParts.pop()
   const repoOwner = repoParts.pop()
@@ -28,7 +29,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
     throw new Error(`Could not parse repo owner & name from ${repoUrl}`)
   }
 
-  console.info('Check README files')
+  console.info('Check monorepo README files')
 
   const pkg = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
@@ -69,6 +70,11 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
   // remove existing header, CI link, etc
   file.children.forEach((child) => {
     const rendered = writeMarkdown(child).toLowerCase()
+
+    if (child.type === 'heading' && rendered.includes(pkg.name)) {
+      // skip heading
+      return
+    }
 
     if (skipBlockHeader > -1 && child.type === 'heading' && child.depth <= skipBlockHeader) {
       skipBlockHeader = -1
@@ -141,7 +147,7 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
     other.push(child)
   })
 
-  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, defaultBranch))
+  const license = parseMarkdown(LICENSE(pkg, repoOwner, repoName, webRoot, defaultBranch))
 
   /** @type {import('mdast').Root} */
   let apiDocs = {
@@ -150,10 +156,10 @@ export async function checkMonorepoReadme (projectDir, repoUrl, defaultBranch, p
   }
 
   if (fs.existsSync(path.join(projectDir, 'typedoc.json')) || pkg.scripts.docs != null) {
-    apiDocs = parseMarkdown(APIDOCS(pkg))
+    apiDocs = parseMarkdown(API_DOCS(pkg))
   }
 
-  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs))
+  const structure = parseMarkdown(STRUCTURE(projectDir, projectDirs, webRoot))
 
   readme.children = [
     ...header,

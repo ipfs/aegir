@@ -77,7 +77,7 @@ When installing a dependency from a git url (ie. PRs depending on other PRs) the
 
 ## Adding types with JSDoc
 
-Typescript can infere lots of the types without any help, but you can improve your code types by using just JSDoc for that follow the official TS documentation https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html.
+Typescript can infer lots of the types without any help, but you can improve your code types by using just JSDoc for that follow the official TS documentation https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html.
 
 ## Manage dependencies types
 When dependencies don't publish types you have two options.
@@ -179,7 +179,7 @@ export type IntersectionType = Type1 & Type2
 /** @type { import('./types').IntersectionType } */
 const list
 ```
-You can also organise your source types in the same way as [vendored types](#vendor-type-declarations).
+You can also organize your source types in the same way as [vendored types](#vendor-type-declarations).
 
 Create a folder inside the `types` folder called `self` or the package name. Then you can import like you would a third party type.
 

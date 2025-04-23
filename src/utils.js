@@ -14,10 +14,10 @@ import { download } from '@electron/get'
 import envPaths from 'env-paths'
 import { execa } from 'execa'
 import extract from 'extract-zip'
+import fg from 'fast-glob'
 import fs from 'fs-extra'
 import kleur from 'kleur'
 import Listr from 'listr'
-import { minimatch } from 'minimatch'
 import PQueue from 'p-queue'
 import lockfile from 'proper-lockfile'
 import { readPackageUpSync } from 'read-pkg-up'
@@ -272,9 +272,51 @@ export const isTypedCJS = isCJS && hasMain && hasTypes
 export const isUntypedCJS = isCJS && hasMain
 
 export const isMonorepoProject = (dir = process.cwd()) => {
-  const parentManifestPath = path.resolve(dir, '..', '..', 'package.json')
+  const cwd = path.resolve(dir, '..')
+  const manifest = readPackageUpSync({
+    cwd
+  })
 
-  return Boolean(fs.existsSync(parentManifestPath) && fs.readJSONSync(parentManifestPath).workspaces)
+  return manifest?.packageJson.workspaces != null
+}
+
+export const isMonorepoRoot = (dir = process.cwd()) => {
+  const manifest = readPackageUpSync({
+    cwd: dir
+  })
+
+  return manifest?.packageJson.workspaces != null
+}
+
+export const usesReleasePlease = (dir = process.cwd()) => {
+  try {
+    const mainYmlPath = path.resolve(dir, '.github', 'workflows', 'main.yml')
+    const contents = fs.readFileSync(mainYmlPath, {
+      encoding: 'utf-8'
+    })
+
+    return contents.includes('release-please-action')
+  } catch {
+    return false
+  }
+}
+
+export const usesSemanticReleaseMonorepo = (dir = process.cwd()) => {
+  try {
+    if (pkg.private) {
+      return false
+    }
+
+    const cwd = path.resolve(dir, '..')
+    const rootManifest = readPackageUpSync({
+      cwd
+    })
+
+    return Object.values(rootManifest?.packageJson.scripts ?? {})
+      .some(script => script.includes('aegir run release'))
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -378,40 +420,47 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
  * @param {string} projectDir
  * @param {string[]} workspaces
  */
+export const getSubProjectDirectories = (projectDir, workspaces) => {
+  return fg.globSync(workspaces, {
+    cwd: projectDir,
+    onlyFiles: false
+  })
+}
+
+/**
+ *
+ * @param {string} projectDir
+ * @param {string[]} workspaces
+ */
 export function parseProjects (projectDir, workspaces) {
   /** @type {Record<string, Project>} */
   const projects = {}
 
-  for (const workspace of workspaces) {
-    for (const subProjectDir of glob('.', workspace, {
-      cwd: projectDir,
-      absolute: true
-    })) {
-      const stat = fs.statSync(subProjectDir)
+  for (const subProjectDir of getSubProjectDirectories(projectDir, workspaces)) {
+    const stat = fs.statSync(subProjectDir)
 
-      if (!stat.isDirectory()) {
-        continue
-      }
+    if (!stat.isDirectory()) {
+      continue
+    }
 
-      const manfest = path.join(subProjectDir, 'package.json')
+    const manifest = path.join(subProjectDir, 'package.json')
 
-      if (!fs.existsSync(manfest)) {
-        continue
-      }
+    if (!fs.existsSync(manifest)) {
+      continue
+    }
 
-      const pkg = fs.readJSONSync(manfest)
+    const pkg = fs.readJSONSync(manifest)
 
-      projects[pkg.name] = {
-        manifest: pkg,
-        dir: subProjectDir,
-        siblingDependencies: [],
-        dependencies: [
-          ...Object.keys(pkg.dependencies ?? {}),
-          ...Object.keys(pkg.devDependencies ?? {}),
-          ...Object.keys(pkg.optionalDependencies ?? {}),
-          ...Object.keys(pkg.peerDependencies ?? {})
-        ]
-      }
+    projects[pkg.name] = {
+      manifest: pkg,
+      dir: subProjectDir,
+      siblingDependencies: [],
+      dependencies: [
+        ...Object.keys(pkg.dependencies ?? {}),
+        ...Object.keys(pkg.devDependencies ?? {}),
+        ...Object.keys(pkg.optionalDependencies ?? {}),
+        ...Object.keys(pkg.peerDependencies ?? {})
+      ]
     }
   }
 
@@ -477,92 +526,6 @@ function checkForCircularDependencies (projects) {
         throw new Error(`Circular dependency detected: ${chain.join(' -> ')}`)
       }
     }
-  }
-}
-
-/**
- * @typedef {object} GlobOptions
- * @property {string} [cwd] The current working directory
- * @property {boolean} [absolute] If true produces absolute paths (default: false)
- * @property {boolean} [nodir] If true yields file paths and skip directories (default: false)
- *
- * Iterable filename pattern matcher
- *
- * @param {string} dir
- * @param {string} pattern
- * @param {GlobOptions & import('minimatch').MinimatchOptions} [options]
- * @returns {Generator<string, void, undefined>}
- */
-export function * glob (dir, pattern, options = {}) {
-  const absoluteDir = path.resolve(dir)
-  const relativeDir = path.relative(options.cwd ?? process.cwd(), dir)
-
-  const stats = fs.statSync(absoluteDir)
-
-  if (stats.isDirectory()) {
-    for (const entry of _glob(absoluteDir, '', pattern, options)) {
-      yield entry
-    }
-
-    return
-  }
-
-  if (minimatch(relativeDir, pattern, options)) {
-    yield options.absolute === true ? absoluteDir : relativeDir
-  }
-}
-
-/**
- * @param {string} base
- * @param {string} dir
- * @param {string} pattern
- * @param {GlobOptions & import('minimatch').MinimatchOptions} options
- * @returns {Generator<string, void, undefined>}
- */
-function * _glob (base, dir, pattern, options) {
-  const p = path.join(base, dir)
-
-  if (!fs.existsSync(p)) {
-    return
-  }
-
-  const stats = fs.statSync(p)
-
-  if (!stats.isDirectory()) {
-    return
-  }
-
-  const d = fs.opendirSync(p)
-
-  try {
-    while (true) {
-      const entry = d.readSync()
-
-      if (entry == null) {
-        break
-      }
-
-      const relativeEntryPath = path.join(dir, entry.name)
-      const absoluteEntryPath = path.join(base, dir, entry.name)
-
-      let match = minimatch(relativeEntryPath, pattern, options)
-
-      const isDirectory = entry.isDirectory()
-
-      if (isDirectory && options.nodir === true) {
-        match = false
-      }
-
-      if (match) {
-        yield options.absolute === true ? absoluteEntryPath : relativeEntryPath
-      }
-
-      if (isDirectory) {
-        yield * _glob(base, relativeEntryPath, pattern, options)
-      }
-    }
-  } finally {
-    d.closeSync()
   }
 }
 

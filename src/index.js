@@ -2,9 +2,9 @@
 /* eslint-disable no-console */
 
 import { readPackageUpSync } from 'read-pkg-up'
-import updateNotifier from 'update-notifier'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import alignVersionsCmd from './cmds/align-versions.js'
 import buildCmd from './cmds/build.js'
 import checkProjectCmd from './cmds/check-project.js'
 import checkCmd from './cmds/check.js'
@@ -18,6 +18,7 @@ import lintCmd from './cmds/lint.js'
 import releaseRcCmd from './cmds/release-rc.js'
 import releaseCmd from './cmds/release.js'
 import runCmd from './cmds/run.js'
+import spellCheckCmd from './cmds/spell-check.js'
 import testDependantCmd from './cmds/test-dependant.js'
 import testCmd from './cmds/test.js'
 import { loadUserConfig } from './config/user.js'
@@ -45,10 +46,6 @@ async function main () {
   if (!pkg) {
     throw new Error('Could not read package.json')
   }
-
-  updateNotifier({
-    pkg: pkg.packageJson
-  }).notify()
 
   const userConfig = await loadUserConfig()
 
@@ -97,6 +94,8 @@ async function main () {
   res.command(testCmd)
   res.command(execCmd)
   res.command(runCmd)
+  res.command(alignVersionsCmd)
+  res.command(spellCheckCmd)
 
   try {
     await res.parse()

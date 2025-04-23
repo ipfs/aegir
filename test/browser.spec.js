@@ -10,7 +10,14 @@ describe('browser', () => {
     expect(uint8ArrayToString(myFixture)).to.be.eql('Hello Fixture\n')
   })
 
+  it('should load tar.gz fixures', () => {
+    const myFixture = loadFixture('test/fixtures/file.tar.gz')
+    // spell-checker: disable-next-line
+    expect(uint8ArrayToString(myFixture, 'base64')).to.equal('H4sICIlTHVIACw')
+  })
+
   it('non existing fixtures', () => {
+    // spell-checker: disable-next-line
     expect(() => loadFixture('/test/fixtures/asdalkdjaskldjatest.txt'))
       .to.throw()
   })

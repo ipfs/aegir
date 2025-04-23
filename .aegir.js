@@ -9,7 +9,7 @@ export default {
             'buffer',
             'c8',
             'conventional-changelog-conventionalcommits',
-            'electron-mocha-main',
+            'electron-mocha',
             'mocha',
             'npm-package-json-lint',
             'nyc',
@@ -21,7 +21,10 @@ export default {
             'source-map-support',
             'typedoc-plugin-mdn-links',
             'typedoc-plugin-missing-exports',
-            'electron'
+            'electron',
+            'bytes',
+            'pascalcase',
+            'cspell'
         ]
     }
 }

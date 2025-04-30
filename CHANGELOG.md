@@ -1,3 +1,9 @@
+## [45.2.1](https://github.com/ipfs/aegir/compare/v45.2.0...v45.2.1) (2025-04-23)
+
+### Dependencies
+
+* **dev:** bump electron from 34.2.0 to 35.2.0 ([#1783](https://github.com/ipfs/aegir/issues/1783)) ([5eac0cd](https://github.com/ipfs/aegir/commit/5eac0cd89c0c98b8dca115ba89fb0827a5bb45b8))
+
 ## [45.2.0](https://github.com/ipfs/aegir/compare/v45.1.4...v45.2.0) (2025-04-22)
 
 ### Features

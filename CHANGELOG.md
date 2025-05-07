@@ -1,3 +1,17 @@
+## [46.0.0](https://github.com/ipfs/aegir/compare/v45.2.1...v46.0.0) (2025-05-07)
+
+### ⚠ BREAKING CHANGES
+
+* bump eslint-config-ipfs from 7.0.6 to 8.0.0 (#1791)
+
+### Trivial Changes
+
+* remove lockfile ([16e55c0](https://github.com/ipfs/aegir/commit/16e55c08fa385d4cfc7ab696e8eb5a29ace894a3))
+
+### Dependencies
+
+* bump eslint-config-ipfs from 7.0.6 to 8.0.0 ([#1791](https://github.com/ipfs/aegir/issues/1791)) ([53a0da1](https://github.com/ipfs/aegir/commit/53a0da1c2c2231d6aaa93160dc72784dffa33605))
+
 ## [45.2.1](https://github.com/ipfs/aegir/compare/v45.2.0...v45.2.1) (2025-04-23)
 
 ### Dependencies

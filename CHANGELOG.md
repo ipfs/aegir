@@ -1,3 +1,9 @@
+## [46.0.1](https://github.com/ipfs/aegir/compare/v46.0.0...v46.0.1) (2025-05-12)
+
+### Bug Fixes
+
+* ignore lockfile in release commit ([5cf1266](https://github.com/ipfs/aegir/commit/5cf1266eab71f19b1aad69be1ea7a36db0926cd4))
+
 ## [46.0.0](https://github.com/ipfs/aegir/compare/v45.2.1...v46.0.0) (2025-05-07)
 
 ### ⚠ BREAKING CHANGES

@@ -66,7 +66,9 @@ export const semanticReleaseConfig = (branchName) => {
       '@semantic-release/changelog',
       '@semantic-release/npm',
       '@semantic-release/github',
-      '@semantic-release/git'
+      ['@semantic-release/git', {
+        assets: ['CHANGELOG.md', 'package.json']
+      }]
     ]
   }
 }

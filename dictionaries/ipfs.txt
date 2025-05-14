@@ -275,3 +275,10 @@ avds
 askpass
 mdast
 conventionalcommits
+ipip
+pathing
+parseable
+dweb
+tlru
+hashlru
+peerid

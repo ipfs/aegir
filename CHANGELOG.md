@@ -1,3 +1,9 @@
+## [46.0.2](https://github.com/ipfs/aegir/compare/v46.0.1...v46.0.2) (2025-05-14)
+
+### Bug Fixes
+
+* update cspell to parse IPFS/IPNS urls ([527e388](https://github.com/ipfs/aegir/commit/527e388705f619dc47be0e9958e3213d0e570d0d))
+
 ## [46.0.1](https://github.com/ipfs/aegir/compare/v46.0.0...v46.0.1) (2025-05-12)
 
 ### Bug Fixes

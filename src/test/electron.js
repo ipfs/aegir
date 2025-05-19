@@ -8,8 +8,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
- * @typedef {import('./../types').TestOptions} TestOptions
- * @typedef {import('./../types').GlobalOptions} GlobalOptions
+ * @typedef {import('../types.js').TestOptions} TestOptions
+ * @typedef {import('../types.js').GlobalOptions} GlobalOptions
  */
 
 /**

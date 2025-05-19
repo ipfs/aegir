@@ -20,8 +20,8 @@ const ignoredDevDependencies = [
 
 /**
  * @typedef {import("listr").ListrTaskWrapper} Task
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").DependencyCheckOptions} DependencyCheckOptions
+ * @typedef {import('./types.js').GlobalOptions} GlobalOptions
+ * @typedef {import('./types.js').DependencyCheckOptions} DependencyCheckOptions
  */
 
 const tasks = new Listr(

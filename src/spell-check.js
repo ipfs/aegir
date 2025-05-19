@@ -4,7 +4,7 @@ import { execa } from 'execa'
 import Listr from 'listr'
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
+ * @typedef {import('./types.js').GlobalOptions} GlobalOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  * @typedef {import("ts-node").TSError} TSError
  */

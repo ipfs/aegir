@@ -8,8 +8,8 @@ import { compileSnippets } from 'typescript-docs-verifier'
 import merge from './utils/merge-options.js'
 import { formatCode, formatError, fromRoot, hasTsconfig, readJson } from './utils.js'
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").DocsVerifierOptions} DocsVerifierOptions
+ * @typedef {import('./types.js').GlobalOptions} GlobalOptions
+ * @typedef {import('./types.js').DocsVerifierOptions} DocsVerifierOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  * @typedef {import("ts-node").TSError} TSError
  */

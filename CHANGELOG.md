@@ -1,3 +1,9 @@
+## [47.0.1](https://github.com/ipfs/aegir/compare/v47.0.0...v47.0.1) (2025-05-19)
+
+### Dependencies
+
+* bump execa from 8.0.1 to 9.5.3 ([#1798](https://github.com/ipfs/aegir/issues/1798)) ([ce9483a](https://github.com/ipfs/aegir/commit/ce9483a7374201ada2079beb0b09e4642eff2a5e))
+
 ## [47.0.0](https://github.com/ipfs/aegir/compare/v46.0.5...v47.0.0) (2025-05-19)
 
 ### ⚠ BREAKING CHANGES

@@ -6,6 +6,7 @@ import type { EventEmitter } from 'events'
 export { garply } from './dir/index.js'
 
 export const useHerp = (): void => {
+  // @ts-ignore this is a function
   herp()
 }
 

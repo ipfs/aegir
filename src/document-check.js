@@ -59,8 +59,6 @@ const tasks = new Listr(
                 userTSConfig,
                 {
                   compilerOptions: {
-                    target: 'esnext',
-                    module: 'esnext',
                     noImplicitAny: true,
                     noEmit: true,
                     skipLibCheck: true

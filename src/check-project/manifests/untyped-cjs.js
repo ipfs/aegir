@@ -1,11 +1,8 @@
-import mergeOptions from '../../utils/merge-options.js'
 import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,
   constructManifest
 } from '../utils.js'
-
-const merge = mergeOptions.bind({ ignoreUndefined: true })
 
 /**
  * @param {import('../index.js').ProcessManifestContext} context

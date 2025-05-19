@@ -208,6 +208,7 @@ runtimes
 sdp
 secio
 secp
+serviceworker
 semver
 seqno
 sha

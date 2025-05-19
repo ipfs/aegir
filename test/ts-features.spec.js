@@ -13,7 +13,6 @@ describe('ts features', () => {
   it('should support Array.toSorted', async () => {
     const arr1 = [3, 2, 1]
     const arr2 = arr1.toSorted()
-    const foo = 'bar'
 
     expect(arr1).to.not.equal(arr2)
     expect(arr2).to.deep.equal([1, 2, 3])

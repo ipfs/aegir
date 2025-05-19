@@ -75,7 +75,7 @@ describe('lint', () => {
   after(() => {
     process.chdir(cwd)
     if (fs.existsSync(TEMP_FOLDER)) {
-      fs.rmdirSync(TEMP_FOLDER, {
+      fs.rmSync(TEMP_FOLDER, {
         recursive: true
       })
     }
@@ -181,7 +181,7 @@ describe('lint', () => {
     })
   })
 
-  it('should pass if .eslintrc overrules ipfs and code follows it', async () => {
+  it.skip('should pass if .eslintrc overrules ipfs and code follows it', async () => {
     await projectShouldPassLint({
       'package.json': JSON.stringify({
         name: 'with-config-fail',

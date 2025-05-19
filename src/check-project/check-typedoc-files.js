@@ -16,7 +16,7 @@ import {
 export async function checkTypedocFiles (projectDir, isTypescriptProject) {
   const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
 
-  if (manifest.scripts.docs == null && pkg.scripts.docs == null) {
+  if (manifest.scripts.docs == null && pkg.scripts?.docs == null) {
     console.info('No "docs" npm script found, skipping typedoc.json check')
     return
   }

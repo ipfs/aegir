@@ -2,7 +2,7 @@
 
 describe('should fail', () => {
   it('unhandled promise rejection', (done) => {
-    new Promise((resolve, reject) => { // eslint-disable-line no-new
+    new Promise((resolve, reject) => {
       reject(new Error('Nope!'))
     })
 

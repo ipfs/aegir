@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { loadUserConfig } from '../config/user.js'
 import depCheck from '../dependency-check.js'
 

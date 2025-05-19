@@ -258,7 +258,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsdoc": "^50.6.17",
     "eslint-plugin-no-only-tests": "^3.3.0",
-    "execa": "^8.0.1",
+    "execa": "^9.5.3",
     "extract-zip": "^2.0.1",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.1.0",

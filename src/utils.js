@@ -561,7 +561,7 @@ export const formatCode = (code, errorLines) => {
 /**
  * Pipe subprocess output to stdio
  *
- * @param {import('execa').ExecaChildProcess} subprocess
+ * @param {import('execa').Subprocess} subprocess
  * @param {string} prefix
  * @param {boolean} [shouldPrefix]
  */

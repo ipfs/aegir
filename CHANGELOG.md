@@ -1,3 +1,12 @@
+## [46.0.5](https://github.com/ipfs/aegir/compare/v46.0.4...v46.0.5) (2025-05-19)
+
+### Dependencies
+
+* bump cspell from 8.19.4 to 9.0.1 ([#1807](https://github.com/ipfs/aegir/issues/1807)) ([c8f7d07](https://github.com/ipfs/aegir/commit/c8f7d07a730ac708d8343e555bd1345eec746900))
+* bump diff from 7.0.0 to 8.0.1 ([#1806](https://github.com/ipfs/aegir/issues/1806)) ([a982d95](https://github.com/ipfs/aegir/commit/a982d95725f75abdaf5b9bdac5cde07cf1f0910f))
+* bump eslint-plugin-jsdoc from 48.11.0 to 50.6.17 ([#1802](https://github.com/ipfs/aegir/issues/1802)) ([25b9e22](https://github.com/ipfs/aegir/commit/25b9e22930be17c9aed017029b22d9da71f02c28))
+* bump eslint-plugin-promise from 6.6.0 to 7.2.1 ([#1692](https://github.com/ipfs/aegir/issues/1692)) ([afc761e](https://github.com/ipfs/aegir/commit/afc761e2dcc7acf98853746051e371c906343019))
+
 ## [46.0.4](https://github.com/ipfs/aegir/compare/v46.0.3...v46.0.4) (2025-05-19)
 
 ### Dependencies

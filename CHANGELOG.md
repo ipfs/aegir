@@ -1,3 +1,9 @@
+## [47.0.3](https://github.com/ipfs/aegir/compare/v47.0.2...v47.0.3) (2025-05-19)
+
+### Bug Fixes
+
+* remove extra dep ([82a5977](https://github.com/ipfs/aegir/commit/82a5977e9a297b3f4407e439437bd8d8904a580d))
+
 ## [47.0.2](https://github.com/ipfs/aegir/compare/v47.0.1...v47.0.2) (2025-05-19)
 
 ### Dependencies

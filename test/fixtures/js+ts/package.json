@@ -1,3 +1,4 @@
 {
-  "name": "my-project"
+  "name": "my-project",
+  "type": "module"
 }

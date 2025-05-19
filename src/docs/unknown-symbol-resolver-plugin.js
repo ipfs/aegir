@@ -16,6 +16,7 @@ const knownSymbols = {
     Server: 'https://nodejs.org/dist/latest/docs/api/net.html#class-netserver',
     IncomingMessage: 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpincomingmessage',
     '"http".IncomingMessage': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpincomingmessage',
+    '"http".Server': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserver',
     ServerResponse: 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserverresponse',
     '"http".ServerResponse': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserverresponse',
     'global.NodeJS.ReadStream': 'https://nodejs.org/dist/latest/docs/api/tty.html#class-ttyreadstream',
@@ -41,7 +42,7 @@ const ignoreModules = [
  * `typedoc-urls.json` files from the `dist` folder of types that need
  * documenting. See `type-indexer-plugin.cjs` for how this file is generated.
  *
- * @param {import("typedoc/dist/lib/application").Application} app
+ * @param {import('typedoc').Application} app
  */
 export function load (app) {
   app.converter.addUnknownSymbolResolver((ref, refl, part, symbolId) => {
@@ -68,7 +69,7 @@ export function load (app) {
     let typeDocPath
 
     if (symbolId != null) {
-      const fileName = symbolId.fileName
+      const fileName = symbolId.fileName ?? ''
       const importPath = resolveImportPath(fileName)
 
       if (importPath != null) {
@@ -122,7 +123,7 @@ function loadTypedocUrls (moduleName) {
 }
 
 /**
- * @param {import("typedoc/dist/lib/converter/comments/declarationReference").ComponentPath[] | undefined} refs
+ * @param {import("typedoc").ComponentPath[] | undefined} refs
  */
 function calculateName (refs) {
   if (refs == null || refs.length === 0) {

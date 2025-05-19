@@ -18,43 +18,48 @@ export function load (app) {
     projects = parseProjects(process.cwd(), pkg.workspaces)
   }
 
-  // when rendering has finished, work out which UrlMappings refer to the index
-  // pages of the current module or monorepo packages
-  app.renderer.on(td.RendererEvent.END, (/** @type {td.RendererEvent} */ evt) => {
-    const urlMappings = evt.urls?.filter(urlMapping => {
+  /**
+   * when rendering has finished, work out which UrlMappings refer to the index
+   * pages of the current module or monorepo packages
+   *
+   * @param {td.RendererEvent} evt
+   */
+  function onRendererEnd (evt) {
+    const urlMappings = evt.pages?.filter(page => {
       // single-module repo, single export
-      if (urlMapping.url === 'modules.html') {
+      if (page.url === 'modules.html') {
         return true
       }
 
       // single-module repo, multiple export
-      if (urlMapping.url === 'modules/index.html') {
+      if (page.url === 'modules/index.html') {
         return true
       }
 
       // mono-repo and the model name matches a package name
-      if (isMonorepoParent && projects[urlMapping.model.name] != null) {
+      if (isMonorepoParent && projects[page.model.name] != null) {
         return true
       }
 
       return false
-    }).map(urlMapping => {
+    }).map(page => {
       if (isMonorepoParent) {
-        let project = urlMapping.model.name
+        let project = page.model.name
 
-        if (project === 'index' && urlMapping.model.parent != null) {
-          project = urlMapping.model.parent?.name
+        if (project === 'index' && page.model.parent != null) {
+          project = page.model.parent?.name
         }
 
         if (projects[project] == null) {
-          throw new Error(`Could not derive project name from url mapping model "${urlMapping.model.name}" with parent "${urlMapping.model.parent?.name}"`)
+          throw new Error(`Could not derive project name from url mapping model "${page.model.name}" with parent "${page.model.parent?.name}"`)
         }
 
-        let comment = urlMapping.model?.comment
+        // @ts-expect-error wat
+        let comment = page.model?.comment
 
-        if (comment == null && urlMapping.model instanceof td.DeclarationReflection && urlMapping.model.children != null && urlMapping.model.children.length > 0) {
+        if (comment == null && page.model instanceof td.DeclarationReflection && page.model.children != null && page.model.children.length > 0) {
           // multi-export modules have a different structure
-          comment = urlMapping.model.children
+          comment = page.model.children
             .find(child => child.name === 'index')
             ?.comment
         }
@@ -70,12 +75,14 @@ export function load (app) {
         }
       }
 
-      if (urlMapping.model?.comment == null) {
+      // @ts-expect-error wat
+      if (page.model?.comment == null) {
         return null
       }
 
       return {
-        comment: urlMapping.model.comment,
+        // @ts-expect-error wat
+        comment: page.model.comment,
         manifestPath: path.join(process.cwd(), 'package.json'),
         readmePath: path.join(process.cwd(), 'README.md')
       }
@@ -92,7 +99,10 @@ export function load (app) {
 
       updateModule(urlMapping.comment, urlMapping.manifestPath, urlMapping.readmePath, app)
     }
-  })
+  }
+
+  // @ts-expect-error https://github.com/TypeStrong/typedoc/issues/2903#issuecomment-2733243351
+  app.renderer.on(td.RendererEvent.END, onRendererEnd)
 }
 
 /**

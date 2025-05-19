@@ -8,8 +8,8 @@ import retry from 'p-retry'
 import { isMonorepoParent, pkg, everyMonorepoProject, pipeOutput } from './utils.js'
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").ReleaseRcOptions} ReleaseRcOptions
+ * @typedef {import('./types.js').GlobalOptions} GlobalOptions
+ * @typedef {import('./types.js').ReleaseRcOptions} ReleaseRcOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  */
 

@@ -3,8 +3,8 @@ import kleur from 'kleur'
 import { everyMonorepoProject, pipeOutput } from './utils.js'
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").RunOptions} RunOptions
+ * @typedef {import('./types.js').GlobalOptions} GlobalOptions
+ * @typedef {import('./types.js').RunOptions} RunOptions
  */
 
 export default {

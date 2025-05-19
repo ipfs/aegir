@@ -4,7 +4,7 @@ import derp from 'an-esm-dep'
 export { garply } from './dir/index.js'
 
 /**
- * @typedef {import('./types').ExportedButNotInExports} ExportedButNotInExports
+ * @typedef {import('./types.js').ExportedButNotInExports} ExportedButNotInExports
  */
 
 /**
@@ -21,7 +21,7 @@ export const useDerp = () => {
 }
 
 /**
- * @type {import('./types').UsedButNotExported}
+ * @type {import('./types.js').UsedButNotExported}
  */
 export const usesInternalType = {
   aMethod: function () {

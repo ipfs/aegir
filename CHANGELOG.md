@@ -1,3 +1,13 @@
+## [47.0.0](https://github.com/ipfs/aegir/compare/v46.0.5...v47.0.0) (2025-05-19)
+
+### ⚠ BREAKING CHANGES
+
+* Eslint is now v9, `.eslintrc` is no longer supported
+
+### Features
+
+* update typescript target to es2024 ([#1804](https://github.com/ipfs/aegir/issues/1804)) ([14e3968](https://github.com/ipfs/aegir/commit/14e3968450e9f7b15aaed025a9708b4965f52f9b))
+
 ## [46.0.5](https://github.com/ipfs/aegir/compare/v46.0.4...v46.0.5) (2025-05-19)
 
 ### Dependencies

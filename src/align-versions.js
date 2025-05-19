@@ -21,15 +21,15 @@ const tasks = new Listr([
      * @param {GlobalOptions & ReleaseOptions} ctx
      */
     task: async (ctx) => {
-      if (!process.env.CI) {
-        console.info('⚠ This run was not triggered in a known CI environment, running in dry-run mode.') // eslint-disable-line no-console
+      if (process.env.CI == null) {
+        console.info('⚠ This run was not triggered in a known CI environment, running in dry-run mode.')
         return
       }
 
       const rootDir = process.cwd()
-      const workspaces = pkg.workspaces
+      const { workspaces } = pkg
 
-      if (!workspaces || !Array.isArray(workspaces)) {
+      if (workspaces == null || !Array.isArray(workspaces)) {
         throw new Error('No monorepo workspaces found')
       }
 
@@ -56,7 +56,7 @@ const tasks = new Listr([
         for (const type of dependencyTypes) {
           for (const [dep, version] of Object.entries(siblingVersions)) {
             if (manifest[type] != null && manifest[type][dep] != null && manifest[type][dep] !== version) {
-              console.info('Update', type, dep, manifest[type][dep], '->', version) // eslint-disable-line no-console
+              console.info('Update', type, dep, manifest[type][dep], '->', version)
               manifest[type][dep] = version
             }
           }
@@ -91,7 +91,7 @@ const tasks = new Listr([
       process.env.GIT_ASKPASS = 'echo'
       process.env.GIT_TERMINAL_PROMPT = '0'
 
-      console.info(`Commit with message "${ctx.siblingDepUpdateMessage}"`) // eslint-disable-line no-console
+      console.info(`Commit with message "${ctx.siblingDepUpdateMessage}"`)
 
       await execa('git', ['add', '-A'], {
         cwd: rootDir
@@ -99,7 +99,7 @@ const tasks = new Listr([
       await execa('git', ['commit', '-m', ctx.siblingDepUpdateMessage], {
         cwd: rootDir
       })
-      console.info('Push to remote') // eslint-disable-line no-console
+      console.info('Push to remote')
       await execa('git', ['push'], {
         cwd: rootDir
       })
@@ -110,6 +110,7 @@ const tasks = new Listr([
 /**
  * @param {string} rootDir
  * @param {string[]} workspaces
+ * @returns {Promise<{ packageDirs: string[], siblingVersions: Record<string, string> }>}
  */
 async function calculateSiblingVersions (rootDir, workspaces) {
   const packageDirs = []

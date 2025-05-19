@@ -60,13 +60,6 @@ export async function typedESMManifest (context) {
         }
       }, manifest.exports)
     ),
-    eslintConfig: merge({
-      extends: 'ipfs',
-      parserOptions: {
-        project: true,
-        sourceType: 'module'
-      }
-    }, manifest.eslintConfig),
     release,
     scripts
   }, repoUrl, homePage)
@@ -83,7 +76,8 @@ export async function typedESMManifest (context) {
     ...proposedManifest,
     ...rest,
     contributors: undefined,
-    leadMaintainer: undefined
+    leadMaintainer: undefined,
+    eslintConfig: undefined
   }
 
   return proposedManifest

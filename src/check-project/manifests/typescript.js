@@ -44,13 +44,6 @@ export async function typescriptManifest (context) {
         }
       }, manifest.exports)
     ),
-    eslintConfig: merge({
-      extends: 'ipfs',
-      parserOptions: {
-        project: true,
-        sourceType: 'module'
-      }
-    }, manifest.eslintConfig),
     release
   }, repoUrl, homePage)
 
@@ -87,7 +80,8 @@ export async function typescriptManifest (context) {
     ...proposedManifest,
     ...rest,
     contributors: undefined,
-    leadMaintainer: undefined
+    leadMaintainer: undefined,
+    eslintConfig: undefined
   }
 
   delete proposedManifest.main

@@ -1,5 +1,3 @@
-/* eslint-disable max-depth */
-
 import fs from 'fs'
 import path from 'path'
 import * as td from 'typedoc'

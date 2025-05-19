@@ -28,14 +28,18 @@ import logTransformer from 'strong-log-transformer'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
 
-const {
-  // @ts-ignore
-  packageJson: pkg,
-  // @ts-ignore
-  path: pkgPath
-} = readPackageUpSync({
+const manifest = readPackageUpSync({
   cwd: fs.realpathSync(process.cwd())
 })
+
+if (manifest == null) {
+  throw new Error('Could not read package.json')
+}
+
+const {
+  packageJson: pkg,
+  path: pkgPath
+} = manifest
 const DIST_FOLDER = 'dist'
 const SRC_FOLDER = 'src'
 const TEST_FOLDER = 'test'

@@ -6,6 +6,7 @@
         "jsx": "preserve"
     },
     "include": [
+      "eslint.config.js",
       "package.json",
       "src",
       "test",

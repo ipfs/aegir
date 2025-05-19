@@ -47,12 +47,6 @@ export async function typedCJSManifest (context) {
       'src',
       'dist'
     ],
-    eslintConfig: merge({
-      extends: 'ipfs',
-      parserOptions: {
-        project: true
-      }
-    }, manifest.eslintConfig),
     scripts,
     release
   }, repoUrl, homePage)
@@ -69,7 +63,8 @@ export async function typedCJSManifest (context) {
     ...proposedManifest,
     ...rest,
     contributors: undefined,
-    leadMaintainer: undefined
+    leadMaintainer: undefined,
+    eslintConfig: undefined
   }
 
   return proposedManifest

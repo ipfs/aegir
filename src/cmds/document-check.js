@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { loadUserConfig } from '../config/user.js'
 import docCheck from '../document-check.js'
 

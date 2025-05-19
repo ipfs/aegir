@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import Listr from 'listr'
 import { rimraf } from 'rimraf'
 

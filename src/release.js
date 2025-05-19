@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { execa } from 'execa'
 import Listr from 'listr'
 import { isMonorepoProject, hasDocs, pkg } from './utils.js'

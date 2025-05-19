@@ -153,7 +153,7 @@ const tasks = new Listr(
        */
       task: (ctx) => {
         if (fs.existsSync(ctx.directory)) {
-          fs.rmdirSync(ctx.directory, {
+          fs.rmSync(ctx.directory, {
             recursive: true
           })
         }

@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import path from 'path'
 import bytes from 'bytes'
 import esbuild from 'esbuild'

@@ -155,7 +155,7 @@ const findDuplicates = async (inputs) => {
 const findBuiltins = async (nodeBuiltIns) => {
   /** @type {Record<string, Set<string>>} */
   const packages = {}
-  // eslint-disable-next-line guard-for-in
+
   for (const builtin in nodeBuiltIns) {
     for (const importer of nodeBuiltIns[builtin]) {
       const out = await readPackageUp({ cwd: importer })

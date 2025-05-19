@@ -265,7 +265,7 @@ interface TestOptions {
     /**
      * playwright-test config @see https://github.com/hugomrdias/playwright-test
      */
-    config: any
+    config: unknown
   }
   /**
    * Before tests hook

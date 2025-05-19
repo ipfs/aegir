@@ -159,7 +159,6 @@ export function load (app) {
     }
   }
 
-  // @ts-expect-error https://github.com/TypeStrong/typedoc/issues/2903#issuecomment-2733243351
   app.converter.on(td.Converter.EVENT_RESOLVE, onResolve)
 
   app.serializer.addSerializer({
@@ -181,6 +180,7 @@ export function load (app) {
     },
     fromObject (_model, obj) {
       app.deserializer.defer((project) => {
+        // @ts-expect-error not properties of these types
         project.reflectionSources = project.reflectionSources ?? {}
 
         // @ts-expect-error obj is unknown type
@@ -192,7 +192,6 @@ export function load (app) {
     }
   })
 
-  // @ts-expect-error https://github.com/TypeStrong/typedoc/issues/2903#issuecomment-2733243351
   app.renderer.on(td.RendererEvent.BEGIN, onRendererBegin)
 }
 

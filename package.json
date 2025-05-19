@@ -17,8 +17,7 @@
   },
   "keywords": [
     "build",
-    "lint",
-    "standard"
+    "lint"
   ],
   "bin": {
     "aegir": "src/index.js"
@@ -66,6 +65,7 @@
   },
   "files": [
     "cspell.json",
+    "eslint.config.js",
     "src",
     "dictionaries",
     "dist",
@@ -253,10 +253,8 @@
     "env-paths": "^3.0.0",
     "esbuild": "^0.25.0",
     "eslint": "^9.27.0",
-    "eslint-config-love": "^120.0.0",
     "eslint-formatter-unix": "^8.40.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsdoc": "^50.6.17",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "execa": "^8.0.1",
     "extract-zip": "^2.0.1",
@@ -282,6 +280,7 @@
     "micromark-extension-gfm-table": "^2.0.0",
     "micromark-extension-gfm-task-list-item": "^2.0.1",
     "mocha": "^11.0.1",
+    "neostandard": "^0.12.1",
     "npm-package-json-lint": "^8.0.0",
     "nyc": "^17.0.0",
     "p-map": "^7.0.1",

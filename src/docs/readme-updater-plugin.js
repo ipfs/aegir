@@ -101,7 +101,6 @@ export function load (app) {
     }
   }
 
-  // @ts-expect-error https://github.com/TypeStrong/typedoc/issues/2903#issuecomment-2733243351
   app.renderer.on(td.RendererEvent.END, onRendererEnd)
 }
 

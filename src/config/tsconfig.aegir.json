@@ -6,7 +6,7 @@
         "allowJs": true,
         "checkJs": true,
         "target": "ES2024",
-        "module": "ES2022",
+        "module": "Node16",
         "lib": ["DOM", "DOM.Iterable", "WebWorker", "ES2024"],
         "noEmit": false,
         "noEmitOnError": true,
@@ -20,7 +20,7 @@
         "sourceMap": true,
         // module resolution
         "esModuleInterop": true,
-        "moduleResolution": "node",
+        "moduleResolution": "Node16",
         // advanced
         "verbatimModuleSyntax": true,
         "forceConsistentCasingInFileNames": true,

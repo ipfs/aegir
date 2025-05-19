@@ -13,6 +13,7 @@ export { garply } from './dir/index.js'
  */
 
 export const useHerp = () => {
+  // @ts-ignore this is a function
   herp()
 }
 

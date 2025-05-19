@@ -44,8 +44,8 @@ export async function checkBuildFiles (projectDir, branchName, repoUrl) {
   await ensureFileHasContents(projectDir, '.github/workflows/stale.yml')
 
   let defaultCiContent = await download(ciFileUrl)
-  defaultCiContent = defaultCiContent.replaceAll('${{{ github.default_branch }}}', branchName)
-  defaultCiContent = defaultCiContent.replaceAll('${{{ .config.versions.uci // (.source.tag | sub("\\\\.[^.\\\\-\\\\+]+(?=\\\\-|\\\\+|$)"; "")) }}}', 'v0.0')
+  defaultCiContent = defaultCiContent.replaceAll('${{{ github.default_branch }}}', branchName) // eslint-disable-line no-template-curly-in-string
+  defaultCiContent = defaultCiContent.replaceAll('${{{ .config.versions.uci // (.source.tag | sub("\\\\.[^.\\\\-\\\\+]+(?=\\\\-|\\\\+|$)"; "")) }}}', 'v0.0') // eslint-disable-line no-template-curly-in-string
 
   await ensureFileHasContents(projectDir, '.github/workflows/js-test-and-release.yml', defaultCiContent)
 }

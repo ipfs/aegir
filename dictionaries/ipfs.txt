@@ -226,6 +226,8 @@ sublist
 subnet
 tdigest
 testdata
+thenable
+thenables
 timespec
 toc
 todo

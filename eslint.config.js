@@ -72,7 +72,7 @@ const jsRules = {
   'jsdoc/require-returns-check': 'error',
   'jsdoc/require-returns-description': 'off',
   // Note: At the moment type parser used by eslint-plugin-jsdoc does not
-  // parse various forms correctly. For now warn on invalid type froms,
+  // parse various forms correctly. For now warn on invalid type from,
   // should revisit once following issue is fixed:
   // https://github.com/jsdoctypeparser/jsdoctypeparser/issues/50
   'jsdoc/valid-types': 'off',
@@ -108,7 +108,7 @@ const tsRules = {
   '@typescript-eslint/await-thenable': 'error', // disallows awaiting a value that is not a "Thenable"
   '@typescript-eslint/restrict-template-expressions': 'off', // allow values with `any` type in template literals
   '@typescript-eslint/method-signature-style': ['error', 'method'], // enforce method signature style
-  '@typescript-eslint/no-unsafe-argument': 'off', // allow passing argswith `any` type to functions
+  '@typescript-eslint/no-unsafe-argument': 'off', // allow passing args with `any` type to functions
   '@typescript-eslint/unbound-method': 'off', // allow invoking functions that may be unbound (e.g. passed as part of an options object)
   '@typescript-eslint/no-unused-vars': 'error', // disallow unused variables
   '@typescript-eslint/return-await': ['error', 'in-try-catch'], // require awaiting thenables returned from try/catch

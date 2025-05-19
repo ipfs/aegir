@@ -5,7 +5,6 @@ export default {
     },
     dependencyCheck: {
         ignore: [
-            '@typescript-eslint/eslint-plugin',
             'buffer',
             'c8',
             'conventional-changelog-conventionalcommits',

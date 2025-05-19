@@ -9,3 +9,21 @@ updates:
   commit-message:
     prefix: "deps"
     prefix-development: "deps(dev)"
+  groups:
+    chai:
+      patterns:
+        - "*chai*"
+    eslint:
+      patterns:
+        - "*eslint*"
+        - "*standard*"
+    markdown:
+      patterns:
+        - "*mdast*"
+        - "*micromark*"
+    semantic-release:
+      patterns:
+        - "*semantic-release*"
+    typedoc:
+      patterns:
+        - "*typedoc*"

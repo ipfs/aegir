@@ -1,3 +1,9 @@
+## [46.0.4](https://github.com/ipfs/aegir/compare/v46.0.3...v46.0.4) (2025-05-19)
+
+### Dependencies
+
+* bump typedoc from 0.25.13 to 0.26.8 ([#1640](https://github.com/ipfs/aegir/issues/1640)) ([bb3e2ed](https://github.com/ipfs/aegir/commit/bb3e2ed3f92adf468b9d4d5d51e8d2d2654a7c7f))
+
 ## [46.0.3](https://github.com/ipfs/aegir/compare/v46.0.2...v46.0.3) (2025-05-17)
 
 ### Dependencies

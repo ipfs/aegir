@@ -1,3 +1,9 @@
+## [47.0.2](https://github.com/ipfs/aegir/compare/v47.0.1...v47.0.2) (2025-05-19)
+
+### Dependencies
+
+* bump @electron/get from 3.1.0 to 4.0.0 ([#1737](https://github.com/ipfs/aegir/issues/1737)) ([88ff693](https://github.com/ipfs/aegir/commit/88ff6935c4281d95219306f6603b24ccb729bc1f))
+
 ## [47.0.1](https://github.com/ipfs/aegir/compare/v47.0.0...v47.0.1) (2025-05-19)
 
 ### Dependencies

@@ -129,7 +129,7 @@ addRule('neostandard/ts', '@typescript-eslint/no-this-alias', 'off') // allow 'c
 addRule('neostandard/ts', '@typescript-eslint/await-thenable', 'error') // disallows awaiting a value that is not a "Thenable"
 addRule('neostandard/ts', '@typescript-eslint/restrict-template-expressions', 'off') // allow values with `any` type in template literals
 addRule('neostandard/ts', '@typescript-eslint/method-signature-style', ['error', 'method']) // enforce method signature style
-addRule('neostandard/ts', '@typescript-eslint/no-unsafe-argument', 'off') // allow passing arg swith `any` type to functions
+addRule('neostandard/ts', '@typescript-eslint/no-unsafe-argument', 'off') // allow passing args with `any` type to functions
 addRule('neostandard/ts', '@typescript-eslint/unbound-method', 'off') // allow invoking functions that may be unbound (e.g. passed as part of an options object)
 addRule('neostandard/ts', 'no-return-await', 'off') // disable this rule to use @typescript-eslint/return-await instead
 addRule('neostandard/ts', '@typescript-eslint/return-await', ['error', 'in-try-catch']) // require awaiting thenables returned from try/catch

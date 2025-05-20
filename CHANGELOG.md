@@ -1,3 +1,13 @@
+## [47.0.4](https://github.com/ipfs/aegir/compare/v47.0.3...v47.0.4) (2025-05-20)
+
+### Bug Fixes
+
+* update linting rules ([879f7f9](https://github.com/ipfs/aegir/commit/879f7f962f92385605bd5df31fc9b40eb477f4f1))
+
+### Trivial Changes
+
+* fix deps ([fc19ee8](https://github.com/ipfs/aegir/commit/fc19ee83484cbdd984c4f72a00500be093e877cc))
+
 ## [47.0.3](https://github.com/ipfs/aegir/compare/v47.0.2...v47.0.3) (2025-05-19)
 
 ### Bug Fixes

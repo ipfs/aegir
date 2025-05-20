@@ -81,6 +81,9 @@ addRule('neostandard/base', 'no-warning-comments', 'warn')
 addRule('neostandard/base', 'max-nested-callbacks', ['error', 4])
 addRule('neostandard/base', 'max-depth', ['error', 4])
 addRule('neostandard/base', 'require-yield', 'error')
+addRule('neostandard/base', 'no-void', ['error', {
+  allowAsStatement: true
+}])
 
 // plugins
 addRule('neostandard/base', 'no-only-tests/no-only-tests', 'error')

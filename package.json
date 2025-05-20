@@ -60,6 +60,9 @@
       ],
       "src/config/tsconfig.aegir.json": [
         "src/config/tsconfig.aegir.json"
+      ],
+      "eslint.config.js": [
+        "eslint.config.js"
       ]
     }
   },
@@ -85,6 +88,10 @@
     "./echo-server": {
       "types": "./dist/utils/echo-server.d.ts",
       "import": "./utils/echo-server.js"
+    },
+    "./eslint.config.js": {
+      "types": "./dist/eslint.config.d.ts",
+      "import": "./eslint.config.js"
     },
     "./env": {
       "types": "./dist/src/env.d.ts",
@@ -253,6 +260,7 @@
     "eslint": "^9.27.0",
     "eslint-formatter-unix": "^8.40.0",
     "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.17",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "execa": "^9.5.3",
     "extract-zip": "^2.0.1",

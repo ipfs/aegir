@@ -1,3 +1,14 @@
+## [47.0.5](https://github.com/ipfs/aegir/compare/v47.0.4...v47.0.5) (2025-05-20)
+
+### Bug Fixes
+
+* relax return type linting rules ([7ceebba](https://github.com/ipfs/aegir/commit/7ceebba7e510b3d147b6647a90ad0dcb2434b7e3))
+
+### Trivial Changes
+
+* fix spelling ([a8812f6](https://github.com/ipfs/aegir/commit/a8812f63a45e73cdacd910713d4b4fd72aa74860))
+* spelling ([9c6f3ff](https://github.com/ipfs/aegir/commit/9c6f3ff93e1a3b25d7340e19e90d02b0e2d78972))
+
 ## [47.0.4](https://github.com/ipfs/aegir/compare/v47.0.3...v47.0.4) (2025-05-20)
 
 ### Bug Fixes

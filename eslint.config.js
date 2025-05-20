@@ -22,7 +22,7 @@ function addRule (rules, name, value) {
   const ruleSet = config.find(c => c.name === rules)
 
   assert.ok(ruleSet, `No ruleset with name ${rules} found`)
-  assert.notDeepEqual(ruleSet.rules?.[name], value, `${rules}/${name} is already set to ${value}`)
+  assert.notDeepEqual(ruleSet.rules?.[name], value, `${rules}/${name} is already set to ${JSON.stringify(value, null, 2)}`)
 
   ruleSet.rules ??= {}
   ruleSet.rules[name] = value
@@ -103,18 +103,34 @@ setParser('neostandard/ts', eslintParser, {
   ecmaVersion: 'latest'
 })
 
+// TODO: not compatible with ESLint 9x yet
 // addPlugin('neostandard/ts', 'etc', etc)
-
 // addRule('neostandard/ts', 'etc/prefer-interface', 'error') // https://ncjamieson.com/prefer-interfaces/
+
+addRule('neostandard/ts', '@typescript-eslint/no-use-before-define', [
+  'error', {
+    functions: false,
+    classes: false,
+    enums: false,
+    variables: false,
+    typedefs: false,
+  }
+]) // Types often are recursive & no use before define is too restrictive
 addRule('neostandard/ts', '@typescript-eslint/prefer-function-type', 'off') // conflicts with 'etc/prefer-interface'
-addRule('neostandard/ts', '@typescript-eslint/explicit-function-return-type', 'error') // functions require return types
+addRule('neostandard/ts', '@typescript-eslint/explicit-function-return-type', [
+  'error', {
+    allowExpressions: true,
+    allowHigherOrderFunctions: true,
+    allowTypedFunctionExpressions: true,
+    allowDirectConstAssertionInArrowFunctions: true
+  }
+]) // functions require return types
 addRule('neostandard/ts', '@typescript-eslint/no-this-alias', 'off') // allow 'const self = this'
 addRule('neostandard/ts', '@typescript-eslint/await-thenable', 'error') // disallows awaiting a value that is not a "Thenable"
 addRule('neostandard/ts', '@typescript-eslint/restrict-template-expressions', 'off') // allow values with `any` type in template literals
 addRule('neostandard/ts', '@typescript-eslint/method-signature-style', ['error', 'method']) // enforce method signature style
 addRule('neostandard/ts', '@typescript-eslint/no-unsafe-argument', 'off') // allow passing argswith `any` type to functions
 addRule('neostandard/ts', '@typescript-eslint/unbound-method', 'off') // allow invoking functions that may be unbound (e.g. passed as part of an options object)
-addRule('neostandard/ts', '@typescript-eslint/no-unused-vars', 'error') // disallow unused variables
 addRule('neostandard/ts', 'no-return-await', 'off') // disable this rule to use @typescript-eslint/return-await instead
 addRule('neostandard/ts', '@typescript-eslint/return-await', ['error', 'in-try-catch']) // require awaiting thenables returned from try/catch
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params

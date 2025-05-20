@@ -26,7 +26,8 @@
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
         "stripInternal": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "rewriteRelativeImportExtensions": true
     },
     "include": [
         "src",

@@ -183,6 +183,7 @@ const jsdocConfig = {
     // https://github.com/gajus/eslint-plugin-jsdoc/issues/280
     'jsdoc/no-undefined-types': 'off',
     'jsdoc/require-returns-type': 'off',
+    'jsdoc/require-yields': 'off',
     'jsdoc/require-description': 'off',
     'jsdoc/require-description-complete-sentence': 'off',
     'jsdoc/require-example': 'off',

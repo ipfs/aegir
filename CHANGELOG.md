@@ -1,3 +1,9 @@
+## [47.0.6](https://github.com/ipfs/aegir/compare/v47.0.5...v47.0.6) (2025-05-20)
+
+### Bug Fixes
+
+* relax void rule ([2d32c42](https://github.com/ipfs/aegir/commit/2d32c427ba2a4675f95bf787d017b79e2bbbded4))
+
 ## [47.0.5](https://github.com/ipfs/aegir/compare/v47.0.4...v47.0.5) (2025-05-20)
 
 ### Bug Fixes

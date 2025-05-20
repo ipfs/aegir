@@ -1,3 +1,9 @@
+## [47.0.7](https://github.com/ipfs/aegir/compare/v47.0.6...v47.0.7) (2025-05-20)
+
+### Bug Fixes
+
+* relax yield jsdoc rule ([85abe5d](https://github.com/ipfs/aegir/commit/85abe5d259a09569f813b84953da8d513403454f))
+
 ## [47.0.6](https://github.com/ipfs/aegir/compare/v47.0.5...v47.0.6) (2025-05-20)
 
 ### Bug Fixes

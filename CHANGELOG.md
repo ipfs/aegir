@@ -1,3 +1,9 @@
+## [47.0.9](https://github.com/ipfs/aegir/compare/v47.0.8...v47.0.9) (2025-05-21)
+
+### Bug Fixes
+
+* comma dangle ([27668fb](https://github.com/ipfs/aegir/commit/27668fbb296404ca37531caaa9fc4bb9e835501c))
+
 ## [47.0.8](https://github.com/ipfs/aegir/compare/v47.0.7...v47.0.8) (2025-05-21)
 
 ### Bug Fixes

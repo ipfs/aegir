@@ -1,3 +1,13 @@
+## [47.0.11](https://github.com/ipfs/aegir/compare/v47.0.10...v47.0.11) (2025-05-21)
+
+### Bug Fixes
+
+* render mermaid in docs ([da68d36](https://github.com/ipfs/aegir/commit/da68d36ae6090c0c67cd379cbf116625c3bbf46c))
+
+### Trivial Changes
+
+* add to ignore ([75a80d4](https://github.com/ipfs/aegir/commit/75a80d4afeb6ef4cc8a004e95fe2653977d64ee3))
+
 ## [47.0.10](https://github.com/ipfs/aegir/compare/v47.0.9...v47.0.10) (2025-05-21)
 
 ### Bug Fixes

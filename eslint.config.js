@@ -100,6 +100,17 @@ addRule('neostandard/base', 'import/order', [
   }
 ])
 
+addRule('neostandard/style/modernization-since-standard-17', '@stylistic/comma-dangle', [
+  'error',
+  {
+    arrays: 'never',
+    objects: 'never',
+    imports: 'never',
+    exports: 'never',
+    functions: 'never'
+  }
+])
+
 setParser('neostandard/ts', eslintParser, {
   projectService: true,
   sourceType: 'module',
@@ -110,13 +121,14 @@ setParser('neostandard/ts', eslintParser, {
 // addPlugin('neostandard/ts', 'etc', etc)
 // addRule('neostandard/ts', 'etc/prefer-interface', 'error') // https://ncjamieson.com/prefer-interfaces/
 
+addRule('neostandard/ts', 'no-return-await', 'off') // disable this rule to use @typescript-eslint/return-await instead
 addRule('neostandard/ts', '@typescript-eslint/no-use-before-define', [
   'error', {
     functions: false,
     classes: false,
     enums: false,
     variables: false,
-    typedefs: false,
+    typedefs: false
   }
 ]) // Types often are recursive & no use before define is too restrictive
 addRule('neostandard/ts', '@typescript-eslint/prefer-function-type', 'off') // conflicts with 'etc/prefer-interface'
@@ -134,12 +146,11 @@ addRule('neostandard/ts', '@typescript-eslint/restrict-template-expressions', 'o
 addRule('neostandard/ts', '@typescript-eslint/method-signature-style', ['error', 'method']) // enforce method signature style
 addRule('neostandard/ts', '@typescript-eslint/no-unsafe-argument', 'off') // allow passing args with `any` type to functions
 addRule('neostandard/ts', '@typescript-eslint/unbound-method', 'off') // allow invoking functions that may be unbound (e.g. passed as part of an options object)
-addRule('neostandard/ts', 'no-return-await', 'off') // disable this rule to use @typescript-eslint/return-await instead
 addRule('neostandard/ts', '@typescript-eslint/return-await', ['error', 'in-try-catch']) // require awaiting thenables returned from try/catch
+addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // only throw Error objects
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
-addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // only throw Error objects
 
 const jsdocSettings = {
   mode: 'typescript',
@@ -203,7 +214,7 @@ const jsdocConfig = {
     // parse various forms correctly. For now warn on invalid type from,
     // should revisit once following issue is fixed:
     // https://github.com/jsdoctypeparser/jsdoctypeparser/issues/50
-    'jsdoc/valid-types': 'off',
+    'jsdoc/valid-types': 'off'
   }
 }
 
@@ -219,7 +230,7 @@ const jsdocTsConfig = {
   },
   rules: {
     'jsdoc/require-param': 'off', // do not require jsdoc for params
-    'jsdoc/require-param-type': 'off', // allow compiler to derive param type
+    'jsdoc/require-param-type': 'off' // allow compiler to derive param type
   }
 }
 

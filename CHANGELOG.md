@@ -1,3 +1,9 @@
+## [47.0.8](https://github.com/ipfs/aegir/compare/v47.0.7...v47.0.8) (2025-05-21)
+
+### Bug Fixes
+
+* add new version of throw literals ([d4911f3](https://github.com/ipfs/aegir/commit/d4911f343b8e9116710bfa2281783f220ebc2865))
+
 ## [47.0.7](https://github.com/ipfs/aegir/compare/v47.0.6...v47.0.7) (2025-05-20)
 
 ### Bug Fixes

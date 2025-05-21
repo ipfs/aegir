@@ -1,3 +1,9 @@
+## [47.0.10](https://github.com/ipfs/aegir/compare/v47.0.9...v47.0.10) (2025-05-21)
+
+### Bug Fixes
+
+* update default module ([7ad02df](https://github.com/ipfs/aegir/commit/7ad02df827eb63e31108bb185b8ee1fb38a2c64a))
+
 ## [47.0.9](https://github.com/ipfs/aegir/compare/v47.0.8...v47.0.9) (2025-05-21)
 
 ### Bug Fixes

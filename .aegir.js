@@ -19,6 +19,7 @@ export default {
             'semantic-release-monorepo',
             'source-map-support',
             'typedoc-plugin-mdn-links',
+            'typedoc-plugin-mermaid',
             'typedoc-plugin-missing-exports',
             'electron',
             'bytes',

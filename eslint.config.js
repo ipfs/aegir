@@ -139,6 +139,7 @@ addRule('neostandard/ts', '@typescript-eslint/return-await', ['error', 'in-try-c
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
+addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // only throw Error objects
 
 const jsdocSettings = {
   mode: 'typescript',

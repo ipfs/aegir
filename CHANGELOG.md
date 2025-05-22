@@ -1,3 +1,9 @@
+## [47.0.12](https://github.com/ipfs/aegir/compare/v47.0.11...v47.0.12) (2025-05-22)
+
+### Bug Fixes
+
+* use typescript parser for depchecking tsx files ([70e05a5](https://github.com/ipfs/aegir/commit/70e05a59eed1aa2c365ffd71e93e97090cf61c5c))
+
 ## [47.0.11](https://github.com/ipfs/aegir/compare/v47.0.10...v47.0.11) (2025-05-21)
 
 ### Bug Fixes

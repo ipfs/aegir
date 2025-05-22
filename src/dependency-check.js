@@ -18,6 +18,15 @@ const ignoredDevDependencies = [
   '@semantic-release/*'
 ]
 
+const parsers = {
+  '**/*.js': depcheck.parser.es6,
+  '**/*.jsx': depcheck.parser.jsx,
+  '**/*.ts': depcheck.parser.typescript,
+  '**/*.tsx': depcheck.parser.typescript,
+  '**/*.cjs': depcheck.parser.es6,
+  '**/*.mjs': depcheck.parser.es6
+}
+
 /**
  * @typedef {import("listr").ListrTaskWrapper} Task
  * @typedef {import('./types.js').GlobalOptions} GlobalOptions
@@ -39,15 +48,10 @@ const tasks = new Listr(
         const manifest = JSON.parse(fs.readFileSync(path.join(cwd(), 'package.json'), 'utf-8'))
 
         const productionOnlyResult = await depcheck(cwd(), {
-          parsers: {
-            '**/*.js': depcheck.parser.es6,
-            '**/*.jsx': depcheck.parser.jsx,
-            '**/*.ts': depcheck.parser.typescript,
-            '**/*.tsx': depcheck.parser.jsx,
-            '**/*.cjs': depcheck.parser.es6,
-            '**/*.mjs': depcheck.parser.es6
-          },
-          ignoreMatches: ignoredDevDependencies.concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore),
+          parsers,
+          ignoreMatches: ignoredDevDependencies
+            .concat(ctx.fileConfig.dependencyCheck.ignore)
+            .concat(ctx.ignore),
           ignorePatterns: ctx.productionIgnorePatterns,
           package: {
             ...manifest,
@@ -84,13 +88,10 @@ const tasks = new Listr(
 
         // check dev dependencies
         const developmentOnlyResult = await depcheck(cwd(), {
-          parsers: {
-            '**/*.js': depcheck.parser.es6,
-            '**/*.ts': depcheck.parser.typescript,
-            '**/*.cjs': depcheck.parser.es6,
-            '**/*.mjs': depcheck.parser.es6
-          },
-          ignoreMatches: ignoredDevDependencies.concat(ctx.fileConfig.dependencyCheck.ignore).concat(ctx.ignore),
+          parsers,
+          ignoreMatches: ignoredDevDependencies
+            .concat(ctx.fileConfig.dependencyCheck.ignore)
+            .concat(ctx.ignore),
           ignorePatterns: ctx.developmentIgnorePatterns
         })
 

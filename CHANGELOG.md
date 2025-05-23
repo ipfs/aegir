@@ -1,3 +1,9 @@
+## [47.0.13](https://github.com/ipfs/aegir/compare/v47.0.12...v47.0.13) (2025-05-23)
+
+### Bug Fixes
+
+* lint tsx/jsx ([10a05cb](https://github.com/ipfs/aegir/commit/10a05cb58fb7850bc8eb5352072e6a5db4d48bc9))
+
 ## [47.0.12](https://github.com/ipfs/aegir/compare/v47.0.11...v47.0.12) (2025-05-22)
 
 ### Bug Fixes

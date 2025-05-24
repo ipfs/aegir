@@ -43,6 +43,7 @@ export async function checkTypedocFiles (projectDir, isTypescriptProject) {
     })
 
   await ensureFileHasContents(projectDir, 'typedoc.json', JSON.stringify({
+    readme: 'none',
     entryPoints
   }, null, 2))
 }

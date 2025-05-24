@@ -1,3 +1,9 @@
+## [47.0.14](https://github.com/ipfs/aegir/compare/v47.0.13...v47.0.14) (2025-05-24)
+
+### Bug Fixes
+
+* update default dependabot ([5b77a6d](https://github.com/ipfs/aegir/commit/5b77a6d005e2d5a226af691e25b30624d8ffde40))
+
 ## [47.0.13](https://github.com/ipfs/aegir/compare/v47.0.12...v47.0.13) (2025-05-23)
 
 ### Bug Fixes

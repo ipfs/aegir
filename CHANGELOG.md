@@ -1,3 +1,9 @@
+## [47.0.15](https://github.com/ipfs/aegir/compare/v47.0.14...v47.0.15) (2025-05-24)
+
+### Bug Fixes
+
+* update tsdoc defaults and keep api docs in readmes ([72775f1](https://github.com/ipfs/aegir/commit/72775f1904d085652afa7b9dca2fe3b007ec8f6d))
+
 ## [47.0.14](https://github.com/ipfs/aegir/compare/v47.0.13...v47.0.14) (2025-05-24)
 
 ### Bug Fixes

@@ -1,3 +1,9 @@
+## [47.0.16](https://github.com/ipfs/aegir/compare/v47.0.15...v47.0.16) (2025-05-26)
+
+### Bug Fixes
+
+* ignore monorepo root when updating readme from tag ([6b554fa](https://github.com/ipfs/aegir/commit/6b554fac03cb1087f2274c1990350454b657e3a6))
+
 ## [47.0.15](https://github.com/ipfs/aegir/compare/v47.0.14...v47.0.15) (2025-05-24)
 
 ### Bug Fixes

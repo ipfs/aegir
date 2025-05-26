@@ -51,6 +51,12 @@ export function load (app) {
         }
 
         if (projects[project] == null) {
+          if (page.model instanceof td.ProjectReflection && page.model.variant === 'project') {
+            // this is the monorepo root (monorepo packages have the variant
+            // "declaration")
+            return null
+          }
+
           throw new Error(`Could not derive project name from url mapping model "${page.model.name}" with parent "${page.model.parent?.name}"`)
         }
 

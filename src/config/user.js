@@ -49,18 +49,10 @@ const defaults = {
     silent: false,
     fix: false,
     files: [
-      '*.{js,ts,jsx,tsx}',
       'bin/**',
-      'config/**/*.{js,ts,jsx,tsx}',
-      'test/**/*.{js,ts,jsx,tsx}',
-      'src/**/*.{js,ts,jsx,tsx}',
-      'tasks/**/*.{js,ts,jsx,tsx}',
-      'benchmarks/**/*.{js,ts,jsx,tsx}',
-      '!benchmarks/**/node_modules/**',
-      'utils/**/*.{js,ts,jsx,tsx}',
+      '**/*.{js,ts,jsx,tsx}',
       '!**/node_modules/**',
-      'examples/**/*.{js,ts,jsx,tsx}',
-      '!examples/**/node_modules/**'
+      '!**/dist/**'
     ]
   },
   // docs cmd options

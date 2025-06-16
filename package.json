@@ -223,7 +223,8 @@
     "test:firefox": "node src/index.js test -t browser --browser firefox",
     "test:firefox-webworker": "node src/index.js test -t webworker --browser firefox",
     "test:electron-main": "node src/index.js test -t electron-main",
-    "release": "node src/index.js release --no-bundle"
+    "release": "node src/index.js release --no-bundle",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@electron/get": "^4.0.0",
@@ -337,6 +338,7 @@
     "@types/strong-log-transformer": "^1.0.2",
     "@types/yargs": "^17.0.0",
     "electron": "^36.2.1",
+    "patch-package": "^8.0.0",
     "uint8arrays": "^5.0.1"
   },
   "browser": {

@@ -1,0 +1,92 @@
+diff --git a/node_modules/typescript-docs-verifier/dist/src/SnippetCompiler.js b/node_modules/typescript-docs-verifier/dist/src/SnippetCompiler.js
+index 83d2759..545da13 100644
+--- a/node_modules/typescript-docs-verifier/dist/src/SnippetCompiler.js
++++ b/node_modules/typescript-docs-verifier/dist/src/SnippetCompiler.js
+@@ -39,10 +39,10 @@ class SnippetCompiler {
+         this.workingDirectory = workingDirectory;
+         this.packageDefinition = packageDefinition;
+         const configOptions = SnippetCompiler.loadTypeScriptConfig(packageDefinition.packageRoot, project);
+-        this.compilerConfig = {
++        this.service = TSNode.create({
+             ...configOptions.config,
+             transpileOnly: false,
+-        };
++        });
+     }
+     static loadTypeScriptConfig(packageRoot, project) {
+         var _a;
+@@ -57,16 +57,56 @@ class SnippetCompiler {
+     static escapeRegExp(rawString) {
+         return rawString.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+     }
+-    async compileSnippets(documentationFiles) {
+-        try {
+-            await this.cleanWorkingDirectory();
+-            await fsExtra.ensureDir(this.workingDirectory);
+-            const examples = await this.extractAllCodeBlocks(documentationFiles);
+-            return await Promise.all(examples.map(async (example) => await this.testCodeCompilation(example)));
++    async compileSnippets(documentationFiles, { concurrency = 4 } = {}) {
++      try {
++        await this.cleanWorkingDirectory();
++        await fsExtra.ensureDir(this.workingDirectory);
++
++        const results = [];
++        const tasks = [];
++        let active = 0;
++
++        const importSubstituter = new LocalImportSubstituter_1.LocalImportSubstituter(this.packageDefinition);
++
++        for (const file of documentationFiles) {
++          const blocks = await this.extractFileCodeBlocks(file, importSubstituter);
++          tasks.push(...blocks)
++        }
++
++        const self = this;
++        let hasFailed = false;
++
++        async function runNext() {
++          if (hasFailed || tasks.length === 0) return;
++
++          const block = tasks.shift();
++          active++;
++
++          try {
++            const result = await self.testCodeCompilation(block);
++            results.push(result);
++
++            if (result.error) {
++              hasFailed = true;
++            } else {
++              await runNext();
++            }
++          } finally {
++            active--;
++          }
+         }
+-        finally {
+-            await this.cleanWorkingDirectory();
++
++        const workers = [];
++        for (let j = 0; j < Math.min(concurrency, tasks.length); j++) {
++          workers.push(runNext());
+         }
++
++        await Promise.all(workers);
++
++        return results;
++      } finally {
++        await this.cleanWorkingDirectory();
++      }
+     }
+     async cleanWorkingDirectory() {
+         return await fsExtra.remove(this.workingDirectory);
+@@ -96,8 +136,7 @@ class SnippetCompiler {
+         const id = process.hrtime.bigint().toString();
+         const codeFile = path.join(this.workingDirectory, `block-${id}.${type}`);
+         await fsExtra.writeFile(codeFile, code);
+-        const compiler = TSNode.create(this.compilerConfig);
+-        compiler.compile(code, codeFile);
++        this.service.compile(code, codeFile);
+     }
+     removeTemporaryFilePaths(message, example) {
+         const escapedCompiledDocsFolder = SnippetCompiler.escapeRegExp(path.basename(this.workingDirectory));

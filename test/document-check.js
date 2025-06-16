@@ -37,5 +37,12 @@ describe('document check', () => {
         .with.property('stderr')
         .that.include('no such file or directory')
     })
+
+    it('should not run out of memory for large number of ts code blocks', async () => {
+      const cwd = path.join(__dirname, 'fixtures/document-check/pass-large-blocks')
+
+      await expect(execa(bin, ['doc-check', '--inputFiles', `${cwd}/*.md`, '--tsConfigPath', `${cwd}`]))
+        .to.eventually.be.fulfilled()
+    })
   }
 })

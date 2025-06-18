@@ -1,3 +1,11 @@
+## [47.0.17](https://github.com/ipfs/aegir/compare/v47.0.16...v47.0.17) (2025-06-18)
+
+### Bug Fixes
+
+* detect monorepo root ([186e815](https://github.com/ipfs/aegir/commit/186e815bc5b099c438d1ca78463a7332bb71d376))
+* remove semantic-release related fields from private packages ([2b8b756](https://github.com/ipfs/aegir/commit/2b8b75621a973df9a65ed07ed7f46ee322dab975))
+* update dependabot path ([625c4d0](https://github.com/ipfs/aegir/commit/625c4d09ecfbcf9638bb140828e8d3273ad1d662))
+
 ## [47.0.16](https://github.com/ipfs/aegir/compare/v47.0.15...v47.0.16) (2025-05-26)
 
 ### Bug Fixes

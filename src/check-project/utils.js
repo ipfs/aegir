@@ -272,10 +272,14 @@ export function constructManifest (manifest, manifestFields, repoUrl, homePage =
     output.typesVersions = undefined
     output.exports = undefined
     output.release = undefined
-    output.homepage = undefined
-    output.repository = undefined
-    output.bugs = undefined
-    output.scripts.release = undefined
+
+    // remove release fields from non-monorepo root manifests
+    if (output.workspaces == null) {
+      output.homepage = undefined
+      output.repository = undefined
+      output.bugs = undefined
+      output.scripts.release = undefined
+    }
   }
 
   return output

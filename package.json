@@ -261,7 +261,7 @@
     "eslint": "^9.27.0",
     "eslint-formatter-unix": "^8.40.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsdoc": "^50.6.17",
+    "eslint-plugin-jsdoc": "^51.0.3",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "execa": "^9.5.3",
     "extract-zip": "^2.0.1",

@@ -79,7 +79,7 @@ It bundles config for standard tools such as eslint, mocha, etc and lets you con
  }
  ```
 
- You can find the complete default config [here](https://github.com/ipfs/aegir/blob/main/src/config/user.js#L12) and the types [here](https://github.com/ipfs/aegir/blob/main/src/types.d.ts).
+ You can find the complete default config [here](https://github.com/ipfs/aegir/blob/main/src/config/user.js#L12) and the types [here](https://github.com/ipfs/aegir/blob/main/src/types.ts).
 
  ## Continuous Integration
 

@@ -1,6 +1,5 @@
 import assert from 'node:assert'
 import eslintParser from '@typescript-eslint/parser'
-// @ts-expect-error no types
 import importPlugin from 'eslint-plugin-import'
 import jsdoc from 'eslint-plugin-jsdoc'
 // @ts-expect-error no types

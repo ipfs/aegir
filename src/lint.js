@@ -27,9 +27,8 @@ const tasks = new Listr(
       /**
        *
        * @param {GlobalOptions & LintOptions} ctx
-       * @param {Task} task
        */
-      task: async (ctx, task) => {
+      task: async (ctx) => {
         const eslint = new ESLint({
           fix: ctx.fix,
           overrideConfigFile: fromAegir('eslint.config.js')
@@ -64,10 +63,7 @@ const tasks = new Listr(
     },
     {
       title: 'tsc',
-      /**
-       * @param {GlobalOptions & LintOptions} ctx
-       */
-      enabled: ctx => hasTsconfig && !isTypescript,
+      enabled: () => hasTsconfig && !isTypescript,
       /**
        * @param {GlobalOptions & LintOptions} ctx
        * @param {Task} task

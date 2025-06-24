@@ -1,3 +1,10 @@
+## [47.0.18](https://github.com/ipfs/aegir/compare/v47.0.17...v47.0.18) (2025-06-24)
+
+### Bug Fixes
+
+* allow importing .ts files ([#1819](https://github.com/ipfs/aegir/issues/1819)) ([ab2d0b0](https://github.com/ipfs/aegir/commit/ab2d0b08ca601f24360d1d7219bb2962adeafbaa))
+* import plugin has types now ([7660c0d](https://github.com/ipfs/aegir/commit/7660c0d8f9860e6a87100d8bda0160ea93635751))
+
 ## [47.0.17](https://github.com/ipfs/aegir/compare/v47.0.16...v47.0.17) (2025-06-18)
 
 ### Bug Fixes

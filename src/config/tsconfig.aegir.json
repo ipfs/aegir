@@ -27,7 +27,8 @@
         "skipLibCheck": true,
         "stripInternal": true,
         "resolveJsonModule": true,
-        "rewriteRelativeImportExtensions": true
+        "rewriteRelativeImportExtensions": true,
+        "allowImportingTsExtensions": true
     },
     "include": [
         "src",

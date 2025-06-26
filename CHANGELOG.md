@@ -1,3 +1,9 @@
+## [47.0.19](https://github.com/ipfs/aegir/compare/v47.0.18...v47.0.19) (2025-06-26)
+
+### Bug Fixes
+
+* add DOM.AsyncIterable ([#1826](https://github.com/ipfs/aegir/issues/1826)) ([effb5e4](https://github.com/ipfs/aegir/commit/effb5e4003f0a4fb814d79ac27c0cfe051e3869e))
+
 ## [47.0.18](https://github.com/ipfs/aegir/compare/v47.0.17...v47.0.18) (2025-06-24)
 
 ### Bug Fixes

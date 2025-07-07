@@ -39,9 +39,8 @@ const tasks = new Listr(
       title: 'dependency-check',
       /**
        * @param {GlobalOptions & DependencyCheckOptions} ctx
-       * @param {Task} task
        */
-      task: async (ctx, task) => {
+      task: async (ctx) => {
         let missingOrUnusedPresent = false
 
         // check production dependencies

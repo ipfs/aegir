@@ -116,10 +116,6 @@ setParser('neostandard/ts', eslintParser, {
   ecmaVersion: 'latest'
 })
 
-// TODO: not compatible with ESLint 9x yet
-// addPlugin('neostandard/ts', 'etc', etc)
-// addRule('neostandard/ts', 'etc/prefer-interface', 'error') // https://ncjamieson.com/prefer-interfaces/
-
 addRule('neostandard/ts', 'no-return-await', 'off') // disable this rule to use @typescript-eslint/return-await instead
 addRule('neostandard/ts', '@typescript-eslint/no-use-before-define', [
   'error', {

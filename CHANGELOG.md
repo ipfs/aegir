@@ -1,3 +1,9 @@
+## [47.0.20](https://github.com/ipfs/aegir/compare/v47.0.19...v47.0.20) (2025-07-07)
+
+### Bug Fixes
+
+* update readme when readme is omitted from typedocs ([ffce208](https://github.com/ipfs/aegir/commit/ffce2086e371f3392c2e3fbd00f0a09456b3de3b))
+
 ## [47.0.19](https://github.com/ipfs/aegir/compare/v47.0.18...v47.0.19) (2025-06-26)
 
 ### Bug Fixes

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const core = require('@actions/core')
 const { context, getOctokit } = require('@actions/github')
 const { sizeCheck } = require('./utils')

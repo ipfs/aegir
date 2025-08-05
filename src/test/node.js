@@ -10,8 +10,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import("execa").Options} ExecaOptions
- * @typedef {import('./../types').TestOptions} TestOptions
- * @typedef {import('./../types').GlobalOptions} GlobalOptions
+ * @typedef {import('../types.js').TestOptions} TestOptions
+ * @typedef {import('../types.js').GlobalOptions} GlobalOptions
  */
 
 /**
@@ -84,7 +84,8 @@ export default async function testNode (argv, execaOptions) {
         },
         preferLocal: true,
         localDir: path.join(__dirname, '../..'),
-        stdio: argv.cov ? 'pipe' : 'inherit'
+        stdio: argv.cov ? 'pipe' : 'inherit',
+        forceKillAfterDelay: 1_000
       },
       execaOptions
     )
@@ -121,9 +122,7 @@ export default async function testNode (argv, execaOptions) {
           console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
           killedWhileCollectingCoverage = true
 
-          proc.kill('SIGTERM', {
-            forceKillAfterTimeout: 1000
-          })
+          proc.kill('SIGTERM')
         }, argv.covTimeout).unref()
       }
     })

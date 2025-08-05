@@ -1,9 +1,10 @@
-/* eslint-disable max-depth */
-
 import fs from 'fs'
 import path from 'path'
 import * as td from 'typedoc'
 
+/**
+ * Types of export we want to add to the typedoc url list
+ */
 const MODELS =
   td.ReflectionKind.Interface |
   td.ReflectionKind.Function |
@@ -25,8 +26,8 @@ const MODELS =
 
 /**
  * A plugin that creates a `typedoc-urls.json` file in the `dist` folder of the
- * current project that contains URLs that map exported symbol names to published
- * typedoc pages.
+ * current project that contains URLs that map exported symbol names to
+ * published typedoc pages.
  *
  * See `unknown-symbol-resolver-plugin.js` for how it is consumed.
  *
@@ -51,10 +52,10 @@ export function load (app) {
   }
 
   /**
-   * @param {import("typedoc/dist/lib/output/events").RendererEvent} event
+   * @param {td.RendererEvent} event
    */
   const onRendererBegin = event => {
-    if (!event.urls) {
+    if (!event.pages) {
       app.logger.warn('No urls found in RendererEvent')
       return
     }
@@ -62,29 +63,32 @@ export function load (app) {
     /** @type {Record<string, Documentation>} */
     const typedocs = {}
 
-    for (const urlMapping of event.urls) {
+    for (const page of event.pages) {
       // @ts-expect-error sources is not a property of Reflection
-      if (!urlMapping.model.sources || urlMapping.model.sources.length === 0) {
-        app.logger.verbose(`No sources found in URLMapping for variant "${urlMapping.model.variant}"`)
+      if (!page.model.sources || page.model.sources.length === 0) {
+        app.logger.verbose(`No sources found in PageDefinition for "${page.kind}"`)
         continue
       }
 
-      if (!urlMapping.model.kindOf(MODELS)) {
-        app.logger.verbose(`Skipping model "${urlMapping.model.variant}" as it is not in the list of model types we are interested in`)
+      if (!(page.model instanceof td.DeclarationReflection)) {
+        app.logger.verbose(`Skipping model "${page.model.name}" as it was not an instance of DeclarationReflection`)
         continue
       }
 
-      // @ts-expect-error sources is not a property of Reflection
-      if (urlMapping.model.sources == null || urlMapping.model.sources.length === 0) {
-        app.logger.verbose(`Skipping model "${urlMapping.model.variant}" as it has no url mapping sources`)
+      if (!page.model.kindOf(MODELS)) {
+        app.logger.verbose(`Skipping model "${page.model.name}" as it is not in the list of model types we are interested in`)
         continue
       }
 
-      // @ts-expect-error sources is not a property of Reflection
-      const source = urlMapping.model.sources[0]
+      if (page.model.sources == null || page.model.sources.length === 0) {
+        app.logger.verbose(`Skipping model "${page.kind}" as it has no url mapping sources`)
+        continue
+      }
+
+      const source = page.model.sources[0]
 
       // @ts-expect-error reflectionSources is not a property of ProjectReflection
-      source.fullFileName = event.project.reflectionSources[urlMapping.model.id]
+      source.fullFileName = event.project.reflectionSources[page.model.id]
 
       const context = findContext(source, isMonorepo)
 
@@ -119,19 +123,18 @@ export function load (app) {
       const exportPath = typedocs[context.manifestPath].exports[defPath]
 
       // cannot differentiate between types with duplicate names in the same module https://github.com/TypeStrong/typedoc/issues/2125
-      if (typedocs[context.manifestPath].typedocs[urlMapping.model.name] != null) {
-        // @ts-expect-error sources is not a property of Reflection
-        app.logger.warn(`Duplicate exported type name ${urlMapping.model.name} defined in ${urlMapping.model.sources[0].fullFileName}`)
+      if (typedocs[context.manifestPath].typedocs[page.model.name] != null) {
+        app.logger.warn(`Duplicate exported type name ${page.model.name} defined in ${page.model.sources[0].fullFileName}`)
       } else {
         // store reference to generate doc url
-        typedocs[context.manifestPath].typedocs[urlMapping.model.name] = `${ghPages}${urlMapping.url}`
+        typedocs[context.manifestPath].typedocs[page.model.name] = `${ghPages}${page.url}`
       }
 
       // if the export map entry that this symbol can be loaded from is present,
       // store it in the typedoc url list so we can attempt to choose a
       // canonical documentation URL when duplicate symbol names are exported
       if (exportPath != null) {
-        typedocs[context.manifestPath].typedocs[`${exportPath}:${urlMapping.model.name}`] = `${ghPages}${urlMapping.url}`
+        typedocs[context.manifestPath].typedocs[`${exportPath}:${page.model.name}`] = `${ghPages}${page.url}`
       }
     }
 
@@ -164,6 +167,7 @@ export function load (app) {
       return model instanceof td.ProjectReflection
     },
     toObject (model, obj, _ser) {
+      // @ts-expect-error cannot derive types
       obj.reflectionSources = model.reflectionSources
       return obj
     }
@@ -176,8 +180,8 @@ export function load (app) {
     },
     fromObject (_model, obj) {
       app.deserializer.defer((project) => {
-        // @ts-expect-error reflectionSources is not a property of ProjectReflection
-        project.reflectionSources ??= {}
+        // @ts-expect-error not properties of these types
+        project.reflectionSources = project.reflectionSources ?? {}
 
         // @ts-expect-error obj is unknown type
         for (const [id, path] of Object.entries(obj.reflectionSources)) {
@@ -193,14 +197,14 @@ export function load (app) {
 
 /**
  * @param {td.Context} context
- * @param {td.DeclarationReflection} decl
+ * @param {td.Reflection} decl
  */
 function onResolve (context, decl) {
   if (!decl.kindOf(MODELS)) {
     return
   }
 
-  const symbol = context.project.getSymbolFromReflection(decl)
+  const symbol = context.getSymbolFromReflection(decl)
 
   if (!symbol) {
     return
@@ -228,7 +232,7 @@ function onResolve (context, decl) {
  * For a given UrlMapping, find the nearest package.json file
  * and work out if a `typedoc-urls.json` should be generated.
  *
- * @param {import("typedoc/dist/lib/models/sources/file").SourceReference} source
+ * @param {td.SourceReference} source
  * @param {boolean} isMonorepo
  * @returns {ProjectContext}
  */
@@ -262,7 +266,7 @@ function findContext (source, isMonorepo) {
 }
 
 /**
- * @param {import("typedoc/dist/lib/application").Application} Application
+ * @param {td.Application} Application
  * @param {ProjectContext} context
  * @returns {Documentation | undefined}
  */

@@ -1,12 +1,10 @@
-/* eslint-disable no-console */
-
 import { execa } from 'execa'
 import Listr from 'listr'
 import { isMonorepoProject, hasDocs, pkg } from './utils.js'
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").ReleaseOptions} ReleaseOptions
+ * @typedef {import('./types.js').GlobalOptions} GlobalOptions
+ * @typedef {import('./types.js').ReleaseOptions} ReleaseOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  */
 

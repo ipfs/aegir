@@ -12,8 +12,8 @@ const publishPages = promisify(ghPages.publish)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").DocsOptions} DocsOptions
+ * @typedef {import('./types.js').GlobalOptions} GlobalOptions
+ * @typedef {import('./types.js').DocsOptions} DocsOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
  */
 
@@ -49,6 +49,8 @@ const docs = async (ctx, task) => {
       'typedoc-plugin-mdn-links',
       '--plugin',
       fromAegir('src/docs/readme-updater-plugin.js'),
+      '--plugin',
+      'typedoc-plugin-mermaid',
       ...forwardOptions
     ],
     {
@@ -153,7 +155,7 @@ const tasks = new Listr(
        */
       task: (ctx) => {
         if (fs.existsSync(ctx.directory)) {
-          fs.rmdirSync(ctx.directory, {
+          fs.rmSync(ctx.directory, {
             recursive: true
           })
         }

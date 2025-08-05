@@ -1,11 +1,8 @@
-import mergeOptions from '../../utils/merge-options.js'
 import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,
   constructManifest
 } from '../utils.js'
-
-const merge = mergeOptions.bind({ ignoreUndefined: true })
 
 /**
  * @param {import('../index.js').ProcessManifestContext} context
@@ -40,13 +37,6 @@ export async function untypedESMManifest (context) {
         import: './src/index.js'
       }
     },
-    eslintConfig: merge({
-      extends: 'ipfs',
-      parserOptions: {
-        project: true,
-        sourceType: 'module'
-      }
-    }, manifest.eslintConfig),
     release,
     scripts
   }, repoUrl, homePage)
@@ -63,7 +53,8 @@ export async function untypedESMManifest (context) {
     ...proposedManifest,
     ...rest,
     contributors: undefined,
-    leadMaintainer: undefined
+    leadMaintainer: undefined,
+    eslintConfig: undefined
   }
 
   return proposedManifest

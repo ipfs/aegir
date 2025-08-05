@@ -139,13 +139,13 @@ async function processMonorepo (projectDir, manifest, branchName, repoUrl, ciFil
       continue
     }
 
-    const manifest = path.join(subProjectDir, 'package.json')
+    const subProjectManifest = path.join(subProjectDir, 'package.json')
 
-    if (!fs.existsSync(manifest)) {
+    if (!fs.existsSync(subProjectManifest)) {
       continue
     }
 
-    const pkg = fs.readJSONSync(manifest)
+    const pkg = fs.readJSONSync(subProjectManifest)
     const homePage = `${webRoot}/${subProjectDir.includes(projectDir) ? subProjectDir.substring(projectDir.length) : subProjectDir}`
 
     console.info('Found monorepo project', pkg.name)

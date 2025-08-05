@@ -1,3 +1,3 @@
-export function garply (arg: string): boolean {
+export function garply (): boolean {
   return true
 }

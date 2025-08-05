@@ -37,17 +37,23 @@
     "/CID(.*)/",
 
     // string CIDs are not spell checked
-    "'baf(.*)'",
-    "\"baf(.*)\"",
-    "'Qm(.*)'",
-    "\"Qm(.*)\"",
+    "baf[a-zA-Z1-9\/]+", // base32 encoded libp2p-key
+    "bae[a-zA-Z1-9\/]+", // base32 encoded identity
+    "Qm[a-zA-Z1-9\/]+", // base58btc encoded (no multibase)
 
     // string PeerIds are not spell checked
-    "'12D3Koo(.*)'", // Ed25519
-    "\"12D3Koo(.*)\"", // Ed25519
-    "'16Uiu(.*)'", // secp256k1
-    "\"16Uiu(.*)\"", // secp256k1
-    "'k51(.*)'", // base36 PeerId as CID
-    "\"k51(.*)\"" // base36 PeerId as CID
+    "12D3Koo[a-zA-Z1-9\/]+", // Ed25519
+    "16Uiu[a-zA-Z1-9\/]+", // secp256k1
+    "k51[a-zA-Z1-9\/]+", // base36 ed PeerId as CID
+    "kzw[a-zA-Z1-9\/]+", // base36 secp PeerId as CID
+    "k2k[a-zA-Z1-9\/]+", // base36 rsa PeerId as CID
+
+    "/ipfs/[a-zA-Z1-9\/]+", // IPFS paths
+    "ipfs://[a-zA-Z1-9\/]+", // IPFS URLs
+    "/ipns/[a-zA-Z1-9\/\\.]+", // IPNS names
+    "ipns://[a-zA-Z1-9\/\\.]+", // IPNS URLs
+
+    "AAE[a-zA-Z1-9\/]+", // base64 data
+    "%[a-fA-F0-9]{2}" // URL encoded characters
   ]
 }

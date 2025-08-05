@@ -5,9 +5,9 @@
         "outDir": "dist",
         "allowJs": true,
         "checkJs": true,
-        "target": "ES2022",
-        "module": "ES2022",
-        "lib": ["ES2023", "ES2023.Array", "DOM", "DOM.Iterable", "WebWorker"],
+        "target": "ES2024",
+        "module": "Node18",
+        "lib": ["DOM", "DOM.Iterable", "DOM.AsyncIterable", "WebWorker", "ES2024"],
         "noEmit": false,
         "noEmitOnError": true,
         "emitDeclarationOnly": false,
@@ -20,13 +20,15 @@
         "sourceMap": true,
         // module resolution
         "esModuleInterop": true,
-        "moduleResolution": "node",
+        "moduleResolution": "Node16",
         // advanced
         "verbatimModuleSyntax": true,
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
         "stripInternal": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "rewriteRelativeImportExtensions": true,
+        "allowImportingTsExtensions": true
     },
     "include": [
         "src",

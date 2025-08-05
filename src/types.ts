@@ -104,7 +104,7 @@ interface GlobalOptions {
   /**
    * CLI Input
    */
-  '_'?: string
+  _?: string
   /**
    * Full config from configuration file
    */
@@ -265,17 +265,17 @@ interface TestOptions {
     /**
      * playwright-test config @see https://github.com/hugomrdias/playwright-test
      */
-    config: any
+    config: unknown
   }
   /**
    * Before tests hook
    */
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+
   before(options: GlobalOptions & TestOptions): Promise<TestBeforeResult | void >
   /**
    * After tests hook
    */
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+
   after(options: GlobalOptions & TestOptions, beforeResult: TestBeforeResult | void): Promise<void>
 }
 

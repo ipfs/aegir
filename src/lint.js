@@ -9,15 +9,15 @@ import { globby } from 'globby'
 import kleur from 'kleur'
 import Listr from 'listr'
 import merge from './utils/merge-options.js'
-import { fromRoot, readJson, hasTsconfig, isTypescript, findBinary, hasDocCheck } from './utils.js'
+import { fromRoot, fromAegir, readJson, hasTsconfig, isTypescript, findBinary, hasDocCheck } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
- * @typedef {import("./types").GlobalOptions} GlobalOptions
- * @typedef {import("./types").LintOptions} LintOptions
+ * @typedef {import('./types.js').GlobalOptions} GlobalOptions
+ * @typedef {import('./types.js').LintOptions} LintOptions
  * @typedef {import("listr").ListrTaskWrapper} Task
- * @typedef {import("./types").TSOptions} TSOptions
+ * @typedef {import('./types.js').TSOptions} TSOptions
  */
 
 const tasks = new Listr(
@@ -32,8 +32,7 @@ const tasks = new Listr(
       task: async (ctx, task) => {
         const eslint = new ESLint({
           fix: ctx.fix,
-          baseConfig: { extends: 'ipfs' },
-          useEslintrc: true
+          overrideConfigFile: fromAegir('eslint.config.js')
         })
         const results = await eslint.lintFiles(await globby(ctx.files))
         const formatter = await eslint.loadFormatter('unix')

@@ -1,2 +1,3 @@
-/* eslint-disable no-unused-vars */
+// @ts-nocheck
+/* eslint-disable */
 import { execa } from 'execa'

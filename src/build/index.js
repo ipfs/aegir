@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import path from 'path'
 import bytes from 'bytes'
 import esbuild from 'esbuild'
@@ -15,9 +13,9 @@ const defaults = merge.bind({
 })
 
 /**
- * @typedef {import("../types").GlobalOptions} GlobalOptions
- * @typedef {import("../types").BuildOptions} BuildOptions
- * @typedef {import("listr").ListrTaskWrapper} Task
+ * @typedef {import('../types.js').GlobalOptions} GlobalOptions
+ * @typedef {import('../types.js').BuildOptions} BuildOptions
+ * @typedef {import('listr').ListrTaskWrapper} Task
  */
 
 /**

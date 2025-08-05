@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
-
-// @ts-ignore
+// @ts-nocheck
+/* eslint-disable */
 import { execa } from 'execa'
-// @ts-ignore
 import pico from 'pico'

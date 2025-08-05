@@ -1,4 +1,3 @@
 // @ts-nocheck
-
-/* eslint-disable no-unused-vars */
+/* eslint-disable */
 const pico = require('pico')

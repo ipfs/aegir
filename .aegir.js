@@ -5,7 +5,6 @@ export default {
     },
     dependencyCheck: {
         ignore: [
-            '@typescript-eslint/eslint-plugin',
             'buffer',
             'c8',
             'conventional-changelog-conventionalcommits',
@@ -20,6 +19,7 @@ export default {
             'semantic-release-monorepo',
             'source-map-support',
             'typedoc-plugin-mdn-links',
+            'typedoc-plugin-mermaid',
             'typedoc-plugin-missing-exports',
             'electron',
             'bytes',

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./types').ExportedButNotInExports} ExportedButNotInExports
+ * @typedef {import('./types.js').ExportedButNotInExports} ExportedButNotInExports
  */
 
 /**

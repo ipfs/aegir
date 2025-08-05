@@ -6,7 +6,7 @@ import merge from '../utils/merge-options.js'
 import { isTypescript } from '../utils.js'
 
 /**
- * @typedef {import("./../types").Options} Options
+ * @typedef {import('../types.js').Options} Options
  */
 
 /** @type {Omit<Options, "fileConfig">} */
@@ -49,17 +49,17 @@ const defaults = {
     silent: false,
     fix: false,
     files: [
-      '*.{js,ts}',
+      '*.{js,ts,jsx,tsx}',
       'bin/**',
-      'config/**/*.{js,ts}',
-      'test/**/*.{js,ts}',
-      'src/**/*.{js,ts}',
-      'tasks/**/*.{js,ts}',
-      'benchmarks/**/*.{js,ts}',
+      'config/**/*.{js,ts,jsx,tsx}',
+      'test/**/*.{js,ts,jsx,tsx}',
+      'src/**/*.{js,ts,jsx,tsx}',
+      'tasks/**/*.{js,ts,jsx,tsx}',
+      'benchmarks/**/*.{js,ts,jsx,tsx}',
       '!benchmarks/**/node_modules/**',
-      'utils/**/*.{js,ts}',
+      'utils/**/*.{js,ts,jsx,tsx}',
       '!**/node_modules/**',
-      'examples/**/*.{js,ts}',
+      'examples/**/*.{js,ts,jsx,tsx}',
       '!examples/**/node_modules/**'
     ]
   },

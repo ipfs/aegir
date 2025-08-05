@@ -1,3 +1,9 @@
+## [47.0.21](https://github.com/ipfs/aegir/compare/v47.0.20...v47.0.21) (2025-08-05)
+
+### Bug Fixes
+
+* pin typescript ([#1846](https://github.com/ipfs/aegir/issues/1846)) ([b5f0e94](https://github.com/ipfs/aegir/commit/b5f0e9498fb3cf5fec20c2f95d14f47807cad2f7))
+
 ## [47.0.20](https://github.com/ipfs/aegir/compare/v47.0.19...v47.0.20) (2025-07-07)
 
 ### Bug Fixes

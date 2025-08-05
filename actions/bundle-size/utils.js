@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-'use strict'
 const artifact = require('@actions/artifact')
 const execa = require('execa')
 const core = require('@actions/core')

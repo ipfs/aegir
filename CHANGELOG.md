@@ -1,3 +1,10 @@
+## [47.0.23](https://github.com/ipfs/aegir/compare/v47.0.22...v47.0.23) (2025-10-14)
+
+### Dependencies
+
+* bump globby from 14.1.0 to 15.0.0 ([#1867](https://github.com/ipfs/aegir/issues/1867)) ([583d846](https://github.com/ipfs/aegir/commit/583d846486b23a9b8f95c11a422f8aec68dcff20))
+* bump p-queue from 8.1.1 to 9.0.0 ([#1871](https://github.com/ipfs/aegir/issues/1871)) ([3dec148](https://github.com/ipfs/aegir/commit/3dec148e40c5251505eb20d4c868031466ecc2e7))
+
 ## [47.0.22](https://github.com/ipfs/aegir/compare/v47.0.21...v47.0.22) (2025-09-17)
 
 ### Bug Fixes

@@ -10,8 +10,8 @@ import { formatCode, formatError, fromRoot, hasTsconfig, readJson } from './util
 /**
  * @typedef {import('./types.js').GlobalOptions} GlobalOptions
  * @typedef {import('./types.js').DocsVerifierOptions} DocsVerifierOptions
- * @typedef {import("listr").ListrTaskWrapper} Task
- * @typedef {import("ts-node").TSError} TSError
+ * @typedef {import('listr').ListrTaskWrapper} Task
+ * @typedef {import('typescript-docs-verifier').CompilationError} CompilationError
  */
 
 /**
@@ -61,7 +61,8 @@ const tasks = new Listr(
                   compilerOptions: {
                     noImplicitAny: true,
                     noEmit: true,
-                    skipLibCheck: true
+                    skipLibCheck: true,
+                    emitDeclarationOnly: false
                   }
                 }
               ])
@@ -109,7 +110,7 @@ export default tasks
 /**
  *
  * @param {*} err
- * @returns {err is TSError}
+ * @returns {err is CompilationError}
  */
 function isTSError (err) {
   return Array.isArray(err.diagnosticCodes)

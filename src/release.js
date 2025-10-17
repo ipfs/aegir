@@ -5,7 +5,7 @@ import { isMonorepoProject, hasDocs, pkg } from './utils.js'
 /**
  * @typedef {import('./types.js').GlobalOptions} GlobalOptions
  * @typedef {import('./types.js').ReleaseOptions} ReleaseOptions
- * @typedef {import("listr").ListrTaskWrapper} Task
+ * @typedef {import('listr').ListrTaskWrapper} Task
  */
 
 const tasks = new Listr([

@@ -317,7 +317,7 @@
     "typescript": "5.8.3",
     "typescript-docs-verifier": "^3.0.1",
     "wherearewe": "^2.0.1",
-    "yargs": "^17.1.1",
+    "yargs": "^18.0.0",
     "yargs-parser": "^21.1.1"
   },
   "devDependencies": {

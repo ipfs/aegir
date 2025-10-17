@@ -103,7 +103,7 @@ async function main () {
     if (res.parsed && (res.parsed.argv.debug || process.env.DEBUG != null)) {
       console.error('\n', err)
     } else {
-      console.error(err)
+      console.error(err.message)
     }
 
     process.exit(1)

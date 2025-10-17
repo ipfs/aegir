@@ -1,3 +1,9 @@
+## [47.0.24](https://github.com/ipfs/aegir/compare/v47.0.23...v47.0.24) (2025-10-17)
+
+### Dependencies
+
+* bump typescript-docs-verifier from 2.5.3 to 3.0.1 ([#1841](https://github.com/ipfs/aegir/issues/1841)) ([493cd48](https://github.com/ipfs/aegir/commit/493cd4864487e73c96f13952b895c4841d469da0))
+
 ## [47.0.23](https://github.com/ipfs/aegir/compare/v47.0.22...v47.0.23) (2025-10-14)
 
 ### Dependencies

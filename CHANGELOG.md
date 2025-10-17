@@ -1,3 +1,28 @@
+## [47.0.23](https://github.com/ipfs/aegir/compare/v47.0.22...v47.0.23) (2025-10-14)
+
+### Dependencies
+
+* bump globby from 14.1.0 to 15.0.0 ([#1867](https://github.com/ipfs/aegir/issues/1867)) ([583d846](https://github.com/ipfs/aegir/commit/583d846486b23a9b8f95c11a422f8aec68dcff20))
+* bump p-queue from 8.1.1 to 9.0.0 ([#1871](https://github.com/ipfs/aegir/issues/1871)) ([3dec148](https://github.com/ipfs/aegir/commit/3dec148e40c5251505eb20d4c868031466ecc2e7))
+
+## [47.0.22](https://github.com/ipfs/aegir/compare/v47.0.21...v47.0.22) (2025-09-17)
+
+### Bug Fixes
+
+* time out browser coverage collection ([#1865](https://github.com/ipfs/aegir/issues/1865)) ([16ba8c7](https://github.com/ipfs/aegir/commit/16ba8c7bd4e3a2e17b470022efe3183a14f9090d))
+
+### Dependencies
+
+* bump npm-package-json-lint from 8.0.0 to 9.0.0 ([#1827](https://github.com/ipfs/aegir/issues/1827)) ([94bda99](https://github.com/ipfs/aegir/commit/94bda99e3e2c907a1753e9b5c97336ee9f313ce6))
+* bump p-retry from 6.2.1 to 7.0.0 ([#1856](https://github.com/ipfs/aegir/issues/1856)) ([b578e1d](https://github.com/ipfs/aegir/commit/b578e1df0fa65fab28d078123cd2249e93f9c725))
+* **dev:** bump electron from 36.9.1 to 38.1.1 ([#1864](https://github.com/ipfs/aegir/issues/1864)) ([27c911b](https://github.com/ipfs/aegir/commit/27c911b8def49ba8847b1f50f85d77186b5456fa))
+
+## [47.0.21](https://github.com/ipfs/aegir/compare/v47.0.20...v47.0.21) (2025-08-05)
+
+### Bug Fixes
+
+* pin typescript ([#1846](https://github.com/ipfs/aegir/issues/1846)) ([b5f0e94](https://github.com/ipfs/aegir/commit/b5f0e9498fb3cf5fec20c2f95d14f47807cad2f7))
+
 ## [47.0.20](https://github.com/ipfs/aegir/compare/v47.0.19...v47.0.20) (2025-07-07)
 
 ### Bug Fixes

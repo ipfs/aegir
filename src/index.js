@@ -100,7 +100,7 @@ async function main () {
   try {
     await res.parse()
   } catch (/** @type {any} */ err) {
-    if (res.parsed && res.parsed.argv.debug) {
+    if (res.parsed && (res.parsed.argv.debug || process.env.DEBUG != null)) {
       console.error('\n', err)
     } else {
       console.error(err)

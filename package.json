@@ -257,7 +257,7 @@
     "diff": "^8.0.1",
     "electron-mocha": "^13.0.0",
     "env-paths": "^3.0.0",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.27.0",
     "eslint": "^9.27.0",
     "eslint-formatter-unix": "^8.40.0",
     "eslint-plugin-import": "^2.31.0",

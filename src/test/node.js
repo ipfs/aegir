@@ -65,10 +65,6 @@ export default async function testNode (argv, execaOptions) {
     args.push(...argv['--'])
   }
 
-  if (os.platform() === 'win32') {
-    args.push('--exit')
-  }
-
   // before hook
   const before = await argv.fileConfig.test.before(argv)
   const beforeEnv = before && before.env ? before.env : {}

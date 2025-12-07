@@ -1,3 +1,9 @@
+## [47.0.25](https://github.com/ipfs/aegir/compare/v47.0.24...v47.0.25) (2025-12-07)
+
+### Bug Fixes
+
+* remove forced test exit on windows ([#1897](https://github.com/ipfs/aegir/issues/1897)) ([0ca62ab](https://github.com/ipfs/aegir/commit/0ca62ab47fe4120c332f6c0f59bb78faa174c00f))
+
 ## [47.0.24](https://github.com/ipfs/aegir/compare/v47.0.23...v47.0.24) (2025-10-17)
 
 ### Dependencies

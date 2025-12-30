@@ -37,8 +37,11 @@ runs:
           ./packages/*/node_modules
           ${{ inputs.directories }}
         key: ${{ runner.os }}-build-${{ inputs.cache_name }}-${{ github.sha }}
-    - if: steps.cache.outputs.cache-hit != 'true'
+    - if: steps.cache.outputs.cache-hit != 'true' && hashFiles('./package-lock.json') == ''
       run: npm install
+      shell: bash
+    - if: steps.cache.outputs.cache-hit != 'true' && hashFiles('./package-lock.json') != ''
+      run: npm ci
       shell: bash
     - if: ${{ steps.cache.outputs.cache-hit != 'true' && inputs.build_on_cache_fail == 'true' }}
       run: npm run --if-present build

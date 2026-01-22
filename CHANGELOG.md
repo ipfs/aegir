@@ -1,3 +1,9 @@
+## [47.0.26](https://github.com/ipfs/aegir/compare/v47.0.25...v47.0.26) (2026-01-22)
+
+### Dependencies
+
+* bump semantic-release to 25.0.2 ([#1904](https://github.com/ipfs/aegir/issues/1904)) ([a628685](https://github.com/ipfs/aegir/commit/a628685d00bc3ade832b295048871a120036381b))
+
 ## [47.0.25](https://github.com/ipfs/aegir/compare/v47.0.24...v47.0.25) (2025-12-07)
 
 ### Bug Fixes

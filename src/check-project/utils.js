@@ -82,17 +82,64 @@ export async function ensureFileHasContents (projectDir, filePath, expectedConte
     console.warn(kleur.yellow(`${filePath} contents not ok`))
     console.warn('Diff', kleur.green('added'), kleur.red('removed'), kleur.grey('unchanged'))
 
-    const diff = Diff.diffLines(existingContents, expectedContents)
+    let diff = Diff.diffLines(existingContents, expectedContents)
+    diff = diff.flatMap(part => {
+      return part.value.trimEnd().split('\n')
+        .map(line => {
+          return {
+            ...part,
+            value: line.trimEnd()
+          }
+        })
+    })
+    /** @type {Array<{ include: boolean, added: boolean, removed: boolean, line: string }>} */
+    const output = []
 
-    diff.forEach((part) => {
+    // show this many lines before and after a diff
+    const linesAround = 10
+    let maxIncluded = 0
+
+    diff.forEach((part, index) => {
+      output.push({
+        include: part.added ?? part.removed,
+        added: part.added,
+        removed: part.removed,
+        line: part.value
+      })
+    })
+
+    // include some lines around the change
+    output.forEach((part, index) => {
+      if (part.added || part.removed) {
+        for (let i = index; i > index - linesAround; i--) {
+          if (output[i] != null) {
+            output[i].include = true
+          }
+        }
+
+        for (let i = index; i < index + linesAround; i++) {
+          if (output[i] != null) {
+            output[i].include = true
+            maxIncluded = i
+          }
+        }
+      }
+    })
+
+    // print the diff, red for removed, green for added
+    output.forEach((part, index) => {
+      if (!part.include) {
+        return
+      }
+
       // green for additions, red for deletions
       // grey for common parts
       if (part.added) {
-        console.info(kleur.green(part.value))
+        console.info(kleur.grey(`${index.toString().padEnd(maxIncluded.toString().length, ' ')}:`), kleur.green(part.line))
       } else if (part.removed) {
-        console.info(kleur.red(part.value))
+        console.info(kleur.grey(`${index.toString().padEnd(maxIncluded.toString().length, ' ')}:`), kleur.red(part.line))
       } else {
-        console.info(kleur.grey(part.value))
+        console.info(kleur.grey(`${index.toString().padEnd(maxIncluded.toString().length, ' ')}:`), kleur.grey(part.line))
       }
     })
 

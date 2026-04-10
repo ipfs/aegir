@@ -40,7 +40,8 @@ export async function typescriptManifest (context) {
       merge({
         '.': {
           types: './dist/src/index.d.ts',
-          import: './dist/src/index.js'
+          import: './dist/src/index.js',
+          'module-sync': './src/index.js'
         }
       }, manifest.exports)
     ),

@@ -189,7 +189,7 @@ export function sortExportsMap (obj) {
 
     let types = entry.types
 
-    if (!types && entry.import != null) {
+    if (types == null && entry.import != null) {
       types = entry.import.replace('.js', '.d.ts')
     }
 
@@ -199,6 +199,15 @@ export function sortExportsMap (obj) {
       // types field must be first - https://devblogs.microsoft.com/typescript/announcing-typescript-4-7/#package-json-exports-imports-and-self-referencing
       types,
       ...entry
+    }
+
+    // add `module-sync` field to allow `require`ing module - must be after
+    // import
+    if (output[key]['module-sync'] == null && output[key].import != null) {
+      output[key] = {
+        ...output[key],
+        'module-sync': output[key].import
+      }
     }
   }
 

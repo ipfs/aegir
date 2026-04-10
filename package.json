@@ -289,7 +289,7 @@
     "mocha": "^11.0.1",
     "neostandard": "^0.12.1",
     "npm-package-json-lint": "^10.2.0",
-    "nyc": "^17.0.0",
+    "nyc": "^18.0.0",
     "p-map": "^7.0.1",
     "p-queue": "^9.0.0",
     "p-retry": "^8.0.0",

@@ -172,6 +172,7 @@ export const config = async (searchFrom) => {
       searchPlaces: [
         'package.json',
         '.aegir.js',
+        '.aegir.mjs',
         '.aegir.cjs'
       ]
     })

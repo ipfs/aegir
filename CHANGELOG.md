@@ -1,3 +1,9 @@
+## [47.1.2](https://github.com/ipfs/aegir/compare/v47.1.1...v47.1.2) (2026-04-10)
+
+### Bug Fixes
+
+* update unknown type resolver ([15ad88d](https://github.com/ipfs/aegir/commit/15ad88d3da082fed61485ae74466817df602e4ec))
+
 ## [47.1.1](https://github.com/ipfs/aegir/compare/v47.1.0...v47.1.1) (2026-04-10)
 
 ### Bug Fixes

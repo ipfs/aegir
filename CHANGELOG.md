@@ -1,3 +1,18 @@
+## [47.1.4](https://github.com/ipfs/aegir/compare/v47.1.3...v47.1.4) (2026-04-10)
+
+### Bug Fixes
+
+* update actions to node 24 ([#1925](https://github.com/ipfs/aegir/issues/1925)) ([71a8e8a](https://github.com/ipfs/aegir/commit/71a8e8a4d0d44719b779e68951999c1b92b5e597))
+
+### Dependencies
+
+* bump c8 from 10.1.3 to 11.0.0 ([#1930](https://github.com/ipfs/aegir/issues/1930)) ([505c005](https://github.com/ipfs/aegir/commit/505c0052fe47203609cbdedca00b99175642b4c5))
+* bump cspell from 9.8.0 to 10.0.0 ([#1932](https://github.com/ipfs/aegir/issues/1932)) ([e8fcb38](https://github.com/ipfs/aegir/commit/e8fcb389c6b8f8e01ca38f37fb5037434ad2e8cb))
+* bump npm-package-json-lint from 9.1.0 to 10.2.0 ([#1931](https://github.com/ipfs/aegir/issues/1931)) ([132cd2c](https://github.com/ipfs/aegir/commit/132cd2cc31e10452b3716228738ded2703d883f3))
+* bump nyc from 17.1.0 to 18.0.0 ([#1928](https://github.com/ipfs/aegir/issues/1928)) ([30f8148](https://github.com/ipfs/aegir/commit/30f8148d08054004677ec1dc5433180f82f64f02))
+* bump p-retry from 7.1.1 to 8.0.0 ([#1934](https://github.com/ipfs/aegir/issues/1934)) ([4066321](https://github.com/ipfs/aegir/commit/4066321764f6f5a7e94762dea6f564728b42a0e9))
+* **dev:** bump electron from 40.8.5 to 41.2.0 ([#1933](https://github.com/ipfs/aegir/issues/1933)) ([df9058c](https://github.com/ipfs/aegir/commit/df9058cb4845a7adfb109710e9c7ec175a35c618))
+
 ## [47.1.3](https://github.com/ipfs/aegir/compare/v47.1.2...v47.1.3) (2026-04-10)
 
 ### Bug Fixes

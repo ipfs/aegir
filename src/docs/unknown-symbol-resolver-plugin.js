@@ -25,7 +25,8 @@ const knownSymbols = {
     'internal.Duplex': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamduplex',
     'internal.Readable': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamreadable',
     'internal.Transform': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamtransform',
-    'internal.Writable': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamwritable'
+    'internal.Writable': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamwritable',
+    'NodeJS.CallSite': 'https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e0dbc3cdc26d32943bf9f46513c53da54acfc492/types/node/globals.d.ts#L76'
   },
   esbuild: {
     BuildOptions: 'https://esbuild.github.io/api/#build-api'

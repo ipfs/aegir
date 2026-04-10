@@ -1,3 +1,58 @@
+## [47.0.26](https://github.com/ipfs/aegir/compare/v47.0.25...v47.0.26) (2026-01-22)
+
+### Dependencies
+
+* bump semantic-release to 25.0.2 ([#1904](https://github.com/ipfs/aegir/issues/1904)) ([a628685](https://github.com/ipfs/aegir/commit/a628685d00bc3ade832b295048871a120036381b))
+
+## [47.0.25](https://github.com/ipfs/aegir/compare/v47.0.24...v47.0.25) (2025-12-07)
+
+### Bug Fixes
+
+* remove forced test exit on windows ([#1897](https://github.com/ipfs/aegir/issues/1897)) ([0ca62ab](https://github.com/ipfs/aegir/commit/0ca62ab47fe4120c332f6c0f59bb78faa174c00f))
+
+## [47.0.24](https://github.com/ipfs/aegir/compare/v47.0.23...v47.0.24) (2025-10-17)
+
+### Dependencies
+
+* bump typescript-docs-verifier from 2.5.3 to 3.0.1 ([#1841](https://github.com/ipfs/aegir/issues/1841)) ([493cd48](https://github.com/ipfs/aegir/commit/493cd4864487e73c96f13952b895c4841d469da0))
+
+## [47.0.23](https://github.com/ipfs/aegir/compare/v47.0.22...v47.0.23) (2025-10-14)
+
+### Dependencies
+
+* bump globby from 14.1.0 to 15.0.0 ([#1867](https://github.com/ipfs/aegir/issues/1867)) ([583d846](https://github.com/ipfs/aegir/commit/583d846486b23a9b8f95c11a422f8aec68dcff20))
+* bump p-queue from 8.1.1 to 9.0.0 ([#1871](https://github.com/ipfs/aegir/issues/1871)) ([3dec148](https://github.com/ipfs/aegir/commit/3dec148e40c5251505eb20d4c868031466ecc2e7))
+
+## [47.0.22](https://github.com/ipfs/aegir/compare/v47.0.21...v47.0.22) (2025-09-17)
+
+### Bug Fixes
+
+* time out browser coverage collection ([#1865](https://github.com/ipfs/aegir/issues/1865)) ([16ba8c7](https://github.com/ipfs/aegir/commit/16ba8c7bd4e3a2e17b470022efe3183a14f9090d))
+
+### Dependencies
+
+* bump npm-package-json-lint from 8.0.0 to 9.0.0 ([#1827](https://github.com/ipfs/aegir/issues/1827)) ([94bda99](https://github.com/ipfs/aegir/commit/94bda99e3e2c907a1753e9b5c97336ee9f313ce6))
+* bump p-retry from 6.2.1 to 7.0.0 ([#1856](https://github.com/ipfs/aegir/issues/1856)) ([b578e1d](https://github.com/ipfs/aegir/commit/b578e1df0fa65fab28d078123cd2249e93f9c725))
+* **dev:** bump electron from 36.9.1 to 38.1.1 ([#1864](https://github.com/ipfs/aegir/issues/1864)) ([27c911b](https://github.com/ipfs/aegir/commit/27c911b8def49ba8847b1f50f85d77186b5456fa))
+
+## [47.0.21](https://github.com/ipfs/aegir/compare/v47.0.20...v47.0.21) (2025-08-05)
+
+### Bug Fixes
+
+* pin typescript ([#1846](https://github.com/ipfs/aegir/issues/1846)) ([b5f0e94](https://github.com/ipfs/aegir/commit/b5f0e9498fb3cf5fec20c2f95d14f47807cad2f7))
+
+## [47.0.20](https://github.com/ipfs/aegir/compare/v47.0.19...v47.0.20) (2025-07-07)
+
+### Bug Fixes
+
+* update readme when readme is omitted from typedocs ([ffce208](https://github.com/ipfs/aegir/commit/ffce2086e371f3392c2e3fbd00f0a09456b3de3b))
+
+## [47.0.19](https://github.com/ipfs/aegir/compare/v47.0.18...v47.0.19) (2025-06-26)
+
+### Bug Fixes
+
+* add DOM.AsyncIterable ([#1826](https://github.com/ipfs/aegir/issues/1826)) ([effb5e4](https://github.com/ipfs/aegir/commit/effb5e4003f0a4fb814d79ac27c0cfe051e3869e))
+
 ## [47.0.18](https://github.com/ipfs/aegir/compare/v47.0.17...v47.0.18) (2025-06-24)
 
 ### Bug Fixes

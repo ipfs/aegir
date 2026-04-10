@@ -26,6 +26,11 @@ export function load (app) {
    */
   function onRendererEnd (evt) {
     const urlMappings = evt.pages?.filter(page => {
+      // single-module repo, single export with "readme": "none" in typedoc.json
+      if (page.url === 'index.html') {
+        return true
+      }
+
       // single-module repo, single export
       if (page.url === 'modules.html') {
         return true

@@ -7,7 +7,7 @@
         "checkJs": true,
         "target": "ES2024",
         "module": "Node18",
-        "lib": ["DOM", "DOM.Iterable", "WebWorker", "ES2024"],
+        "lib": ["DOM", "DOM.Iterable", "DOM.AsyncIterable", "WebWorker", "ES2024"],
         "noEmit": false,
         "noEmitOnError": true,
         "emitDeclarationOnly": false,

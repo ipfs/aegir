@@ -184,7 +184,7 @@ const jsdocConfig = {
     'jsdoc/match-description': 'off',
     'jsdoc/tag-lines': ['error', 'any', { startLines: 1 }],
     'jsdoc/no-types': 'off',
-    // Note: no-undefined-types rule causes to many false positives:
+    // Note: no-undefined-types rule causes too many false positives:
     // https://github.com/gajus/eslint-plugin-jsdoc/issues/559
     // And it is also unaware of many built in types
     // https://github.com/gajus/eslint-plugin-jsdoc/issues/280

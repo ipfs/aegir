@@ -1,10 +1,9 @@
-import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { execa } from 'execa'
-import kleur from 'kleur'
 import * as tempy from 'tempy'
 import merge from '../utils/merge-options.js'
+import { killIfCoverageHangs } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -65,10 +64,6 @@ export default async function testNode (argv, execaOptions) {
     args.push(...argv['--'])
   }
 
-  if (os.platform() === 'win32') {
-    args.push('--exit')
-  }
-
   // before hook
   const before = await argv.fileConfig.test.before(argv)
   const beforeEnv = before && before.env ? before.env : {}
@@ -91,52 +86,7 @@ export default async function testNode (argv, execaOptions) {
     )
   )
 
-  let killedWhileCollectingCoverage = false
-
-  /** @type {ReturnType<setTimeout> | undefined} */
-  let timeout
-
-  if (argv.cov) {
-    proc.stderr?.addListener('data', (data) => {
-      process.stderr.write(data)
-    })
-
-    let lastLine = ''
-    proc.stdout?.addListener('data', (data) => {
-      process.stdout.write(data)
-
-      lastLine = data.toString()
-
-      if (lastLine.trim() !== '') {
-        // more output has been sent, reset timer
-        clearTimeout(timeout)
-      }
-
-      if (lastLine.match(/^ {2}\d+ (passing|pending)/m) != null) {
-        // if we see something that looks like the successful end of a mocha
-        // run, set a timer - if the process does not exit before the timer
-        // fires, kill it and log a warning, though don't cause the test run
-        // to fail
-        timeout = setTimeout(() => {
-          console.warn(kleur.red('!!! Collecting coverage has hung, killing process')) // eslint-disable-line no-console
-          console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
-          killedWhileCollectingCoverage = true
-
-          proc.kill('SIGTERM')
-        }, argv.covTimeout).unref()
-      }
-    })
-  }
-
-  try {
-    await proc
-  } catch (err) {
-    if (!killedWhileCollectingCoverage) {
-      throw err
-    }
-  } finally {
-    clearTimeout(timeout)
-  }
+  await killIfCoverageHangs(proc, argv)
 
   // after hook
   await argv.fileConfig.test.after(argv, before)

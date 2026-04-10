@@ -3,8 +3,7 @@ import Listr from 'listr'
 
 /**
  * @typedef {import('./types.js').GlobalOptions} GlobalOptions
- * @typedef {import("listr").ListrTaskWrapper} Task
- * @typedef {import("ts-node").TSError} TSError
+ * @typedef {import('listr').ListrTaskWrapper} Task
  */
 
 const tasks = new Listr(

@@ -1,3 +1,9 @@
+## [47.1.3](https://github.com/ipfs/aegir/compare/v47.1.2...v47.1.3) (2026-04-10)
+
+### Bug Fixes
+
+* revert "deps: bump @types/node from 22.19.7 to 25.2.0" ([#1935](https://github.com/ipfs/aegir/issues/1935)) ([7ab36a4](https://github.com/ipfs/aegir/commit/7ab36a464ac3bae4f853af577fb702f6692a794b))
+
 ## [47.1.2](https://github.com/ipfs/aegir/compare/v47.1.1...v47.1.2) (2026-04-10)
 
 ### Bug Fixes

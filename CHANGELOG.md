@@ -1,3 +1,34 @@
+## [47.1.0](https://github.com/ipfs/aegir/compare/v47.0.26...v47.1.0) (2026-04-10)
+
+### Features
+
+* add module-sync to default package config ([#1921](https://github.com/ipfs/aegir/issues/1921)) ([c7cc013](https://github.com/ipfs/aegir/commit/c7cc013b8de3b3a718bc960693f70f59f489e29b))
+* search for .aegir.mjs config file ([#1901](https://github.com/ipfs/aegir/issues/1901)) ([a6c4790](https://github.com/ipfs/aegir/commit/a6c47901b4efbbb42ec703a5bf423d134fe38e7a))
+
+### Bug Fixes
+
+* include link to NodeJS.CallSite in docs ([155ff85](https://github.com/ipfs/aegir/commit/155ff8507361d119bd2792f1d918303600f6bb4f))
+* print stack trace on error ([#1852](https://github.com/ipfs/aegir/issues/1852)) ([387c8d2](https://github.com/ipfs/aegir/commit/387c8d24c961665d68c6695b79d518e02fa73746))
+* update default build files ([#1922](https://github.com/ipfs/aegir/issues/1922)) ([6c4ee02](https://github.com/ipfs/aegir/commit/6c4ee027179a06bf91d2af3363a640f95dd55639))
+
+### Trivial Changes
+
+* fix typo in comment ([#1920](https://github.com/ipfs/aegir/issues/1920)) ([194d9ed](https://github.com/ipfs/aegir/commit/194d9ed232a24271ae709b85aa79d7522ea7522f))
+* lint actions ([#1924](https://github.com/ipfs/aegir/issues/1924)) ([5372055](https://github.com/ipfs/aegir/commit/5372055d52bf97a2b6a252a7b726570af7aa8edd))
+
+### Documentation
+
+* fix link to types in readme ([#1923](https://github.com/ipfs/aegir/issues/1923)) ([b7681c4](https://github.com/ipfs/aegir/commit/b7681c45c400df04fc4836b7c53c2b9e92b9429f))
+
+### Dependencies
+
+* bump @types/node from 22.19.7 to 25.2.0 ([#1919](https://github.com/ipfs/aegir/issues/1919)) ([6a7a09d](https://github.com/ipfs/aegir/commit/6a7a09d4d5f1273d7de87b890354dfb3c2ac2a95))
+* bump env-paths from 3.0.0 to 4.0.0 ([#1916](https://github.com/ipfs/aegir/issues/1916)) ([bf19b4d](https://github.com/ipfs/aegir/commit/bf19b4d95c36da2855e0dd5bc5cd8407f63ea465))
+* bump esbuild from 0.25.12 to 0.27.2 ([#1908](https://github.com/ipfs/aegir/issues/1908)) ([82dac8c](https://github.com/ipfs/aegir/commit/82dac8cdc776e19faf1b4d310eb77f94548d362f))
+* bump globby from 15.0.0 to 16.1.0 ([#1909](https://github.com/ipfs/aegir/issues/1909)) ([4e5aa85](https://github.com/ipfs/aegir/commit/4e5aa85578804e6db3320e3d0500bd65e795caae))
+* bump the eslint group across 1 directory with 2 updates ([#1880](https://github.com/ipfs/aegir/issues/1880)) ([be25ad7](https://github.com/ipfs/aegir/commit/be25ad7d0c6014d47bc815b606eb45720680649b))
+* **dev:** bump electron from 38.8.0 to 40.1.0 ([#1918](https://github.com/ipfs/aegir/issues/1918)) ([9bc6d14](https://github.com/ipfs/aegir/commit/9bc6d1411f0a1edaa3554d143be6e507570b6182))
+
 ## [47.0.26](https://github.com/ipfs/aegir/compare/v47.0.25...v47.0.26) (2026-01-22)
 
 ### Dependencies

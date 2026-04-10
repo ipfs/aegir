@@ -38,7 +38,7 @@ export async function untypedESMManifest (context) {
     exports: sortExportsMap(
       merge({
         '.': {
-          import: './dist/src/index.js',
+          import: './src/index.js',
           'module-sync': './src/index.js'
         }
       }, manifest.exports)

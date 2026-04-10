@@ -6,7 +6,7 @@ import {
   ensureFileNotPresent
 } from './utils.js'
 
-const ciFileUrl = 'https://raw.githubusercontent.com/pl-strflt/uci/main/templates/.github/workflows/js-test-and-release.yml'
+const ciFileUrl = 'https://raw.githubusercontent.com/ipdxco/unified-github-workflows/main/templates/.github/workflows/js-test-and-release.yml'
 
 /**
  * @param {string} url
@@ -45,7 +45,7 @@ export async function checkBuildFiles (projectDir, branchName, repoUrl) {
 
   let defaultCiContent = await download(ciFileUrl)
   defaultCiContent = defaultCiContent.replaceAll('${{{ github.default_branch }}}', branchName) // eslint-disable-line no-template-curly-in-string
-  defaultCiContent = defaultCiContent.replaceAll('${{{ .config.versions.uci // (.source.tag | sub("\\\\.[^.\\\\-\\\\+]+(?=\\\\-|\\\\+|$)"; "")) }}}', 'v0.0') // eslint-disable-line no-template-curly-in-string
+  defaultCiContent = defaultCiContent.replaceAll('${{{ .config.versions.uci // (.source.tag | sub("\\\\.[^\\\\.]+\\\\.[^\\\\.\\\\-\\\\+]+(?=\\\\-|\\\\+|$)"; "")) }}}', 'v1.0') // eslint-disable-line no-template-curly-in-string
 
   await ensureFileHasContents(projectDir, '.github/workflows/js-test-and-release.yml', defaultCiContent)
 }

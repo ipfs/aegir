@@ -1,3 +1,9 @@
+## [47.1.1](https://github.com/ipfs/aegir/compare/v47.1.0...v47.1.1) (2026-04-10)
+
+### Bug Fixes
+
+* do not replace - with _ in module name ([750d2e8](https://github.com/ipfs/aegir/commit/750d2e8b98d2e5a2e54d1f58fc1a36136d119f17))
+
 ## [47.1.0](https://github.com/ipfs/aegir/compare/v47.0.26...v47.1.0) (2026-04-10)
 
 ### Features

@@ -41,7 +41,7 @@ export async function typescriptManifest (context) {
         '.': {
           types: './dist/src/index.d.ts',
           import: './dist/src/index.js',
-          'module-sync': './src/index.js'
+          'module-sync': './dist/src/index.js'
         }
       }, manifest.exports)
     ),

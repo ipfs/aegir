@@ -56,7 +56,8 @@ export async function typedESMManifest (context) {
       merge({
         '.': {
           types: './dist/src/index.d.ts',
-          import: './src/index.js'
+          import: './src/index.js',
+          'module-sync': './src/index.js'
         }
       }, manifest.exports)
     ),

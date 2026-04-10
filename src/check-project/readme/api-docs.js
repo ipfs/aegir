@@ -37,7 +37,7 @@ function parseGhPagesUrl (pkg, parentManifest) {
 
     if (parentManifest != null) {
       // we are a submodule of a monorepo so link directly to the module page
-      ghPages += `/modules/${pkg.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}.html`
+      ghPages += `/modules/${pkg.name.toLowerCase().replace(/[^a-z0-9-]/g, '_')}.html`
     }
 
     return ghPages

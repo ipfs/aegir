@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-'use strict'
+
+const fs = require('fs')
 const artifact = require('@actions/artifact')
-const execa = require('execa')
 const core = require('@actions/core')
+const execa = require('execa')
 const globby = require('globby')
 const readPkgUp = require('read-pkg-up')
-const fs = require('fs')
 const { pkg } = require('../../src/utils')
 
 const aegirExec = pkg.name === 'aegir' ? './cli.js' : 'aegir'
@@ -54,7 +54,7 @@ const sizeCheck = async (octokit, context, baseDir) => {
           check_run_id: check.data.id,
           conclusion: 'success',
           output: {
-            title: title,
+            title,
             summary: [parts[0], parts[1]].join('\n')
           }
         }

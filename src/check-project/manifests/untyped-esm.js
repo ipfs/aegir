@@ -1,8 +1,12 @@
+import mergeOptions from '../../utils/merge-options.js'
 import { semanticReleaseConfig } from '../semantic-release-config.js'
 import {
   sortFields,
+  sortExportsMap,
   constructManifest
 } from '../utils.js'
+
+const merge = mergeOptions.bind({ ignoreUndefined: true })
 
 /**
  * @param {import('../index.js').ProcessManifestContext} context
@@ -31,12 +35,14 @@ export async function untypedESMManifest (context) {
       '!dist/test',
       '!**/*.tsbuildinfo'
     ],
-    exports: {
-      '.': {
-        types: './dist/src/index.d.ts',
-        import: './src/index.js'
-      }
-    },
+    exports: sortExportsMap(
+      merge({
+        '.': {
+          import: './dist/src/index.js',
+          'module-sync': './src/index.js'
+        }
+      }, manifest.exports)
+    ),
     release,
     scripts
   }, repoUrl, homePage)

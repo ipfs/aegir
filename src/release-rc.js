@@ -10,7 +10,7 @@ import { isMonorepoParent, pkg, everyMonorepoProject, pipeOutput } from './utils
 /**
  * @typedef {import('./types.js').GlobalOptions} GlobalOptions
  * @typedef {import('./types.js').ReleaseRcOptions} ReleaseRcOptions
- * @typedef {import("listr").ListrTaskWrapper} Task
+ * @typedef {import('listr').ListrTaskWrapper} Task
  */
 
 /**

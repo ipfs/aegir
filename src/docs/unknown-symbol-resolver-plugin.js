@@ -13,10 +13,16 @@ const knownSymbols = {
   '@types/node': {
     EventEmitter: 'https://nodejs.org/dist/latest/docs/api/events.html#class-eventemitter',
     'NodeJS.EventEmitter': 'https://nodejs.org/dist/latest/docs/api/events.html#class-eventemitter',
+    'EventEmitter.setMaxListeners': 'https://nodejs.org/dist/latest/docs/api/events.html#eventssetmaxlistenersn-eventtargets',
     Server: 'https://nodejs.org/dist/latest/docs/api/net.html#class-netserver',
     IncomingMessage: 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpincomingmessage',
     '"http".IncomingMessage': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpincomingmessage',
+    '"node:http".IncomingMessage': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpincomingmessage',
+    IncomingHttpHeaders: 'https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e0dbc3cdc26d32943bf9f46513c53da54acfc492/types/node/http.d.ts#L9',
+    '"http".IncomingHttpHeaders': 'https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e0dbc3cdc26d32943bf9f46513c53da54acfc492/types/node/http.d.ts#L9',
+    '"node:http".IncomingHttpHeaders': 'https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e0dbc3cdc26d32943bf9f46513c53da54acfc492/types/node/http.d.ts#L9',
     '"http".Server': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserver',
+    '"node:http".Server': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserver',
     ServerResponse: 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserverresponse',
     '"http".ServerResponse': 'https://nodejs.org/dist/latest/docs/api/http.html#class-httpserverresponse',
     'global.NodeJS.ReadStream': 'https://nodejs.org/dist/latest/docs/api/tty.html#class-ttyreadstream',
@@ -25,7 +31,8 @@ const knownSymbols = {
     'internal.Duplex': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamduplex',
     'internal.Readable': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamreadable',
     'internal.Transform': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamtransform',
-    'internal.Writable': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamwritable'
+    'internal.Writable': 'https://nodejs.org/dist/latest/docs/api/stream.html#class-streamwritable',
+    'NodeJS.CallSite': 'https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e0dbc3cdc26d32943bf9f46513c53da54acfc492/types/node/globals.d.ts#L76'
   },
   esbuild: {
     BuildOptions: 'https://esbuild.github.io/api/#build-api'

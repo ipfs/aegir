@@ -50,6 +50,8 @@ const defaults = {
     fix: false,
     files: [
       '*.{js,ts,jsx,tsx}',
+      'actions/**',
+      '!actions/**/dist',
       'bin/**',
       'config/**/*.{js,ts,jsx,tsx}',
       'test/**/*.{js,ts,jsx,tsx}',
@@ -172,6 +174,7 @@ export const config = async (searchFrom) => {
       searchPlaces: [
         'package.json',
         '.aegir.js',
+        '.aegir.mjs',
         '.aegir.cjs'
       ]
     })

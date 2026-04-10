@@ -28,7 +28,7 @@ const parsers = {
 }
 
 /**
- * @typedef {import("listr").ListrTaskWrapper} Task
+ * @typedef {import('listr').ListrTaskWrapper} Task
  * @typedef {import('./types.js').GlobalOptions} GlobalOptions
  * @typedef {import('./types.js').DependencyCheckOptions} DependencyCheckOptions
  */

@@ -1,3 +1,10 @@
+## [47.1.5](https://github.com/ipfs/aegir/compare/v47.1.4...v47.1.5) (2026-04-10)
+
+### Bug Fixes
+
+* only show a few lines before/after each change in the diff ([#1936](https://github.com/ipfs/aegir/issues/1936)) ([2ad4bda](https://github.com/ipfs/aegir/commit/2ad4bda4db9a393b1e916903b5be191d39e03d20))
+* update module-sync path ([#1937](https://github.com/ipfs/aegir/issues/1937)) ([88b8174](https://github.com/ipfs/aegir/commit/88b817452939cb51952f129ea4d839751604e7c8))
+
 ## [47.1.4](https://github.com/ipfs/aegir/compare/v47.1.3...v47.1.4) (2026-04-10)
 
 ### Bug Fixes

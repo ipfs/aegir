@@ -1,3 +1,9 @@
+## [47.1.7](https://github.com/ipfs/aegir/compare/v47.1.6...v47.1.7) (2026-04-21)
+
+### Bug Fixes
+
+* import Buffer from node:buffer ([#1942](https://github.com/ipfs/aegir/issues/1942)) ([5cb0979](https://github.com/ipfs/aegir/commit/5cb0979a55d8d0e5fdcf70e161cc7569a8bdbf74))
+
 ## [47.1.6](https://github.com/ipfs/aegir/compare/v47.1.5...v47.1.6) (2026-04-21)
 
 ### Bug Fixes

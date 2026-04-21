@@ -1,3 +1,9 @@
+## [47.1.6](https://github.com/ipfs/aegir/compare/v47.1.5...v47.1.6) (2026-04-21)
+
+### Bug Fixes
+
+* import node core modules from node: namespace ([#1941](https://github.com/ipfs/aegir/issues/1941)) ([cd9e5f2](https://github.com/ipfs/aegir/commit/cd9e5f2354463ac6fadc70448accabede4d24c54))
+
 ## [47.1.5](https://github.com/ipfs/aegir/compare/v47.1.4...v47.1.5) (2026-04-10)
 
 ### Bug Fixes

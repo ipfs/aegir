@@ -1,4 +1,4 @@
-import os from 'os'
+import os from 'node:os'
 import kleur from 'kleur'
 import { loadUserConfig } from '../config/user.js'
 import testCmd from '../test/index.js'

@@ -1,7 +1,5 @@
-/* eslint-env mocha */
-
-import { createRequire } from 'module'
-import os from 'os'
+import { createRequire } from 'node:module'
+import os from 'node:os'
 import { execa } from 'execa'
 import { expect } from '../utils/chai.js'
 import { setUpProject } from './utils/set-up-project.js'

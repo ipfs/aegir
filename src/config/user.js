@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { pathToFileURL } from 'url'
+import { pathToFileURL } from 'node:url'
 import { lilconfig } from 'lilconfig'
 import merge from '../utils/merge-options.js'
 import { isTypescript } from '../utils.js'

@@ -1,7 +1,5 @@
-/* eslint-env mocha */
-
-import { createRequire } from 'module'
-import { join } from 'path'
+import { createRequire } from 'node:module'
+import { join } from 'node:path'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import { expect } from '../utils/chai.js'

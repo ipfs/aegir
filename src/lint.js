@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
-import path from 'path'
-import { fileURLToPath } from 'url'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { ESLint } from 'eslint'
 import { execa } from 'execa'
 import fs from 'fs-extra'

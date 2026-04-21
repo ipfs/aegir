@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import path from 'path'
+import path from 'node:path'
 import fs from 'fs-extra'
 import kleur from 'kleur'
 import {

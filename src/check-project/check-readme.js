@@ -1,6 +1,6 @@
 /* eslint-disable no-console,complexity */
 
-import path from 'path'
+import path from 'node:path'
 import fs from 'fs-extra'
 import { API_DOCS } from './readme/api-docs.js'
 import { HEADER } from './readme/header.js'

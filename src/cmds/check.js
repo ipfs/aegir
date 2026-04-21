@@ -2,7 +2,7 @@
 /* eslint-disable max-depth */
 /* eslint-disable no-console */
 
-import path from 'path'
+import path from 'node:path'
 import esbuild from 'esbuild'
 import fs from 'fs-extra'
 import kleur from 'kleur'

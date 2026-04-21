@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-
 import { expect } from '../utils/chai.js'
 
 describe('ts features', () => {

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import http from 'https'
+import http from 'node:https'
 import {
   ensureFileHasContents,
   ensureFileNotPresent

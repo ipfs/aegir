@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer'
+import { Buffer } from 'node:buffer'
 import { expect } from '../../utils/chai.js'
 import EchoServer from '../../utils/echo-server.js'
 

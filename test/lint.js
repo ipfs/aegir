@@ -1,7 +1,5 @@
-/* eslint-env mocha */
-
-import path from 'path'
-import { fileURLToPath } from 'url'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import { loadUserConfig } from '../src/config/user.js'
 import lint from '../src/lint.js'

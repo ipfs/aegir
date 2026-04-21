@@ -5,11 +5,11 @@
  * @module aegir/utils
  */
 
-import os from 'os'
-import path from 'path'
-import readline from 'readline'
-import { fileURLToPath } from 'url'
-import { constants, createBrotliCompress, createGzip } from 'zlib'
+import os from 'node:os'
+import path from 'node:path'
+import readline from 'node:readline'
+import { fileURLToPath } from 'node:url'
+import { constants, createBrotliCompress, createGzip } from 'node:zlib'
 import { download } from '@electron/get'
 import envPaths from 'env-paths'
 import { execa } from 'execa'

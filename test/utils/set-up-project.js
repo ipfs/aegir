@@ -1,7 +1,5 @@
-/* eslint-env mocha */
-
-import path, { join } from 'path'
-import { fileURLToPath } from 'url'
+import path, { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import fs, { copy } from 'fs-extra'
 import * as tempy from 'tempy'
 

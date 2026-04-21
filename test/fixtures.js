@@ -1,6 +1,4 @@
-/* eslint-env mocha */
-
-import path from 'path'
+import path from 'node:path'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { expect } from '../utils/chai.js'
 import loadFixture from '../utils/fixtures.js'

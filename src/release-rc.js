@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import path from 'path'
+import path from 'node:path'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import Listr from 'listr'

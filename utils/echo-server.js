@@ -1,5 +1,5 @@
 import { Buffer } from 'buffer'
-import http from 'http'
+import http from 'node:http'
 // @ts-expect-error no types
 import send from '@polka/send-type'
 import cors from 'cors'

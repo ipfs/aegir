@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import bytes from 'bytes'
 import esbuild from 'esbuild'
 import { execa } from 'execa'

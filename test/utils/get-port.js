@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-
 import { expect } from '../../utils/chai.js'
 import EchoServer from '../../utils/echo-server.js'
 import getPort from '../../utils/get-port.js'

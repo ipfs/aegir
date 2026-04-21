@@ -1,6 +1,4 @@
-/* eslint-env mocha */
-
-import os from 'os'
+import os from 'node:os'
 import { execa } from 'execa'
 import { setUpProject } from './utils/set-up-project.js'
 

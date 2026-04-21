@@ -1,6 +1,7 @@
 import { execa } from 'execa'
 import pMap from 'p-map'
 import browser from './browser.js'
+import deno from './deno.js'
 import electron from './electron.js'
 import node from './node.js'
 import rn from './react-native.js'
@@ -41,6 +42,18 @@ const TASKS = [
      * @param {TestOptions & GlobalOptions} ctx
      */
     enabled: (ctx) => ctx.target.includes('node')
+  },
+  {
+    title: 'test deno',
+    /**
+     * @param {TestOptions & GlobalOptions} opts
+     * @param {ExecaOptions} execaOptions
+     */
+    task: (opts, execaOptions) => deno({ ...opts, runner: 'deno' }, execaOptions),
+    /**
+     * @param {TestOptions & GlobalOptions} ctx
+     */
+    enabled: (ctx) => ctx.target.includes('deno')
   },
   {
     title: 'test browser',

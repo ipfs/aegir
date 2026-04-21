@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer'
+import { Buffer } from 'node:buffer'
 import http from 'node:http'
 // @ts-expect-error no types
 import send from '@polka/send-type'

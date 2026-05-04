@@ -1,0 +1,40 @@
+name: CI (Deno - merge into js-test-and-release.yml)
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version: lts/*
+    - uses: ipfs/aegir/actions/cache-node-modules@main
+
+  test-deno:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        node: [lts/*]
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: ipfs/aegir/actions/cache-node-modules@main
+      - run: npm run --if-present test:deno
+      - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
+        with:
+          flags: node
+          files: .coverage/*,packages/*/.coverage/*
+          token: ${{ secrets.CODECOV_TOKEN }}

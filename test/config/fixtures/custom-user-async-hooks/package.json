@@ -1,3 +1,4 @@
 {
-    "name": "custom-config" 
+    "name": "custom-config",
+    "type": "commonjs"
 }

@@ -19,7 +19,7 @@ It bundles config for standard tools such as eslint, mocha, etc and lets you con
 
  All test files should be placed under `test`. Individual test files should end in `.spec.js` or `.spec.ts` and will be ran in all environments (node, browser, webworker, electron-main and electron-renderer).
 
- To run node specific tests a file named `test/node.js` or `test/node.ts` should be used to require all node test files and the same thing for the other environments with a file named `test/browser.js` or `test/browser.ts`.
+ To run node specific tests a file named `test/node.js` or `test/node.ts` should be used to require all node test files and the same thing for the other environments with a file named `test/browser.js`, `test/browser.ts`, `test/deno.js` or `test/deno.ts`.
 
  Your `package.json` should have the following entries and should pass `aegir lint-package-json`.
 
@@ -35,7 +35,8 @@ It bundles config for standard tools such as eslint, mocha, etc and lets you con
    "build": "aegir build",
    "test": "aegir test",
    "test:node": "aegir test --target node",
-   "test:browser": "aegir test --target browser"
+   "test:browser": "aegir test --target browser",
+   "test:deno": "aegir test --target deno",
  }
  ```
 

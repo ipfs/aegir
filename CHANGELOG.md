@@ -1,3 +1,9 @@
+## [48.0.1](https://github.com/ipfs/aegir/compare/v48.0.0...v48.0.1) (2026-05-04)
+
+### Bug Fixes
+
+* include node types ([#1947](https://github.com/ipfs/aegir/issues/1947)) ([d82eff5](https://github.com/ipfs/aegir/commit/d82eff578feeb05ef0c991b3180bd3d64db54c39))
+
 ## [48.0.0](https://github.com/ipfs/aegir/compare/v47.2.0...v48.0.0) (2026-05-04)
 
 ### ⚠ BREAKING CHANGES

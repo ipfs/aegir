@@ -1,3 +1,13 @@
+## [48.0.0](https://github.com/ipfs/aegir/compare/v47.2.0...v48.0.0) (2026-05-04)
+
+### ⚠ BREAKING CHANGES
+
+* `Uint8Array`s are now generic
+
+### Bug Fixes
+
+* update typescript to 6.x.x and skip build before test ([#1945](https://github.com/ipfs/aegir/issues/1945)) ([b37a068](https://github.com/ipfs/aegir/commit/b37a0681557b4007678f1fa0ce9cf9e69dcaa5b2))
+
 ## [47.2.0](https://github.com/ipfs/aegir/compare/v47.1.7...v47.2.0) (2026-05-04)
 
 ### Features

@@ -32,6 +32,8 @@
       "skipLibCheck": true,
       "stripInternal": true,
       "resolveJsonModule": true,
+      "rewriteRelativeImportExtensions": true,
+      "allowImportingTsExtensions": true,
 
       "types": [
         "@types/mocha",

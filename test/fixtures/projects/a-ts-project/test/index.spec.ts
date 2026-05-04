@@ -1,4 +1,4 @@
-import { useHerp, useDerp } from '../src/index.js'
+import { useHerp, useDerp } from '../src/index.ts'
 
 describe('project', () => {
   it('runs a test', () => {

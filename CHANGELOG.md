@@ -1,3 +1,9 @@
+## [47.2.0](https://github.com/ipfs/aegir/compare/v47.1.7...v47.2.0) (2026-05-04)
+
+### Features
+
+* add deno test runner ([#1943](https://github.com/ipfs/aegir/issues/1943)) ([45c13ff](https://github.com/ipfs/aegir/commit/45c13ff9501b4040afdf1cc5be86fb1c441ef202)), closes [#1239](https://github.com/ipfs/aegir/issues/1239)
+
 ## [47.1.7](https://github.com/ipfs/aegir/compare/v47.1.6...v47.1.7) (2026-04-21)
 
 ### Bug Fixes

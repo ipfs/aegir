@@ -31,7 +31,8 @@
         "allowImportingTsExtensions": true,
 
         "types": [
-            "@types/mocha"
+            "@types/mocha",
+            "@types/node"
         ]
     },
     "include": [

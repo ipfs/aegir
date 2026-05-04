@@ -5,9 +5,9 @@
       "outDir": "dist",
       "allowJs": true,
       "checkJs": true,
-      "target": "ES2020",
-      "module": "ES2020",
-      "lib": ["ES2021", "ES2021.Promise", "ES2021.String", "ES2020.BigInt", "DOM", "DOM.Iterable"],
+      "target": "ES2024",
+      "module": "node16",
+      "lib": ["DOM", "DOM.Iterable", "DOM.AsyncIterable", "WebWorker", "ES2024"],
       "noEmit": false,
       "noEmitOnError": true,
       "emitDeclarationOnly": false,
@@ -20,7 +20,7 @@
       "sourceMap": true,
       // module resolution
       "esModuleInterop": true,
-      "moduleResolution": "node",
+      "moduleResolution": "Node16",
       // linter checks
       "noImplicitReturns": false,
       "noFallthroughCasesInSwitch": true,
@@ -31,7 +31,14 @@
       "forceConsistentCasingInFileNames": true,
       "skipLibCheck": true,
       "stripInternal": true,
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "rewriteRelativeImportExtensions": true,
+      "allowImportingTsExtensions": true,
+
+      "types": [
+        "@types/mocha",
+        "@types/node"
+      ]
   },
   "include": [
       "src",

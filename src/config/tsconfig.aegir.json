@@ -6,7 +6,7 @@
         "allowJs": true,
         "checkJs": true,
         "target": "ES2024",
-        "module": "Node18",
+        "module": "node16",
         "lib": ["DOM", "DOM.Iterable", "DOM.AsyncIterable", "WebWorker", "ES2024"],
         "noEmit": false,
         "noEmitOnError": true,
@@ -28,7 +28,11 @@
         "stripInternal": true,
         "resolveJsonModule": true,
         "rewriteRelativeImportExtensions": true,
-        "allowImportingTsExtensions": true
+        "allowImportingTsExtensions": true,
+
+        "types": [
+            "@types/mocha"
+        ]
     },
     "include": [
         "src",

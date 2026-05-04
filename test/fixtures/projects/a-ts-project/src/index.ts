@@ -1,9 +1,9 @@
 import herp from 'a-cjs-dep'
 import derp from 'an-esm-dep'
-import type { UsedButNotExported } from './a-module.js'
-import type { EventEmitter } from 'events'
+import type { UsedButNotExported } from './a-module.ts'
+import type { EventEmitter } from 'node:events'
 
-export { garply } from './dir/index.js'
+export { garply } from './dir/index.ts'
 
 export const useHerp = (): void => {
   // @ts-ignore this is a function
@@ -18,7 +18,7 @@ export interface AnExportedInterface {
   aMethod(): void
 }
 
-export type { ExportedButNotInExports } from './a-module.js'
+export type { ExportedButNotInExports } from './a-module.ts'
 
 export interface UsesInternalType extends UsedButNotExported {
 

@@ -35,8 +35,8 @@ export default async function testNode (argv, execaOptions) {
     : [
         'test/node.*js',
         'test/**/*.spec.*js',
-        'dist/test/node.*js',
-        'dist/test/**/*.spec.*js'
+        'test/node.*ts',
+        'test/**/*.spec.*ts'
       ]
 
   const args = [
@@ -75,6 +75,7 @@ export default async function testNode (argv, execaOptions) {
         env: {
           AEGIR_RUNNER: 'node',
           NODE_ENV: process.env.NODE_ENV || 'test',
+          NODE_OPTIONS: '--experimental-strip-types --experimental-transform-types',
           ...beforeEnv
         },
         preferLocal: true,

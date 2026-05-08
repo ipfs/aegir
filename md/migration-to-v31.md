@@ -7,7 +7,7 @@ We started `typeVersions` a while a ago as an hack to allow deep type imports in
 Look into the link bellow for more info:
 
 - [https://github.com/ipfs/aegir/pull/717](https://github.com/ipfs/aegir/pull/717)
-- [https://github.com/ipfs/aegir/blob/master/md/ts-jsdoc.md#getting-started](https://github.com/ipfs/aegir/blob/master/md/ts-jsdoc.md#getting-started)
+- [https://github.com/ipfs/aegir/blob/main/md/ts-jsdoc.md#getting-started](https://github.com/ipfs/aegir/blob/main/md/ts-jsdoc.md#getting-started)
 
 Actions:
 
@@ -71,7 +71,7 @@ Actions:
 
 The ts command will copy all `.d.ts` inside the `src` folder to the `dist` folder automatically, and there's two new options to configure custom paths when copying files.
 
-More info here [https://github.com/ipfs/aegir/blob/master/md/ts-jsdoc.md#3-use-a-typesdts-file](https://github.com/ipfs/aegir/blob/master/md/ts-jsdoc.md#3-use-a-typesdts-file) and here `aegir ts --help`
+More info here [https://github.com/ipfs/aegir/blob/main/md/ts-jsdoc.md#3-use-a-typesdts-file](https://github.com/ipfs/aegir/blob/main/md/ts-jsdoc.md#3-use-a-typesdts-file) and here `aegir ts --help`
 
 ## `--node` flag removed
 

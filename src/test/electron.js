@@ -61,6 +61,7 @@ export default async (argv, execaOptions) => {
       env: {
         AEGIR_RUNNER: argv.runner,
         NODE_ENV: process.env.NODE_ENV || 'test',
+        NODE_OPTIONS: '--experimental-strip-types --experimental-transform-types',
         ELECTRON_PATH: electronPath,
         ...beforeEnv
       }

@@ -1,3 +1,13 @@
+## [48.0.3](https://github.com/ipfs/aegir/compare/v48.0.2...v48.0.3) (2026-05-08)
+
+### Documentation
+
+* update links ([#1951](https://github.com/ipfs/aegir/issues/1951)) ([43e9f9e](https://github.com/ipfs/aegir/commit/43e9f9e306bb74a2aaab6f7944417e965984e2ff)), closes [#1814](https://github.com/ipfs/aegir/issues/1814)
+
+### Dependencies
+
+* **dev:** bump uint8arrays from 5.1.1 to 6.0.0 ([#1949](https://github.com/ipfs/aegir/issues/1949)) ([4605407](https://github.com/ipfs/aegir/commit/4605407406655f1d03a75e8da2203cbd3c6b847c))
+
 ## [48.0.2](https://github.com/ipfs/aegir/compare/v48.0.1...v48.0.2) (2026-05-08)
 
 ### Bug Fixes

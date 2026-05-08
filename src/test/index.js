@@ -12,7 +12,8 @@ import rn from './react-native.js'
 const NO_BUILD = [
   'node',
   'deno',
-  'electron-main'
+  'electron-main',
+  'electron-renderer'
 ]
 
 /**

@@ -1,3 +1,9 @@
+## [48.0.4](https://github.com/ipfs/aegir/compare/v48.0.3...v48.0.4) (2026-05-08)
+
+### Dependencies
+
+* **dev:** bump electron from 41.5.0 to 42.0.0 ([#1948](https://github.com/ipfs/aegir/issues/1948)) ([fef844e](https://github.com/ipfs/aegir/commit/fef844e98e6850189f286362cd3c52da8f71c1ea))
+
 ## [48.0.3](https://github.com/ipfs/aegir/compare/v48.0.2...v48.0.3) (2026-05-08)
 
 ### Documentation

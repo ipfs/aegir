@@ -15,7 +15,7 @@ const defaults = {
   debug: false,
   // test cmd options
   test: {
-    build: false,
+    build: true,
     runner: 'node',
     target: ['node', 'browser', 'webworker'],
     watch: false,

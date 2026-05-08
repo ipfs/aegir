@@ -260,7 +260,7 @@
     "electron-mocha": "^13.0.0",
     "env-paths": "^4.0.0",
     "esbuild": "^0.28.0",
-    "eslint": "^9.27.0",
+    "eslint": "^10.3.0",
     "eslint-formatter-unix": "^9.0.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsdoc": "^62.3.1",

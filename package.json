@@ -338,7 +338,7 @@
     "@types/semver": "^7.3.4",
     "@types/strong-log-transformer": "^1.0.2",
     "@types/yargs": "^17.0.0",
-    "electron": "^41.2.0",
+    "electron": "^42.0.0",
     "uint8arrays": "^6.0.0"
   },
   "browser": {

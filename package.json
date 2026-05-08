@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "48.0.1",
+  "version": "48.0.2",
   "description": "JavaScript project management",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/ipfs/aegir#readme",
@@ -339,7 +339,7 @@
     "@types/strong-log-transformer": "^1.0.2",
     "@types/yargs": "^17.0.0",
     "electron": "^42.0.0",
-    "uint8arrays": "^5.0.1"
+    "uint8arrays": "^6.0.0"
   },
   "browser": {
     "fs": false,

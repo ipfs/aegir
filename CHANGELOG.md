@@ -1,3 +1,9 @@
+## [48.0.2](https://github.com/ipfs/aegir/compare/v48.0.1...v48.0.2) (2026-05-08)
+
+### Bug Fixes
+
+* conditional build before test ([#1950](https://github.com/ipfs/aegir/issues/1950)) ([977e132](https://github.com/ipfs/aegir/commit/977e13274f93bf9078caeeb6712ba0e82bdc8ce0))
+
 ## [48.0.1](https://github.com/ipfs/aegir/compare/v48.0.0...v48.0.1) (2026-05-04)
 
 ### Bug Fixes

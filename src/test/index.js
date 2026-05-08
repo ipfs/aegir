@@ -7,6 +7,31 @@ import node from './node.js'
 import rn from './react-native.js'
 
 /**
+ * These environments can run `.ts` files natively so do not need a build step
+ */
+const NO_BUILD = [
+  'node',
+  'deno',
+  'electron-main',
+  'electron-renderer'
+]
+
+/**
+ * @param {TestOptions & GlobalOptions} ctx
+ */
+function shouldBuild (ctx) {
+  if (ctx.build === false) {
+    return false
+  }
+
+  if (ctx.target.every(target => NO_BUILD.includes(target))) {
+    return false
+  }
+
+  return ctx.build
+}
+
+/**
  * @typedef {import("execa").Options} ExecaOptions
  * @typedef {import('../types.js').TestOptions} TestOptions
  * @typedef {import('../types.js').GlobalOptions} GlobalOptions
@@ -20,7 +45,7 @@ const TASKS = [
     /**
      * @param {TestOptions & GlobalOptions} ctx
      */
-    enabled: (ctx) => ctx.build === true,
+    enabled: (ctx) => shouldBuild(ctx),
 
     /**
      * @param {BuildOptions & GlobalOptions} ctx

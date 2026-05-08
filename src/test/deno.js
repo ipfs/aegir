@@ -36,8 +36,8 @@ export default async function testNode (argv, execaOptions) {
     : [
         'test/deno.*js',
         'test/**/*.spec.*js',
-        'dist/test/deno.*js',
-        'dist/test/**/*.spec.*js'
+        'test/deno.*ts',
+        'test/**/*.spec.*ts'
       ]
 
   const args = [

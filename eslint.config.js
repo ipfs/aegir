@@ -150,6 +150,12 @@ addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // onl
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
+addRule('neostandard/ts', 'no-restricted-syntax', ['error', {
+  // Node strip-types resolves source paths literally, so a relative `.js` import
+  // on a TS source file fails at test-time when no build step has run first.
+  selector: 'ImportDeclaration[source.value=/^\\.\\.?\\/.*\\.js$/]',
+  message: "Relative imports must use the '.ts' extension."
+}])
 
 const jsdocSettings = {
   mode: 'typescript',

@@ -5,6 +5,7 @@ import jsdoc from 'eslint-plugin-jsdoc'
 // @ts-expect-error no types
 import noOnlyTests from 'eslint-plugin-no-only-tests'
 import neostandard from 'neostandard'
+import noLegacyJsImport from './src/eslint/no-legacy-js-import.js'
 
 const config = neostandard({
   env: ['node', 'browser', 'worker', 'serviceworker', 'webextensions', 'mocha', 'es2024'],
@@ -150,12 +151,9 @@ addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // onl
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
-addRule('neostandard/ts', 'no-restricted-syntax', ['error', {
-  // Node strip-types resolves source paths literally, so a relative `.js` import
-  // on a TS source file fails at test-time when no build step has run first.
-  selector: 'ImportDeclaration[source.value=/^\\.\\.?\\/.*\\.js$/]',
-  message: "Relative imports must use the '.ts' extension."
-}])
+// future: extend to .jsx/.cjs/.mjs <- .tsx/.cts/.mts when the need arises
+addPlugin('neostandard/ts', 'aegir', { rules: { 'no-legacy-js-import': noLegacyJsImport } })
+addRule('neostandard/ts', 'aegir/no-legacy-js-import', 'error')
 
 const jsdocSettings = {
   mode: 'typescript',

@@ -151,7 +151,6 @@ addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // onl
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
-// future: extend to .jsx/.cjs/.mjs <- .tsx/.cts/.mts when the need arises
 addPlugin('neostandard/ts', 'aegir', { rules: { 'no-legacy-js-import': noLegacyJsImport } })
 addRule('neostandard/ts', 'aegir/no-legacy-js-import', 'error')
 

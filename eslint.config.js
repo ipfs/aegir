@@ -162,11 +162,6 @@ addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // onl
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
-// Force relative imports to use the file's actual on-disk extension — catches
-// `.js` aliases of `.ts` files that break under `--experimental-strip-types`.
-// The two-entry map handles a non-obvious bit of eslint-plugin-n: [.ts, .js]
-// seeds backward['.js']=['.ts'] (resolver finds `.ts` when looking for `.js`),
-// then [.ts, .ts] overrides forward['.ts']='.ts' (expected import extension).
 addSettings('neostandard/ts', { n: { typescriptExtensionMap: [['.ts', '.js'], ['.ts', '.ts']] } })
 addRule('neostandard/ts', 'n/file-extension-in-import', ['error', 'always'])
 

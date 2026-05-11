@@ -5,7 +5,6 @@ import jsdoc from 'eslint-plugin-jsdoc'
 // @ts-expect-error no types
 import noOnlyTests from 'eslint-plugin-no-only-tests'
 import neostandard from 'neostandard'
-import noLegacyJsImport from './src/eslint/no-legacy-js-import.js'
 
 const config = neostandard({
   env: ['node', 'browser', 'worker', 'serviceworker', 'webextensions', 'mocha', 'es2024'],
@@ -56,6 +55,18 @@ function setParser (rules, parser, options) {
   ruleSet.languageOptions ??= {}
   ruleSet.languageOptions.parser = parser
   ruleSet.languageOptions.parserOptions = options
+}
+
+/**
+ * @param {string} rules
+ * @param {Record<string, any>} settings
+ */
+function addSettings (rules, settings) {
+  const ruleSet = config.find(c => c.name === rules)
+
+  assert.ok(ruleSet, `No ruleset with name ${rules} found`)
+
+  ruleSet.settings = { ...ruleSet.settings, ...settings }
 }
 
 addPlugin('neostandard/base', 'no-only-tests', noOnlyTests)
@@ -151,8 +162,13 @@ addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // onl
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
-addPlugin('neostandard/ts', 'aegir', { rules: { 'no-legacy-js-import': noLegacyJsImport } })
-addRule('neostandard/ts', 'aegir/no-legacy-js-import', 'error')
+// Force relative imports to use the file's actual on-disk extension — catches
+// `.js` aliases of `.ts` files that break under `--experimental-strip-types`.
+// The two-entry map handles a non-obvious bit of eslint-plugin-n: [.ts, .js]
+// seeds backward['.js']=['.ts'] (resolver finds `.ts` when looking for `.js`),
+// then [.ts, .ts] overrides forward['.ts']='.ts' (expected import extension).
+addSettings('neostandard/ts', { n: { typescriptExtensionMap: [['.ts', '.js'], ['.ts', '.ts']] } })
+addRule('neostandard/ts', 'n/file-extension-in-import', ['error', 'always'])
 
 const jsdocSettings = {
   mode: 'typescript',

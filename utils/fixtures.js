@@ -26,7 +26,7 @@ import resolve from './resolve.js'
  *
  * @param {string} filePath
  * @param {string} [module]
- * @returns {Uint8Array}
+ * @returns {Uint8Array<ArrayBuffer>}
  */
 export default function loadFixtures (filePath, module = '') {
   return fs.readFileSync(resolve(filePath, module))

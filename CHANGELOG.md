@@ -1,3 +1,9 @@
+## [48.0.5](https://github.com/ipfs/aegir/compare/v48.0.4...v48.0.5) (2026-05-23)
+
+### Bug Fixes
+
+* be specific about load fixture return type backing buffer ([#1959](https://github.com/ipfs/aegir/issues/1959)) ([665d73e](https://github.com/ipfs/aegir/commit/665d73e38bb86479d2e346c1312f42c176f8671d))
+
 ## [48.0.4](https://github.com/ipfs/aegir/compare/v48.0.3...v48.0.4) (2026-05-08)
 
 ### Dependencies

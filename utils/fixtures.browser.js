@@ -38,7 +38,7 @@
  *
  * @param {string} filePath
  * @param {string} module
- * @returns {Uint8Array}
+ * @returns {Uint8Array<ArrayBuffer>}
  */
 export default function loadFixtures (filePath, module) {
   if (module) {

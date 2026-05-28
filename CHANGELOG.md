@@ -1,3 +1,9 @@
+## [48.0.8](https://github.com/ipfs/aegir/compare/v48.0.7...v48.0.8) (2026-05-28)
+
+### Bug Fixes
+
+* override yazul version ([#1963](https://github.com/ipfs/aegir/issues/1963)) ([e9f7fa2](https://github.com/ipfs/aegir/commit/e9f7fa2204b13b6b96b258db05c5b032ab471ef6))
+
 ## [48.0.7](https://github.com/ipfs/aegir/compare/v48.0.6...v48.0.7) (2026-05-28)
 
 ### Bug Fixes

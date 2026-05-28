@@ -162,7 +162,7 @@ addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // onl
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
-addSettings('neostandard/ts', { n: { typescriptExtensionMap: [['.ts', '.js'], ['.ts', '.ts']] } })
+addSettings('neostandard/ts', { n: { typescriptExtensionMap: [['.ts', '.js'], ['.ts', '.ts']], tryExtensions: ['.ts', '.js', '.json', '.node', '.mjs', '.cjs'] } })
 addRule('neostandard/ts', 'n/file-extension-in-import', ['error', 'always'])
 
 const jsdocSettings = {

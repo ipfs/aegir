@@ -1,3 +1,9 @@
+## [48.0.9](https://github.com/ipfs/aegir/compare/v48.0.8...v48.0.9) (2026-05-28)
+
+### Bug Fixes
+
+* typo in override ([#1964](https://github.com/ipfs/aegir/issues/1964)) ([fbb46ef](https://github.com/ipfs/aegir/commit/fbb46ef08b3148f94acafdc313dff9f1fb2fc180))
+
 ## [48.0.8](https://github.com/ipfs/aegir/compare/v48.0.7...v48.0.8) (2026-05-28)
 
 ### Bug Fixes

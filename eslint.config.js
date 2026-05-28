@@ -1,4 +1,5 @@
 import assert from 'node:assert'
+import path from 'node:path'
 import eslintParser from '@typescript-eslint/parser'
 import importPlugin from 'eslint-plugin-import'
 import jsdoc from 'eslint-plugin-jsdoc'
@@ -11,6 +12,35 @@ const config = neostandard({
   ignores: ['dist/**/*'],
   ts: true
 })
+
+const TS_JS_EXTS = new Set(['.js', '.ts', '.mjs', '.mts', '.cjs', '.cts', '.jsx', '.tsx'])
+const upstreamFileExtRule = config.find(c => c.name === 'neostandard/base').plugins.n.rules['file-extension-in-import']
+const fileExtensionInImport = {
+  ...upstreamFileExtRule,
+  create (context) {
+    const wrapped = Object.create(context, {
+      report: {
+        value (descriptor) {
+          if (descriptor.fix && descriptor.messageId === 'requireExt') {
+            const node = descriptor.node
+            const importPath = context.sourceCode.getText(node).slice(1, -1)
+            const currentExt = path.extname(importPath)
+            if (TS_JS_EXTS.has(currentExt)) {
+              const expectedExt = descriptor.data.ext
+              const closeQuote = node.range[1] - 1
+              return context.report({
+                ...descriptor,
+                fix: (fixer) => fixer.replaceTextRange([closeQuote - currentExt.length, closeQuote], expectedExt)
+              })
+            }
+          }
+          return context.report(descriptor)
+        }
+      }
+    })
+    return upstreamFileExtRule.create(wrapped)
+  }
+}
 
 /**
  * @param {string} rules
@@ -127,6 +157,8 @@ setParser('neostandard/ts', eslintParser, {
   sourceType: 'module',
   ecmaVersion: 'latest'
 })
+addPlugin('neostandard/ts', 'aegir-n', { rules: { 'file-extension-in-import': fileExtensionInImport } })
+addSettings('neostandard/ts', { n: { typescriptExtensionMap: [['.ts', '.js'], ['.ts', '.ts']], tryExtensions: ['.ts', '.js', '.json', '.node', '.mjs', '.cjs'] } })
 
 // TODO: not compatible with ESLint 9x yet
 // addPlugin('neostandard/ts', 'etc', etc)
@@ -162,8 +194,7 @@ addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // onl
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
-addSettings('neostandard/ts', { n: { typescriptExtensionMap: [['.ts', '.js'], ['.ts', '.ts']], tryExtensions: ['.ts', '.js', '.json', '.node', '.mjs', '.cjs'] } })
-addRule('neostandard/ts', 'n/file-extension-in-import', ['error', 'always'])
+addRule('neostandard/ts', 'aegir-n/file-extension-in-import', ['error', 'always'])
 
 const jsdocSettings = {
   mode: 'typescript',

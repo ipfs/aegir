@@ -1,3 +1,9 @@
+## [48.0.7](https://github.com/ipfs/aegir/compare/v48.0.6...v48.0.7) (2026-05-28)
+
+### Bug Fixes
+
+* default run concurrency to 1 in CI ([#1962](https://github.com/ipfs/aegir/issues/1962)) ([d6ddde5](https://github.com/ipfs/aegir/commit/d6ddde554138d74e5055c7530ea183f3341d425c))
+
 ## [48.0.6](https://github.com/ipfs/aegir/compare/v48.0.5...v48.0.6) (2026-05-25)
 
 ### Dependencies

@@ -157,6 +157,8 @@ export default {
         console.log(task.title) // eslint-disable-line no-console
       }
       return task.task(opts, execaOptions)
-    }, { concurrency: 1 })
+    }, {
+      concurrency: 1
+    })
   }
 }

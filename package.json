@@ -347,6 +347,6 @@
     "./utils/resolve.js": "./utils/resolve.browser.js"
   },
   "overrides": {
-    "yazul": "^3.0.0"
+    "yauzl": "^3.0.0"
   }
 }

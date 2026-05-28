@@ -345,5 +345,8 @@
     "fs": false,
     "./utils/fixtures.js": "./utils/fixtures.browser.js",
     "./utils/resolve.js": "./utils/resolve.browser.js"
+  },
+  "overrides": {
+    "yazul": "^3.0.0"
   }
 }

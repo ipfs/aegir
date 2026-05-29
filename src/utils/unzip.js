@@ -1,3 +1,12 @@
+/**
+ * Source code of `extract-zip` which was used previously however is broken on
+ * Node 26 due to a dependency on an older version of yazul.
+ *
+ * This file can be removed if/when the issues are resolved upstream.
+ *
+ * https://github.com/ipfs/aegir/pull/1965
+ * https://github.com/max-mapper/extract-zip/issues/154
+ */
 import path from 'node:path'
 import stream from 'node:stream'
 import { text } from 'node:stream/consumers'

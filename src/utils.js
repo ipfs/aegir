@@ -13,7 +13,6 @@ import { constants, createBrotliCompress, createGzip } from 'node:zlib'
 import { download } from '@electron/get'
 import envPaths from 'env-paths'
 import { execa } from 'execa'
-import extract from 'extract-zip'
 import fg from 'fast-glob'
 import fs from 'fs-extra'
 import kleur from 'kleur'
@@ -24,6 +23,7 @@ import { readPackageUpSync } from 'read-pkg-up'
 import stripBom from 'strip-bom'
 import stripComments from 'strip-json-comments'
 import logTransformer from 'strong-log-transformer'
+import { unzip } from './utils/unzip.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -174,7 +174,7 @@ export const getElectron = async () => {
     title: 'Extracting electron to system cache',
     enabled: () => !fs.existsSync(electronPath),
     task: async () => {
-      await extract(zipPath, { dir: path.dirname(zipPath) })
+      await unzip(zipPath, { dir: path.dirname(zipPath) })
     }
   }])
 

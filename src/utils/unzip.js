@@ -102,10 +102,15 @@ class Extractor {
     // convert external file attr int into a fs stat mode int
     const mode = (entry.externalFileAttributes >> 16) & 0xFFFF
     // check if it's a symlink or dir (using stat mode constants)
+    // spell-checker: disable-next-line
     const IFMT = 61440
+    // spell-checker: disable-next-line
     const IFDIR = 16384
+    // spell-checker: disable-next-line
     const IFLNK = 40960
+    // spell-checker: disable-next-line
     const symlink = (mode & IFMT) === IFLNK
+    // spell-checker: disable-next-line
     let isDir = (mode & IFMT) === IFDIR
 
     // Failsafe, borrowed from jsZip

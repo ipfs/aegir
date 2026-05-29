@@ -13,7 +13,6 @@ import { constants, createBrotliCompress, createGzip } from 'node:zlib'
 import { download } from '@electron/get'
 import envPaths from 'env-paths'
 import { execa } from 'execa'
-import extract from 'extract-zip'
 import fg from 'fast-glob'
 import fs from 'fs-extra'
 import kleur from 'kleur'
@@ -24,6 +23,7 @@ import { readPackageUpSync } from 'read-pkg-up'
 import stripBom from 'strip-bom'
 import stripComments from 'strip-json-comments'
 import logTransformer from 'strong-log-transformer'
+import { extract } from './utils/extract-zip.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })

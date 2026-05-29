@@ -1,3 +1,9 @@
+## [48.0.11](https://github.com/ipfs/aegir/compare/v48.0.10...v48.0.11) (2026-05-29)
+
+### Bug Fixes
+
+* vendor extract-zip ([#1965](https://github.com/ipfs/aegir/issues/1965)) ([9e78111](https://github.com/ipfs/aegir/commit/9e78111bbe905624919d2fbefae6f586c74dbd6b))
+
 ## [48.0.10](https://github.com/ipfs/aegir/compare/v48.0.9...v48.0.10) (2026-05-29)
 
 ### Bug Fixes

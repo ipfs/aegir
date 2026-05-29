@@ -1,3 +1,9 @@
+## [48.0.10](https://github.com/ipfs/aegir/compare/v48.0.9...v48.0.10) (2026-05-29)
+
+### Bug Fixes
+
+* revert [#1963](https://github.com/ipfs/aegir/issues/1963) ([a43b3b3](https://github.com/ipfs/aegir/commit/a43b3b3832cf036a716de83ddfe503ed49ea9add))
+
 ## [48.0.9](https://github.com/ipfs/aegir/compare/v48.0.8...v48.0.9) (2026-05-28)
 
 ### Bug Fixes

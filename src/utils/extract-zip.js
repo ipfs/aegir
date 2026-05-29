@@ -193,7 +193,7 @@ class Extractor {
  * @param {UnzipOpts} opts
  * @returns
  */
-export async function unzip (zipPath, opts) {
+export async function extract (zipPath, opts) {
   if (!path.isAbsolute(opts.dir)) {
     throw new Error('Target directory is expected to be absolute')
   }

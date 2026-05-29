@@ -23,7 +23,7 @@ import { readPackageUpSync } from 'read-pkg-up'
 import stripBom from 'strip-bom'
 import stripComments from 'strip-json-comments'
 import logTransformer from 'strong-log-transformer'
-import { unzip } from './utils/unzip.js'
+import { extract } from './utils/extract-zip.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const EnvPaths = envPaths('aegir', { suffix: '' })
@@ -174,7 +174,7 @@ export const getElectron = async () => {
     title: 'Extracting electron to system cache',
     enabled: () => !fs.existsSync(electronPath),
     task: async () => {
-      await unzip(zipPath, { dir: path.dirname(zipPath) })
+      await extract(zipPath, { dir: path.dirname(zipPath) })
     }
   }])
 

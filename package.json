@@ -307,6 +307,7 @@
     "semantic-release-monorepo": "^8.0.2",
     "semver": "^7.3.8",
     "source-map-support": "^0.5.20",
+    "strip-ansi": "^7.2.0",
     "strip-bom": "^5.0.0",
     "strip-json-comments": "^5.0.0",
     "strong-log-transformer": "^2.1.0",
@@ -338,7 +339,7 @@
     "@types/semver": "^7.3.4",
     "@types/strong-log-transformer": "^1.0.2",
     "@types/yargs": "^17.0.0",
-    "electron": "^42.0.0",
+    "electron": "^42.4.0",
     "uint8arrays": "^6.0.0"
   },
   "browser": {

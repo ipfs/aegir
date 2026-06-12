@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { execa } from 'execa'
 import merge from '../utils/merge-options.js'
 import { getElectron, findBinary } from '../utils.js'
+import { killIfCoverageHangs } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -39,10 +40,8 @@ export default async (argv, execaOptions) => {
   const beforeEnv = before && before.env ? before.env : {}
   const electronPath = await getElectron()
 
-  await execa(findBinary('electron-mocha'),
+  const proc = execa(findBinary('electron-mocha'),
     [
-      // workaround for https://github.com/jprichardson/electron-mocha/issues/195
-      '--no-sandbox',
       ...files,
       ...watch,
       ...grep,
@@ -57,7 +56,8 @@ export default async (argv, execaOptions) => {
     merge({
       localDir: path.join(__dirname, '../..'),
       preferLocal: true,
-      stdio: 'inherit',
+      stdio: argv.cov ? 'pipe' : 'inherit',
+      forceKillAfterDelay: 1_000,
       env: {
         AEGIR_RUNNER: argv.runner,
         NODE_ENV: process.env.NODE_ENV || 'test',
@@ -68,6 +68,9 @@ export default async (argv, execaOptions) => {
     },
     execaOptions)
   )
+
+  await killIfCoverageHangs(proc, argv)
+
   // after hook
   await argv.fileConfig.test.after(argv, before)
 }

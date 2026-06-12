@@ -42,6 +42,8 @@ export default async (argv, execaOptions) => {
 
   const proc = execa(findBinary('electron-mocha'),
     [
+      // workaround for https://github.com/jprichardson/electron-mocha/issues/195
+      '--no-sandbox',
       ...files,
       ...watch,
       ...grep,

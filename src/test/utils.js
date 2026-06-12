@@ -33,8 +33,15 @@ export async function killIfCoverageHangs (proc, argv) {
         // fires, kill it and log a warning, though don't cause the test run
         // to fail
         timeout = setTimeout(() => {
-          console.warn(kleur.red('!!! Process has hung after tests passed, manually killing it')) // eslint-disable-line no-console
-          console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
+          if (argv.cov) {
+            console.warn(kleur.red('!!! Process has while collecting coverage, manually killing it')) // eslint-disable-line no-console
+            console.warn(kleur.red('!!! See https://github.com/ipfs/aegir/issues/1206 for more information')) // eslint-disable-line no-console
+          } else {
+            console.warn(kleur.red('!!! Process has hung after tests passed, manually killing it')) // eslint-disable-line no-console
+            console.warn(kleur.red('!!! This module may be leaving processes running or leaving handles open')) // eslint-disable-line no-console
+            console.warn(kleur.red('!!! Please debug with why-is-node-running or similar before submitting a PR')) // eslint-disable-line no-console
+          }
+
           killedWhileCollectingCoverage = true
 
           proc.kill('SIGTERM')

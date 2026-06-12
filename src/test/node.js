@@ -45,7 +45,8 @@ export default async function testNode (argv, execaOptions) {
     ...progress,
     '--ui', 'bdd',
     '--require', 'source-map-support/register',
-    `--timeout=${argv.timeout}`
+    '--timeout', `${argv.timeout}`,
+    '--color', 'true'
   ]
 
   if (argv.grep) {

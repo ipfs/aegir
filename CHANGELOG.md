@@ -1,3 +1,10 @@
+## [48.0.12](https://github.com/ipfs/aegir/compare/v48.0.11...v48.0.12) (2026-06-12)
+
+### Bug Fixes
+
+* extend to all test runs ([dfc7cc0](https://github.com/ipfs/aegir/commit/dfc7cc0bed92b277a72fe1467107b9eb6eda5ba2))
+* kill electron mocha after hangs, also show colors in node ([#1968](https://github.com/ipfs/aegir/issues/1968)) ([f4c7b49](https://github.com/ipfs/aegir/commit/f4c7b49f16d2bd4374eb4fce3f345693824c660b))
+
 ## [48.0.11](https://github.com/ipfs/aegir/compare/v48.0.10...v48.0.11) (2026-05-29)
 
 ### Bug Fixes

@@ -1,3 +1,9 @@
+## [48.0.13](https://github.com/ipfs/aegir/compare/v48.0.12...v48.0.13) (2026-06-15)
+
+### Bug Fixes
+
+* output is trimmed so fix regex ([8ace8a2](https://github.com/ipfs/aegir/commit/8ace8a2b4e54a7bc946f7804c7482da81e474231))
+
 ## [48.0.12](https://github.com/ipfs/aegir/compare/v48.0.11...v48.0.12) (2026-06-12)
 
 ### Bug Fixes

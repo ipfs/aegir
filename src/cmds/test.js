@@ -61,7 +61,7 @@ export default {
           alias: 't',
           describe: 'In which target environment to execute the tests',
           array: true,
-          choices: ['node', 'deno', 'browser', 'webworker', 'electron-main', 'electron-renderer', 'react-native-android', 'react-native-ios'],
+          choices: ['node', 'bun', 'deno', 'browser', 'webworker', 'electron-main', 'electron-renderer', 'react-native-android', 'react-native-ios'],
           default: userConfig.test.target
         },
         watch: {

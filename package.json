@@ -1,6 +1,6 @@
 {
   "name": "aegir",
-  "version": "48.0.6",
+  "version": "48.0.13",
   "description": "JavaScript project management",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/ipfs/aegir#readme",
@@ -266,7 +266,6 @@
     "eslint-plugin-jsdoc": "^62.3.1",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "execa": "^9.5.3",
-    "extract-zip": "^2.0.1",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.1.0",
     "gh-pages": "^6.0.0",
@@ -308,6 +307,7 @@
     "semantic-release-monorepo": "^8.0.2",
     "semver": "^7.3.8",
     "source-map-support": "^0.5.20",
+    "strip-ansi": "^7.2.0",
     "strip-bom": "^5.0.0",
     "strip-json-comments": "^5.0.0",
     "strong-log-transformer": "^2.1.0",
@@ -320,7 +320,8 @@
     "typescript-docs-verifier": "^3.0.1",
     "wherearewe": "^2.0.1",
     "yargs": "^18.0.0",
-    "yargs-parser": "^22.0.0"
+    "yargs-parser": "^22.0.0",
+    "yauzl": "^3.3.1"
   },
   "devDependencies": {
     "@types/bytes": "^3.1.0",
@@ -338,7 +339,8 @@
     "@types/semver": "^7.3.4",
     "@types/strong-log-transformer": "^1.0.2",
     "@types/yargs": "^17.0.0",
-    "electron": "^42.0.0",
+    "@types/yauzl": "^3.3.0",
+    "electron": "^42.4.0",
     "uint8arrays": "^6.0.0"
   },
   "browser": {

@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { execa } from 'execa'
 import merge from '../utils/merge-options.js'
 import { fromAegir, findBinary } from '../utils.js'
-import { killIfCoverageHangs } from './utils.js'
+import { killIfProcessHangs } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -70,7 +70,7 @@ export default async (argv, execaOptions) => {
     )
   )
 
-  await killIfCoverageHangs(proc, argv)
+  await killIfProcessHangs(proc, argv)
 
   // after hook
   await argv.fileConfig.test.after(argv, before)

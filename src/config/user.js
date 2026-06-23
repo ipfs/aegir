@@ -138,7 +138,8 @@ const defaults = {
   },
   run: {
     bail: true,
-    prefix: true
+    prefix: true,
+    concurrency: process.env.CI == null ? undefined : 1
   }
 }
 

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import merge from '../utils/merge-options.js'
-import { killIfCoverageHangs } from './utils.js'
+import { killIfProcessHangs } from './utils.js'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -88,7 +88,7 @@ export default async function testNode (argv, execaOptions) {
     )
   )
 
-  await killIfCoverageHangs(proc, argv)
+  await killIfProcessHangs(proc, argv)
 
   // after hook
   await argv.fileConfig.test.after(argv, before)

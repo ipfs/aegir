@@ -1,3 +1,46 @@
+## [48.0.13](https://github.com/ipfs/aegir/compare/v48.0.12...v48.0.13) (2026-06-15)
+
+### Bug Fixes
+
+* output is trimmed so fix regex ([8ace8a2](https://github.com/ipfs/aegir/commit/8ace8a2b4e54a7bc946f7804c7482da81e474231))
+
+## [48.0.12](https://github.com/ipfs/aegir/compare/v48.0.11...v48.0.12) (2026-06-12)
+
+### Bug Fixes
+
+* extend to all test runs ([dfc7cc0](https://github.com/ipfs/aegir/commit/dfc7cc0bed92b277a72fe1467107b9eb6eda5ba2))
+* kill electron mocha after hangs, also show colors in node ([#1968](https://github.com/ipfs/aegir/issues/1968)) ([f4c7b49](https://github.com/ipfs/aegir/commit/f4c7b49f16d2bd4374eb4fce3f345693824c660b))
+
+## [48.0.11](https://github.com/ipfs/aegir/compare/v48.0.10...v48.0.11) (2026-05-29)
+
+### Bug Fixes
+
+* vendor extract-zip ([#1965](https://github.com/ipfs/aegir/issues/1965)) ([9e78111](https://github.com/ipfs/aegir/commit/9e78111bbe905624919d2fbefae6f586c74dbd6b))
+
+## [48.0.10](https://github.com/ipfs/aegir/compare/v48.0.9...v48.0.10) (2026-05-29)
+
+### Bug Fixes
+
+* revert [#1963](https://github.com/ipfs/aegir/issues/1963) ([a43b3b3](https://github.com/ipfs/aegir/commit/a43b3b3832cf036a716de83ddfe503ed49ea9add))
+
+## [48.0.9](https://github.com/ipfs/aegir/compare/v48.0.8...v48.0.9) (2026-05-28)
+
+### Bug Fixes
+
+* typo in override ([#1964](https://github.com/ipfs/aegir/issues/1964)) ([fbb46ef](https://github.com/ipfs/aegir/commit/fbb46ef08b3148f94acafdc313dff9f1fb2fc180))
+
+## [48.0.8](https://github.com/ipfs/aegir/compare/v48.0.7...v48.0.8) (2026-05-28)
+
+### Bug Fixes
+
+* override yazul version ([#1963](https://github.com/ipfs/aegir/issues/1963)) ([e9f7fa2](https://github.com/ipfs/aegir/commit/e9f7fa2204b13b6b96b258db05c5b032ab471ef6))
+
+## [48.0.7](https://github.com/ipfs/aegir/compare/v48.0.6...v48.0.7) (2026-05-28)
+
+### Bug Fixes
+
+* default run concurrency to 1 in CI ([#1962](https://github.com/ipfs/aegir/issues/1962)) ([d6ddde5](https://github.com/ipfs/aegir/commit/d6ddde554138d74e5055c7530ea183f3341d425c))
+
 ## [48.0.6](https://github.com/ipfs/aegir/compare/v48.0.5...v48.0.6) (2026-05-25)
 
 ### Dependencies

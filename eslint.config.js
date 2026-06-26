@@ -13,35 +13,6 @@ const config = neostandard({
   ts: true
 })
 
-const TS_JS_EXTS = new Set(['.js', '.ts', '.mjs', '.mts', '.cjs', '.cts', '.jsx', '.tsx'])
-const upstreamFileExtRule = config.find(c => c.name === 'neostandard/base').plugins.n.rules['file-extension-in-import']
-const fileExtensionInImport = {
-  ...upstreamFileExtRule,
-  create (context) {
-    const wrapped = Object.create(context, {
-      report: {
-        value (descriptor) {
-          if (descriptor.fix && descriptor.messageId === 'requireExt') {
-            const node = descriptor.node
-            const importPath = context.sourceCode.getText(node).slice(1, -1)
-            const currentExt = path.extname(importPath)
-            if (TS_JS_EXTS.has(currentExt)) {
-              const expectedExt = descriptor.data.ext
-              const closeQuote = node.range[1] - 1
-              return context.report({
-                ...descriptor,
-                fix: (fixer) => fixer.replaceTextRange([closeQuote - currentExt.length, closeQuote], expectedExt)
-              })
-            }
-          }
-          return context.report(descriptor)
-        }
-      }
-    })
-    return upstreamFileExtRule.create(wrapped)
-  }
-}
-
 /**
  * @param {string} rules
  * @param {string} name
@@ -97,6 +68,59 @@ function addSettings (rules, settings) {
   assert.ok(ruleSet, `No ruleset with name ${rules} found`)
 
   ruleSet.settings = { ...ruleSet.settings, ...settings }
+}
+
+/**
+ * @param {string} rules
+ * @param {string} plugin
+ * @param {string} name
+ */
+function getPluginRule (rules, plugin, name) {
+  const ruleSet = config.find(c => c.name === rules)
+
+  assert.ok(ruleSet, `No ruleset with name ${rules} found`)
+
+  const rule = ruleSet.plugins?.[plugin]?.rules?.[name]
+  assert.ok(rule, `No ${name} rule found in ${rules}`)
+
+  return rule
+}
+
+const TS_JS_EXTS = new Set(['.js', '.ts', '.mjs', '.mts', '.cjs', '.cts', '.jsx', '.tsx'])
+const { create: upstreamCreate, ...upstreamRule } = getPluginRule('neostandard/base', 'n', 'file-extension-in-import')
+/**
+ * @type {import('eslint').Rule.RuleModule}
+ */
+const fileExtensionInImport = {
+  ...upstreamRule,
+  create (context) {
+    /**
+     * Report a `requireExt` problem with a fix that replaces an existing JS/TS
+     * extension instead of appending one.
+     *
+     * @param {any} descriptor
+     */
+    function report (descriptor) {
+      if (descriptor.fix && descriptor.messageId === 'requireExt') {
+        const node = descriptor.node
+        const importPath = context.sourceCode.getText(node).slice(1, -1)
+        const currentExt = path.extname(importPath)
+        if (TS_JS_EXTS.has(currentExt)) {
+          const expectedExt = descriptor.data.ext
+          const closeQuote = node.range[1] - 1
+          /**
+           * @param {any} fixer
+           */
+          const fix = (fixer) => fixer.replaceTextRange([closeQuote - currentExt.length, closeQuote], expectedExt)
+          return context.report({ ...descriptor, fix })
+        }
+      }
+      return context.report(descriptor)
+    }
+
+    const wrapped = Object.create(context, { report: { value: report } })
+    return upstreamCreate(wrapped)
+  }
 }
 
 addPlugin('neostandard/base', 'no-only-tests', noOnlyTests)

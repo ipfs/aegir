@@ -1,3 +1,9 @@
+## [48.1.0](https://github.com/ipfs/aegir/compare/v48.0.13...v48.1.0) (2026-06-29)
+
+### Features
+
+* bun support ([#1970](https://github.com/ipfs/aegir/issues/1970)) ([c2de5bb](https://github.com/ipfs/aegir/commit/c2de5bb1be6057742f9586d3f5fa77319eb590a5))
+
 ## [48.0.13](https://github.com/ipfs/aegir/compare/v48.0.12...v48.0.13) (2026-06-15)
 
 ### Bug Fixes

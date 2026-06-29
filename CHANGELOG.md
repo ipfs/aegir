@@ -1,3 +1,9 @@
+## [48.1.1](https://github.com/ipfs/aegir/compare/v48.1.0...v48.1.1) (2026-06-29)
+
+### Bug Fixes
+
+* forbid relative .js imports in TS sources ([#1953](https://github.com/ipfs/aegir/issues/1953)) ([6673640](https://github.com/ipfs/aegir/commit/6673640bfa797f50abb8b563a4359f0d9b55029d)), closes [#1945](https://github.com/ipfs/aegir/issues/1945) [#1950](https://github.com/ipfs/aegir/issues/1950)
+
 ## [48.1.0](https://github.com/ipfs/aegir/compare/v48.0.13...v48.1.0) (2026-06-29)
 
 ### Features

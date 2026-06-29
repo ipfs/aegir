@@ -1,6 +1,7 @@
 import { execa } from 'execa'
 import pMap from 'p-map'
 import browser from './browser.js'
+import bun from './bun.js'
 import deno from './deno.js'
 import electron from './electron.js'
 import node from './node.js'
@@ -11,6 +12,7 @@ import rn from './react-native.js'
  */
 const NO_BUILD = [
   'node',
+  'bun',
   'deno',
   'electron-main',
   'electron-renderer'
@@ -79,6 +81,18 @@ const TASKS = [
      * @param {TestOptions & GlobalOptions} ctx
      */
     enabled: (ctx) => ctx.target.includes('deno')
+  },
+  {
+    title: 'test bun',
+    /**
+     * @param {TestOptions & GlobalOptions} opts
+     * @param {ExecaOptions} execaOptions
+     */
+    task: (opts, execaOptions) => bun({ ...opts, runner: 'bun' }, execaOptions),
+    /**
+     * @param {TestOptions & GlobalOptions} ctx
+     */
+    enabled: (ctx) => ctx.target.includes('bun')
   },
   {
     title: 'test browser',

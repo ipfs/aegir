@@ -1,4 +1,5 @@
 import assert from 'node:assert'
+import path from 'node:path'
 import eslintParser from '@typescript-eslint/parser'
 import importPlugin from 'eslint-plugin-import'
 import jsdoc from 'eslint-plugin-jsdoc'
@@ -55,6 +56,71 @@ function setParser (rules, parser, options) {
   ruleSet.languageOptions ??= {}
   ruleSet.languageOptions.parser = parser
   ruleSet.languageOptions.parserOptions = options
+}
+
+/**
+ * @param {string} rules
+ * @param {Record<string, any>} settings
+ */
+function addSettings (rules, settings) {
+  const ruleSet = config.find(c => c.name === rules)
+
+  assert.ok(ruleSet, `No ruleset with name ${rules} found`)
+
+  ruleSet.settings = { ...ruleSet.settings, ...settings }
+}
+
+/**
+ * @param {string} rules
+ * @param {string} plugin
+ * @param {string} name
+ */
+function getPluginRule (rules, plugin, name) {
+  const ruleSet = config.find(c => c.name === rules)
+
+  assert.ok(ruleSet, `No ruleset with name ${rules} found`)
+
+  const rule = ruleSet.plugins?.[plugin]?.rules?.[name]
+  assert.ok(rule, `No ${name} rule found in ${rules}`)
+
+  return rule
+}
+
+const TS_JS_EXTS = new Set(['.js', '.ts', '.mjs', '.mts', '.cjs', '.cts', '.jsx', '.tsx'])
+const { create: upstreamCreate, ...upstreamRule } = getPluginRule('neostandard/base', 'n', 'file-extension-in-import')
+/**
+ * @type {import('eslint').Rule.RuleModule}
+ */
+const fileExtensionInImport = {
+  ...upstreamRule,
+  create (context) {
+    /**
+     * Report a `requireExt` problem with a fix that replaces an existing JS/TS
+     * extension instead of appending one.
+     *
+     * @param {any} descriptor
+     */
+    function report (descriptor) {
+      if (descriptor.fix && descriptor.messageId === 'requireExt') {
+        const node = descriptor.node
+        const importPath = context.sourceCode.getText(node).slice(1, -1)
+        const currentExt = path.extname(importPath)
+        if (TS_JS_EXTS.has(currentExt)) {
+          const expectedExt = descriptor.data.ext
+          const closeQuote = node.range[1] - 1
+          /**
+           * @param {any} fixer
+           */
+          const fix = (fixer) => fixer.replaceTextRange([closeQuote - currentExt.length, closeQuote], expectedExt)
+          return context.report({ ...descriptor, fix })
+        }
+      }
+      return context.report(descriptor)
+    }
+
+    const wrapped = Object.create(context, { report: { value: report } })
+    return upstreamCreate(wrapped)
+  }
 }
 
 addPlugin('neostandard/base', 'no-only-tests', noOnlyTests)
@@ -115,6 +181,8 @@ setParser('neostandard/ts', eslintParser, {
   sourceType: 'module',
   ecmaVersion: 'latest'
 })
+addPlugin('neostandard/ts', 'aegir-n', { rules: { 'file-extension-in-import': fileExtensionInImport } })
+addSettings('neostandard/ts', { n: { typescriptExtensionMap: [['.ts', '.js'], ['.ts', '.ts']], tryExtensions: ['.ts', '.js', '.json', '.node', '.mjs', '.cjs'] } })
 
 // TODO: not compatible with ESLint 9x yet
 // addPlugin('neostandard/ts', 'etc', etc)
@@ -150,6 +218,7 @@ addRule('neostandard/ts', '@typescript-eslint/only-throw-error', 'error') // onl
 addRule('neostandard/ts', 'jsdoc/require-param', 'off') // do not require jsdoc for params
 addRule('neostandard/ts', 'jsdoc/require-param-type', 'off') // allow compiler to derive param type
 addRule('neostandard/ts', 'import/consistent-type-specifier-style', ['error', 'prefer-top-level']) // prefer `import type { Foo }` over `import { type Foo }`
+addRule('neostandard/ts', 'aegir-n/file-extension-in-import', ['error', 'always'])
 
 const jsdocSettings = {
   mode: 'typescript',

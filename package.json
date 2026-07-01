@@ -342,7 +342,7 @@
     "@types/strong-log-transformer": "^1.0.2",
     "@types/yargs": "^17.0.0",
     "@types/yauzl": "^3.3.0",
-    "electron": "^42.4.0",
+    "electron": "^43.0.0",
     "uint8arrays": "^6.0.0"
   },
   "browser": {

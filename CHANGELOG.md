@@ -1,3 +1,9 @@
+## [48.1.2](https://github.com/ipfs/aegir/compare/v48.1.1...v48.1.2) (2026-07-03)
+
+### Bug Fixes
+
+* allow zeros in peer ids ([#1977](https://github.com/ipfs/aegir/issues/1977)) ([3cdb133](https://github.com/ipfs/aegir/commit/3cdb133ee7abb05d87e470274eb425e78ef24877))
+
 ## [48.1.1](https://github.com/ipfs/aegir/compare/v48.1.0...v48.1.1) (2026-06-29)
 
 ### Bug Fixes

@@ -267,7 +267,7 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsdoc": "^62.3.1",
     "eslint-plugin-no-only-tests": "^3.3.0",
-    "execa": "^9.5.3",
+    "execa": "^10.0.1",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.1.0",
     "gh-pages": "^6.0.0",

@@ -418,6 +418,14 @@ interface RunOptions {
    * Run scripts in parallel up to this limit
    */
   concurrency?: number
+
+  /**
+   * By default scripts are run in dependency order - a project's script is
+   * only started once the scripts of all of its sibling dependencies have
+   * completed. Set this to `false` to ignore dependency order and run every
+   * project's script as soon as a concurrency slot is free.
+   */
+  ordered?: boolean
 }
 
 export type {

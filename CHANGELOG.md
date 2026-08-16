@@ -1,3 +1,9 @@
+## [48.1.4](https://github.com/ipfs/aegir/compare/v48.1.3...v48.1.4) (2026-08-16)
+
+### Bug Fixes
+
+* revert previous commit ([276da7f](https://github.com/ipfs/aegir/commit/276da7fa2d67f7c994a7f9e5052d17392118b6d6))
+
 ## [48.1.3](https://github.com/ipfs/aegir/compare/v48.1.2...v48.1.3) (2026-08-16)
 
 ### Bug Fixes

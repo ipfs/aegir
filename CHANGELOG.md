@@ -1,3 +1,9 @@
+## [48.1.3](https://github.com/ipfs/aegir/compare/v48.1.2...v48.1.3) (2026-08-16)
+
+### Bug Fixes
+
+* do not reset timer once set ([b806fda](https://github.com/ipfs/aegir/commit/b806fda237bdd93b08efd398d3c137552438fd38))
+
 ## [48.1.2](https://github.com/ipfs/aegir/compare/v48.1.1...v48.1.2) (2026-07-03)
 
 ### Bug Fixes

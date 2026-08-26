@@ -1,3 +1,9 @@
+## [48.1.5](https://github.com/ipfs/aegir/compare/v48.1.4...v48.1.5) (2026-08-26)
+
+### Bug Fixes
+
+* do not lint deep dist directories ([3feba8e](https://github.com/ipfs/aegir/commit/3feba8eebd0cd02d851bad02c291758a00a92d0f))
+
 ## [48.1.4](https://github.com/ipfs/aegir/compare/v48.1.3...v48.1.4) (2026-08-16)
 
 ### Bug Fixes

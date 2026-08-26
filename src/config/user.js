@@ -62,7 +62,8 @@ const defaults = {
       'utils/**/*.{js,ts,jsx,tsx}',
       '!**/node_modules/**',
       'examples/**/*.{js,ts,jsx,tsx}',
-      '!examples/**/node_modules/**'
+      '!examples/**/node_modules/**',
+      '!**/dist/**'
     ]
   },
   // docs cmd options

@@ -1,3 +1,9 @@
+## [48.1.6](https://github.com/ipfs/aegir/compare/v48.1.5...v48.1.6) (2026-08-27)
+
+### Bug Fixes
+
+* only pass strip types prior to node 26 ([0d9f04d](https://github.com/ipfs/aegir/commit/0d9f04db508ce4bdffc4381e4d4e3f8f647d55ed))
+
 ## [48.1.5](https://github.com/ipfs/aegir/compare/v48.1.4...v48.1.5) (2026-08-26)
 
 ### Bug Fixes

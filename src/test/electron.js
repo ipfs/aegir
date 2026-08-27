@@ -1,4 +1,5 @@
 import path from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { execa } from 'execa'
 import merge from '../utils/merge-options.js'
@@ -40,6 +41,13 @@ export default async (argv, execaOptions) => {
   const beforeEnv = before && before.env ? before.env : {}
   const electronPath = await getElectron()
 
+  let nodeOptions = ''
+  const nodeMajorVersion = parseInt(process.versions.node.split('.')[0])
+
+  if (nodeMajorVersion < 26) {
+    nodeOptions = '--experimental-strip-types --experimental-transform-types'
+  }
+
   const proc = execa(findBinary('electron-mocha'),
     [
       // workaround for https://github.com/jprichardson/electron-mocha/issues/195
@@ -63,7 +71,7 @@ export default async (argv, execaOptions) => {
       env: {
         AEGIR_RUNNER: argv.runner,
         NODE_ENV: process.env.NODE_ENV || 'test',
-        NODE_OPTIONS: '--experimental-strip-types --experimental-transform-types',
+        NODE_OPTIONS: nodeOptions,
         ELECTRON_PATH: electronPath,
         ...beforeEnv
       }

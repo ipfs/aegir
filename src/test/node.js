@@ -1,4 +1,5 @@
 import path from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { execa } from 'execa'
 import * as tempy from 'tempy'
@@ -69,6 +70,13 @@ export default async function testNode (argv, execaOptions) {
   const before = await argv.fileConfig.test.before(argv)
   const beforeEnv = before && before.env ? before.env : {}
 
+  let nodeOptions = ''
+  const nodeMajorVersion = parseInt(process.versions.node.split('.')[0])
+
+  if (nodeMajorVersion < 26) {
+    nodeOptions = '--experimental-strip-types --experimental-transform-types'
+  }
+
   // run mocha
   const proc = execa(exec, args,
     merge(
@@ -76,7 +84,7 @@ export default async function testNode (argv, execaOptions) {
         env: {
           AEGIR_RUNNER: 'node',
           NODE_ENV: process.env.NODE_ENV || 'test',
-          NODE_OPTIONS: '--experimental-strip-types --experimental-transform-types',
+          NODE_OPTIONS: nodeOptions,
           ...beforeEnv
         },
         preferLocal: true,

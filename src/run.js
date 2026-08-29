@@ -45,7 +45,8 @@ export default {
         }
       }
     }, {
-      concurrency: ctx.concurrency
+      concurrency: ctx.concurrency,
+      ordered: ctx.ordered
     })
   }
 }

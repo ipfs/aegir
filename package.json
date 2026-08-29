@@ -318,7 +318,7 @@
     "typedoc-plugin-mdn-links": "^5.0.2",
     "typedoc-plugin-mermaid": "^1.12.0",
     "typedoc-plugin-missing-exports": "^4.0.0",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "typescript-docs-verifier": "^3.0.1",
     "wherearewe": "^2.0.1",
     "yargs": "^18.0.0",

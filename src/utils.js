@@ -367,6 +367,7 @@ export function findBinary (bin) {
  * @param {(project: Project) => Promise<void>} fn
  * @param {object} [opts]
  * @param {number} [opts.concurrency]
+ * @param {boolean} [opts.ordered]
  */
 export async function everyMonorepoProject (projectDir, fn, opts) {
   const manifest = fs.readJSONSync(path.join(projectDir, 'package.json'))
@@ -381,6 +382,18 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
 
   checkForCircularDependencies(projects)
 
+  const queue = new PQueue({
+    concurrency: opts?.concurrency ?? os.availableParallelism?.() ?? os.cpus().length
+  })
+
+  // when running unordered, sibling dependency order is ignored and every
+  // project is queued straight away - useful for scripts like `test` where
+  // running in dependency order is not necessary and only slows things down
+  if (opts?.ordered === false) {
+    await Promise.all(Object.values(projects).map((project) => queue.add(() => fn(project))))
+    return
+  }
+
   /**
    * @type {Map<string, number>} Track the number of outstanding dependencies of each project
    *
@@ -390,10 +403,6 @@ export async function everyMonorepoProject (projectDir, fn, opts) {
   for (const [name, project] of Object.entries(projects)) {
     inDegree.set(name, project.siblingDependencies.length)
   }
-
-  const queue = new PQueue({
-    concurrency: opts?.concurrency ?? os.availableParallelism?.() ?? os.cpus().length
-  })
 
   while (inDegree.size) {
     /** @type {string[]} */

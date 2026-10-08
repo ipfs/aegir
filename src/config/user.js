@@ -140,7 +140,8 @@ const defaults = {
   run: {
     bail: true,
     prefix: true,
-    concurrency: process.env.CI == null ? undefined : 1
+    concurrency: process.env.CI == null ? undefined : 1,
+    ordered: true
   }
 }
 

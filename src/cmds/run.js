@@ -39,6 +39,11 @@ export default {
           type: 'number',
           describe: 'How many scripts to run at the same time',
           default: userConfig.run.concurrency
+        },
+        ordered: {
+          type: 'boolean',
+          describe: 'Run scripts in dependency order, set to false to run all scripts as soon as possible without waiting for sibling dependencies',
+          default: userConfig.run.ordered
         }
       })
       .positional('script', {

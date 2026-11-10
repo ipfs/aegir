@@ -27,8 +27,3 @@ export interface UsesInternalType extends UsedButNotExported {
 export interface ExtendsEmitter extends EventEmitter {
 
 }
-
-export enum AnEnum {
-  VALUE_1 = 0,
-  VALUE_2
-}

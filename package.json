@@ -298,7 +298,7 @@
     "p-retry": "^8.0.0",
     "pascalcase": "^2.0.0",
     "path": "^0.12.7",
-    "playwright-test": "^14.0.0",
+    "playwright-test": "^15.0.0",
     "polka": "^0.5.2",
     "prompt": "^1.2.2",
     "proper-lockfile": "^4.1.2",

@@ -39,5 +39,13 @@ describe('test', () => {
         cwd: projectDir
       })
     })
+
+    it('should test a ts project in node with coverage', async function () {
+      this.timeout(120 * 1000) // slow ci is slow
+
+      await execa('npm', ['test', '--', '-t', 'node', '--cov'], {
+        cwd: projectDir
+      })
+    })
   })
 })

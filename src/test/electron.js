@@ -42,6 +42,9 @@ export default async (argv, execaOptions) => {
   const electronPath = await getElectron()
 
   let nodeOptions = ''
+  // this checks the host Node.js version, but electron-mocha runs Electron's
+  // bundled Node.js, so unlike the node runner nothing transforms TypeScript
+  // here on Node.js 26 hosts
   const nodeMajorVersion = parseInt(process.versions.node.split('.')[0])
 
   if (nodeMajorVersion < 26) {

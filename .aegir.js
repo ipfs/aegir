@@ -5,6 +5,7 @@ export default {
     },
     dependencyCheck: {
         ignore: [
+            'amaro',
             'buffer',
             'c8',
             'conventional-changelog-conventionalcommits',

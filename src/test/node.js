@@ -75,6 +75,13 @@ export default async function testNode (argv, execaOptions) {
 
   if (nodeMajorVersion < 26) {
     nodeOptions = '--experimental-strip-types --experimental-transform-types'
+  } else {
+    // Node.js 26 removed --experimental-transform-types so it only strips
+    // types. Load amaro's transform hooks (the same transformer Node.js used
+    // for that flag) so TypeScript that needs transforming, such as enums and
+    // namespaces, still runs. Resolve the hooks from aegir because the project
+    // under test may not depend on amaro.
+    nodeOptions = `--enable-source-maps --import=${import.meta.resolve('amaro/transform')}`
   }
 
   // run mocha

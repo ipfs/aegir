@@ -1,3 +1,9 @@
+## [48.1.7](https://github.com/ipfs/aegir/compare/v48.1.6...v48.1.7) (2026-11-17)
+
+### Bug Fixes
+
+* transform TypeScript when testing on Node.js 26 ([#1992](https://github.com/ipfs/aegir/issues/1992)) ([471fb9f](https://github.com/ipfs/aegir/commit/471fb9f599793112f9edfc23a57215eb4f284a3d))
+
 ## [48.1.6](https://github.com/ipfs/aegir/compare/v48.1.5...v48.1.6) (2026-08-27)
 
 ### Bug Fixes

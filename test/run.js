@@ -130,7 +130,8 @@ very test`)
       of waiting for its sibling dependencies to finish first, so `d` should
       start before `a` has finished.
     */
-    const result = await execa(bin, ['run', '--no-ordered', 'test'], {
+    // Give all four projects a slot regardless of the runner's CPU count.
+    const result = await execa(bin, ['run', '--no-ordered', '--concurrency=4', 'test'], {
       cwd: await setUpProject('a-large-monorepo')
     })
 

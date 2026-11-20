@@ -1,3 +1,9 @@
+## [48.2.0](https://github.com/ipfs/aegir/compare/v48.1.7...v48.2.0) (2026-11-20)
+
+### Features
+
+* add --ordered option to run command ([#1989](https://github.com/ipfs/aegir/issues/1989)) ([46b94e3](https://github.com/ipfs/aegir/commit/46b94e3308da2a94449b6aa0214ab9d6aa7d7864)), closes [#1500](https://github.com/ipfs/aegir/issues/1500)
+
 ## [48.1.7](https://github.com/ipfs/aegir/compare/v48.1.6...v48.1.7) (2026-11-17)
 
 ### Bug Fixes

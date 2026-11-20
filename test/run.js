@@ -115,4 +115,35 @@ very test`)
     expect(out.indexOf('b: very test')).to.be.lt(out.indexOf('d: npm run test'))
     expect(out.indexOf('c: very test')).to.be.lt(out.indexOf('d: npm run test'))
   })
+
+  it('should execute commands without waiting for dependencies with --no-ordered', async function () {
+    this.timeout(120 * 1000) // slow ci is slow
+
+    /*
+      Same dependency graph as above:
+
+      d -> c
+      c -> a
+      b -> a
+
+      With --no-ordered every project should be started straight away instead
+      of waiting for its sibling dependencies to finish first, so `d` should
+      start before `a` has finished.
+    */
+    // Give all four projects a slot regardless of the runner's CPU count.
+    const result = await execa(bin, ['run', '--no-ordered', '--concurrency=4', 'test'], {
+      cwd: await setUpProject('a-large-monorepo')
+    })
+
+    const out = result.stdout
+
+    // all projects still ran
+    expect(out).to.include('a: very test')
+    expect(out).to.include('b: very test')
+    expect(out).to.include('c: very test')
+    expect(out).to.include('d: very test')
+
+    // d does not wait for a to finish before starting
+    expect(out.indexOf('d: npm run test')).to.be.lt(out.indexOf('a: very test'))
+  })
 })
